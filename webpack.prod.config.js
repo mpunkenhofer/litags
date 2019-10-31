@@ -2,11 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
 	mode: 'production',
-	devtool: 'inline-source-map',
-
 	entry: {
 		content: ['./app/scripts/content.ts'],
 		background: './app/scripts/background.ts'
@@ -29,13 +28,20 @@ module.exports = {
 			filename: 'styles/[name].css',
 			chunkFilename: '[id].css',
 		}),
-		new webpack.ProvidePlugin({
-			$: "jquery",
-			jQuery: "jquery",
-			"window.jQuery": "jquery",
-			"window.$": "jquery"
-		})
+		new webpack.optimize.AggressiveMergingPlugin(),
+		new webpack.optimize.OccurrenceOrderPlugin(),
 	],
+	optimization: {
+		minimizer: [
+			new TerserPlugin({
+				terserOptions: {
+					output: {
+						comments: false,
+					},
+				},
+			}),
+		],
+	},
 
 	module: {
 		rules: [
@@ -50,14 +56,26 @@ module.exports = {
 				include: [path.resolve(__dirname, 'app')],
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
+			{
+				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name].[ext]',
+							outputPath: 'assets/'
+						}
+					}
+				]
+			},
 		]
 	},
 
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js'],
 		alias: {
-			'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
-		},
-		modules: [path.join(__dirname, "node_modules")],
-	}
+			"sortablejs": "sortablejs/Sortable.js",
+			modules: path.join(__dirname, "node_modules"),
+		}
+	},
 };

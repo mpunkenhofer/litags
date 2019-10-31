@@ -24,18 +24,12 @@ module.exports = {
 			{ from: 'app/images', to: 'assets' },
 			{ from: 'app/manifest.json', to: 'manifest.json' },
 			{ from: 'app/_locales', to: '_locales'},
-			{ from: 'app/pages', to: ''}
+			{ from: 'app/pages', to: ''},
 		]),
 		new MiniCssExtractPlugin({
 			filename: 'styles/[name].css',
 			chunkFilename: '[id].css',
 		}),
-		new webpack.ProvidePlugin({
-			$: "jquery",
-			jQuery: "jquery",
-			"window.jQuery": "jquery",
-			"window.$": "jquery"
-		})
 	],
 
 	module: {
@@ -51,14 +45,26 @@ module.exports = {
 				include: [path.resolve(__dirname, 'app')],
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
+			{
+				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name].[ext]',
+							outputPath: 'assets/'
+						}
+					}
+				]
+			},
 		]
 	},
 
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.scss'],
 		alias: {
-			'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
-		},
-		modules: [path.join(__dirname, "node_modules")],
+			"sortablejs": "sortablejs/Sortable.js",
+			modules: path.join(__dirname, "node_modules"),
+		}
 	}
 };

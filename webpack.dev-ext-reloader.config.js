@@ -1,12 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
-const ChromeExtensionReloader  = require('webpack-chrome-extension-reloader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtensionReloader = require('webpack-chrome-extension-reloader');
 
 module.exports = {
 	mode: 'development',
 	devtool: 'inline-source-map',
+	watch: true,
 
 	entry: {
 		content: ['./app/scripts/content.ts'],
@@ -19,23 +20,23 @@ module.exports = {
 	},
 
 	plugins: [
-		new ChromeExtensionReloader({
-			reloadPage: true, // Force the reload of the page also
-			entries: { // The entries used for the content/background scripts
-				contentScript: 'content', // Use the entry names, not the file name or the path
-				background: 'background' // *REQUIRED
-			}
-		}),
 		new webpack.ProgressPlugin(),
 		new CopyPlugin([
 			{ from: 'app/images', to: 'assets' },
 			{ from: 'app/manifest.json', to: 'manifest.json' },
 			{ from: 'app/_locales', to: '_locales'},
-			{ from: 'app/pages', to: ''}
+			{ from: 'app/pages', to: ''},
 		]),
 		new MiniCssExtractPlugin({
 			filename: 'styles/[name].css',
 			chunkFilename: '[id].css',
+		}),
+		new ExtensionReloader({
+			reloadPage: true, // Force the reload of the page also
+			entries: { // The entries used for the content/background scripts
+				contentScript: 'content',
+				background: 'background',
+			}
 		}),
 	],
 
@@ -52,10 +53,26 @@ module.exports = {
 				include: [path.resolve(__dirname, 'app')],
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
+			{
+				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name].[ext]',
+							outputPath: 'assets/'
+						}
+					}
+				]
+			},
 		]
 	},
 
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.scss']
+		extensions: ['.tsx', '.ts', '.js', '.scss'],
+		alias: {
+			"sortablejs": "sortablejs/Sortable.js",
+			modules: path.join(__dirname, "node_modules"),
+		}
 	}
 };

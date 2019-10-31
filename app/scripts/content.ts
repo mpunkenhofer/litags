@@ -1,10 +1,8 @@
 require('../styles/content-style.scss');
-require('jquery');
-require('jquery-ui');
+require('../styles/font.scss');
+const Sortable = require('sortablejs');
 
-console.log('Hello from content.ts!1');
-// @ts-ignore
-console.log(`jquey.ui.version: ${jQuery.ui.version}`);
+console.log('Hello from content.ts!4');
 
 const elements = document.getElementsByClassName('ruser');
 
@@ -13,24 +11,23 @@ if (elements.length <= 0) {
 } else {
   new MutationObserver((mutations, observerInstance) => {
     observerInstance.disconnect();
-    document.querySelector('.ruser-top').insertAdjacentHTML('beforeend',
-      '<div class="litags-addtag-button">+</div><div class="litags-tags">Top</div>');
-    document.querySelector('.ruser-bottom').insertAdjacentHTML('beforeend',
-      '<div class="litags-addtag-button">+</div>' +
+    const litags_test_html =
+        '<div class="litags-addtag-button">+</div>' +
         '<div class="litags-tags">' +
         '<ul id="litags-tag-list">' +
-        '<li>A0</li>' +
-        '<li>B0</li>' +
-        '<li>C0</li>' +
-        '<li>D0</li>' +
-        '<li>E0</li>' +
+        '<li title="Emote1">A</li>' +
+        '<li>0</li>' +
+        '<li>1</li>' +
+        '<li>2</li>' +
+        '<li>3</li>' +
         '</ul>' +
-        '</div>');
+        '</div>';
+    //document.querySelector('.ruser-top').insertAdjacentHTML('beforeend', litags_test_html);
+    document.querySelector('.ruser-bottom').insertAdjacentHTML('beforeend', litags_test_html);
 
-    // @ts-ignore
-    $('#litags-tag-list').sortable();
-    // @ts-ignore
-    $('#litags-tag-list').disableSelection();
+    const litagsLists = document.getElementById('litags-tag-list');
+    const litagsListSortable = Sortable.create(litagsLists)
+
   }).observe(document.querySelector('.round__app'),
     {childList: true, attributes: true, subtree: true, characterData: true});
 }
