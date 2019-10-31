@@ -1,16 +1,32 @@
-.litags-area {
-  grid-area: liarea;
+.litags-tags {
+  grid-area: litags;
 }
 
-.ruser > i {
+#litags-tag-list {
+  list-style-type: none;
+  font-size: 1.3em;
+  color: aquamarine;
+}
+
+#litags-tag-list li {
+  display: inline;
+  margin-right: 1em;
+  cursor: grab;
+}
+
+.litags-addtag-button {
+  grid-area: libtn;
+}
+
+.ruser i {
   grid-area: lio;
 }
 
-.ruser > a {
+.ruser a {
   grid-area: liuser;
 }
 
-.ruser > .rating {
+.ruser .rating {
   grid-area: lirating;
 }
 
@@ -21,9 +37,9 @@
 .ruser {
   display: grid !important;
   grid-template-rows: auto;
-  grid-template-columns: auto 1fr auto min-content;
+  grid-template-columns: auto auto 1fr auto min-content;
   grid-template-areas:
-    'lio liuser lirating lichange'
-    '. liarea . .';
+    'lio liuser libtn lirating lichange'
+    '. litags litags litags litags';
 
 }

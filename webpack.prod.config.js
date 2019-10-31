@@ -31,7 +31,9 @@ module.exports = {
 		}),
 		new webpack.ProvidePlugin({
 			$: "jquery",
-			jQuery: "jquery"
+			jQuery: "jquery",
+			"window.jQuery": "jquery",
+			"window.$": "jquery"
 		})
 	],
 
@@ -52,6 +54,10 @@ module.exports = {
 	},
 
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js']
+		extensions: ['.tsx', '.ts', '.js'],
+		alias: {
+			'jquery-ui': 'jquery-ui-dist/jquery-ui.js'
+		},
+		modules: [path.join(__dirname, "node_modules")],
 	}
 };
