@@ -2,14 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtensionReloader = require('webpack-chrome-extension-reloader');
 
 module.exports = {
 	mode: 'development',
 	devtool: 'inline-source-map',
-	watch: true,
 
 	entry: {
-		content: ['./app/scripts/content.ts'],
+		content: './app/scripts/content.ts',
 		background: './app/scripts/background.ts',
 	},
 
@@ -27,8 +27,15 @@ module.exports = {
 			{ from: 'app/pages', to: ''},
 		]),
 		new MiniCssExtractPlugin({
-			filename: 'styles/[name].css',
+			filename: 'styles.css',
 			chunkFilename: '[id].css',
+		}),
+		new ExtensionReloader({
+			reloadPage: true, // Force the reload of the page also
+			entries: { // The entries used for the content/background scripts
+				contentScript: 'content',
+				background: 'background',
+			}
 		}),
 	],
 
@@ -43,7 +50,7 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				include: [path.resolve(__dirname, 'app')],
-				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+				use: [MiniCssExtractPlugin.loader, 'fast-css-loader', 'fast-sass-loader'],
 			},
 			{
 				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,

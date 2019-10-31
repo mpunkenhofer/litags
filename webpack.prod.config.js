@@ -25,7 +25,7 @@ module.exports = {
 			{ from: 'app/pages', to: ''}
 		]),
 		new MiniCssExtractPlugin({
-			filename: 'styles/[name].css',
+			filename: 'styles.css',
 			chunkFilename: '[id].css',
 		}),
 		new webpack.optimize.AggressiveMergingPlugin(),

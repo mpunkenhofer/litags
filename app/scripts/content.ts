@@ -1,8 +1,10 @@
-require('../styles/content-style.scss');
 require('../styles/font.scss');
+require('../styles/litags-layout.scss');
+require('../styles/litags-style.scss');
+
 const Sortable = require('sortablejs');
 
-console.log('Hello from content.ts!4');
+console.log('Hello from content.ts!5');
 
 const elements = document.getElementsByClassName('ruser');
 

@@ -20,11 +20,16 @@
     "page": "options.html",
     "chrome_style": true
   },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
   "content_scripts": [
     {
       "matches": [ "http://*.lichess.org/*", "https://*.lichess.org/*" ],
       "js": [ "content.js" ],
-      "css": [ "styles/content.css" ]
+      "css": [ "styles.css" ]
     }
   ]
 }

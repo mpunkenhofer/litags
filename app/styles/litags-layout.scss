@@ -1,21 +1,5 @@
 .litags-tags {
   grid-area: litags;
-  margin-top: 0.25em;
-  margin-bottom: 0.3em;
-}
-
-#litags-tag-list {
-  list-style-type: none;
-  user-select: none;
-  font-family: lichess;
-  font-size: 1em;
-  color: aquamarine;
-}
-
-#litags-tag-list li {
-  display: inline;
-  margin-right: 0.6em;
-  cursor: pointer;
 }
 
 .litags-addtag-button {
@@ -43,8 +27,7 @@
   grid-template-rows: auto;
   grid-template-columns: auto auto 1fr auto min-content;
   grid-template-areas:
-    'lio liuser libtn lirating lichange'
-    '. litags litags litags litags';
+          'lio liuser libtn lirating lichange'
+          '. litags litags litags litags';
 
 }
-
