@@ -1,0 +1,29 @@
+.litags-area {
+  grid-area: liarea;
+}
+
+.ruser > i {
+  grid-area: lio;
+}
+
+.ruser > a {
+  grid-area: liuser;
+}
+
+.ruser > .rating {
+  grid-area: lirating;
+}
+
+.ruser > good, bad {
+  grid-area: lichange;
+}
+
+.ruser {
+  display: grid !important;
+  grid-template-rows: auto;
+  grid-template-columns: auto 1fr auto min-content;
+  grid-template-areas:
+    'lio liuser lirating lichange'
+    '. liarea . .';
+
+}

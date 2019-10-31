@@ -1,0 +1,30 @@
+{
+  "name": "__MSG_appName__",
+  "short_name": "__MSG_appShortName__",
+  "description": "__MSG_appDescription__",
+  "version": "0.0.0",
+  "manifest_version": 2,
+  "default_locale": "en",
+  "icons": {
+    "48": "assets/litags_icon48.png",
+    "128": "assets/litags_icon128.png"
+  },
+  "page_action": {
+    "default_icon": {
+      "16": "assets/litags_icon16.png",
+      "32": "assets/litags_icon32.png"
+    }
+  },
+  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "content_scripts": [
+    {
+      "matches": [ "http://*.lichess.org/*", "https://*.lichess.org/*" ],
+      "js": [ "content.js" ],
+      "css": [ "styles/content.css" ]
+    }
+  ]
+}
