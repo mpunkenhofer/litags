@@ -2,6 +2,7 @@
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
+  "homepage_url": "https://github.com/mpunkenhofer/litags",
   "version": "0.0.0",
   "manifest_version": 2,
   "default_locale": "en",
@@ -28,7 +29,7 @@
   "content_scripts": [
     {
       "matches": [ "http://*.lichess.org/*", "https://*.lichess.org/*" ],
-      "js": [ "content.js" ],
+      "js": [ "litags.js" ],
       "css": [ "styles.css" ]
     }
   ]

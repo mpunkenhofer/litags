@@ -4,7 +4,7 @@ require('../styles/litags-style.scss');
 
 const Sortable = require('sortablejs');
 
-console.log('Hello from content.ts!5');
+console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 const elements = document.getElementsByClassName('ruser');
 

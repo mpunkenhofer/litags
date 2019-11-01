@@ -9,7 +9,7 @@ module.exports = {
 	devtool: 'inline-source-map',
 
 	entry: {
-		content: './app/scripts/content.ts',
+		litags: './app/scripts/litags.ts',
 		background: './app/scripts/background.ts',
 	},
 
@@ -33,7 +33,7 @@ module.exports = {
 		new ExtensionReloader({
 			reloadPage: true, // Force the reload of the page also
 			entries: { // The entries used for the content/background scripts
-				contentScript: 'content',
+				contentScript: 'litags',
 				background: 'background',
 			}
 		}),

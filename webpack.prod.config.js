@@ -7,7 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
 	mode: 'production',
 	entry: {
-		content: ['./app/scripts/content.ts'],
+		litags: ['./app/scripts/litags.ts'],
 		background: './app/scripts/background.ts'
 	},
 
