@@ -23,4 +23,8 @@ If you want to start developing the extension and want to enable live reload use
 ## Packaging
 Run `npm run dist` to create a zipped, production-ready extension.
 
+## Project Status
+
+**In Development**
+
   
