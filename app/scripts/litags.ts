@@ -1,6 +1,12 @@
+import {printJson} from "./tag/tagtip";
+
 require('../styles/font.scss');
 require('../styles/litags-layout.scss');
 require('../styles/litags-style.scss');
+
+require('./tag/tagtip.ts');
+
+printJson();
 
 const Sortable = require('sortablejs');
 

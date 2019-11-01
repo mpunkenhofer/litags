@@ -1,5 +1,4 @@
-{
-  "tags": {
+export default {
     "unamed1": {
       "symbol": "!",
       "enabled": true,
@@ -684,5 +683,4 @@
       "aliases": [],
       "colors": []
     }
-  }
 }
