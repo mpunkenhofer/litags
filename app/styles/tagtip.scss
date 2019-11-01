@@ -1,10 +1,40 @@
-#tagtip {
-  display: none;
+#litags-tagtip .litags-tags-title {
+  font-family: helvetica, serif;
+  font-weight: 400;
+  font-size: 0.8em;
+  color: white;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#litags-tagtip .litags-tag-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 10rem;
+  margin-left: 0.5em;
+}
+
+#litags-tag-freq-used, #litags-tags-all {
+  display: grid;
+  grid-template-columns: repeat(8, auto);
+  margin-left: 0.5em;
+}
+
+#litags-tagtip {
+  display: block;
   position: absolute;
   z-index: 120;
-  width: 20rem;
-  min-height: 3em;
-  overflow: hidden;
   border-radius: 3px;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #3c3934;
+  overflow: hidden;
 }
+
+//body ::-webkit-scrollbar, body ::-webkit-scrollbar-corner {
+//  width: .5rem;
+//  background: #262421;
+//}
+//
+//body ::-webkit-scrollbar-thumb {
+//  background: #4d4d4d;
+//}
