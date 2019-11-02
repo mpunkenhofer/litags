@@ -1,3 +1,3 @@
-export default {
-  "test": "yes"
-}
+export const defaults = {
+  test: "yes"
+};

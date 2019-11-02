@@ -6,6 +6,7 @@
   "version": "0.0.0",
   "manifest_version": 2,
   "default_locale": "en",
+  "permissions": [ "storage", "alarms" ],
   "icons": {
     "48": "assets/litags_icon48.png",
     "128": "assets/litags_icon128.png"

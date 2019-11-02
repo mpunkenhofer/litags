@@ -1,5 +1,5 @@
 export default {
-    "unamed1": {
+    "unnamed1": {
       "symbol": "!",
       "enabled": true,
       "aliases": [],
