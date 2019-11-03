@@ -1,6 +1,3 @@
-import tags from "./configs/tags.config";
-
-
 export class TagTip {
     // language=HTML
     private html = `
@@ -24,6 +21,3 @@ export class TagTip {
 
     }
 }
-
-console.log('hello1');
-

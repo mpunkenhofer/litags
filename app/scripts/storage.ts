@@ -1,5 +1,9 @@
-class LiTagsStorageManager {
-    constructor() {
+export const defaults = {
+    test: "yes"
+};
 
-    }
+
+export class Storage {
+
 }
+

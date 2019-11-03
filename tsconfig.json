@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "target": "es5",
     "module": "commonjs",
     "allowJs": true,
     "types": ["@types/chrome", "node"],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "moduleResolution": "node"
   }
 }
