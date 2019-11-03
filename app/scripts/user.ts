@@ -17,8 +17,8 @@ export class User implements UserInterface {
     }
 
     static setUser(user: User) {
-        const key = user.username;
-        return browser.storage.local.set({key: user.tags});
+        const k = user.username;
+        return browser.storage.local.set({k: user.tags});
     }
 }
 

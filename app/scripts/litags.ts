@@ -1,28 +1,40 @@
 import {User} from "./user";
+import {TagTip} from "./tagtip";
+import {Selectors} from "./selectors";
 
 const Sortable = require('sortablejs');
 
 require('../styles/font.scss');
 require('../styles/layout.scss');
-require('../styles/style.scss');
+require('../styles/styles.scss');
 
 class LiTags {
   private options = {};
+  private tagTip: TagTip;
 
-  constructor(element: Element) {
-    if(element.matches('.round__app')) {
+  constructor() {
+    this.tagTip = new TagTip();
+
+    let element = document.querySelector(Selectors.app);
+
+    if(element) {
       new MutationObserver((mutations, observerInstance) => {
-        let top = document.querySelector('.ruser-top');
-        let bot = document.querySelector('.ruser-bottom');
+        observerInstance.disconnect();
 
-        this.createAddTagButton(top, top.textContent);
-        this.createTagList(top, top.textContent);
+        let top = document.querySelector(Selectors.userTop);
+        let bot = document.querySelector(Selectors.userBot);
 
-        this.createAddTagButton(bot, bot.textContent);
-        this.createTagList(bot, bot.textContent);
-      }).observe(element, {childList: true, attributes: true, subtree: true, characterData: true});
-    } else if (element.matches('.box__top')) {
-      let header = document.querySelector('.box__top span');
+        this.createLiTagsElements(top, top.textContent);
+        this.createLiTagsElements(bot, bot.textContent);
+      }).observe(element,{childList: true, attributes: true, subtree: true, characterData: true});
+
+      return;
+    }
+
+    element = document.querySelector(Selectors.header);
+
+    if (element && false) {
+      let header = document.querySelector(Selectors.header + ' span');
       if (!header || !header.parentElement || !header.parentElement)
         return;
 
@@ -36,34 +48,46 @@ class LiTags {
 
       this.createAddTagButton(element, username);
       this.createTagList(element, username);
+
+      return;
     }
   }
 
-  createTagList(anchor: Element, username: string) {
+  createLiTagsElements(anchor: Element, username: string) {
+    console.log(`Litags creating elements for user: ${username}`);
+
     if(!anchor || !username)
       return;
 
-    console.log('Litags creating tag list...');
+    this.createAddTagButton(anchor, username);
+  }
+
+  createTagList(anchor: Element, username: string) {
+
+
   }
 
   createAddTagButton(anchor: Element, username: string) {
-    if(!anchor || !username)
-      return;
+    const button = document.createElement('div');
+    button.setAttribute('class', 'litags-addtag-button-wrap');
+    button.innerHTML = '<button class="litags-addtag-button" title="__MSG_appAddTagButtonTitle__">O</button>';
+    button.addEventListener('click', (ev) => {
+      this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null);
+    });
+    //button.addEventListener('mouseout', (ev => this.tagTip.hideTagTipElement()));
+    anchor.append(button);
+  }
 
-    anchor.insertAdjacentHTML('beforeend', '<div class="litags-addtag-button">+</div>');
-    console.log('Litags creating add tag button...');
+  static checkForAnchor() : boolean {
+    return document.querySelector(Selectors.app) != null ||
+        document.querySelector(Selectors.header) != null;
   }
 }
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-const app_element = document.querySelector('.round__app');
-const header_element = document.querySelector('.box__top');
-
-if(app_element)
-  new LiTags(app_element);
-else if(header_element)
-  new LiTags(header_element);
+if(LiTags.checkForAnchor())
+  new LiTags();
 else
   console.log('LiTags found no supported anchors on this page.');
 

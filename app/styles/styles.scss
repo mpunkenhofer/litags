@@ -1,0 +1,66 @@
+.litags-tags {
+  margin-top: 0.25em;
+  margin-bottom: 0.3em;
+}
+
+.litags-addtag-button-wrap {
+  margin-left: 0.4em;
+}
+
+.litags-addtag-button-wrap .litags-addtag-button {
+  font-family: lichess, serif;
+  border: 0;
+  background-color: inherit;
+  //filter: brightness(85%);
+  vertical-align: middle;
+}
+
+.litags-addtag-button-wrap .litags-addtag-button:hover {
+  background-color: inherit;
+}
+
+#litags-tag-list {
+  list-style-type: none;
+  user-select: none;
+  font-family: lichess, serif;
+  font-size: 1em;
+  color: yellowgreen;
+}
+
+#litags-tag-list li {
+  display: inline;
+  margin-right: 0.6em;
+  cursor: pointer;
+}
+
+// TAGTIP Section
+
+.litags-tagtip-title {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.litags-tagtip-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 10rem;
+  margin-left: 0.5em;
+}
+
+#litags-tagtip-freq-used, #litags-tagtip-all {
+  display: grid;
+  grid-template-columns: repeat(8, auto);
+  margin-left: 0.5em;
+}
+
+#litags-tagtip {
+  display: none;
+  position: absolute;
+  z-index: 120;
+  border-radius: 3px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  //background: #3c3934;
+  overflow: hidden;
+  background: inherit;
+}
+

@@ -7,12 +7,16 @@
     "message": "litags",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
+  "browserActionTitle": {
+    "message": "LiTags",
+    "description": "The title of the browser action button"
+  },
   "appDescription": {
     "message": "A browser extension that enables you to assign tags to players on lichess.org.",
     "description": "The description of the application"
   },
-  "browserActionTitle": {
-    "message": "LiTags",
-    "description": "The title of the browser action button"
+  "appAddTagButtonTitile": {
+    "message": "Add Tag",
+    "description": "The tooltip of the add tag button."
   }
 }

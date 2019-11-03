@@ -2,7 +2,7 @@
   grid-area: litags;
 }
 
-.litags-addtag-button {
+.litags-addtag-button-wrap {
   grid-area: libtn;
 }
 
@@ -14,7 +14,7 @@
   grid-area: liuser;
 }
 
-.ruser .rating {
+.ruser rating {
   grid-area: lirating;
 }
 
@@ -25,9 +25,9 @@
 .ruser {
   display: grid !important;
   grid-template-rows: auto;
-  grid-template-columns: auto auto 1fr auto min-content;
+  grid-template-columns: auto auto min-content 1fr min-content;
   grid-template-areas:
-          'lio liuser libtn lirating lichange'
-          '. litags litags litags litags';
+          'lio liuser libtn . lirating lichange'
+          '. litags litags litags litags litags';
 
 }
