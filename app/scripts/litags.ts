@@ -1,8 +1,5 @@
-import {User} from "./user";
 import {TagTip} from "./tagtip";
 import {Selectors} from "./selectors";
-import {Dict} from "awesome-typescript-loader/dist/instance";
-import {defaultTags, TagVector} from "./tag";
 
 const Sortable = require('sortablejs');
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
@@ -102,24 +99,25 @@ console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 //   new LiTags();
 // else
 //   console.log('LiTags found no supported anchors on this page.');
-
-function onGot(item: Dict<TagVector>) {
-  console.log(item);
-}
-
-function onError(error: string) {
-  console.log(`Error: ${error}`);
-}
-
-let gettingItem = browser.storage.local.get();
-gettingItem.then(onGot, onError);
-
-browser.storage.local.clear();
-
-browser.storage.local.set({tta: defaultTags});
-
-browser.storage.local.getBytesInUse().then((num: string) => {
-  console.log(`Bytes in use: ${num}`);
-});
-
-console.log('all done!');
+//
+// function onGot(item) {
+//   console.log(item);
+// }
+//
+// function onError(error: string) {
+//   console.log(`Error: ${error}`);
+// }
+// //
+// let gettingItem = browser.storage.sync.get();
+// gettingItem.then(onGot, onError);
+// //
+// // browser.storage.local.clear();
+// //
+// // browser.storage.local.set({tta: defaultTags});
+// //
+//
+// browser.storage.sync.getBytesInUse().then((num: string) => {
+//   console.log(`Bytes in use: ${num}`);
+// });
+//
+// console.log('all done!');
