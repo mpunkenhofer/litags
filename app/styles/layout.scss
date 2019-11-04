@@ -6,28 +6,23 @@
   grid-area: libtn;
 }
 
-.ruser i {
-  grid-area: lio;
-}
-
-.ruser a {
-  grid-area: liuser;
-}
-
-.ruser rating {
-  grid-area: lirating;
-}
-
-.ruser > good, bad {
-  grid-area: lichange;
-}
-
 .ruser {
   display: grid !important;
   grid-template-rows: auto;
-  grid-template-columns: auto auto min-content 1fr min-content;
+  grid-template-columns: auto auto auto 1fr min-content;
   grid-template-areas:
           'lio liuser libtn . lirating lichange'
           '. litags litags litags litags litags';
-
+  a {
+    grid-area: liuser;
+  }
+  i {
+    grid-area: lio;
+  }
+  rating {
+    grid-area: lirating;
+  }
+  good, bad {
+    grid-area: lichange;
+  }
 }

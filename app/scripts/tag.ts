@@ -930,7 +930,7 @@ export class Tag implements TagInterface {
     name: string;
     readonly symbol: string;
 
-    static toStorage(tag: TagInterface) {
+    static toStorage(tag: Tag) {
         return 0;
     }
 }

@@ -4,19 +4,22 @@
 }
 
 .litags-addtag-button-wrap {
-  margin-left: 0.4em;
-}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5em;
 
-.litags-addtag-button-wrap .litags-addtag-button {
-  font-family: lichess, serif;
-  border: 0;
-  background-color: inherit;
-  //filter: brightness(85%);
-  vertical-align: middle;
-}
-
-.litags-addtag-button-wrap .litags-addtag-button:hover {
-  background-color: inherit;
+  .litags-addtag-button {
+    font-family: lichess, serif;
+    border: 0;
+    outline: none;
+    background-color: inherit;
+    filter: brightness(90%);
+  }
+  .litags-addtag-button:hover {
+    transform: scale(1.2);
+    filter: brightness(100%);
+  }
 }
 
 #litags-tag-list {
@@ -25,12 +28,12 @@
   font-family: lichess, serif;
   font-size: 1em;
   color: yellowgreen;
-}
 
-#litags-tag-list li {
-  display: inline;
-  margin-right: 0.6em;
-  cursor: pointer;
+  li {
+    display: inline;
+    margin-right: 0.6em;
+    cursor: pointer;
+  }
 }
 
 // TAGTIP Section
@@ -59,7 +62,6 @@
   z-index: 120;
   border-radius: 3px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  //background: #3c3934;
   overflow: hidden;
   background: inherit;
 }

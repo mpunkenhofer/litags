@@ -3,6 +3,7 @@ import {TagTip} from "./tagtip";
 import {Selectors} from "./selectors";
 
 const Sortable = require('sortablejs');
+const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 
 require('../styles/font.scss');
 require('../styles/layout.scss');
@@ -13,7 +14,7 @@ class LiTags {
   private tagTip: TagTip;
 
   constructor() {
-    this.tagTip = new TagTip();
+    //this.tagTip = new TagTip();
 
     let element = document.querySelector(Selectors.app);
 
@@ -33,9 +34,9 @@ class LiTags {
 
     element = document.querySelector(Selectors.header);
 
-    if (element && false) {
+    if (element && false /* TODO REMOVE FALSE*/) {
       let header = document.querySelector(Selectors.header + ' span');
-      if (!header || !header.parentElement || !header.parentElement)
+      if (!header || !header.parentElement || !header.parentElement.innerText)
         return;
 
       // Get rid of title
@@ -45,10 +46,7 @@ class LiTags {
         return;
 
       const username = nameWithTitle[nameWithTitle.length - 1];
-
-      this.createAddTagButton(element, username);
-      this.createTagList(element, username);
-
+      this.createLiTagsElements(element, username);
       return;
     }
   }
@@ -68,13 +66,16 @@ class LiTags {
   }
 
   createAddTagButton(anchor: Element, username: string) {
+    // if(!this.tagTip)
+    //   this.tagTip = new TagTip();
+    // TODO: fix tagtip
     const button = document.createElement('div');
     button.setAttribute('class', 'litags-addtag-button-wrap');
-    button.innerHTML = '<button class="litags-addtag-button" title="__MSG_appAddTagButtonTitle__">O</button>';
-    button.addEventListener('click', (ev) => {
-      this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null);
-    });
-    //button.addEventListener('mouseout', (ev => this.tagTip.hideTagTipElement()));
+    const button_title = browser.i18n.getMessage("appAddTagButtonTitle");
+    button.innerHTML = `<button class="litags-addtag-button" title="${button_title}">O</button>`;
+    // button.addEventListener('click', (ev) => {
+    //   this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null)
+    // });
     anchor.append(button);
   }
 

@@ -15,7 +15,7 @@
     "message": "A browser extension that enables you to assign tags to players on lichess.org.",
     "description": "The description of the application"
   },
-  "appAddTagButtonTitile": {
+  "appAddTagButtonTitle": {
     "message": "Add Tag",
     "description": "The tooltip of the add tag button."
   }

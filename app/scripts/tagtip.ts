@@ -35,10 +35,10 @@ export class TagTip {
         const element = this.getTagTipElement();
         if (element) {
             element.style.display = 'block';
-            let backgroundColorElement = document.querySelector(Selectors.moves);
+            let backgroundColorElement = document.querySelector(Selectors.appTable);
             if(backgroundColorElement) {
                 const style = getComputedStyle(backgroundColorElement);
-                element.style.background = style.backgroundColor;
+                element.style.background = style.background;
             }
 
             element.innerHTML = this.html;
