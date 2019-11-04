@@ -1,6 +1,8 @@
 import {User} from "./user";
 import {TagTip} from "./tagtip";
 import {Selectors} from "./selectors";
+import {Dict} from "awesome-typescript-loader/dist/instance";
+import {defaultTags, TagVector} from "./tag";
 
 const Sortable = require('sortablejs');
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
@@ -61,8 +63,17 @@ class LiTags {
   }
 
   createTagList(anchor: Element, username: string) {
-
-
+    //   const litags_test_html =
+    //       '<div class="litags-addtag-button">+</div>' +
+    //       '<div class="litags-tags">' +
+    //       '<ul id="litags-tag-list">' +
+    //       '<li title="Emote1">A</li>' +
+    //       '<li>0</li>' +
+    //       '<li>1</li>' +
+    //       '<li>2</li>' +
+    //       '<li>3</li>' +
+    //       '</ul>' +
+    //       '</div>';
   }
 
   createAddTagButton(anchor: Element, username: string) {
@@ -87,31 +98,28 @@ class LiTags {
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-if(LiTags.checkForAnchor())
-  new LiTags();
-else
-  console.log('LiTags found no supported anchors on this page.');
+// if(LiTags.checkForAnchor())
+//   new LiTags();
+// else
+//   console.log('LiTags found no supported anchors on this page.');
 
-  // new MutationObserver((mutations, observerInstance) => {
-  //   observerInstance.disconnect();
-  //   const litags_test_html =
-  //       '<div class="litags-addtag-button">+</div>' +
-  //       '<div class="litags-tags">' +
-  //       '<ul id="litags-tag-list">' +
-  //       '<li title="Emote1">A</li>' +
-  //       '<li>0</li>' +
-  //       '<li>1</li>' +
-  //       '<li>2</li>' +
-  //       '<li>3</li>' +
-  //       '</ul>' +
-  //       '</div>';
-  //   //document.querySelector('.ruser-top').insertAdjacentHTML('beforeend', litags_test_html);
-  //   document.querySelector('.ruser-bottom').insertAdjacentHTML('beforeend', litags_test_html);
-  //
-  //   const litagsLists = document.getElementById('litags-tag-list');
-  //   const litagsListSortable = Sortable.create(litagsLists)
-  //
-  // }).observe(document.querySelector('.round__app'),
-  //   {childList: true, attributes: true, subtree: true, characterData: true});
+function onGot(item: Dict<TagVector>) {
+  console.log(item);
+}
 
+function onError(error: string) {
+  console.log(`Error: ${error}`);
+}
 
+let gettingItem = browser.storage.local.get();
+gettingItem.then(onGot, onError);
+
+browser.storage.local.clear();
+
+browser.storage.local.set({tta: defaultTags});
+
+browser.storage.local.getBytesInUse().then((num: string) => {
+  console.log(`Bytes in use: ${num}`);
+});
+
+console.log('all done!');
