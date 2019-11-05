@@ -11,5 +11,20 @@ export class User {
         this.username = username;
         this.tags = tags;
     }
+
+    static async getUser(username: string): Promise<User> {
+        const userData = await browser.storage.local.get(username);
+
+        if(Object.keys(userData).length !== 0) {
+            const tags = await Tag.getTagsFromIds(userData[username]);
+            return new User(username, tags);
+        } else {
+            throw TypeError('Could not get values of user key/value pair.');
+        }
+    }
+
+    static setUser(user: User) {
+        return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
+    }
 }
 

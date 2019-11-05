@@ -79,7 +79,7 @@ class LiTags {
     const button_title = browser.i18n.getMessage("appAddTagButtonTitle");
     button.innerHTML = `<button class="litags-addtag-button" title="${button_title}">O</button>`;
     button.addEventListener('click', (ev) => {
-        this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null)
+        this.tagTip.show(ev.clientX, ev.clientY, null)
     });
     anchor.append(button);
   }

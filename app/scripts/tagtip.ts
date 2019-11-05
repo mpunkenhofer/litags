@@ -1,6 +1,5 @@
 import {User} from "./user";
 import {Selectors} from "./selectors";
-import {Storage} from "./storage";
 import {Tag} from "./tag";
 
 export class TagTip {
@@ -23,27 +22,23 @@ export class TagTip {
     constructor() {
         // add tagtip element to dom
         document.body.innerHTML += '<div id="litags-tagtip"></div>';
-        const element = this.getTagTipElement();
+        const element = TagTip.getTagTipElement();
 
         if (!element)
             return;
 
         element.addEventListener('mouseleave', ev => {
-            this.hideTagTipElement();
+            this.hide();
         });
     }
 
-    showTagTipElement(x: number, y: number, user: User) {
-        const element = this.getTagTipElement();
+    show(x: number, y: number, user: User) {
+        const element = TagTip.getTagTipElement();
         if (element) {
-            let backgroundColorElement = document.querySelector(Selectors.appTable);
-            if(backgroundColorElement) {
-                const style = getComputedStyle(backgroundColorElement);
-                element.style.background = style.background;
-            }
             element.innerHTML = this.html;
+            this.colorize(element);
 
-            const all_element = this.getTagTipAllElement();
+            const all_element = TagTip.getTagTipAllElement();
             //this.hideTagTipFreqUsedElement();
             if(all_element) {
                 Tag.getAvailable()
@@ -57,12 +52,25 @@ export class TagTip {
             }
 
             element.style.display = 'block';
-
             this.calculateViewPositions(x, y, 10, element);
         }
     }
 
-    calculateViewPositions(clientX: number, clientY: number, constant: number = 0, element: HTMLElement) {
+    public hide() {
+        const element = TagTip.getTagTipElement();
+        if (element)
+            element.style.display = 'none';
+    }
+
+    private colorize(element: HTMLElement) {
+        let backgroundColorElement = document.querySelector(Selectors.appTable);
+        if(backgroundColorElement) {
+            const style = getComputedStyle(backgroundColorElement);
+            element.style.background = style.background;
+        }
+    }
+
+    private calculateViewPositions(clientX: number, clientY: number, constant: number = 0, element: HTMLElement) {
         let newX = clientX;
         let newY = clientY;
 
@@ -73,13 +81,7 @@ export class TagTip {
             if((clientX + element.offsetWidth + constant) > window.innerWidth)
                 newX = clientX - ((clientX + element.offsetWidth + constant) - window.innerWidth);
 
-            console.log(`oy: ${clientY} ox: ${clientX}`);
-            console.log(`ny: ${newY} nx: ${newX}`);
-            console.log(`ww: ${window.innerWidth} wh: ${window.innerHeight}`);
-            console.log(`ew: ${element.offsetWidth} eh: ${element.offsetHeight}`);
-
             element.style.right = element.style.bottom = "auto";
-
             element.style.top = `${newY - 5}px`;
             element.style.left = `${newX - 20}px`;
         }
@@ -94,31 +96,25 @@ export class TagTip {
         }).observe(element,{childList: true, attributes: true, subtree: true, characterData: true});
     }
 
-    hideTagTipElement() {
-        const element = this.getTagTipElement();
-        if (element)
-            element.style.display = 'none';
-    }
-
-    getTagTipElement() {
+    private static getTagTipElement() {
         return document.getElementById(Selectors.tagTip);
     }
 
-    getTagTipSearchElement() {
+    private static getTagTipSearchElement() {
         return document.getElementById(Selectors.tagTipSearch);
     }
 
-    getTagTipFreqUsedElement() {
+    private static getTagTipFreqUsedElement() {
         return document.getElementById(Selectors.tagTipFreqUsed);
     }
 
-    hideTagTipFreqUsedElement() {
+    private static hideTagTipFreqUsedElement() {
         const element = document.getElementById(Selectors.tagTipFreqUsedWrap);
         if (element)
             element.style.display = 'none';
     }
 
-    getTagTipAllElement() {
+    private static getTagTipAllElement() {
         return document.getElementById(Selectors.tagTipAll);
     }
 }
