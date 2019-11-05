@@ -8,6 +8,9 @@ export const Selectors = {
     moves: '.moves',
     tagTip: 'litags-tagtip',
     tagTipFreqUsed: 'litags-tagtip-freq-used',
+    tagTipFreqUsedWrap: 'litags-tagtip-freq-used-wrap',
     tagTipAll: 'litags-tagtip-all',
-    tagTipSearch: 'litags-tagtip-search'
+    tagTipAllWrap: 'litags-tagtip-all-wrap',
+    tagTipSearch: 'litags-tagtip-search',
+    tagTipList: 'litags-tagtip-list'
 };

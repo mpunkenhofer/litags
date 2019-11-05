@@ -1,24 +1,15 @@
+import {Tag} from "./tag";
+
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 
 
-interface UserInterface {
+export class User {
     username: string;
-    encounters: number;
-    tags: number[];
-}
+    tags: Tag[];
 
-export class User implements UserInterface {
-    username: string;
-    encounters: number;
-    tags: number[];
-
-    static getUser(username: string) {
-        return browser.storage.local.get(username);
-    }
-
-    static setUser(user: User) {
-        const k = user.username;
-        return browser.storage.local.set({k: user.tags});
+    constructor(username: string, tags: Tag[] = []) {
+        this.username = username;
+        this.tags = tags;
     }
 }
 

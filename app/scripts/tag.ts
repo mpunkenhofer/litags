@@ -10,6 +10,7 @@ export interface TagData {
 }
 
 export class Tag {
+    readonly id: number;
     readonly symbol: string;
     name: string;
     enabled: boolean;
@@ -17,12 +18,14 @@ export class Tag {
     aliases: string[];
     colors: number[];
 
-    constructor(symbol: string,
+    constructor(id: number,
+                symbol: string,
                 name: string,
                 enabled = true,
                 frequency = 0,
                 aliases: string[] = [],
                 colors: number[] = []) {
+        this.id = id;
         this.symbol = symbol;
         this.name = name;
         this.enabled = enabled;
@@ -32,7 +35,7 @@ export class Tag {
     }
 
     static fromTagData(data: TagData, index: number): Tag {
-        return new Tag(data.tagSymbols[index], data.tagNames[index], data.tagEnabled[index],
+        return new Tag(index, data.tagSymbols[index], data.tagNames[index], data.tagEnabled[index],
             data.tagFrequencies[index], data.tagAliases[index], data.tagColors[index]);
     }
 
@@ -95,7 +98,6 @@ export class Tag {
             for (let i = 0; i < tagData.tagNames.length; i++) {
                 if (tagData.tagEnabled[i] && filter.filter(tag => tag.symbol == tagData.tagSymbols[i]).length == 0) {
                     result.push(Tag.fromTagData(tagData, i));
-                    console.log('1');
                 }
             }
         } catch (error) {
@@ -106,4 +108,3 @@ export class Tag {
     }
 
 }
-

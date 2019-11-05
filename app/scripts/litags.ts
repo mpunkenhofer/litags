@@ -79,7 +79,7 @@ class LiTags {
     const button_title = browser.i18n.getMessage("appAddTagButtonTitle");
     button.innerHTML = `<button class="litags-addtag-button" title="${button_title}">O</button>`;
     button.addEventListener('click', (ev) => {
-      this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null)
+        this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null)
     });
     anchor.append(button);
   }
@@ -96,26 +96,7 @@ if(LiTags.checkForAnchor())
   new LiTags();
 else
   console.log('LiTags found no supported anchors on this page.');
-//
-// function onGot(item) {
-//   console.log(item);
-// }
-//
-// function onError(error: string) {
-//   console.log(`Error: ${error}`);
-// }
-// //
-// let gettingItem = browser.storage.sync.get();
-// gettingItem.then(onGot, onError);
-// //
-// // browser.storage.local.clear();
-// //
-// // browser.storage.local.set({tta: defaultTags});
-// //
-//
+
 // browser.storage.sync.getBytesInUse().then((num: string) => {
 //   console.log(`Bytes in use: ${num}`);
 // });
-//
-// console.log('all done!');
-

@@ -15,10 +15,11 @@
     outline: none;
     background-color: inherit;
     filter: brightness(90%);
-  }
-  .litags-addtag-button:hover {
-    transform: scale(1.2);
-    filter: brightness(100%);
+
+    &:hover {
+      transform: scale(1.2);
+      filter: brightness(100%);
+    }
   }
 }
 
@@ -39,26 +40,52 @@
 // TAGTIP Section
 
 .litags-tagtip-title {
+  font-weight: 500;
+  font-size: 1.2em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+  border-bottom: 1px solid;
 }
 
 .litags-tagtip-list {
   overflow-y: scroll;
   overflow-x: hidden;
-  max-height: 10rem;
-  margin-left: 0.5em;
+  max-height: 12rem;
 }
 
 .litags-tagtip-tag {
-  font-family: lichess, serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+
+  &:hover {
+    background-color: #3692e7;
+    border-radius: 3px;
+  }
+
+  span {
+    font-family: lichess, serif;
+    font-size: 1.8em;
+    margin: 0.2em;
+    filter: brightness(90%);
+
+    &:hover {
+      transform: scale(1.2);
+      filter: brightness(100%);
+    }
+  }
+
+}
+
+#litags-tagtip-freq-used-wrap, #litags-tagtip-all-wrap {
+  margin-left: 0.6em;
+  margin-right: 0.6em;
 }
 
 #litags-tagtip-freq-used, #litags-tagtip-all {
   display: grid;
   grid-template-columns: repeat(8, auto);
-  margin-left: 0.5em;
 }
 
 #litags-tagtip {

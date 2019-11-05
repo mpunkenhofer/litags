@@ -1,4 +1,5 @@
-import {TagData} from "./tag";
+import {Tag, TagData} from "./tag";
+import {User} from "./user";
 
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 
@@ -56,6 +57,25 @@ export class Storage {
             }
         }
     }
+
+    static async getUser(username: string): Promise<User> {
+        const userData = await browser.storage.local.get(username);
+
+        if(Object.keys(userData).length !== 0) {
+            const tagData = await this.getTags();
+            const tagIDs: number[] = userData[username];
+
+           return new User(username, tagIDs.map(id => Tag.fromTagData(tagData, id)));
+
+        } else {
+            throw TypeError('Could not get values of user key/value pair.');
+        }
+    }
+
+    static setUser(user: User) {
+        return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
+    }
+
 }
 
 const defaultTagNames: string[] = [
