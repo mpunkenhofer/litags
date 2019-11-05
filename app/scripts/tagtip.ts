@@ -1,5 +1,7 @@
 import {User} from "./user";
 import {Selectors} from "./selectors";
+import {Storage} from "./storage";
+import {Tag} from "./tag";
 
 export class TagTip {
     // language=HTML
@@ -45,11 +47,20 @@ export class TagTip {
             element.style.top = `${y - 5}px`;
             element.style.left = `${x - 20}px`;
             element.style.right = element.style.bottom = "auto";
-        }
-    }
 
-    getTagTipElement() {
-        return document.getElementById('litags-tagtip');
+            const all_element = this.getTagTipAllElement();
+
+            if(all_element) {
+                Tag.getAvailable()
+                    .then(tags => {
+                        for(const tag of tags) {
+                            all_element.insertAdjacentHTML('beforeend',
+                                `<div class="litags-tagtip-tag" title="${tag.name}">${tag.symbol}</div>`);
+                        }
+                    })
+                    .catch(error => console.log(error));
+            }
+        }
     }
 
     hideTagTipElement() {
@@ -58,7 +69,25 @@ export class TagTip {
             element.style.display = 'none';
     }
 
-    getTagTipInputElement() {
-        return document.getElementById('litags-tagtip-search');
+    getTagTipElement() {
+        return document.getElementById(Selectors.tagTip);
+    }
+
+    getTagTipSearchElement() {
+        return document.getElementById(Selectors.tagTipSearch);
+    }
+
+    getTagTipFreqUsedElement() {
+        return document.getElementById(Selectors.tagTipFreqUsed);
+    }
+
+    hideTagTipFreqUsedElement() {
+        const element = this.getTagTipFreqUsedElement();
+        if (element)
+            element.style.display = 'none';
+    }
+
+    getTagTipAllElement() {
+        return document.getElementById(Selectors.tagTipAll);
     }
 }

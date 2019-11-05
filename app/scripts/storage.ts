@@ -1,6 +1,29 @@
+import {TagData} from "./tag";
+
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 
+const defaults = {
+    litagsTagNames: 'litagsTagNames',
+    litagsTagSymbols: 'litagsTagSymbols',
+    litagsTagEnabled: 'litagsTagEnabled',
+    litagsTagFrequencies: 'litagsTagFrequencies',
+    litagsTagAliases: 'litagsTagAliases',
+    litagsTagColors: 'litagsTagColors'
+};
+
 export class Storage {
+    private static tagDataCache: {data: TagData, valid: boolean} = {
+        data: {
+            tagNames: [],
+            tagSymbols: [],
+            tagEnabled: [],
+            tagFrequencies: [],
+            tagAliases: [],
+            tagColors: []
+        },
+        valid: false
+    };
+
     static setDefaultTags() {
         browser.storage.sync.set({litagsTagNames: defaultTagNames});
         browser.storage.sync.set({litagsTagSymbols: defaultTagSymbols});
@@ -8,6 +31,30 @@ export class Storage {
         browser.storage.sync.set({litagsTagFrequencies: defaultTagFrequencies});
         browser.storage.sync.set({litagsTagAliases: defaultTagAliases});
         browser.storage.sync.set({litagsTagColors: defaultTagColors});
+    }
+
+    static async getTags(): Promise<TagData> {
+        if(this.tagDataCache.valid)
+            return this.tagDataCache.data;
+        else {
+            try {
+                const tagData = {
+                    tagNames: (await browser.storage.sync.get(defaults.litagsTagNames)).litagsTagNames,
+                    tagSymbols: (await browser.storage.sync.get(defaults.litagsTagSymbols)).litagsTagSymbols,
+                    tagEnabled: (await browser.storage.sync.get(defaults.litagsTagEnabled)).litagsTagEnabled,
+                    tagFrequencies: (await browser.storage.sync.get(defaults.litagsTagFrequencies)).litagsTagFrequencies,
+                    tagAliases: (await browser.storage.sync.get(defaults.litagsTagAliases)).litagsTagAliases,
+                    tagColors: (await browser.storage.sync.get(defaults.litagsTagColors)).litagsTagColors
+                };
+
+                this.tagDataCache.data = tagData;
+                this.tagDataCache.valid = true;
+
+                return tagData;
+            } catch (error) {
+                console.error(error)
+            }
+        }
     }
 }
 

@@ -50,6 +50,11 @@
   margin-left: 0.5em;
 }
 
+.litags-tagtip-tag {
+  font-family: lichess, serif;
+  cursor: pointer;
+}
+
 #litags-tagtip-freq-used, #litags-tagtip-all {
   display: grid;
   grid-template-columns: repeat(8, auto);
@@ -58,11 +63,13 @@
 
 #litags-tagtip {
   display: none;
+  opacity: 1;
   position: absolute;
   z-index: 120;
   border-radius: 3px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   overflow: hidden;
   background: inherit;
+  cursor: default;
 }
 

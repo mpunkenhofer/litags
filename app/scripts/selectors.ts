@@ -5,5 +5,9 @@ export const Selectors = {
     header: '.box__top',
     userTop: '.ruser-top',
     userBot: '.ruser-bottom',
-    moves: '.moves'
+    moves: '.moves',
+    tagTip: 'litags-tagtip',
+    tagTipFreqUsed: 'litags-tagtip-freq-used',
+    tagTipAll: 'litags-tagtip-all',
+    tagTipSearch: 'litags-tagtip-search'
 };

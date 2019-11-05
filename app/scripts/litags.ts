@@ -13,7 +13,7 @@ class LiTags {
   private tagTip: TagTip;
 
   constructor() {
-    //this.tagTip = new TagTip();
+    this.tagTip = new TagTip();
 
     let element = document.querySelector(Selectors.app);
 
@@ -74,31 +74,28 @@ class LiTags {
   }
 
   createAddTagButton(anchor: Element, username: string) {
-    // if(!this.tagTip)
-    //   this.tagTip = new TagTip();
-    // TODO: fix tagtip
     const button = document.createElement('div');
     button.setAttribute('class', 'litags-addtag-button-wrap');
     const button_title = browser.i18n.getMessage("appAddTagButtonTitle");
     button.innerHTML = `<button class="litags-addtag-button" title="${button_title}">O</button>`;
-    // button.addEventListener('click', (ev) => {
-    //   this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null)
-    // });
+    button.addEventListener('click', (ev) => {
+      this.tagTip.showTagTipElement(ev.clientX, ev.clientY, null)
+    });
     anchor.append(button);
   }
 
   static checkForAnchor() : boolean {
     return document.querySelector(Selectors.app) != null ||
-        document.querySelector(Selectors.header) != null;
+        false /*document.querySelector(Selectors.header) != null*/;
   }
 }
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-// if(LiTags.checkForAnchor())
-//   new LiTags();
-// else
-//   console.log('LiTags found no supported anchors on this page.');
+if(LiTags.checkForAnchor())
+  new LiTags();
+else
+  console.log('LiTags found no supported anchors on this page.');
 //
 // function onGot(item) {
 //   console.log(item);
@@ -121,3 +118,4 @@ console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 // });
 //
 // console.log('all done!');
+
