@@ -30,7 +30,7 @@
   "content_scripts": [
     {
       "matches": [ "http://*.lichess.org/*", "https://*.lichess.org/*" ],
-      "js": [ "litags.js" ],
+      "js": [ "content.js" ],
       "css": [ "styles.css" ]
     }
   ]

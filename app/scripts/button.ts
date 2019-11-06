@@ -1,11 +1,13 @@
 import {User} from "./user";
 import {Selectors} from "./selectors";
 import {Tag} from "./tag";
+import {List} from "./list";
 
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 
-export class LTButton {
+export class Button {
     private user: User;
+    private list: List;
     private anchor: HTMLElement;
     private popup: HTMLElement;
     private button: HTMLElement;
@@ -27,7 +29,7 @@ export class LTButton {
         </div>`;
 
 
-    constructor(anchor: HTMLElement, user: User) {
+    constructor(anchor: HTMLElement, user: User, list: List) {
         if(!user || !anchor)
             throw new TypeError('invalid user or anchor.');
 
@@ -158,6 +160,7 @@ export class LTButton {
         element.addEventListener('click', (ev) => {
             this.user.addTag(tag);
             this.hidePopup();
+            this.list.update();
         });
         anchor.append(element);
     }

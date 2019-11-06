@@ -7,7 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
 	mode: 'production',
 	entry: {
-		litags: ['./app/scripts/litags.ts'],
+		content: './app/scripts/content.ts',
 		background: './app/scripts/background.ts'
 	},
 
@@ -72,7 +72,7 @@ module.exports = {
 	},
 
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: ['.tsx', '.ts', '.js', '.scss'],
 		alias: {
 			"sortablejs": "sortablejs/Sortable.js",
 			modules: path.join(__dirname, "node_modules"),

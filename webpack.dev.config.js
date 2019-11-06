@@ -9,7 +9,7 @@ module.exports = {
 	devtool: 'inline-source-map',
 
 	entry: {
-		litags: './app/scripts/litags.ts',
+		content: './app/scripts/content.ts',
 		background: './app/scripts/background.ts',
 	},
 
@@ -33,7 +33,7 @@ module.exports = {
 		new ExtensionReloader({
 			reloadPage: true, // Force the reload of the page also
 			entries: { // The entries used for the content/background scripts
-				contentScript: 'litags',
+				contentScript: 'content',
 				background: 'background',
 			}
 		}),
@@ -50,7 +50,7 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				include: [path.resolve(__dirname, 'app')],
-				use: [MiniCssExtractPlugin.loader, 'fast-css-loader', 'fast-sass-loader'],
+				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
 			{
 				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,

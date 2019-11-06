@@ -9,19 +9,14 @@ browser.runtime.onInstalled.addListener(() => {
     // store default tags
     Tag.setDefaultTags();
     // create alarm after extension is installed / upgraded
-    browser.alarms.create('refresh', { periodInMinutes: 3 });
+    //browser.alarms.create('refresh', { periodInMinutes: 3 });
 });
 
 browser.runtime.onStartup.addListener(() => {
     console.log('onStartup....');
 });
 
-browser.alarms.onAlarm.addListener((alarm: { name: any; }) => {
-    console.log(alarm.name); // refresh
-    helloWorld();
-});
-
-function helloWorld() {
-    console.log("Hello, world!");
-}
-
+// browser.alarms.onAlarm.addListener((alarm: { name: any; }) => {
+//     console.log(alarm.name); // refresh
+//     helloWorld();
+// });
