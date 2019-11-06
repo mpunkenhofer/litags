@@ -2,7 +2,7 @@ import {User} from "./user";
 import {Tag} from "./tag";
 import {List} from "./list";
 
-const browser = require("webextension-polyfill/dist/browser-polyfill.min");
+const browser = require("webextension-polyfill");
 
 export class Button {
     private user: User;

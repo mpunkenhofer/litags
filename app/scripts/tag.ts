@@ -1,4 +1,4 @@
-const browser = require("webextension-polyfill/dist/browser-polyfill.min");
+const browser = require("webextension-polyfill");
 
 const defaults = {
     litagsTagNames: 'litagsTagNames',

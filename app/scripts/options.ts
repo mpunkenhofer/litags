@@ -9,7 +9,7 @@ const defaults: OptionsInterface = {
     enabled: true,
     gameEnabled: true,
     profileEnabled: true,
-    maxTags: 10
+    maxTags: 8
 };
 
 export class Options {

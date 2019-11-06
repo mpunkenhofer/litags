@@ -30,9 +30,9 @@ module.exports = {
 			filename: 'styles.css',
 			chunkFilename: '[id].css',
 		}),
-		// new ExtensionReloader({
-		// 	reloadPage: true, // Force the reload of the page also
-		// }),
+		new ExtensionReloader({
+			reloadPage: true, // Force the reload of the page also
+		}),
 	],
 
 	module: {
@@ -67,6 +67,7 @@ module.exports = {
 		extensions: ['.tsx', '.ts', '.js', '.scss'],
 		alias: {
 			"sortablejs": "sortablejs/Sortable.js",
+			"webextension-polyfill": "webextension-polyfill/dist/browser-polyfill.js",
 			modules: path.join(__dirname, "node_modules"),
 		}
 	}

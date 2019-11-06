@@ -2,8 +2,6 @@ import {User} from "./user";
 import {Button} from "./button";
 import {List} from "./list";
 
-const browser = require("webextension-polyfill/dist/browser-polyfill.min");
-
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 const element = document.querySelector('.round__app');

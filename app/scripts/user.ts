@@ -1,7 +1,7 @@
 import {Tag} from "./tag";
 import {Options} from "./options";
 
-const browser = require("webextension-polyfill/dist/browser-polyfill.min");
+const browser = require("webextension-polyfill");
 
 export class User {
     username: string;

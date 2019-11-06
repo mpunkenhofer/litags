@@ -17,21 +17,27 @@ export class List {
         //create list element
         const wrapperElement = document.createElement('div');
         wrapperElement.className = 'lt-tags';
+
         this.list = document.createElement('ul');
-        this.list.id = 'lt-tags-list';
+        this.list.id = `lt-tags-list-${user.username}`;
+        Sortable.create(this.list);
 
         wrapperElement.append(this.list);
         this.anchor.append(wrapperElement);
+
+        this.hide();
     }
 
     public update() {
         if(this.user.tags.length > 0) {
+            this.list.innerHTML = '';
+            this.list.style.display = 'block';
+
             for(const tag of this.user.tags) {
-                const listElement = document.createElement('div');
+                const listElement = document.createElement('li');
                 listElement.title = tag.name;
                 listElement.innerHTML = tag.symbol;
-                //document.getElementById('lt-tag-list').append(listElement);
-                //console.log(`log: ${document.getElementById('lt-tag-list')}`);
+                this.list.append(listElement);
             }
         }
     }

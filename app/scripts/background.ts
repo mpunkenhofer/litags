@@ -1,14 +1,12 @@
 import {Tag} from "./tag";
-import {User} from './user';
 
 // we put those requries because of some hotreload issues
+require('./font.scss');
+require('./layout.scss');
+require('./button.scss');
+require('./list.scss');
 
-require('../styles/font.scss');
-require('../styles/layout.scss');
-require('../styles/button.scss');
-require('../styles/list.scss');
-
-const browser = require("webextension-polyfill/dist/browser-polyfill.min");
+const browser = require("webextension-polyfill");
 
 console.log('Litags! Hello from background script!');
 
