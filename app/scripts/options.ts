@@ -5,7 +5,7 @@ interface OptionsInterface {
     maxTags: number
 }
 
-const optionDefaults: OptionsInterface = {
+const defaults: OptionsInterface = {
     enabled: true,
     gameEnabled: true,
     profileEnabled: true,
@@ -13,8 +13,8 @@ const optionDefaults: OptionsInterface = {
 };
 
 export class Options {
-    static getOptions() {
-
+    static getAllOptions() {
+        return defaults;
     }
 
     static setOptions(options: Object) {

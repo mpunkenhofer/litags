@@ -3,7 +3,7 @@ import {Options} from "./options";
 
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 
-export class User {
+export class LTUser {
     username: string;
     tags: Tag[];
 
@@ -12,18 +12,18 @@ export class User {
         this.tags = tags;
     }
 
-    static async getUser(username: string): Promise<User> {
+    static async getUser(username: string): Promise<LTUser> {
         const userData = await browser.storage.local.get(username);
 
         if(Object.keys(userData).length !== 0) {
             const tags = await Tag.getTagsFromIds(userData[username]);
-            return new User(username, tags);
+            return new LTUser(username, tags);
         } else {
-            return new User(username);
+            return new LTUser(username);
         }
     }
 
-    static setUser(user: User) {
+    static setUser(user: LTUser) {
         return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
     }
 

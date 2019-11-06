@@ -53,25 +53,51 @@ export class TagTip {
             element.style.display = 'none';
     }
 
-    private populate(user: User) {
-        const freqElement = TagTip.getTagTipFreqUsedElement();
+    private addTag(tag: Tag, anchor: HTMLElement, user: User) {
+        if(tag && anchor) {
+            const element = document.createElement('div');
+            element.setAttribute('class', 'litags-tagtip-tag');
+            element.setAttribute('title', tag.name);
+            element.innerHTML = `<span class="litags-tagtip-symbol">${tag.symbol}</span>`;
+            element.addEventListener('click', (ev) => {
+                user.addTag(tag);
+                this.hide();
+            });
+            anchor.append(element);
+        }
+    }
+
+    private async populate(user: User) {
         const allElement = TagTip.getTagTipAllElement();
+        const freqElement = TagTip.getTagTipFreqUsedElement();
 
-        //this.hideTagTipFreqUsedElement();
+        try {
+            const freqUsedTags = await Tag.getFrequentlyUsed(8, user.tags);
 
-        if (allElement) {
-            Tag.getAvailable()
-                .then(tags => {
-                    for (const tag of tags) {
-                        allElement.insertAdjacentHTML('beforeend',
-                            `<div class="litags-tagtip-tag" title="${tag.name}"><span>${tag.symbol}</span></div>`);
-                    }
-                })
-                .catch(error => console.log(error));
+            if (freqElement && freqUsedTags.length > 0) {
+                for (const tag of freqUsedTags)
+                    this.addTag(tag, freqElement, user);
+            } else {
+                TagTip.hideTagTipFreqUsedElement();
+            }
+
+            const allAvailableTags = await Tag.getAvailable(freqUsedTags.concat(user.tags));
+
+            if(allElement && allAvailableTags.length > 0) {
+                for(const tag of allAvailableTags) {
+                    this.addTag(tag, allElement, user);
+                }
+            } else {
+                TagTip.hideTagTipAllElement();
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
     private colorize(element: HTMLElement) {
+        // get the background color of the appTable Element - we do this so this extension can be used on any
+        // lichess theme and still feel as if it is a part of the site
         let backgroundColorElement = document.querySelector(Selectors.appTable);
         if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
@@ -119,6 +145,12 @@ export class TagTip {
 
     private static hideTagTipFreqUsedElement() {
         const element = document.getElementById(Selectors.tagTipFreqUsedWrap);
+        if (element)
+            element.style.display = 'none';
+    }
+
+    private static hideTagTipAllElement() {
+        const element = document.getElementById(Selectors.tagTipAllWrap);
         if (element)
             element.style.display = 'none';
     }

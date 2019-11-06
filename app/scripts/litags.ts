@@ -75,6 +75,10 @@ class LiTags {
         }).catch(error => console.error(error));
     }
 
+    public updateTagList(user: User) {
+
+    }
+
     private createAddTagButton(anchor: Element, username: string) {
         User.getUser(username).then(user => {
             const button = document.createElement('div');
