@@ -144,9 +144,12 @@ export class Tag {
     }
 
     private static async getTags(): Promise<TagData> {
-        if(this.tagDataCache.valid)
+        if(this.tagDataCache.valid) {
+            console.log('tag data cache hit');
             return this.tagDataCache.data;
+        }
         else {
+            console.log('tag data cache miss');
             try {
                 const tagData = {
                     tagNames: (await browser.storage.sync.get(defaults.litagsTagNames)).litagsTagNames,

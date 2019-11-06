@@ -19,7 +19,7 @@ export class User {
             const tags = await Tag.getTagsFromIds(userData[username]);
             return new User(username, tags);
         } else {
-            throw TypeError('Could not get values of user key/value pair.');
+            return new User(username);
         }
     }
 

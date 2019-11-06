@@ -16,7 +16,7 @@ export class TagTip {
             </div>
         </div>
         <div class="litags-tagtip-search-wrap">
-           <label for="litags-tagtip-search"></label><input type="search" id="litags-tagtip-search">
+            <label for="litags-tagtip-search"></label><input type="search" id="litags-tagtip-search">
         </div>`;
 
     constructor() {
@@ -36,22 +36,13 @@ export class TagTip {
         const element = TagTip.getTagTipElement();
         if (element) {
             element.innerHTML = this.html;
+            // determine tagtip colors
             this.colorize(element);
-
-            const all_element = TagTip.getTagTipAllElement();
-            //this.hideTagTipFreqUsedElement();
-            if(all_element) {
-                Tag.getAvailable()
-                    .then(tags => {
-                        for(const tag of tags) {
-                            all_element.insertAdjacentHTML('beforeend',
-                                `<div class="litags-tagtip-tag" title="${tag.name}"><span>${tag.symbol}</span></div>`);
-                        }
-                    })
-                    .catch(error => console.log(error));
-            }
-
+            // put tags into tagtip
+            this.populate(user);
+            // change display mode from none to block
             element.style.display = 'block';
+            // position tagtip in viewport
             this.calculateViewPositions(x, y, 10, element);
         }
     }
@@ -62,9 +53,27 @@ export class TagTip {
             element.style.display = 'none';
     }
 
+    private populate(user: User) {
+        const freqElement = TagTip.getTagTipFreqUsedElement();
+        const allElement = TagTip.getTagTipAllElement();
+
+        //this.hideTagTipFreqUsedElement();
+
+        if (allElement) {
+            Tag.getAvailable()
+                .then(tags => {
+                    for (const tag of tags) {
+                        allElement.insertAdjacentHTML('beforeend',
+                            `<div class="litags-tagtip-tag" title="${tag.name}"><span>${tag.symbol}</span></div>`);
+                    }
+                })
+                .catch(error => console.log(error));
+        }
+    }
+
     private colorize(element: HTMLElement) {
         let backgroundColorElement = document.querySelector(Selectors.appTable);
-        if(backgroundColorElement) {
+        if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
             element.style.background = style.background;
         }
@@ -75,10 +84,10 @@ export class TagTip {
         let newY = clientY;
 
         function calc() {
-            if((clientY + element.offsetHeight + constant) > window.innerHeight)
+            if ((clientY + element.offsetHeight + constant) > window.innerHeight)
                 newY = clientY - ((clientY + element.offsetHeight + constant) - window.innerHeight);
 
-            if((clientX + element.offsetWidth + constant) > window.innerWidth)
+            if ((clientX + element.offsetWidth + constant) > window.innerWidth)
                 newX = clientX - ((clientX + element.offsetWidth + constant) - window.innerWidth);
 
             element.style.right = element.style.bottom = "auto";
@@ -93,7 +102,7 @@ export class TagTip {
         new MutationObserver((mutations, observerInstance) => {
             observerInstance.disconnect();
             calc();
-        }).observe(element,{childList: true, attributes: true, subtree: true, characterData: true});
+        }).observe(element, {childList: true, attributes: true, subtree: true, characterData: true});
     }
 
     private static getTagTipElement() {
