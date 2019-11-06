@@ -1,4 +1,12 @@
 import {Tag} from "./tag";
+import {User} from './user';
+
+// we put those requries because of some hotreload issues
+
+require('../styles/font.scss');
+require('../styles/layout.scss');
+require('../styles/button.scss');
+require('../styles/list.scss');
 
 const browser = require("webextension-polyfill/dist/browser-polyfill.min");
 

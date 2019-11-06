@@ -26,10 +26,13 @@ export class List {
 
     public update() {
         if(this.user.tags.length > 0) {
-            let list = '<div class="litags-tags">';
-
-            for (const tag of this.user.tags)
-                list += `<li title="${tag.name}">${tag.symbol}</li>`;
+            for(const tag of this.user.tags) {
+                const listElement = document.createElement('div');
+                listElement.title = tag.name;
+                listElement.innerHTML = tag.symbol;
+                //document.getElementById('lt-tag-list').append(listElement);
+                //console.log(`log: ${document.getElementById('lt-tag-list')}`);
+            }
         }
     }
 

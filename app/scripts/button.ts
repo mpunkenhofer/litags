@@ -29,11 +29,12 @@ export class Button {
 
 
     constructor(anchor: HTMLElement, user: User, list: List) {
-        if(!user || !anchor)
-            throw new TypeError('invalid user or anchor.');
+        if(!user || !anchor || !list)
+            throw new TypeError('invalid user, anchor or list.');
 
         this.anchor = anchor;
         this.user = user;
+        this.list = list;
 
         //create the popup element
         this.popup = document.createElement('div');
@@ -60,6 +61,7 @@ export class Button {
 
     public hide() {
         this.button.style.display = 'none';
+        this.hidePopup();
     }
 
     private showPopup(location?: [number, number]) {
@@ -125,17 +127,19 @@ export class Button {
     }
 
     private async populatePopup() {
-        const allElement = document.getElementById('lt-popup-all-wrap');
-        const freqElement = document.getElementById('lt-popup-freq-wrap');
+        const allElement = document.getElementById('lt-popup-all');
+        const freqElement = document.getElementById('lt-popup-freq');
 
         try {
             const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
+            let freqElementsPresent = false;
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
                     this.addTag(tag, freqElement);
+                freqElementsPresent = true;
             } else {
-                freqElement.style.display = 'none';
+                document.getElementById('lt-popup-freq-wrap').style.display = 'none';
             }
 
             const allAvailableTags = await Tag.getAvailable(freqUsedTags.concat(this.user.tags));
@@ -145,7 +149,10 @@ export class Button {
                     this.addTag(tag, allElement);
                 }
             } else {
-                allElement.style.display = 'none';
+                if(!freqElementsPresent)
+                    this.hidePopup();   // no tags to display - hide popup
+                else
+                    document.getElementById('lt-popup-all-wrap').style.display = 'none';
             }
         } catch (e) {
             console.error(e);

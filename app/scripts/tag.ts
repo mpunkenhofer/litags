@@ -82,6 +82,9 @@ export class Tag {
         try {
             const tagData = await this.getTags();
 
+            console.log("here");
+            console.log(tagData);
+
             for (let i = 0; i < tagData.tagNames.length; i++) {
                 if (tagData.tagEnabled[i] && tagData.tagFrequencies[i] > 0 &&
                     filter.filter(tag => tag.symbol == tagData.tagSymbols[i]).length == 0)

@@ -1,21 +1,4 @@
-.lt-tags {
-  margin-top: 0.25em;
-  margin-bottom: 0.3em;
-}
-
-#lt-tags-list {
-  list-style-type: none;
-  user-select: none;
-  font-family: lichess, serif;
-  font-size: 1em;
-  color: yellowgreen;
-
-  li {
-    display: inline;
-    margin-right: 0.6em;
-    cursor: pointer;
-  }
-}
+@import "font";
 
 .lt-btn-addTag-wrap {
   display: flex;

@@ -30,9 +30,9 @@ module.exports = {
 			filename: 'styles.css',
 			chunkFilename: '[id].css',
 		}),
-		new ExtensionReloader({
-			reloadPage: true, // Force the reload of the page also
-		}),
+		// new ExtensionReloader({
+		// 	reloadPage: true, // Force the reload of the page also
+		// }),
 	],
 
 	module: {

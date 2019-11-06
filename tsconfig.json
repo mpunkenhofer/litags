@@ -6,6 +6,6 @@
     "module": "commonjs",
     "allowJs": true,
     "types": ["@types/chrome", "node"],
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types"]
   }
 }

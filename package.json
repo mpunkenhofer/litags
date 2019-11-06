@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "rimraf dist",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --mode=production",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --mode=production --display-error-details",
     "predebug": "rimraf dist",
     "debug": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=4096 webpack --config webpack.dev.config.js --mode=development --watch"
   },
