@@ -1,5 +1,4 @@
 import {User} from "./user";
-import {Selectors} from "./selectors";
 import {Tag} from "./tag";
 import {List} from "./list";
 
@@ -117,7 +116,8 @@ export class Button {
     private determinePopupColor() {
         // get the background color of the appTable Element - we do this so this extension can be used on any
         // lichess theme and still feel as if it is a part of the site
-        let backgroundColorElement = document.querySelector(Selectors.appTable);
+        let backgroundColorElement = document.querySelector('round__app__table' +
+            '');
         if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
             this.popup.style.background = style.background;

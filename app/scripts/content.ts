@@ -1,4 +1,3 @@
-import {Selectors} from "./selectors";
 import {User} from "./user";
 import {Button} from "./button";
 import {List} from "./list";
@@ -11,24 +10,25 @@ require('../styles/styles.scss');
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-const element = document.querySelector(Selectors.app);
+const element = document.querySelector('.round__app');
 
 if(element) {
     new MutationObserver((mutations, observerInstance) => {
         observerInstance.disconnect();
-        createLiTagsElements(document.querySelector(Selectors.userTop), getTopUserName());
-        createLiTagsElements(document.querySelector(Selectors.userBot), getBotUserName());
+        console.log('mutation');
+        createLiTagsElements(document.querySelector('.ruser-top'), getTopUserName());
+        createLiTagsElements(document.querySelector('.ruser-bottom'), getBotUserName());
     }).observe(element, {childList: true, attributes: true, subtree: true, characterData: true});
 } else {
     console.log('LiTags found no supported anchors on this page.');
 }
 
 function getTopUserName() {
-    return removeTitle(document.querySelector(`${Selectors.userTop} a`).textContent);
+    return removeTitle(document.querySelector('.ruser-top a').textContent);
 }
 
 function getBotUserName() {
-    return removeTitle(document.querySelector(`${Selectors.userBot} a`).textContent);
+    return removeTitle(document.querySelector('.ruser-bottom a').textContent);
 }
 
 function removeTitle(name: string) {

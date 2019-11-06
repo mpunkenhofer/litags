@@ -32,10 +32,6 @@ module.exports = {
 		}),
 		new ExtensionReloader({
 			reloadPage: true, // Force the reload of the page also
-			entries: { // The entries used for the content/background scripts
-				contentScript: 'content',
-				background: 'background',
-			}
 		}),
 	],
 
@@ -50,7 +46,7 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				include: [path.resolve(__dirname, 'app')],
-				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+				use: [MiniCssExtractPlugin.loader, 'fast-css-loader', 'fast-sass-loader'],
 			},
 			{
 				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
