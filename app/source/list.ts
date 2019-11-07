@@ -31,7 +31,6 @@ export class List {
     public update() {
         if(this.user.tags.length > 0) {
             this.list.innerHTML = '';
-            this.list.style.display = 'block';
 
             for(const tag of this.user.tags) {
                 const listElement = document.createElement('li');
@@ -39,15 +38,30 @@ export class List {
                 listElement.innerHTML = tag.symbol;
                 this.list.append(listElement);
             }
+
+            this.show();
         }
     }
 
     public show() {
-        this.update();
+        const wrappers = document.getElementsByClassName('lt-tags');
+
+        for(let i = 0; i < wrappers.length; i++) {
+            const element = <HTMLScriptElement>wrappers[i];
+            element.style.display = 'block';
+        }
+
         this.list.style.display = 'block';
     }
 
     public hide() {
+        const wrappers = document.getElementsByClassName('lt-tags');
+
+        for(let i = 0; i < wrappers.length; i++) {
+            const element = <HTMLScriptElement>wrappers[i];
+            element.style.display = 'none';
+        }
+
         this.list.style.display = 'none';
     }
 }
