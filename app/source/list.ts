@@ -25,7 +25,12 @@ export class List {
         wrapperElement.append(this.list);
         this.anchor.append(wrapperElement);
 
-        this.hide();
+        this.update();
+
+        if(this.user.tags.length > 0)
+            this.show();
+        else
+            this.hide();
     }
 
     public update() {
@@ -46,7 +51,7 @@ export class List {
     public show() {
         const wrappers = document.getElementsByClassName('lt-tags');
 
-        for(let i = 0; i < wrappers.length; i++) {
+        for (let i = 0; i < wrappers.length; i++) {
             const element = <HTMLScriptElement>wrappers[i];
             element.style.display = 'block';
         }

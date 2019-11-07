@@ -35,10 +35,11 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
 
     User.getUser(username)
         .then(user => {
-            console.log(`user: ${user.username}, tags: ${user.tags}`);
+            console.log(`user: ${user.username}, tags: ${user.tags.length}`);
             const list = new List(anchor, user);
             const btn = new Button(anchor, user, list);
             btn.show();
+            list.show();
         })
         .catch(e => console.error(e));
 }

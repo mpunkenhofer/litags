@@ -28,8 +28,10 @@ export class User {
     }
 
     public addTag(tag: Tag) {
-        if(this.tags.length < Options.getAllOptions().maxTags)
+        if(this.tags.length < Options.getAllOptions().maxTags) {
             this.tags.push(tag);
+            User.setUser(this);
+        }
     }
 }
 

@@ -119,7 +119,8 @@ export class Tag {
     static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
         const tagData = await this.getTags();
 
-        return ids.map(id => this.fromTagData(tagData, id));
+        const test = ids.map(id => this.fromTagData(tagData, id));
+        return test;
     }
 
     private static tagDataCache: {data: TagData, valid: boolean} = {
