@@ -1,6 +1,7 @@
 import {User} from "./user";
 import {Tag} from "./tag";
 import {List} from "./list";
+import RuntimeError = WebAssembly.RuntimeError;
 
 const browser = require("webextension-polyfill");
 
@@ -8,7 +9,6 @@ export class Button {
     private user: User;
     private list: List;
     private anchor: HTMLElement;
-    private popup: HTMLElement;
     private button: HTMLElement;
 
     // language=HTML
@@ -36,12 +36,16 @@ export class Button {
         this.user = user;
         this.list = list;
 
-        //create the popup element
-        this.popup = document.createElement('div');
-        this.popup.id = 'lt-popup';
-        this.popup.addEventListener('mouseleave', () => this.hidePopup());
+        //check if there exists already a popup element
+        let popup = document.getElementById('lt-popup');
 
-        document.body.append(this.popup);
+        if(!popup) {
+            //create the popup element
+            popup = document.createElement('div');
+            popup.id = 'lt-popup';
+            popup.addEventListener('mouseleave', () => this.hidePopup());
+            document.body.append(popup);
+        }
 
         //create the button
         this.button = document.createElement('div');
@@ -65,14 +69,14 @@ export class Button {
     }
 
     private showPopup(location?: [number, number]) {
-        this.popup.innerHTML = this.popupHtml;
+        this.getPopup().innerHTML = this.popupHtml;
         // determine popup color
         this.determinePopupColor();
         // put tags into popup
         this.populatePopup()
             .then(() => {
                 // change display mode from none to block
-                this.popup.style.display = 'block';
+                this.getPopup().style.display = 'block';
                 // position popup in viewport
                 if(location !== undefined)
                     this.calculatePopupPosition(location, 10);
@@ -81,7 +85,7 @@ export class Button {
     }
 
     private hidePopup() {
-        this.popup.style.display = 'none';
+        this.getPopup().style.display = 'none';
     }
 
     private calculatePopupPosition(location: [number, number], spacing: number = 0) {
@@ -91,7 +95,7 @@ export class Button {
         let newX = clientX;
         let newY = clientY;
 
-        const element = this.popup;
+        const element = this.getPopup();
 
         function calc() {
             if ((clientY + element.offsetHeight + spacing) > window.innerHeight)
@@ -112,7 +116,7 @@ export class Button {
         new MutationObserver((mutations, observerInstance) => {
             observerInstance.disconnect();
             calc();
-        }).observe(this.popup, {childList: true, attributes: true, subtree: true, characterData: true});
+        }).observe(this.getPopup(), {childList: true, attributes: true, subtree: true, characterData: true});
     }
 
     private determinePopupColor() {
@@ -122,7 +126,7 @@ export class Button {
             '');
         if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
-            this.popup.style.background = style.background;
+            this.getPopup().style.background = style.background;
         }
     }
 
@@ -170,5 +174,12 @@ export class Button {
             this.list.update();
         });
         anchor.append(element);
+    }
+
+    private getPopup() {
+        const popup = document.getElementById('lt-popup');
+        if(!popup)
+            throw new Error('could not get popup element!');
+        else return popup
     }
 }

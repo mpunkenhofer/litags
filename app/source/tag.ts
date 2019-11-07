@@ -82,9 +82,6 @@ export class Tag {
         try {
             const tagData = await this.getTags();
 
-            console.log("here");
-            console.log(tagData);
-
             for (let i = 0; i < tagData.tagNames.length; i++) {
                 if (tagData.tagEnabled[i] && tagData.tagFrequencies[i] > 0 &&
                     filter.filter(tag => tag.symbol == tagData.tagSymbols[i]).length == 0)
@@ -148,7 +145,6 @@ export class Tag {
 
     private static async getTags(): Promise<TagData> {
         if(this.tagDataCache.valid) {
-            console.log('tag data cache hit');
             return this.tagDataCache.data;
         }
         else {

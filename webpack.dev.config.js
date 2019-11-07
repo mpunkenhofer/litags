@@ -9,8 +9,8 @@ module.exports = {
 	devtool: 'inline-source-map',
 
 	entry: {
-		content: './app/scripts/content.ts',
-		background: './app/scripts/background.ts',
+		content: './app/source/content.ts',
+		background: './app/source/background.ts',
 	},
 
 	output: {
