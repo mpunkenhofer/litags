@@ -1,20 +1,23 @@
 import {User} from "./user";
 import {Button} from "./button";
 import {List} from "./list";
+import {getAllOptions, Options} from "./options";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-const element = document.querySelector('.round__app');
+getAllOptions().then((options: Options) => {
+    const element = document.querySelector('.round__app');
 
-if(element) {
-    new MutationObserver((mutations, observerInstance) => {
-        observerInstance.disconnect();
-        createLiTagsElements(document.querySelector('.ruser-top'), getTopUserName());
-        createLiTagsElements(document.querySelector('.ruser-bottom'), getBotUserName());
-    }).observe(element, {childList: true, attributes: true, subtree: true, characterData: true});
-} else {
-    console.log('LiTags found no supported anchors on this page.');
-}
+    if(element && options.enabled && options.gameEnabled) {
+        new MutationObserver((mutations, observerInstance) => {
+            observerInstance.disconnect();
+            createLiTagsElements(document.querySelector('.ruser-top'), getTopUserName());
+            createLiTagsElements(document.querySelector('.ruser-bottom'), getBotUserName());
+        }).observe(element, {childList: true, attributes: true, subtree: true, characterData: true});
+    } else {
+        console.log('LiTags found no supported anchors on this page.');
+    }
+});
 
 function getTopUserName() {
     return removeTitle(document.querySelector('.ruser-top a').textContent);

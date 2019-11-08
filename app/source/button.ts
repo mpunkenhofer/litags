@@ -24,7 +24,8 @@ export class Button {
             </div>
         </div>
         <div class="lt-popup-search-wrap">
-            <label for="lt-popup-search"></label><input type="search" id="lt-popup-search">
+            <input type="search" id="lt-popup-search" autocapitalize="off" autocomplete="off" spellcheck="false"
+            placeholder="${browser.i18n.getMessage("appSearchPlaceholder")}">
         </div>`;
 
 
@@ -169,9 +170,8 @@ export class Button {
         element.title = tag.name;
         element.innerHTML = `<span class="lt-popup-symbol">${tag.symbol}</span>`;
         element.addEventListener('click', (ev) => {
-            this.user.addTag(tag);
+            this.user.addTag(tag).then(() => this.list.update());
             this.hidePopup();
-            this.list.update();
         });
         anchor.append(element);
     }

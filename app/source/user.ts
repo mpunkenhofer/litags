@@ -1,5 +1,5 @@
 import {Tag} from "./tag";
-import {Options} from "./options";
+import {getAllOptions, Options} from "./options";
 
 const browser = require("webextension-polyfill");
 
@@ -27,8 +27,9 @@ export class User {
         return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
     }
 
-    public addTag(tag: Tag) {
-        if(this.tags.length < Options.getAllOptions().maxTags) {
+    public async addTag (tag: Tag) {
+        const options = await getAllOptions();
+        if(this.tags.length < options.maxTags) {
             this.tags.push(tag);
             User.setUser(this);
         }

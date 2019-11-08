@@ -18,5 +18,9 @@
   "appAddTagButtonTitle": {
     "message": "Add Tag",
     "description": "The tooltip of the add tag button."
+  },
+  "appSearchPlaceholder": {
+    "message": "Search for a Tag...",
+    "description": "Placeholder text displayed in the search input element."
   }
 }

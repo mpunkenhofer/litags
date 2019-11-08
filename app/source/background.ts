@@ -1,4 +1,6 @@
 import {Tag} from "./tag";
+import './options';
+import {setDefaultOptions} from "./options";
 
 // we put those requries because of some hotreload issues
 require('./font.scss');
@@ -14,6 +16,7 @@ browser.runtime.onInstalled.addListener(() => {
     console.log('onInstalled...');
     // store default tags
     Tag.setDefaultTags();
+    setDefaultOptions();
     // create alarm after extension is installed / upgraded
     //browser.alarms.create('refresh', { periodInMinutes: 3 });
 });
