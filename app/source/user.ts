@@ -31,7 +31,7 @@ export class User {
         const options = await getAllOptions();
         if(this.tags.length < options.maxTags) {
             this.tags.push(tag);
-            User.setUser(this);
+            Tag.increaseFrequentlyUsed(tag.id).then(() => User.setUser(this)).catch(e => console.error(e));
         }
     }
 }

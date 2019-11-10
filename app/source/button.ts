@@ -71,6 +71,13 @@ export class Button {
 
     private showPopup(location?: [number, number]) {
         this.getPopup().innerHTML = this.popupHtml;
+        // attack event listener to search box
+        const search = document.getElementById('lt-popup-search');
+        if (search) {
+            search.addEventListener('input', input => {
+               console.log(input);
+            });
+        }
         // determine popup color
         this.determinePopupColor();
         // put tags into popup
@@ -139,6 +146,9 @@ export class Button {
             const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
             let freqElementsPresent = false;
 
+            console.log('freqused');
+            console.log(freqUsedTags);
+
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
                     this.addTag(tag, freqElement);
@@ -147,7 +157,7 @@ export class Button {
                 document.getElementById('lt-popup-freq-wrap').style.display = 'none';
             }
 
-            const allAvailableTags = await Tag.getAvailable(freqUsedTags.concat(this.user.tags));
+            const allAvailableTags = await Tag.getAll(freqUsedTags.concat(this.user.tags));
 
             if(allElement && allAvailableTags.length > 0) {
                 for(const tag of allAvailableTags) {

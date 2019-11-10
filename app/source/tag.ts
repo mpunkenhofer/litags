@@ -1,28 +1,11 @@
+import {litags} from "./keys";
+
 const browser = require("webextension-polyfill");
-
-const defaults = {
-    litagsTagNames: 'litagsTagNames',
-    litagsTagSymbols: 'litagsTagSymbols',
-    litagsTagEnabled: 'litagsTagEnabled',
-    litagsTagFrequencies: 'litagsTagFrequencies',
-    litagsTagAliases: 'litagsTagAliases',
-    litagsTagColors: 'litagsTagColors'
-};
-
-export interface TagData {
-    tagNames: string[],
-    tagSymbols: string[],
-    tagEnabled: boolean[],
-    tagFrequencies: number[],
-    tagAliases: string[][],
-    tagColors: number[][]
-}
 
 export class Tag {
     readonly id: number;
     readonly symbol: string;
     name: string;
-    enabled: boolean;
     frequency: number;
     aliases: string[];
     colors: number[];
@@ -30,40 +13,36 @@ export class Tag {
     constructor(id: number,
                 symbol: string,
                 name: string,
-                enabled = true,
                 frequency = 0,
                 aliases: string[] = [],
                 colors: number[] = []) {
         this.id = id;
         this.symbol = symbol;
         this.name = name;
-        this.enabled = enabled;
         this.frequency = frequency;
         this.aliases = aliases;
         this.colors = colors;
     }
 
-    static fromTagData(data: TagData, index: number): Tag {
-        return new Tag(index, data.tagSymbols[index], data.tagNames[index], data.tagEnabled[index],
-            data.tagFrequencies[index], data.tagAliases[index], data.tagColors[index]);
-    }
+    private static tagCache: {tags: Tag[], valid: boolean} = {
+        tags: [],
+        valid: false
+    };
 
     static async search(term: string): Promise<Tag[]> {
         term = term.toLowerCase();
-
         const result: Tag[] = [];
-        try {
-            const tagData = await this.getTags();
 
-            for (let i = 0; i < tagData.tagNames.length; i++) {
-                if (!tagData.tagEnabled)
-                    continue;
-                if (tagData.tagNames[i].toLowerCase().includes(term))
-                    result.push(Tag.fromTagData(tagData, i));
+        try {
+            const tags = await this.getTags();
+
+            for(const tag of tags) {
+                if(tag.name.toLowerCase().includes(term))
+                    result.push(tag);
                 else {
-                    for (const alias of tagData.tagAliases[i]) {
-                        if (alias.toLowerCase().includes(term)) {
-                            result.push(Tag.fromTagData(tagData, i));
+                    for(const alias of tag.aliases) {
+                        if(alias.toLowerCase().includes(term)) {
+                            result.push(tag);
                             break;
                         }
                     }
@@ -80,17 +59,16 @@ export class Tag {
         const result: Tag[] = [];
 
         try {
-            const tagData = await this.getTags();
+            const tags = await this.getTags();
 
-            for (let i = 0; i < tagData.tagNames.length; i++) {
-                if (tagData.tagEnabled[i] && tagData.tagFrequencies[i] > 0 &&
-                    filter.filter(tag => tag.symbol == tagData.tagSymbols[i]).length == 0)
-                    result.push(Tag.fromTagData(tagData, i))
+            for(const tag of tags) {
+                if(tag.frequency > 0 && !filter.find(t => t.id == tag.id))
+                    result.push(tag);
             }
 
-            return result.sort((a, b):number => {
-                return b.frequency - a.frequency;
-            }).splice(0, amount);
+            return result
+                .sort((a, b):number => { return b.frequency - a.frequency;})
+                .splice(0, amount);
         } catch (error) {
             console.error(error);
         }
@@ -98,15 +76,15 @@ export class Tag {
         return result;
     }
 
-    static async getAvailable(filter: Tag[] = []): Promise<Tag[]> {
+    static async getAll(filter: Tag[] = []): Promise<Tag[]> {
         const result: Tag[] = [];
 
         try {
-            const tagData = await this.getTags();
+            const tags = await this.getTags();
 
-            for (let i = 0; i < tagData.tagNames.length; i++) {
-                if (tagData.tagEnabled[i] && filter.filter(tag => tag.symbol == tagData.tagSymbols[i]).length == 0) {
-                    result.push(Tag.fromTagData(tagData, i));
+            for(const tag of tags) {
+                if (!filter.find(t => t.id == tag.id)) {
+                    result.push(tag);
                 }
             }
         } catch (error) {
@@ -116,54 +94,55 @@ export class Tag {
         return result;
     }
 
-    static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
-        const tagData = await this.getTags();
+    static async increaseFrequentlyUsed(index: number) {
+        let tags = await this.getTags();
 
-        const test = ids.map(id => this.fromTagData(tagData, id));
-        return test;
+        if(index > 0 && index < tags.length) {
+            tags[index].frequency += 1;
+            this.setTags(tags);
+            this.tagCache.valid = false;
+        }
     }
 
-    private static tagDataCache: {data: TagData, valid: boolean} = {
-        data: {
-            tagNames: [],
-            tagSymbols: [],
-            tagEnabled: [],
-            tagFrequencies: [],
-            tagAliases: [],
-            tagColors: []
-        },
-        valid: false
-    };
+    static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
+        const tags = await this.getTags();
+        return tags.filter(tag => ids.find(id => id == tag.id));
+    }
 
     public static setDefaultTags() {
-        browser.storage.sync.set({litagsTagNames: defaultTagNames});
-        browser.storage.sync.set({litagsTagSymbols: defaultTagSymbols});
-        browser.storage.sync.set({litagsTagEnabled: defaultTagEnabled});
-        browser.storage.sync.set({litagsTagFrequencies: defaultTagFrequencies});
-        browser.storage.sync.set({litagsTagAliases: defaultTagAliases});
-        browser.storage.sync.set({litagsTagColors: defaultTagColors});
+        browser.storage.sync.set({[litags.tags]: defaultTags});
     }
 
-    private static async getTags(): Promise<TagData> {
-        if(this.tagDataCache.valid) {
-            return this.tagDataCache.data;
+    private static setTags(tags: Tag[]) {
+        let dict: {[_: number]: [string, string, number, string[], number[]]} = {};
+
+        for (const tag of tags)
+            dict[tag.id] = [tag.name, tag.symbol, tag.frequency, tag.aliases, tag.colors];
+
+        browser.storage.sync.set({[litags.tags]: dict});
+    }
+
+    private static async getTags(): Promise<Tag[]> {
+        if(this.tagCache.valid) {
+            return this.tagCache.tags;
         }
         else {
             console.log('tag data cache miss');
             try {
-                const tagData = {
-                    tagNames: (await browser.storage.sync.get(defaults.litagsTagNames)).litagsTagNames,
-                    tagSymbols: (await browser.storage.sync.get(defaults.litagsTagSymbols)).litagsTagSymbols,
-                    tagEnabled: (await browser.storage.sync.get(defaults.litagsTagEnabled)).litagsTagEnabled,
-                    tagFrequencies: (await browser.storage.sync.get(defaults.litagsTagFrequencies)).litagsTagFrequencies,
-                    tagAliases: (await browser.storage.sync.get(defaults.litagsTagAliases)).litagsTagAliases,
-                    tagColors: (await browser.storage.sync.get(defaults.litagsTagColors)).litagsTagColors
-                };
+                const tagData = (await browser.storage.sync.get(litags.tags))[litags.tags];
 
-                this.tagDataCache.data = tagData;
-                this.tagDataCache.valid = true;
+                this.tagCache.tags = [];
 
-                return tagData;
+                for(const id in tagData) {
+                    if (tagData.hasOwnProperty(id)) {
+                        let [name, symbol, freq, aliases, colors] = tagData[id];
+                        this.tagCache.tags.push(new Tag(Number(id), symbol, name, freq, aliases, colors));
+                    }
+                }
+
+                this.tagCache.valid = true;
+
+                return this.tagCache.tags;
             } catch (error) {
                 console.error(error)
             }
@@ -171,54 +150,79 @@ export class Tag {
     }
 }
 
-const defaultTagNames: string[] = [
-    'unnamed1', 'unnamed2', 'unnamed3', 'unnamed4', 'unnamed5', 'unnamed6', 'unnamed7', 'unnamed8', 'unnamed9',
-    'unnamed10', 'unnamed11', 'unnamed12', 'unnamed13', 'unnamed14', 'unnamed16', 'unnamed17', 'unnamed18',
-    'unnamed19', 'unnamed20', 'unnamed21', 'unnamed22', 'unnamed23', 'unnamed24', 'unnamed25', 'unnamed26',
-    'unnamed27', 'unnamed28', 'unnamed29', 'unnamed30', 'unnamed31', 'unnamed32', 'unnamed33', 'unnamed34',
-    'unnamed35', 'unnamed36', 'unnamed37', 'unnamed38', 'unnamed39', 'unnamed40', 'unnamed41', 'unnamed42',
-    'unnamed43', 'unnamed44', 'unnamed45', 'unnamed46', 'unnamed47', 'unnamed48', 'unnamed49', 'unnamed50',
-    'unnamed51', 'unnamed52', 'unnamed53', 'unnamed54', 'unnamed55', 'unnamed56', 'unnamed57', 'unnamed58',
-    'unnamed59', 'unnamed60', 'unnamed61', 'unnamed62', 'unnamed63', 'unnamed64', 'unnamed65', 'unnamed66',
-    'unnamed67', 'unnamed68', 'unnamed69', 'unnamed70', 'unnamed71', 'unnamed72', 'unnamed73', 'unnamed74',
-    'unnamed75', 'unnamed76', 'unnamed77', 'unnamed78', 'unnamed79', 'unnamed80', 'unnamed81', 'unnamed82',
-    'unnamed83', 'unnamed84', 'unnamed85', 'unnamed86', 'unnamed87', 'unnamed88', 'unnamed89', 'unnamed90',
-    'unnamed91', 'unnamed92', 'unnamed93', 'unnamed94', 'unnamed95', 'unnamed96', 'unnamed97', 'unnamed98',
-    'unnamed99', 'unnamed100', 'unnamed101', 'unnamed102', 'unnamed103', 'unnamed104', 'unnamed105', 'unnamed106',
-    'unnamed107', 'unnamed108', 'unnamed109', 'unnamed110', 'unnamed111', 'unnamed112', 'unnamed113', 'unnamed114',
-    'unnamed115'];
-
-const defaultTagSymbols: string[] = [
-    '!', '&#x22;', '#', '$', '%', '&#x26;', "'", '(', ')', '*', '+', ' ', '-', '.', '/', '0', '1', '2', '3', '4',
-    '5', '6', '7', '8', '9', ':', ';', '&#x3c;', '=', '&#x3e;', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^',
-    '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-    'u', 'v', 'w', 'x', 'y', 'z', '', '', '~', '&#xe000;', '&#xe001;', '&#xe002;', '&#xe003;', '&#xe004;',
-    '&#xe005;', '&#xe006;', '&#xe007;', '&#xe008;', '&#xe009;', '&#xe00a;', '&#xe00b;', '&#xe00c;', '&#xe00d;',
-    '&#xe00e;', '&#xe00f;', '&#xe010;', 'Ã’', '&#xe019;', '&#xe020;', '&#x00bf;'];
-
-const defaultTagEnabled: boolean[] = [
-    true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-    true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-    true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-    true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-    true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-    true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
-
-const defaultTagFrequencies: number[] = [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-const defaultTagAliases: string[][] = [
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [],
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [],
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [],
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
-
-const defaultTagColors: number[][] = [
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [],
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [],
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [],
-    [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
-
+const defaultTags: {[_: number]: [string, string, number, string[], number[]]} = {
+    0: ['unnamed1', '0', 0, [], []],
+    1: ['unnamed2', '1', 0, [], []],
+    2: ['unnamed3', '2', 0, [], []],
+    3: ['unnamed4', '3', 0, [], []],
+    4: ['unnamed5', '4', 0, [], []],
+    5: ['unnamed6', '5', 0, [], []],
+    6: ['unnamed7', '6', 0, [], []],
+    7: ['unnamed8', '7', 0, [], []],
+    8: ['unnamed9', '8', 0, [], []],
+    9: ['unnamed10', '9', 0, [], []],
+    10: ['unnamed11', 'a', 0, [], []],
+    11: ['unnamed12', 'b', 0, [], []],
+    12: ['unnamed13', 'c', 0, [], []],
+    13: ['unnamed14', 'd', 0, [], []],
+    14: ['unnamed16', 'e', 0, [], []],
+    15: ['unnamed17', 'f', 0, [], []],
+    16: ['unnamed18', 'g', 0, [], []],
+    17: ['unnamed19', 'h', 0, [], []],
+    18: ['unnamed20', 'i', 0, [], []],
+    19: ['unnamed21', 'j', 0, [], []],
+    20: ['unnamed22', 'k', 0, [], []],
+    21: ['unnamed23', 'l', 0, [], []],
+    22: ['unnamed24', 'm', 0, [], []],
+    23: ['unnamed25', 'n', 0, [], []],
+    24: ['unnamed26', 'o', 0, [], []],
+    25: ['unnamed27', 'p', 0, [], []],
+    26: ['unnamed28', 'q', 0, [], []],
+    27: ['unnamed29', 'r', 0, [], []],
+    28: ['unnamed30', 's', 0, [], []],
+    29: ['unnamed31', 't', 0, [], []],
+    30: ['unnamed32', 'u', 0, [], []],
+    31: ['unnamed33', 'v', 0, [], []],
+    32: ['unnamed34', 'w', 0, [], []],
+    33: ['unnamed35', 'x', 0, [], []],
+    34: ['unnamed36', 'y', 0, [], []],
+    35: ['unnamed37', 'z', 0, [], []],
+    36: ['unnamed38', 'A', 0, [], []],
+    37: ['unnamed39', 'B', 0, [], []],
+    38: ['unnamed40', 'C', 0, [], []],
+    39: ['unnamed41', 'D', 0, [], []],
+    40: ['unnamed42', 'E', 0, [], []],
+    41: ['unnamed43', 'F', 0, [], []],
+    42: ['unnamed44', 'G', 0, [], []],
+    43: ['unnamed45', 'H', 0, [], []],
+    44: ['unnamed51', 'I', 0, [], []],
+    45: ['unnamed46', 'J', 0, [], []],
+    46: ['unnamed47', 'K', 0, [], []],
+    47: ['unnamed48', 'L', 0, [], []],
+    48: ['unnamed49', 'M', 0, [], []],
+    49: ['unnamed50', 'N', 0, [], []],
+    50: ['unnamed51', 'O', 0, [], []],
+    51: ['unnamed52', 'P', 0, [], []],
+    52: ['unnamed53', 'Q', 0, [], []],
+    53: ['unnamed54', 'R', 0, [], []],
+    54: ['unnamed55', 'S', 0, [], []],
+    55: ['unnamed56', 'T', 0, [], []],
+    56: ['unnamed57', 'U', 0, [], []],
+    57: ['unnamed58', 'V', 0, [], []],
+    58: ['unnamed59', 'W', 0, [], []],
+    59: ['unnamed60', 'X', 0, [], []],
+    60: ['unnamed61', 'Y', 0, [], []],
+    61: ['unnamed62', 'Z', 0, [], []],
+    62: ['unnamed63', '!', 0, [], []],
+    63: ['unnamed64', '@', 0, [], []],
+    64: ['unnamed65', '#', 0, [], []],
+    65: ['unnamed66', '$', 0, [], []],
+    66: ['unnamed67', '%', 0, [], []],
+    67: ['unnamed68', '^', 0, [], []],
+    68: ['unnamed69', '&', 0, [], []],
+    69: ['unnamed70', '*', 0, [], []],
+    70: ['unnamed71', '(', 0, [], []],
+    71: ['unnamed72', ')', 0, [], []],
+    72: ['unnamed73', '[', 0, [], []],
+    73: ['unnamed74', ']', 0, [], []],
+};

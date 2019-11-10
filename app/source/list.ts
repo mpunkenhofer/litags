@@ -21,6 +21,7 @@ export class List {
         this.list = document.createElement('ul');
         this.list.id = `lt-tags-list-${user.username}`;
         Sortable.create(this.list);
+        //L = X
 
         wrapperElement.append(this.list);
         this.anchor.append(wrapperElement);
