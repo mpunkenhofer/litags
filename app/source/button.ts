@@ -4,6 +4,7 @@ import {List} from "./list";
 import RuntimeError = WebAssembly.RuntimeError;
 
 const browser = require("webextension-polyfill");
+let debounce = require('debounce-promise');
 
 export class Button {
     private user: User;
@@ -14,6 +15,10 @@ export class Button {
     // language=HTML
     private popupHtml = `
         <div class="lt-popup-list">
+            <div id="lt-popup-search-results-wrap">
+                <div class="lt-popup-title">Search Results</div>
+                <div id="lt-popup-search-results"></div>
+            </div>
             <div id="lt-popup-freq-wrap">
                 <div class="lt-popup-title">Frequently Used</div>
                 <div id="lt-popup-freq"></div>
@@ -30,7 +35,7 @@ export class Button {
 
 
     constructor(anchor: HTMLElement, user: User, list: List) {
-        if(!user || !anchor || !list)
+        if (!user || !anchor || !list)
             throw new TypeError('invalid user, anchor or list.');
 
         this.anchor = anchor;
@@ -40,11 +45,11 @@ export class Button {
         //check if there exists already a popup element
         let popup = document.getElementById('lt-popup');
 
-        if(!popup) {
+        if (!popup) {
             //create the popup element
             popup = document.createElement('div');
             popup.id = 'lt-popup';
-            popup.addEventListener('mouseleave', () => this.hidePopup());
+            popup.onmouseleave = () => this.hidePopup();
             document.body.append(popup);
         }
 
@@ -53,11 +58,11 @@ export class Button {
         this.button.className = 'lt-btn-addTag-wrap';
         const title = browser.i18n.getMessage("appAddTagButtonTitle");
         this.button.innerHTML = `<button class="lt-btn-addTag" title="${title}">O</button>`;
-        this.button.addEventListener('click', (ev) => {
-            this.showPopup([ev.clientX, ev.clientY])
-        });
+        this.button.onclick = ev => this.showPopup([ev.clientX, ev.clientY]);
 
         this.anchor.append(this.button);
+
+        this.hide();
     }
 
     public show() {
@@ -71,29 +76,58 @@ export class Button {
 
     private showPopup(location?: [number, number]) {
         this.getPopup().innerHTML = this.popupHtml;
-        // attack event listener to search box
-        const search = document.getElementById('lt-popup-search');
-        if (search) {
-            search.addEventListener('input', input => {
-               console.log(input);
-            });
-        }
-        // determine popup color
-        this.determinePopupColor();
+        this.initSearchElement();
         // put tags into popup
         this.populatePopup()
             .then(() => {
                 // change display mode from none to block
                 this.getPopup().style.display = 'block';
                 // position popup in viewport
-                if(location !== undefined)
+                if (location !== undefined)
                     this.calculatePopupPosition(location, 10);
+                // determine popup color
+                this.determinePopupColor();
             })
             .catch(e => console.error(e));
     }
 
     private hidePopup() {
         this.getPopup().style.display = 'none';
+    }
+
+    private initSearchElement() {
+        const search = document.getElementById('lt-popup-search');
+        if (search) {
+            search.focus();
+            search.onkeydown = (e: KeyboardEvent) => {
+                let term = (<HTMLInputElement>e.target).value;
+
+                if (e.key === 'Backspace') {
+                    term = term.substr(0, term.length - 1);
+                } else if(e.key.match(/(\w|\s)/g)) {
+                    term += e.key;
+                }
+
+                console.log(term);
+
+                if (term.length > 0) {
+                    const searchTerm = debounce(Tag.search, 100, {leading: true});
+                    searchTerm(term, this.user.tags).then((result: Tag[]) => {
+                        document.getElementById('lt-popup-freq-wrap').style.display = 'none';
+                        const searchResultsElement = document.getElementById('lt-popup-search-results');
+                        searchResultsElement.innerHTML = '';
+
+                        for (const tag of result)
+                            this.addTag(tag, searchResultsElement);
+
+                        document.getElementById('lt-popup-search-results-wrap').style.display = 'block';
+                    });
+                } else {
+                    document.getElementById('lt-popup-search-results-wrap').style.display = 'none';
+                    document.getElementById('lt-popup-freq-wrap').style.display = 'block';
+                }
+            };
+        }
     }
 
     private calculatePopupPosition(location: [number, number], spacing: number = 0) {
@@ -139,32 +173,28 @@ export class Button {
     }
 
     private async populatePopup() {
-        const allElement = document.getElementById('lt-popup-all');
-        const freqElement = document.getElementById('lt-popup-freq');
-
         try {
+            const freqElement = document.getElementById('lt-popup-freq');
             const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
-            let freqElementsPresent = false;
-
-            console.log('freqused');
-            console.log(freqUsedTags);
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
                     this.addTag(tag, freqElement);
-                freqElementsPresent = true;
+                document.getElementById('lt-popup-freq-wrap').style.display = 'block';
             } else {
                 document.getElementById('lt-popup-freq-wrap').style.display = 'none';
             }
 
+            const allElement = document.getElementById('lt-popup-all');
             const allAvailableTags = await Tag.getAll(freqUsedTags.concat(this.user.tags));
 
-            if(allElement && allAvailableTags.length > 0) {
-                for(const tag of allAvailableTags) {
+            if (allElement && allAvailableTags.length > 0) {
+                for (const tag of allAvailableTags) {
                     this.addTag(tag, allElement);
                 }
+                document.getElementById('lt-popup-all-wrap').style.display = 'block';
             } else {
-                if(!freqElementsPresent)
+                if (freqUsedTags.length === 0)
                     this.hidePopup();   // no tags to display - hide popup
                 else
                     document.getElementById('lt-popup-all-wrap').style.display = 'none';
@@ -179,16 +209,16 @@ export class Button {
         element.className = 'lt-popup-tag';
         element.title = tag.name;
         element.innerHTML = `<span class="lt-popup-symbol">${tag.symbol}</span>`;
-        element.addEventListener('click', (ev) => {
+        element.onclick = () => {
             this.user.addTag(tag).then(() => this.list.update());
             this.hidePopup();
-        });
+        };
         anchor.append(element);
     }
 
     private getPopup() {
         const popup = document.getElementById('lt-popup');
-        if(!popup)
+        if (!popup)
             throw new Error('could not get popup element!');
         else return popup
     }

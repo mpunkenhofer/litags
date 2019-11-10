@@ -47,7 +47,7 @@
   .lt-popup-symbol {
     font-family: lichess, serif;
     font-size: 1.8em;
-    margin: 0.2em;
+    margin: 0.3em;
     filter: brightness(90%);
     transition: transform .2s;
 
@@ -59,14 +59,18 @@
 
 }
 
-#lt-popup-all-wrap, #lt-popup-freq-wrap {
+#lt-popup-all-wrap, #lt-popup-freq-wrap, #lt-popup-search-results-wrap {
   margin-left: 0.6em;
   margin-right: 0.6em;
 }
 
-#lt-popup-freq, #lt-popup-all {
+#lt-popup-search-results-wrap {
+  display: none;
+}
+
+#lt-popup-freq, #lt-popup-all, #lt-popup-search-results {
   display: grid;
-  grid-template-columns: repeat(8, auto);
+  grid-template-columns: repeat(8, 1fr);
 }
 
 #lt-popup {

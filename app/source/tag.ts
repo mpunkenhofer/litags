@@ -29,15 +29,15 @@ export class Tag {
         valid: false
     };
 
-    static async search(term: string): Promise<Tag[]> {
+    static async search(term: string, filter: Tag[] = []): Promise<Tag[]> {
         term = term.toLowerCase();
         const result: Tag[] = [];
 
         try {
-            const tags = await this.getTags();
+            const tags = await Tag.getTags();
 
             for(const tag of tags) {
-                if(tag.name.toLowerCase().includes(term))
+                if(!filter.find(t => t.id == tag.id) && tag.name.toLowerCase().includes(term))
                     result.push(tag);
                 else {
                     for(const alias of tag.aliases) {
@@ -59,7 +59,7 @@ export class Tag {
         const result: Tag[] = [];
 
         try {
-            const tags = await this.getTags();
+            const tags = await Tag.getTags();
 
             for(const tag of tags) {
                 if(tag.frequency > 0 && !filter.find(t => t.id == tag.id))
@@ -80,7 +80,7 @@ export class Tag {
         const result: Tag[] = [];
 
         try {
-            const tags = await this.getTags();
+            const tags = await Tag.getTags();
 
             for(const tag of tags) {
                 if (!filter.find(t => t.id == tag.id)) {
@@ -95,17 +95,17 @@ export class Tag {
     }
 
     static async increaseFrequentlyUsed(index: number) {
-        let tags = await this.getTags();
+        let tags = await Tag.getTags();
 
-        if(index > 0 && index < tags.length) {
+        if(index >= 0 && index < tags.length) {
             tags[index].frequency += 1;
-            this.setTags(tags);
-            this.tagCache.valid = false;
+            Tag.setTags(tags);
+            Tag.tagCache.valid = false;
         }
     }
 
     static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
-        const tags = await this.getTags();
+        const tags = await Tag.getTags();
         return tags.filter(tag => ids.find(id => id == tag.id));
     }
 
@@ -123,26 +123,25 @@ export class Tag {
     }
 
     private static async getTags(): Promise<Tag[]> {
-        if(this.tagCache.valid) {
-            return this.tagCache.tags;
+        if(Tag.tagCache.valid) {
+            return Tag.tagCache.tags;
         }
         else {
-            console.log('tag data cache miss');
             try {
                 const tagData = (await browser.storage.sync.get(litags.tags))[litags.tags];
 
-                this.tagCache.tags = [];
+                Tag.tagCache.tags = [];
 
                 for(const id in tagData) {
                     if (tagData.hasOwnProperty(id)) {
                         let [name, symbol, freq, aliases, colors] = tagData[id];
-                        this.tagCache.tags.push(new Tag(Number(id), symbol, name, freq, aliases, colors));
+                        Tag.tagCache.tags.push(new Tag(Number(id), symbol, name, freq, aliases, colors));
                     }
                 }
 
-                this.tagCache.valid = true;
+                Tag.tagCache.valid = true;
 
-                return this.tagCache.tags;
+                return Tag.tagCache.tags;
             } catch (error) {
                 console.error(error)
             }

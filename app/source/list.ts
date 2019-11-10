@@ -27,11 +27,7 @@ export class List {
         this.anchor.append(wrapperElement);
 
         this.update();
-
-        if(this.user.tags.length > 0)
-            this.show();
-        else
-            this.hide();
+        this.hide();
     }
 
     public update() {
@@ -50,14 +46,16 @@ export class List {
     }
 
     public show() {
-        const wrappers = document.getElementsByClassName('lt-tags');
+        if(this.user.tags.length > 0) {
+            const wrappers = document.getElementsByClassName('lt-tags');
 
-        for (let i = 0; i < wrappers.length; i++) {
-            const element = <HTMLScriptElement>wrappers[i];
-            element.style.display = 'block';
+            for (let i = 0; i < wrappers.length; i++) {
+                const element = <HTMLScriptElement>wrappers[i];
+                element.style.display = 'block';
+            }
+
+            this.list.style.display = 'block';
         }
-
-        this.list.style.display = 'block';
     }
 
     public hide() {
