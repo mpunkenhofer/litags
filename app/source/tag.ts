@@ -1,4 +1,4 @@
-import {litags} from "./keys";
+import {litags} from "./constants";
 
 const browser = require("webextension-polyfill");
 
@@ -110,7 +110,7 @@ export class Tag {
     }
 
     public static setDefaultTags() {
-        browser.storage.sync.set({[litags.tags]: defaultTags});
+        browser.storage.sync.set({[litags.keys.tags]: defaultTags});
     }
 
     private static setTags(tags: Tag[]) {
@@ -119,7 +119,7 @@ export class Tag {
         for (const tag of tags)
             dict[tag.id] = [tag.name, tag.symbol, tag.frequency, tag.aliases, tag.colors];
 
-        browser.storage.sync.set({[litags.tags]: dict});
+        browser.storage.sync.set({[litags.keys.tags]: dict});
     }
 
     private static async getTags(): Promise<Tag[]> {
@@ -128,7 +128,7 @@ export class Tag {
         }
         else {
             try {
-                const tagData = (await browser.storage.sync.get(litags.tags))[litags.tags];
+                const tagData = (await browser.storage.sync.get(litags.keys.tags))[litags.keys.tags];
 
                 Tag.tagCache.tags = [];
 

@@ -1,7 +1,6 @@
 import {User} from "./user";
 import {Tag} from "./tag";
 import {List} from "./list";
-import RuntimeError = WebAssembly.RuntimeError;
 
 const browser = require("webextension-polyfill");
 let debounce = require('debounce-promise');
@@ -11,6 +10,7 @@ export class Button {
     private list: List;
     private anchor: HTMLElement;
     private button: HTMLElement;
+    private popupActive = false;
 
     // language=HTML
     private popupHtml = `
@@ -46,7 +46,7 @@ export class Button {
         let popup = document.getElementById('lt-popup');
 
         if (!popup) {
-            //create the popup element
+            // create the popup element
             popup = document.createElement('div');
             popup.id = 'lt-popup';
             popup.onmouseleave = () => this.hidePopup();
@@ -87,28 +87,29 @@ export class Button {
                     this.calculatePopupPosition(location, 10);
                 // determine popup color
                 this.determinePopupColor();
+                this.popupActive = true;
             })
             .catch(e => console.error(e));
     }
 
     private hidePopup() {
+        this.popupActive = false;
+
         this.getPopup().style.display = 'none';
     }
 
     private initSearchElement() {
         const search = document.getElementById('lt-popup-search');
+
         if (search) {
-            search.focus();
             search.onkeydown = (e: KeyboardEvent) => {
                 let term = (<HTMLInputElement>e.target).value;
 
                 if (e.key === 'Backspace') {
                     term = term.substr(0, term.length - 1);
-                } else if(e.key.match(/(\w|\s)/g)) {
+                } else if (e.key.match(/(\w|\s)/g)) {
                     term += e.key;
                 }
-
-                console.log(term);
 
                 if (term.length > 0) {
                     const searchTerm = debounce(Tag.search, 100, {leading: true});
@@ -124,7 +125,16 @@ export class Button {
                     });
                 } else {
                     document.getElementById('lt-popup-search-results-wrap').style.display = 'none';
-                    document.getElementById('lt-popup-freq-wrap').style.display = 'block';
+                    Tag.getFrequentlyUsed(8, this.user.tags).then(value => {
+                        if (value.length > 0)
+                            document.getElementById('lt-popup-freq-wrap').style.display = 'block';
+                    });
+                }
+            };
+            // if popup is showing - set input element focused
+            document.onkeydown = (e) => {
+                if (this.popupActive && e.key.match(/(\w|\s)/g)) {
+                    search.focus();
                 }
             };
         }
@@ -164,8 +174,7 @@ export class Button {
     private determinePopupColor() {
         // get the background color of the appTable Element - we do this so this extension can be used on any
         // lichess theme and still feel as if it is a part of the site
-        let backgroundColorElement = document.querySelector('round__app__table' +
-            '');
+        let backgroundColorElement = document.querySelector('.round__app__table');
         if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
             this.getPopup().style.background = style.background;

@@ -1,4 +1,4 @@
-import {litags} from "./keys";
+import {litags} from "./constants";
 
 const browser = require("webextension-polyfill");
 
@@ -17,10 +17,10 @@ const defaults: Options = {
 };
 
 export async function getAllOptions() {
-    const options = await browser.storage.sync.get(litags.options);
-    return options[litags.options];
+    const options = await browser.storage.sync.get(litags.keys.options);
+    return options[litags.keys.options];
 }
 
 export function setDefaultOptions() {
-    browser.storage.sync.set({[litags.options]: defaults});
+    browser.storage.sync.set({[litags.keys.options]: defaults});
 }

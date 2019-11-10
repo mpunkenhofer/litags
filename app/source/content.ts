@@ -3,12 +3,7 @@ import {Button} from "./button";
 import {List} from "./list";
 import {getAllOptions, Options} from "./options";
 
-import {Dict} from "awesome-typescript-loader/dist/instance";
-import {Tag} from "./tag";
-
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
-
-const browser = require("webextension-polyfill");
 
 getAllOptions().then((options: Options) => {
     const element = document.querySelector('.round__app');
