@@ -1,6 +1,7 @@
 import {User} from "./user";
 import {Tag} from "./tag";
 import {List} from "./list";
+import {litags} from "./constants";
 
 const browser = require("webextension-polyfill");
 let debounce = require('debounce-promise');
@@ -13,23 +14,23 @@ export class Button {
     private popupActive = false;
 
     // language=HTML
-    private popupHtml = `
-        <div class="lt-popup-list">
-            <div id="lt-popup-search-results-wrap">
-                <div class="lt-popup-title">Search Results</div>
-                <div id="lt-popup-search-results"></div>
+    private readonly popupHtml = `
+        <div class="${litags.selectors.popup.wrappers.main}">
+            <div id="${litags.selectors.popup.wrappers.searchResults}">
+                <div class="${litags.selectors.popup.title}">Search Results</div>
+                <div id="${litags.selectors.popup.searchResults}"></div>
             </div>
-            <div id="lt-popup-freq-wrap">
-                <div class="lt-popup-title">Frequently Used</div>
-                <div id="lt-popup-freq"></div>
+            <div id="${litags.selectors.popup.wrappers.freq}">
+                <div class="${litags.selectors.popup.title}">Frequently Used</div>
+                <div id="${litags.selectors.popup.freq}"></div>
             </div>
-            <div id="lt-popup-all-wrap">
-                <div class="lt-popup-title">Available Tags</div>
-                <div id="lt-popup-all"></div>
+            <div id="${litags.selectors.popup.wrappers.all}">
+                <div class="${litags.selectors.popup.title}">Available Tags</div>
+                <div id="${litags.selectors.popup.all}"></div>
             </div>
         </div>
-        <div class="lt-popup-search-wrap">
-            <input type="search" id="lt-popup-search" autocapitalize="off" autocomplete="off" spellcheck="false"
+        <div class="${litags.selectors.popup.wrappers.search}">
+            <input type="search" id="${litags.selectors.popup.search}" autocapitalize="off" autocomplete="off" spellcheck="false"
             placeholder="${browser.i18n.getMessage("appSearchPlaceholder")}">
         </div>`;
 
@@ -43,19 +44,19 @@ export class Button {
         this.list = list;
 
         //check if there exists already a popup element
-        let popup = document.getElementById('lt-popup');
+        let popup = document.getElementById(litags.selectors.popup.main);
 
         if (!popup) {
             // create the popup element
             popup = document.createElement('div');
-            popup.id = 'lt-popup';
+            popup.id = litags.selectors.popup.main;
             popup.onmouseleave = () => this.hidePopup();
             document.body.append(popup);
         }
 
         //create the button
         this.button = document.createElement('div');
-        this.button.className = 'lt-btn-addTag-wrap';
+        this.button.className = litags.selectors.popup.wrappers.addTag;
         const title = browser.i18n.getMessage("appAddTagButtonTitle");
         this.button.innerHTML = `<button class="lt-btn-addTag" title="${title}">O</button>`;
         this.button.onclick = ev => this.showPopup([ev.clientX, ev.clientY]);
@@ -99,7 +100,7 @@ export class Button {
     }
 
     private initSearchElement() {
-        const search = document.getElementById('lt-popup-search');
+        const search = document.getElementById(litags.selectors.popup.search);
 
         if (search) {
             search.onkeydown = (e: KeyboardEvent) => {
@@ -114,20 +115,20 @@ export class Button {
                 if (term.length > 0) {
                     const searchTerm = debounce(Tag.search, 100, {leading: true});
                     searchTerm(term, this.user.tags).then((result: Tag[]) => {
-                        document.getElementById('lt-popup-freq-wrap').style.display = 'none';
-                        const searchResultsElement = document.getElementById('lt-popup-search-results');
+                        document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'none';
+                        const searchResultsElement = document.getElementById(litags.selectors.popup.searchResults);
                         searchResultsElement.innerHTML = '';
 
                         for (const tag of result)
                             this.addTag(tag, searchResultsElement);
 
-                        document.getElementById('lt-popup-search-results-wrap').style.display = 'block';
+                        document.getElementById(litags.selectors.popup.wrappers.searchResults).style.display = 'block';
                     });
                 } else {
-                    document.getElementById('lt-popup-search-results-wrap').style.display = 'none';
+                    document.getElementById(litags.selectors.popup.wrappers.searchResults).style.display = 'none';
                     Tag.getFrequentlyUsed(8, this.user.tags).then(value => {
                         if (value.length > 0)
-                            document.getElementById('lt-popup-freq-wrap').style.display = 'block';
+                            document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'block';
                     });
                 }
             };
@@ -174,7 +175,7 @@ export class Button {
     private determinePopupColor() {
         // get the background color of the appTable Element - we do this so this extension can be used on any
         // lichess theme and still feel as if it is a part of the site
-        let backgroundColorElement = document.querySelector('.round__app__table');
+        let backgroundColorElement = document.querySelector(litags.selectors.app.appTableElement);
         if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
             this.getPopup().style.background = style.background;
@@ -183,30 +184,30 @@ export class Button {
 
     private async populatePopup() {
         try {
-            const freqElement = document.getElementById('lt-popup-freq');
+            const freqElement = document.getElementById(litags.selectors.popup.freq);
             const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
                     this.addTag(tag, freqElement);
-                document.getElementById('lt-popup-freq-wrap').style.display = 'block';
+                document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'block';
             } else {
-                document.getElementById('lt-popup-freq-wrap').style.display = 'none';
+                document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'none';
             }
 
-            const allElement = document.getElementById('lt-popup-all');
+            const allElement = document.getElementById(litags.selectors.popup.all);
             const allAvailableTags = await Tag.getAll(freqUsedTags.concat(this.user.tags));
 
             if (allElement && allAvailableTags.length > 0) {
                 for (const tag of allAvailableTags) {
                     this.addTag(tag, allElement);
                 }
-                document.getElementById('lt-popup-all-wrap').style.display = 'block';
+                document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'block';
             } else {
                 if (freqUsedTags.length === 0)
                     this.hidePopup();   // no tags to display - hide popup
                 else
-                    document.getElementById('lt-popup-all-wrap').style.display = 'none';
+                    document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'none';
             }
         } catch (e) {
             console.error(e);
@@ -215,7 +216,7 @@ export class Button {
 
     private addTag(tag: Tag, anchor: HTMLElement) {
         const element = document.createElement('div');
-        element.className = 'lt-popup-tag';
+        element.className = litags.selectors.popup.tag;
         element.title = tag.name;
         element.innerHTML = `<span class="lt-popup-symbol">${tag.symbol}</span>`;
         element.onclick = () => {
@@ -226,7 +227,7 @@ export class Button {
     }
 
     private getPopup() {
-        const popup = document.getElementById('lt-popup');
+        const popup = document.getElementById(litags.selectors.popup.main);
         if (!popup)
             throw new Error('could not get popup element!');
         else return popup

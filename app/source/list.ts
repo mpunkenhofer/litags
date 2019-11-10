@@ -1,4 +1,5 @@
 import {User} from "./user";
+import {litags} from "./constants";
 
 const Sortable = require('sortablejs');
 
@@ -16,12 +17,11 @@ export class List {
 
         //create list element
         const wrapperElement = document.createElement('div');
-        wrapperElement.className = 'lt-tags';
+        wrapperElement.className = litags.selectors.list.wrapper;
 
         this.list = document.createElement('ul');
-        this.list.id = `lt-tags-list-${user.username}`;
+        this.list.id = `${litags.selectors.list.tags}-${user.username}`;
         Sortable.create(this.list);
-        //L = X
 
         wrapperElement.append(this.list);
         this.anchor.append(wrapperElement);
@@ -47,7 +47,7 @@ export class List {
 
     public show() {
         if(this.user.tags.length > 0) {
-            const wrappers = document.getElementsByClassName('lt-tags');
+            const wrappers = document.getElementsByClassName(litags.selectors.list.wrapper);
 
             for (let i = 0; i < wrappers.length; i++) {
                 const element = <HTMLScriptElement>wrappers[i];
@@ -59,7 +59,7 @@ export class List {
     }
 
     public hide() {
-        const wrappers = document.getElementsByClassName('lt-tags');
+        const wrappers = document.getElementsByClassName(litags.selectors.list.wrapper);
 
         for(let i = 0; i < wrappers.length; i++) {
             const element = <HTMLScriptElement>wrappers[i];
