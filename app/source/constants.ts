@@ -13,6 +13,8 @@ export const litags = {
       bottomUserName: '.ruser-bottom a'
     },
     button: {
+      main: 'lt-button-addTag',
+      wrapper: 'lt-button-addTag-wrap',
     },
     popup: {
       main: 'lt-popup',
@@ -21,20 +23,21 @@ export const litags = {
       freq: 'lt-popup-freq',
       title: 'lt-popup-title',
       search: 'lt-popup-search',
-      searchResults: 'lt-popup-search-results',
+      searchResults: 'lt-popup-searchResults',
       wrappers: {
         main: 'lt-popup-wrap',
         all: 'lt-popup-all-wrap',
         freq: 'lt-popup-freq-wrap',
         list: 'lt-popup-list',
-        addTag: 'lt-btn-addTag-wrap',
         search: 'lt-popup-search-wrap',
-        searchResults: 'lt-popup-search-results-wrap'
+        searchResults: 'lt-popup-searchResults-wrap'
       },
     },
     list: {
-      wrapper: 'lt-tags',
-      tags: 'lt-tags-list'
+      main: 'lt-list-wrap',
+      tags: 'lt-list-tags',
+      trash: 'lt-list-trash',
+      trashSymbol: 'lt-list-trash-symbol'
     }
   }
 };

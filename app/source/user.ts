@@ -27,12 +27,17 @@ export class User {
         return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
     }
 
-    public async addTag (tag: Tag) {
+    public async addTag(tag: Tag) {
         const options = await getAllOptions();
         if(this.tags.length < options.maxTags) {
             this.tags.push(tag);
             Tag.increaseFrequentlyUsed(tag.id).then(() => User.setUser(this)).catch(e => console.error(e));
         }
+    }
+
+    public removeTag(tag: Tag | number) {
+        const id = (typeof tag === "number") ? tag : tag.id;
+        this.tags = this.tags.filter(t => t.id !== id);
     }
 }
 

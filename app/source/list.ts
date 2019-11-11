@@ -1,5 +1,6 @@
 import {User} from "./user";
 import {litags} from "./constants";
+import {SortableEvent} from "sortablejs";
 
 const Sortable = require('sortablejs');
 
@@ -7,23 +8,57 @@ export class List {
     private user: User;
     private anchor: HTMLElement;
     private list: HTMLElement;
+    private trash: HTMLElement;
 
     constructor(anchor: HTMLElement, user: User) {
-        if(!user || !anchor)
+        if (!user || !anchor)
             throw new TypeError('invalid user or anchor.');
 
         this.anchor = anchor;
         this.user = user;
 
-        //create list element
+        // create wrapper
         const wrapperElement = document.createElement('div');
-        wrapperElement.className = litags.selectors.list.wrapper;
+        wrapperElement.className = litags.selectors.list.main;
 
+        // create list
         this.list = document.createElement('ul');
         this.list.id = `${litags.selectors.list.tags}-${user.username}`;
-        Sortable.create(this.list);
+        // make sortable
+        const sortableGroup = 'lt-tags-sortable';
+        Sortable.create(this.list, {
+            group: sortableGroup,
+            onChoose: () => this.showTrash(),
+            onStart: () => this.showTrash(),
+            onEnd: () => this.hideTrash(),
+            onUnchoose: () => this.hideTrash()
+        });
+
+        //create remove element
+        const trashList = document.createElement('ul');
+        trashList.className = `${litags.selectors.list.trash}`;
+        this.trash = document.createElement('li');
+        this.trash.id = litags.selectors.list.trashSymbol;
+        this.trash.innerText = 'L';
+        // create trash bin
+        Sortable.create(trashList, {
+            sort: false,
+            group: sortableGroup,
+            onAdd: (event: SortableEvent) => {
+                const element = event.item;
+                //element.parentElement.removeChild(element);
+            },
+            onChange: () => {
+                console.log('!!!!');
+                this.hideTrash();
+            }
+        });
+
+        trashList.append(this.trash);
 
         wrapperElement.append(this.list);
+        wrapperElement.append(trashList);
+
         this.anchor.append(wrapperElement);
 
         this.update();
@@ -31,13 +66,14 @@ export class List {
     }
 
     public update() {
-        if(this.user.tags.length > 0) {
+        if (this.user.tags.length > 0) {
             this.list.innerHTML = '';
 
-            for(const tag of this.user.tags) {
+            for (const tag of this.user.tags) {
                 const listElement = document.createElement('li');
                 listElement.title = tag.name;
                 listElement.innerHTML = tag.symbol;
+                listElement.id = `${tag.id}`;
                 this.list.append(listElement);
             }
 
@@ -46,8 +82,8 @@ export class List {
     }
 
     public show() {
-        if(this.user.tags.length > 0) {
-            const wrappers = document.getElementsByClassName(litags.selectors.list.wrapper);
+        if (this.user.tags.length > 0) {
+            const wrappers = document.getElementsByClassName(litags.selectors.list.main);
 
             for (let i = 0; i < wrappers.length; i++) {
                 const element = <HTMLScriptElement>wrappers[i];
@@ -59,13 +95,21 @@ export class List {
     }
 
     public hide() {
-        const wrappers = document.getElementsByClassName(litags.selectors.list.wrapper);
+        const wrappers = document.getElementsByClassName(litags.selectors.list.main);
 
-        for(let i = 0; i < wrappers.length; i++) {
+        for (let i = 0; i < wrappers.length; i++) {
             const element = <HTMLScriptElement>wrappers[i];
             element.style.display = 'none';
         }
 
         this.list.style.display = 'none';
+    }
+
+    private showTrash() {
+        this.trash.style.display = 'inline';
+    }
+
+    private hideTrash() {
+        this.trash.style.display = 'none';
     }
 }

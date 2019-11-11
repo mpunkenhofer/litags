@@ -37,7 +37,7 @@ export class Tag {
             const tags = await Tag.getTags();
 
             for(const tag of tags) {
-                if(!filter.find(t => t.id == tag.id) && tag.name.toLowerCase().includes(term))
+                if(!filter.find(t => t.id === tag.id) && tag.name.toLowerCase().includes(term))
                     result.push(tag);
                 else {
                     for(const alias of tag.aliases) {
@@ -62,7 +62,7 @@ export class Tag {
             const tags = await Tag.getTags();
 
             for(const tag of tags) {
-                if(tag.frequency > 0 && !filter.find(t => t.id == tag.id))
+                if(tag.frequency > 0 && !filter.find(t => t.id === tag.id))
                     result.push(tag);
             }
 
@@ -83,7 +83,7 @@ export class Tag {
             const tags = await Tag.getTags();
 
             for(const tag of tags) {
-                if (!filter.find(t => t.id == tag.id)) {
+                if (!filter.find(t => t.id === tag.id)) {
                     result.push(tag);
                 }
             }
@@ -106,7 +106,7 @@ export class Tag {
 
     static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
         const tags = await Tag.getTags();
-        return tags.filter(tag => ids.find(id => id == tag.id));
+        return tags.filter(tag => ids.find(id => id === tag.id));
     }
 
     public static setDefaultTags() {

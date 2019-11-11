@@ -1,10 +1,10 @@
-.lt-btn-addTag-wrap {
+.lt-button-addTag-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 0.5em;
 
-  .lt-btn-addTag {
+  .lt-button-addTag {
     font-family: lichess, serif;
     border: 0;
     outline: none;
@@ -59,12 +59,12 @@
 
 }
 
-#lt-popup-all-wrap, #lt-popup-freq-wrap, #lt-popup-search-results-wrap {
+#lt-popup-all-wrap, #lt-popup-freq-wrap, #lt-popup-searchResults-wrap {
   margin-left: 0.6em;
   margin-right: 0.6em;
 }
 
-#lt-popup-search-results-wrap {
+#lt-popup-searchResults-wrap {
   display: none;
 }
 

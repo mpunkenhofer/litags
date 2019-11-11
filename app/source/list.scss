@@ -1,4 +1,4 @@
-.lt-tags {
+.lt-list-wrap {
   margin-top: 0.25em;
   //margin-bottom: 0.3em;
   list-style-type: none;
@@ -15,5 +15,10 @@
     &:hover {
       filter: brightness(100%);
     }
+  }
+
+  .lt-list-trash {
+    display: inline;
+    color: red;
   }
 }

@@ -56,9 +56,9 @@ export class Button {
 
         //create the button
         this.button = document.createElement('div');
-        this.button.className = litags.selectors.popup.wrappers.addTag;
+        this.button.className = litags.selectors.button.wrapper;
         const title = browser.i18n.getMessage("appAddTagButtonTitle");
-        this.button.innerHTML = `<button class="lt-btn-addTag" title="${title}">O</button>`;
+        this.button.innerHTML = `<button class="${litags.selectors.button.main}" title="${title}">O</button>`;
         this.button.onclick = ev => this.showPopup([ev.clientX, ev.clientY]);
 
         this.anchor.append(this.button);
@@ -76,18 +76,18 @@ export class Button {
     }
 
     private showPopup(location?: [number, number]) {
-        this.getPopup().innerHTML = this.popupHtml;
+        Button.getPopup().innerHTML = this.popupHtml;
         this.initSearchElement();
         // put tags into popup
         this.populatePopup()
             .then(() => {
                 // change display mode from none to block
-                this.getPopup().style.display = 'block';
+                Button.getPopup().style.display = 'block';
                 // position popup in viewport
                 if (location !== undefined)
                     this.calculatePopupPosition(location, 10);
                 // determine popup color
-                this.determinePopupColor();
+                Button.determinePopupColor();
                 this.popupActive = true;
             })
             .catch(e => console.error(e));
@@ -96,7 +96,7 @@ export class Button {
     private hidePopup() {
         this.popupActive = false;
 
-        this.getPopup().style.display = 'none';
+        Button.getPopup().style.display = 'none';
     }
 
     private initSearchElement() {
@@ -106,6 +106,7 @@ export class Button {
             search.onkeydown = (e: KeyboardEvent) => {
                 let term = (<HTMLInputElement>e.target).value;
 
+                // TODO handle special keys better
                 if (e.key === 'Backspace') {
                     term = term.substr(0, term.length - 1);
                 } else if (e.key.match(/(\w|\s)/g)) {
@@ -148,7 +149,7 @@ export class Button {
         let newX = clientX;
         let newY = clientY;
 
-        const element = this.getPopup();
+        const element = Button.getPopup();
 
         function calc() {
             if ((clientY + element.offsetHeight + spacing) > window.innerHeight)
@@ -169,16 +170,16 @@ export class Button {
         new MutationObserver((mutations, observerInstance) => {
             observerInstance.disconnect();
             calc();
-        }).observe(this.getPopup(), {childList: true, attributes: true, subtree: true, characterData: true});
+        }).observe(Button.getPopup(), {childList: true, attributes: true, subtree: true, characterData: true});
     }
 
-    private determinePopupColor() {
+    private static determinePopupColor() {
         // get the background color of the appTable Element - we do this so this extension can be used on any
         // lichess theme and still feel as if it is a part of the site
         let backgroundColorElement = document.querySelector(litags.selectors.app.appTableElement);
         if (backgroundColorElement) {
             const style = getComputedStyle(backgroundColorElement);
-            this.getPopup().style.background = style.background;
+            Button.getPopup().style.background = style.background;
         }
     }
 
@@ -226,7 +227,7 @@ export class Button {
         anchor.append(element);
     }
 
-    private getPopup() {
+    private static getPopup() {
         const popup = document.getElementById(litags.selectors.popup.main);
         if (!popup)
             throw new Error('could not get popup element!');
