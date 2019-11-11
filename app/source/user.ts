@@ -38,6 +38,7 @@ export class User {
     public removeTag(tag: Tag | number) {
         const id = (typeof tag === "number") ? tag : tag.id;
         this.tags = this.tags.filter(t => t.id !== id);
+        User.setUser(this);
     }
 }
 

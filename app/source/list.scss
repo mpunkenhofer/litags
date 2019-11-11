@@ -1,13 +1,16 @@
 .lt-list-wrap {
   margin-top: 0.25em;
-  //margin-bottom: 0.3em;
   list-style-type: none;
   user-select: none;
   font-family: lichess, serif;
   font-size: 1.5em;
 
+  ul {
+    display: inline-block;
+  }
+
   li {
-    display: inline;
+    display: inline-block;
     margin-right: 0.4em;
     cursor: pointer;
     filter: brightness(90%);
@@ -18,7 +21,7 @@
   }
 
   .lt-list-trash {
-    display: inline;
     color: red;
+    width: 1fr;
   }
 }

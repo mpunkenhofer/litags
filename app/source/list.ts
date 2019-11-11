@@ -28,9 +28,8 @@ export class List {
         const sortableGroup = 'lt-tags-sortable';
         Sortable.create(this.list, {
             group: sortableGroup,
+            onChange: () => this.showTrash(),
             onChoose: () => this.showTrash(),
-            onStart: () => this.showTrash(),
-            onEnd: () => this.hideTrash(),
             onUnchoose: () => this.hideTrash()
         });
 
@@ -46,12 +45,10 @@ export class List {
             group: sortableGroup,
             onAdd: (event: SortableEvent) => {
                 const element = event.item;
-                //element.parentElement.removeChild(element);
+                this.user.removeTag(Number(element.id));
+                element.parentElement.removeChild(element);
             },
-            onChange: () => {
-                console.log('!!!!');
-                this.hideTrash();
-            }
+            onChange: () => this.hideTrash()
         });
 
         trashList.append(this.trash);
@@ -77,6 +74,7 @@ export class List {
                 this.list.append(listElement);
             }
 
+            this.hideTrash();
             this.show();
         }
     }
@@ -90,7 +88,7 @@ export class List {
                 element.style.display = 'block';
             }
 
-            this.list.style.display = 'block';
+            this.list.style.display = 'inline-block';
         }
     }
 
@@ -106,7 +104,7 @@ export class List {
     }
 
     private showTrash() {
-        this.trash.style.display = 'inline';
+        this.trash.style.display = 'inline-block';
     }
 
     private hideTrash() {
