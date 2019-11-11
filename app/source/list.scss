@@ -1,4 +1,4 @@
-.lt-list-wrap {
+.lt-list {
   margin-top: 0.25em;
   list-style-type: none;
   user-select: none;
@@ -19,9 +19,21 @@
       filter: brightness(100%);
     }
   }
+}
 
-  .lt-list-trash {
-    color: red;
-    width: 1fr;
-  }
+.lt-list-trash {
+  display: none;
+  color: red;
+  width: 1fr;
+}
+
+.lt-list-hiddenDragGhost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+}
+
+.lt-list-dragHandle {
+  cursor: grabbing;
 }

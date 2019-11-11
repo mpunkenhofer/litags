@@ -1,27 +1,29 @@
-.lt-list-wrap {
-  grid-area: litags;
+.lt-list {
+  grid-area: lilist;
 }
 
 .lt-button-addTag-wrap {
-  grid-area: libtn;
+  grid-area: libutton;
 }
 
 .ruser {
   display: grid !important;
   grid-template-rows: min-content;
   grid-template-columns: auto auto auto 1fr min-content;
-  grid-template-areas:
-          'lio liuser libtn . lirating lichange'
-          '. litags litags litags litags litags';
+  grid-template-areas: 'lio liuser libutton . lirating lichange' '. lilist lilist lilist lilist lilist';
+
   a {
     grid-area: liuser;
   }
+
   i {
     grid-area: lio;
   }
+
   rating {
     grid-area: lirating;
   }
+
   good, bad {
     grid-area: lichange;
   }

@@ -24,7 +24,7 @@ export class Tag {
         this.colors = colors;
     }
 
-    private static tagCache: {tags: Tag[], valid: boolean} = {
+    private static tagCache: { tags: Tag[], valid: boolean } = {
         tags: [],
         valid: false
     };
@@ -36,12 +36,12 @@ export class Tag {
         try {
             const tags = await Tag.getTags();
 
-            for(const tag of tags) {
-                if(!filter.find(t => t.id === tag.id) && tag.name.toLowerCase().includes(term))
+            for (const tag of tags) {
+                if (!filter.find(t => t.id === tag.id) && tag.name.toLowerCase().includes(term))
                     result.push(tag);
                 else {
-                    for(const alias of tag.aliases) {
-                        if(alias.toLowerCase().includes(term)) {
+                    for (const alias of tag.aliases) {
+                        if (alias.toLowerCase().includes(term)) {
                             result.push(tag);
                             break;
                         }
@@ -61,13 +61,15 @@ export class Tag {
         try {
             const tags = await Tag.getTags();
 
-            for(const tag of tags) {
-                if(tag.frequency > 0 && !filter.find(t => t.id === tag.id))
+            for (const tag of tags) {
+                if (tag.frequency > 0 && !filter.find(t => t.id === tag.id))
                     result.push(tag);
             }
 
             return result
-                .sort((a, b):number => { return b.frequency - a.frequency;})
+                .sort((a, b): number => {
+                    return b.frequency - a.frequency;
+                })
                 .splice(0, amount);
         } catch (error) {
             console.error(error);
@@ -82,7 +84,7 @@ export class Tag {
         try {
             const tags = await Tag.getTags();
 
-            for(const tag of tags) {
+            for (const tag of tags) {
                 if (!filter.find(t => t.id === tag.id)) {
                     result.push(tag);
                 }
@@ -97,7 +99,7 @@ export class Tag {
     static async increaseFrequentlyUsed(index: number) {
         let tags = await Tag.getTags();
 
-        if(index >= 0 && index < tags.length) {
+        if (index >= 0 && index < tags.length) {
             tags[index].frequency += 1;
             Tag.setTags(tags);
             Tag.tagCache.valid = false;
@@ -105,8 +107,10 @@ export class Tag {
     }
 
     static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
+        // be careful to return tags in the same order
         const tags = await Tag.getTags();
-        return tags.filter(tag => ids.find(id => id === tag.id));
+        //return tags.filter(tag => ids.find(id => id === tag.id));
+        return ids.map(id => tags.find(tag => tag.id === id));
     }
 
     public static setDefaultTags() {
@@ -114,7 +118,7 @@ export class Tag {
     }
 
     private static setTags(tags: Tag[]) {
-        let dict: {[_: number]: [string, string, number, string[], number[]]} = {};
+        let dict: { [_: number]: [string, string, number, string[], number[]] } = {};
 
         for (const tag of tags)
             dict[tag.id] = [tag.name, tag.symbol, tag.frequency, tag.aliases, tag.colors];
@@ -123,16 +127,15 @@ export class Tag {
     }
 
     private static async getTags(): Promise<Tag[]> {
-        if(Tag.tagCache.valid) {
+        if (Tag.tagCache.valid) {
             return Tag.tagCache.tags;
-        }
-        else {
+        } else {
             try {
                 const tagData = (await browser.storage.sync.get(litags.keys.tags))[litags.keys.tags];
 
                 Tag.tagCache.tags = [];
 
-                for(const id in tagData) {
+                for (const id in tagData) {
                     if (tagData.hasOwnProperty(id)) {
                         let [name, symbol, freq, aliases, colors] = tagData[id];
                         Tag.tagCache.tags.push(new Tag(Number(id), symbol, name, freq, aliases, colors));
@@ -149,7 +152,7 @@ export class Tag {
     }
 }
 
-const defaultTags: {[_: number]: [string, string, number, string[], number[]]} = {
+const defaultTags: { [_: number]: [string, string, number, string[], number[]] } = {
     0: ['unnamed1', '0', 0, [], []],
     1: ['unnamed2', '1', 0, [], []],
     2: ['unnamed3', '2', 0, [], []],

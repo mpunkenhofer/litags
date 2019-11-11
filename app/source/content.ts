@@ -9,7 +9,7 @@ console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 getAllOptions().then((options: Options) => {
     const element = document.querySelector(litags.selectors.app.appElement);
 
-    if(element && options.enabled && options.gameEnabled) {
+    if (element && options.enabled && options.gameEnabled) {
         new MutationObserver((mutations, observerInstance) => {
             observerInstance.disconnect();
             createLiTagsElements(document.querySelector(litags.selectors.app.topUserElement), getTopUserName());
