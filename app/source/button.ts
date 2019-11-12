@@ -11,7 +11,6 @@ export class Button {
     private list: List;
     private anchor: HTMLElement;
     private button: HTMLElement;
-    private popupActive = false;
 
     // language=HTML
     private readonly popupHtml = `
@@ -61,12 +60,51 @@ export class Button {
         this.hide();
     }
 
+    private static determinePopupColor() {
+        // get the background color of the appTable Element - we do this so this extension can be used on any
+        // lichess theme and still feel as if it is a part of the site
+        let backgroundColorElement = document.querySelector(litags.selectors.app.appTableElement);
+        if (backgroundColorElement) {
+            const style = getComputedStyle(backgroundColorElement);
+            Button.getPopup().style.background = style.background;
+        }
+    }
+
+    private static getPopup() {
+        const popup = document.getElementById(litags.selectors.popup.main);
+        if (!popup)
+            throw new Error('could not get popup element!');
+        else return popup
+    }
+
+    public show() {
+        this.button.style.display = 'flex';
+    }
+
+    public hide() {
+        this.button.style.display = 'none';
+        Button.hidePopup();
+    }
+
     private initPopup() {
         const popup = document.createElement('div');
         popup.id = litags.selectors.popup.main;
-        popup.onmouseleave = () => this.hidePopup();
+        popup.onmouseleave = () => Button.hidePopup();
         popup.innerHTML = this.popupHtml;
         document.body.append(popup);
+
+        // popup control events
+        document.onkeydown = (e) => {
+            if (Button.popupActive()) {
+                if(e.key === 'Escape') {
+                    Button.hidePopup();
+                }
+                // if popup is showing - set input element focused
+                else if (e.key.match(/(\w|\s)/g)) {
+                    document.getElementById(litags.selectors.popup.search).focus();
+                }
+            }
+        };
 
         this.initSearch();
     }
@@ -104,12 +142,6 @@ export class Button {
                     });
                 }
             };
-            // if popup is showing - set input element focused
-            document.onkeydown = (e) => {
-                if (this.popupActive && e.key.match(/(\w|\s)/g)) {
-                    search.focus();
-                }
-            };
         }
     }
 
@@ -124,7 +156,6 @@ export class Button {
                 // position popup in viewport
                 if (location !== undefined)
                     this.calculatePopupPosition(location, 10);
-                this.popupActive = true;
             })
             .catch(e => console.error(e));
     }
@@ -156,7 +187,7 @@ export class Button {
                 document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'block';
             } else {
                 if (freqUsedTags.length === 0)
-                    this.hidePopup();   // no tags to display - hide popup
+                    Button.hidePopup();   // no tags to display - hide popup
                 else
                     document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'none';
             }
@@ -196,16 +227,6 @@ export class Button {
         }).observe(Button.getPopup(), {childList: true, attributes: true, subtree: true, characterData: true});
     }
 
-    private static determinePopupColor() {
-        // get the background color of the appTable Element - we do this so this extension can be used on any
-        // lichess theme and still feel as if it is a part of the site
-        let backgroundColorElement = document.querySelector(litags.selectors.app.appTableElement);
-        if (backgroundColorElement) {
-            const style = getComputedStyle(backgroundColorElement);
-            Button.getPopup().style.background = style.background;
-        }
-    }
-
     private addTag(tag: Tag, anchor: HTMLElement) {
         const element = document.createElement('div');
         element.className = litags.selectors.popup.tag;
@@ -213,30 +234,17 @@ export class Button {
         element.innerHTML = `<span class="${litags.selectors.popup.symbol}">${tag.symbol}</span>`;
         element.onclick = () => {
             this.user.addTag(tag).then(() => this.list.update());
-            this.hidePopup();
+            Button.hidePopup();
         };
         anchor.append(element);
     }
 
-    private static getPopup() {
-        const popup = document.getElementById(litags.selectors.popup.main);
-        if (!popup)
-            throw new Error('could not get popup element!');
-        else return popup
-    }
-
-    public show() {
-        this.button.style.display = 'flex';
-    }
-
-    public hide() {
-        this.button.style.display = 'none';
-        this.hidePopup();
-    }
-
-    private hidePopup() {
-        this.popupActive = false;
-
+    private static hidePopup() {
         Button.getPopup().style.display = 'none';
+    }
+
+    private static popupActive() {
+        const popup = Button.getPopup();
+        return popup.style.display != 'none';
     }
 }
