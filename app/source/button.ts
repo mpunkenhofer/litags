@@ -44,14 +44,9 @@ export class Button {
         this.list = list;
 
         //check if there exists already a popup element
-        let popup = document.getElementById(litags.selectors.popup.main);
-
-        if (!popup) {
+        if (!document.getElementById(litags.selectors.popup.main)) {
             // create the popup element
-            popup = document.createElement('div');
-            popup.id = litags.selectors.popup.main;
-            popup.onmouseleave = () => this.hidePopup();
-            document.body.append(popup);
+            this.initPopup();
         }
 
         //create the button
@@ -66,46 +61,22 @@ export class Button {
         this.hide();
     }
 
-    public show() {
-        this.button.style.display = 'flex';
+    private initPopup() {
+        const popup = document.createElement('div');
+        popup.id = litags.selectors.popup.main;
+        popup.onmouseleave = () => this.hidePopup();
+        popup.innerHTML = this.popupHtml;
+        document.body.append(popup);
+
+        this.initSearch();
     }
 
-    public hide() {
-        this.button.style.display = 'none';
-        this.hidePopup();
-    }
-
-    private showPopup(location?: [number, number]) {
-        Button.getPopup().innerHTML = this.popupHtml;
-        this.initSearchElement();
-        // put tags into popup
-        this.populatePopup()
-            .then(() => {
-                // change display mode from none to block
-                Button.getPopup().style.display = 'block';
-                // position popup in viewport
-                if (location !== undefined)
-                    this.calculatePopupPosition(location, 10);
-                // determine popup color
-                Button.determinePopupColor();
-                this.popupActive = true;
-            })
-            .catch(e => console.error(e));
-    }
-
-    private hidePopup() {
-        this.popupActive = false;
-
-        Button.getPopup().style.display = 'none';
-    }
-
-    private initSearchElement() {
+    private initSearch() {
         const search = document.getElementById(litags.selectors.popup.search);
 
         if (search) {
             search.onkeydown = (e: KeyboardEvent) => {
                 let term = (<HTMLInputElement>e.target).value;
-
                 // TODO handle special keys better
                 if (e.key === 'Backspace') {
                     term = term.substr(0, term.length - 1);
@@ -139,6 +110,58 @@ export class Button {
                     search.focus();
                 }
             };
+        }
+    }
+
+    private showPopup(location?: [number, number]) {
+        // put tags into popup
+        this.populatePopup()
+            .then(() => {
+                // determine popup color
+                Button.determinePopupColor();
+                // change display mode from none to block
+                Button.getPopup().style.display = 'block';
+                // position popup in viewport
+                if (location !== undefined)
+                    this.calculatePopupPosition(location, 10);
+                this.popupActive = true;
+            })
+            .catch(e => console.error(e));
+    }
+
+    private async populatePopup() {
+        try {
+            const freqElement = document.getElementById(litags.selectors.popup.freq);
+            freqElement.innerHTML = '';
+
+            const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
+
+            if (freqElement && freqUsedTags.length > 0) {
+                for (const tag of freqUsedTags)
+                    this.addTag(tag, freqElement);
+                document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'block';
+            } else {
+                document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'none';
+            }
+
+            const allElement = document.getElementById(litags.selectors.popup.all);
+            allElement.innerHTML = '';
+
+            const allAvailableTags = await Tag.getAll(freqUsedTags.concat(this.user.tags));
+
+            if (allElement && allAvailableTags.length > 0) {
+                for (const tag of allAvailableTags) {
+                    this.addTag(tag, allElement);
+                }
+                document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'block';
+            } else {
+                if (freqUsedTags.length === 0)
+                    this.hidePopup();   // no tags to display - hide popup
+                else
+                    document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'none';
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
@@ -183,43 +206,11 @@ export class Button {
         }
     }
 
-    private async populatePopup() {
-        try {
-            const freqElement = document.getElementById(litags.selectors.popup.freq);
-            const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
-
-            if (freqElement && freqUsedTags.length > 0) {
-                for (const tag of freqUsedTags)
-                    this.addTag(tag, freqElement);
-                document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'block';
-            } else {
-                document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'none';
-            }
-
-            const allElement = document.getElementById(litags.selectors.popup.all);
-            const allAvailableTags = await Tag.getAll(freqUsedTags.concat(this.user.tags));
-
-            if (allElement && allAvailableTags.length > 0) {
-                for (const tag of allAvailableTags) {
-                    this.addTag(tag, allElement);
-                }
-                document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'block';
-            } else {
-                if (freqUsedTags.length === 0)
-                    this.hidePopup();   // no tags to display - hide popup
-                else
-                    document.getElementById(litags.selectors.popup.wrappers.all).style.display = 'none';
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
     private addTag(tag: Tag, anchor: HTMLElement) {
         const element = document.createElement('div');
         element.className = litags.selectors.popup.tag;
         element.title = tag.name;
-        element.innerHTML = `<span class="lt-popup-symbol">${tag.symbol}</span>`;
+        element.innerHTML = `<span class="${litags.selectors.popup.symbol}">${tag.symbol}</span>`;
         element.onclick = () => {
             this.user.addTag(tag).then(() => this.list.update());
             this.hidePopup();
@@ -232,5 +223,20 @@ export class Button {
         if (!popup)
             throw new Error('could not get popup element!');
         else return popup
+    }
+
+    public show() {
+        this.button.style.display = 'flex';
+    }
+
+    public hide() {
+        this.button.style.display = 'none';
+        this.hidePopup();
+    }
+
+    private hidePopup() {
+        this.popupActive = false;
+
+        Button.getPopup().style.display = 'none';
     }
 }

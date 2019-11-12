@@ -4,7 +4,7 @@ import {List} from "./list";
 import {getAllOptions, Options} from "./options";
 import {litags} from "./constants";
 
-console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
+console.log('1LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 getAllOptions().then((options: Options) => {
     const element = document.querySelector(litags.selectors.app.appElement);

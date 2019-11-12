@@ -23,6 +23,7 @@ export const litags = {
             freq: 'lt-popup-freq',
             title: 'lt-popup-title',
             search: 'lt-popup-search',
+            symbol: 'lt-popup-symbol',
             searchResults: 'lt-popup-searchResults',
             wrappers: {
                 main: 'lt-popup-wrap',
