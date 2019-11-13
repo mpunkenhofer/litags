@@ -1,6 +1,7 @@
 import {User} from "./user";
 import {litags} from "./selectors";
 import {SortableEvent} from "sortablejs";
+import {getTagsFromId} from "./tag";
 
 const Sortable = require('sortablejs');
 
@@ -29,7 +30,12 @@ export class List {
         Sortable.create(this.list, {
             group: sortableGroup,
             animation: 100,
-            onChange: () => this.showTrash(),
+            onChange: (event: SortableEvent) => {
+                getTagsFromId(getTagId(event.item)).then(tag => {
+                    event.item.style.color = (tag && tag.color.length > 0) ? tag.color : '';
+                });
+                this.showTrash()
+            },
             onChoose: () => this.showTrash(),
             onUnchoose: () => this.hideTrash(),
             setData: (dataTransfer: DataTransfer, draggedElement: HTMLElement) => {
@@ -47,7 +53,7 @@ export class List {
             onUpdate: () => {
                 const newOrder = [];
                 for (let i = 0; i < this.list.children.length; i++) {
-                    newOrder.push(List.getTagId(this.list.children[i]))
+                    newOrder.push(getTagId(this.list.children[i]))
                 }
                 this.user.reArrange(newOrder);
             }
@@ -66,11 +72,15 @@ export class List {
             animation: 100,
             onAdd: (event: SortableEvent) => {
                 const element = event.item;
-                this.user.removeTag(List.getTagId(element));
+                this.user.removeTag(getTagId(element));
                 element.parentElement.removeChild(element);
                 this.update();
             },
-            onChange: () => this.hideTrash()
+            onChange: (event: SortableEvent) => {
+                event.item.style.color = 'red';
+                this.hideTrash();
+            }
+
         });
 
         trashList.append(this.trash);
@@ -127,9 +137,9 @@ export class List {
     private hideTrash() {
         this.trash.style.display = 'none';
     }
+}
 
-    private static getTagId(element: Element) {
-        const stringID = element.className.match(/\d+/g);
-        return stringID.length > 0 ? Number(stringID) : -1;
-    }
+function getTagId(element: Element) {
+    const stringID = element.className.match(/\d+/g);
+    return stringID.length > 0 ? Number(stringID) : -1;
 }

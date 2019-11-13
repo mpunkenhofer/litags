@@ -20,6 +20,13 @@ export const filterTags = (tags: Tag[], filter: Tag[]): Tag[] => {
     return filter ? tags.filter(tag => !filter.find(filterTag => filterTag.id === tag.id)) : tags;
 };
 
+export async function getTagsFromId(id: number, filter: Tag[] = []): Promise<Tag> {
+    // be careful to return tags in the same order
+    const tags = await storageService.getTags(filter);
+
+    return tags.find(tag => tag.id === id);
+}
+
 export async function getTagsFromIds(ids: number[], filter: Tag[] = []): Promise<Tag[]> {
     // be careful to return tags in the same order
     const tags = await storageService.getTags(filter);
@@ -38,8 +45,8 @@ export async function searchTags(term: string, filter: Tag[] = []): Promise<Tag[
 export const defaults: { [_: number]: [string, string, string[], string] } = {
     0: ['unnamed1', '0', [], 'green'],
     1: ['unnamed2', '1', [], 'yellow'],
-    2: ['unnamed3', '2', [], ''],
-    3: ['unnamed4', '3', [], ''],
+    2: ['unnamed3', '2', [], '#AA33aa'],
+    3: ['unnamed4', '3', [], '#FF4400'],
     4: ['unnamed5', '4', [], ''],
     5: ['unnamed6', '5', [], ''],
     6: ['unnamed7', '6', [], ''],
