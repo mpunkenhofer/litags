@@ -1,7 +1,8 @@
 export const litags = {
     keys: {
         tags: 'litags.tags',
-        options: 'litags.options'
+        options: 'litags.options',
+        frequentlyUsed: 'litags.frequentlyUsed'
     },
     selectors: {
         app: {

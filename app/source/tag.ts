@@ -1,6 +1,4 @@
-import {litags} from "./constants";
-
-const browser = require("webextension-polyfill");
+import {storageService} from "./storage";
 
 export class Tag {
     readonly id: number;
@@ -24,17 +22,12 @@ export class Tag {
         this.colors = colors;
     }
 
-    private static tagCache: { tags: Tag[], valid: boolean } = {
-        tags: [],
-        valid: false
-    };
-
     static async search(term: string, filter: Tag[] = []): Promise<Tag[]> {
         term = term.toLowerCase();
         const result: Tag[] = [];
 
         try {
-            const tags = await Tag.getTags();
+            const tags = await storageService.getTags();
 
             for (const tag of tags) {
                 if (!filter.find(t => t.id === tag.id) && tag.name.toLowerCase().includes(term))
@@ -59,7 +52,7 @@ export class Tag {
         const result: Tag[] = [];
 
         try {
-            const tags = await Tag.getTags();
+            const tags = await storageService.getTags();
 
             for (const tag of tags) {
                 if (tag.frequency > 0 && !filter.find(t => t.id === tag.id))
@@ -82,7 +75,7 @@ export class Tag {
         const result: Tag[] = [];
 
         try {
-            const tags = await Tag.getTags();
+            const tags = await storageService.getTags();
 
             for (const tag of tags) {
                 if (!filter.find(t => t.id === tag.id)) {
@@ -97,62 +90,24 @@ export class Tag {
     }
 
     static async increaseFrequentlyUsed(index: number) {
-        let tags = await Tag.getTags();
+        let tags = await storageService.getTags();
 
         if (index >= 0 && index < tags.length) {
             tags[index].frequency += 1;
-            Tag.setTags(tags);
-            Tag.tagCache.valid = false;
+            storageService.setTags(tags);
+            //Tag.tagCache.valid = false;
         }
     }
 
     static async getTagsFromIds(ids: number[]): Promise<Tag[]> {
         // be careful to return tags in the same order
-        const tags = await Tag.getTags();
+        const tags = await storageService.getTags();
         //return tags.filter(tag => ids.find(id => id === tag.id));
         return ids.map(id => tags.find(tag => tag.id === id));
     }
-
-    public static setDefaultTags() {
-        browser.storage.sync.set({[litags.keys.tags]: defaultTags});
-    }
-
-    private static setTags(tags: Tag[]) {
-        let dict: { [_: number]: [string, string, number, string[], number[]] } = {};
-
-        for (const tag of tags)
-            dict[tag.id] = [tag.name, tag.symbol, tag.frequency, tag.aliases, tag.colors];
-
-        browser.storage.sync.set({[litags.keys.tags]: dict});
-    }
-
-    private static async getTags(): Promise<Tag[]> {
-        if (Tag.tagCache.valid) {
-            return Tag.tagCache.tags;
-        } else {
-            try {
-                const tagData = (await browser.storage.sync.get(litags.keys.tags))[litags.keys.tags];
-
-                Tag.tagCache.tags = [];
-
-                for (const id in tagData) {
-                    if (tagData.hasOwnProperty(id)) {
-                        let [name, symbol, freq, aliases, colors] = tagData[id];
-                        Tag.tagCache.tags.push(new Tag(Number(id), symbol, name, freq, aliases, colors));
-                    }
-                }
-
-                Tag.tagCache.valid = true;
-
-                return Tag.tagCache.tags;
-            } catch (error) {
-                console.error(error)
-            }
-        }
-    }
 }
 
-const defaultTags: { [_: number]: [string, string, number, string[], number[]] } = {
+export const defaults: { [_: number]: [string, string, number, string[], number[]] } = {
     0: ['unnamed1', '0', 0, [], []],
     1: ['unnamed2', '1', 0, [], []],
     2: ['unnamed3', '2', 0, [], []],

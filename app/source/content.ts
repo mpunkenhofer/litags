@@ -1,12 +1,12 @@
-import {User} from "./user";
+import {Options} from "./options";
 import {Button} from "./button";
 import {List} from "./list";
-import {getAllOptions, Options} from "./options";
-import {litags} from "./constants";
+import {litags} from "./selectors";
+import {storageService} from "./storage";
 
 console.log('3LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-getAllOptions().then((options: Options) => {
+storageService.getOptions().then((options: Options) => {
     const element = document.querySelector(litags.selectors.app.appElement);
 
     if (element && options.enabled && options.gameEnabled) {
@@ -37,7 +37,7 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
     if (!anchor || !username)
         return;
 
-    User.getUser(username)
+    storageService.getUser(username)
         .then(user => {
             console.log(`user: ${user.username}, tags: ${user.tags.length}`);
             const list = new List(anchor, user);

@@ -1,5 +1,4 @@
-import {Tag} from "./tag";
-import {setDefaultOptions} from "./options";
+import {storageService} from "./storage";
 
 // we put those requries because of some hotreload issues
 require('./font.scss');
@@ -14,8 +13,8 @@ console.log('Litags! Hello from background script!');
 browser.runtime.onInstalled.addListener(() => {
     // console.log('onInstalled...');
     // store default tags
-    Tag.setDefaultTags();
-    setDefaultOptions();
+    storageService.setDefaultTags();
+    storageService.setDefaultOptions();
     // create alarm after extension is installed / upgraded
     //browser.alarms.create('refresh', { periodInMinutes: 3 });
 });

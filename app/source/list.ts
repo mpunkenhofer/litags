@@ -1,5 +1,5 @@
 import {User} from "./user";
-import {litags} from "./constants";
+import {litags} from "./selectors";
 import {SortableEvent} from "sortablejs";
 
 const Sortable = require('sortablejs');

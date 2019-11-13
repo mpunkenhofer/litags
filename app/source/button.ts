@@ -1,7 +1,7 @@
 import {User} from "./user";
 import {Tag} from "./tag";
 import {List} from "./list";
-import {litags} from "./constants";
+import {litags} from "./selectors";
 
 const browser = require("webextension-polyfill");
 let debounce = require('debounce-promise');
