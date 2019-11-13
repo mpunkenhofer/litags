@@ -1,4 +1,4 @@
-import {Tag} from "./tag";
+import {getTagsFromIds, Tag} from "./tag";
 import {storageService} from "./storage";
 
 export class User {
@@ -14,7 +14,7 @@ export class User {
         const options = await storageService.getOptions();
         if (this.tags.length < options.maxTags) {
             this.tags.push(tag);
-            Tag.increaseFrequentlyUsed(tag.id).then(() => storageService.setUser(this)).catch(e => console.error(e));
+            storageService.updateFrequentlyUsedTags(tag).then(() => storageService.setUser(this));
         }
     }
 
@@ -25,7 +25,7 @@ export class User {
     }
 
     public reArrange(newOrder: number[]) {
-        Tag.getTagsFromIds(newOrder).then(tags => {
+        getTagsFromIds(newOrder).then(tags => {
             this.tags = tags;
             storageService.setUser(this);
         });

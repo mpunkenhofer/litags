@@ -1,6 +1,6 @@
 import {litags} from "./selectors";
 import {defaults as optionsDefaults} from "./options";
-import {defaults as tagsDefaults} from "./tag";
+import {defaults as tagsDefaults, filterTags, getTagsFromIds} from "./tag";
 import {Tag} from "./tag";
 import {User} from "./user";
 
@@ -25,9 +25,9 @@ class StorageService {
         return options[litags.keys.options];
     }
 
-    public async getTags(): Promise<Tag[]> {
+    public async getTags(filter: Tag[] = []): Promise<Tag[]> {
         if (this.tagCache.valid) {
-            return this.tagCache.tags;
+            return filterTags(this.tagCache.tags, filter);
         } else {
             try {
                 const tagData = (await browser.storage.sync.get(litags.keys.tags))[litags.keys.tags];
@@ -36,14 +36,14 @@ class StorageService {
 
                 for (const id in tagData) {
                     if (tagData.hasOwnProperty(id)) {
-                        let [name, symbol, freq, aliases, colors] = tagData[id];
-                        this.tagCache.tags.push(new Tag(Number(id), symbol, name, freq, aliases, colors));
+                        let [name, symbol, aliases, colors] = tagData[id];
+                        this.tagCache.tags.push(new Tag(Number(id), symbol, name, aliases, colors));
                     }
                 }
 
                 this.tagCache.valid = true;
 
-                return this.tagCache.tags;
+                return filterTags(this.tagCache.tags, filter);
             } catch (error) {
                 console.error(error)
             }
@@ -51,10 +51,10 @@ class StorageService {
     }
 
     public setTags(tags: Tag[]) {
-        let dict: { [_: number]: [string, string, number, string[], number[]] } = {};
+        let dict: { [_: number]: [string, string, string[], number[]] } = {};
 
         for (const tag of tags)
-            dict[tag.id] = [tag.name, tag.symbol, tag.frequency, tag.aliases, tag.colors];
+            dict[tag.id] = [tag.name, tag.symbol, tag.aliases, tag.colors];
 
         browser.storage.sync.set({[litags.keys.tags]: dict});
     }
@@ -63,7 +63,7 @@ class StorageService {
         const userData = await browser.storage.local.get(username);
 
         if (Object.keys(userData).length !== 0) {
-            const tags = await Tag.getTagsFromIds(userData[username]);
+            const tags = await getTagsFromIds(userData[username]);
             return new User(username, tags);
         } else {
             return new User(username);
@@ -72,6 +72,28 @@ class StorageService {
 
     public setUser(user: User) {
         return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
+    }
+
+    public async getFrequentlyUsedTags(amount: number = 8, filter: Tag[] = []): Promise<Tag[]> {
+        // const result: Tag[] = [];
+        // const tags = await storageService.getTags();
+        //
+        // for (const tag of tags) {
+        //     if (tag.frequency > 0 && !filter.find(t => t.id === tag.id))
+        //         result.push(tag);
+        // }
+        //
+        // return result
+        //     .sort((a, b): number => {
+        //         return b.frequency - a.frequency;
+        //     })
+        //     .splice(0, amount);
+
+        return [];
+    }
+
+    public async updateFrequentlyUsedTags(tag: Tag) {
+
     }
 }
 

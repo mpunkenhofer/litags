@@ -1,7 +1,8 @@
 import {User} from "./user";
-import {Tag} from "./tag";
+import {searchTags, Tag} from "./tag";
 import {List} from "./list";
 import {litags} from "./selectors";
+import {storageService} from "./storage";
 
 const browser = require("webextension-polyfill");
 let debounce = require('debounce-promise');
@@ -123,7 +124,7 @@ export class Button {
                 }
 
                 if (term.length > 0) {
-                    const searchTerm = debounce(Tag.search, 100, {leading: true});
+                    const searchTerm = debounce(searchTags, 100, {leading: true});
                     searchTerm(term, this.user.tags).then((result: Tag[]) => {
                         document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'none';
                         const searchResultsElement = document.getElementById(litags.selectors.popup.searchResults);
@@ -136,7 +137,7 @@ export class Button {
                     });
                 } else {
                     document.getElementById(litags.selectors.popup.wrappers.searchResults).style.display = 'none';
-                    Tag.getFrequentlyUsed(8, this.user.tags).then(value => {
+                    storageService.getFrequentlyUsedTags().then(value => {
                         if (value.length > 0)
                             document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'block';
                     });
@@ -165,7 +166,7 @@ export class Button {
             const freqElement = document.getElementById(litags.selectors.popup.freq);
             freqElement.innerHTML = '';
 
-            const freqUsedTags = await Tag.getFrequentlyUsed(8, this.user.tags);
+            const freqUsedTags = await storageService.getFrequentlyUsedTags();
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
@@ -178,7 +179,7 @@ export class Button {
             const allElement = document.getElementById(litags.selectors.popup.all);
             allElement.innerHTML = '';
 
-            const allAvailableTags = await Tag.getAll(freqUsedTags.concat(this.user.tags));
+            const allAvailableTags = await storageService.getTags(freqUsedTags.concat(this.user.tags));
 
             if (allElement && allAvailableTags.length > 0) {
                 for (const tag of allAvailableTags) {

@@ -4,7 +4,7 @@ import {List} from "./list";
 import {litags} from "./selectors";
 import {storageService} from "./storage";
 
-console.log('3LiTags is open source! https://github.com/mpunkenhofer/litags');
+console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 storageService.getOptions().then((options: Options) => {
     const element = document.querySelector(litags.selectors.app.appElement);

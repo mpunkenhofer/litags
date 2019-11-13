@@ -1,9 +1,6 @@
 {
-  "name": "__MSG_appName__",
-  "short_name": "__MSG_appShortName__",
+  "name": "LiTags",
   "description": "__MSG_appDescription__",
-  "homepage_url": "https://github.com/mpunkenhofer/litags",
-  "version": "0.0.0",
   "manifest_version": 2,
   "default_locale": "en",
   "permissions": [ "storage", "alarms" ],
@@ -19,16 +16,12 @@
   },
   "options_page": "options.html",
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
       "matches": [ "http://*.lichess.org/*", "https://*.lichess.org/*" ],
-      "js": [
-        "content.js"
-      ],
+      "js": ["content.js"],
       "css": [ "styles.css" ]
     }
   ]

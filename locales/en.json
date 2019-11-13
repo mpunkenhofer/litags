@@ -1,12 +1,4 @@
 {
-  "appName": {
-    "message": "LiTags",
-    "description": "The name of the application"
-  },
-  "appShortName": {
-    "message": "litags",
-    "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
-  },
   "browserActionTitle": {
     "message": "LiTags",
     "description": "The title of the browser action button"

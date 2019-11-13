@@ -1,12 +1,12 @@
 import {storageService} from "./storage";
 
+const browser = require("webextension-polyfill");
+
 // we put those requries because of some hotreload issues
 require('./font.scss');
 require('./layout.scss');
 require('./button.scss');
 require('./list.scss');
-
-const browser = require("webextension-polyfill");
 
 console.log('Litags! Hello from background script!');
 
