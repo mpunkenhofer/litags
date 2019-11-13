@@ -41,6 +41,7 @@ export const litags = {
             tags: 'lt-list-tags',
             trash: 'lt-list-trash',
             trashSymbol: 'lt-list-trashSymbol',
+            sortableGroup: 'lt-list-sortableGroup',
             hiddenDragGhost: 'lt-list-hiddenDragGhost'
         }
     }

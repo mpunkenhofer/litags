@@ -26,7 +26,7 @@ export class List {
 
         let dragGhostElement: HTMLElement;
         // make sortable
-        const sortableGroup = 'lt-tags-sortable';
+        const sortableGroup = litags.selectors.list.sortableGroup;
         Sortable.create(this.list, {
             group: sortableGroup,
             animation: 100,

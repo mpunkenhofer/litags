@@ -3,9 +3,10 @@ const path = require('path');
 const baseManifest = require('./manifest/base');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ExtensionReloader = require('webpack-chrome-extension-reloader');
 const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
+const ExtensionReloader = require('webpack-chrome-extension-reloader');
 
 module.exports = {
 	mode: 'development',
@@ -14,6 +15,14 @@ module.exports = {
 	entry: {
 		content: './source/content.ts',
 		background: './source/background.ts',
+		styles: [
+			'./stylesheets/font.scss',
+			'./stylesheets/layout.scss',
+			'./stylesheets/button.scss',
+			'./stylesheets/list.scss'
+		],
+		options: ['./stylesheets/options.scss']
+
 	},
 
 	output: {
@@ -38,8 +47,9 @@ module.exports = {
 			}
 		}),
 		new MiniCssExtractPlugin({
-			filename: 'styles.css',
+			filename: '[name].css',
 		}),
+		new IgnoreEmitPlugin(['styles.js', 'options.js']),
 		new ExtensionReloader({
 			reloadPage: true, // Force the reload of the page also
 		}),

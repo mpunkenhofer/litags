@@ -1,0 +1,49 @@
+$verydark: #23272A;
+$dark: #2C2F33;
+$gray: #2a2d32;
+$grayple: #99AAB5;
+$blurple: #7289DA;
+
+$header-primary: #fff;
+$header-secondary: #b9bbbe;
+$text-normal: #dcddde;
+$text-muted: #72767d;
+$text-link: #00b0f4;
+$interactive-normal: #b9bbbe;
+$interactive-hover: #dcddde;
+$interactive-active: #fff;
+$interactive-muted: #4f545c;
+$background-primary: #36393f;
+$background-secondary: #2f3136;
+$background-tertiary: #202225;
+$background-accent: #4f545c;
+$background-floating: #18191c;
+
+body {
+  overflow-y: scroll;
+  background: $background-primary;
+}
+
+nav {
+  display: block;
+  overflow-y: scroll;
+  background: $background-secondary;
+  margin: 0;
+  grid-area: linav;
+}
+
+.lt-options-page-menu-content {
+  display: block;
+  grid-area: licontent;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 10rem auto;
+  grid-template-areas: 'linav licontent';
+}
+
+.lt-options-main-wrap {
+}
+
+
