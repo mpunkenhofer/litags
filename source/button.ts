@@ -137,7 +137,7 @@ export class Button {
                     });
                 } else {
                     document.getElementById(litags.selectors.popup.wrappers.searchResults).style.display = 'none';
-                    storageService.getFrequentlyUsedTags().then(value => {
+                    storageService.getFrequentlyUsedTags(this.user.tags).then(value => {
                         if (value.length > 0)
                             document.getElementById(litags.selectors.popup.wrappers.freq).style.display = 'block';
                     });
@@ -166,7 +166,7 @@ export class Button {
             const freqElement = document.getElementById(litags.selectors.popup.freq);
             freqElement.innerHTML = '';
 
-            const freqUsedTags = await storageService.getFrequentlyUsedTags();
+            const freqUsedTags = await storageService.getFrequentlyUsedTags(this.user.tags);
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)

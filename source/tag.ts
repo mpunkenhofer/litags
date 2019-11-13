@@ -20,9 +20,9 @@ export const filterTags = (tags: Tag[], filter: Tag[]): Tag[] => {
     return filter ? tags.filter(tag => !filter.find(filterTag => filterTag.id === tag.id)) : tags;
 };
 
-export async function getTagsFromIds(ids: number[]): Promise<Tag[]> {
+export async function getTagsFromIds(ids: number[], filter: Tag[] = []): Promise<Tag[]> {
     // be careful to return tags in the same order
-    const tags = await storageService.getTags();
+    const tags = await storageService.getTags(filter);
     //return tags.filter(tag => ids.find(id => id === tag.id));
     return ids.map(id => tags.find(tag => tag.id === id));
 }

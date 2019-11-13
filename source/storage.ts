@@ -1,7 +1,6 @@
 import {litags} from "./selectors";
-import {defaults as optionsDefaults} from "./options";
-import {defaults as tagsDefaults, filterTags, getTagsFromIds} from "./tag";
-import {Tag} from "./tag";
+import {defaults as optionsDefaults, Options} from "./options";
+import {defaults as tagsDefaults, filterTags, getTagsFromIds, Tag} from "./tag";
 import {User} from "./user";
 
 const browser = require("webextension-polyfill");
@@ -20,8 +19,12 @@ class StorageService {
         browser.storage.sync.set({[litags.keys.tags]: tagsDefaults});
     }
 
-    public async getOptions() {
+    public async getOptions(): Promise<Options> {
         const options = await browser.storage.sync.get(litags.keys.options);
+
+        if (!options)
+            throw Error('Failed to get options!');
+
         return options[litags.keys.options];
     }
 
@@ -74,26 +77,54 @@ class StorageService {
         return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
     }
 
-    public async getFrequentlyUsedTags(amount: number = 8, filter: Tag[] = []): Promise<Tag[]> {
-        // const result: Tag[] = [];
-        // const tags = await storageService.getTags();
-        //
-        // for (const tag of tags) {
-        //     if (tag.frequency > 0 && !filter.find(t => t.id === tag.id))
-        //         result.push(tag);
-        // }
-        //
-        // return result
-        //     .sort((a, b): number => {
-        //         return b.frequency - a.frequency;
-        //     })
-        //     .splice(0, amount);
+    public async getFrequentlyUsedTags(filter: Tag[] = [], amount: number = 8): Promise<Tag[]> {
+        const freqUsedData = (await browser.storage.sync.get(litags.keys.frequentlyUsed))[litags.keys.frequentlyUsed];
+
+        if (freqUsedData) {
+            const tags = await getTagsFromIds(Object.keys(freqUsedData).map(key => Number(key)));
+            const frequencies: number[] = Object.values(freqUsedData);
+
+            let pairs: [Tag, number][] = tags.map((tag, i) => [tag, frequencies[i]]);
+            pairs = pairs.filter(pair => !filter.find(filterTag => filterTag.id === pair[0].id));
+
+            return pairs
+                .sort((a, b): number => {
+                    return b[1] - a[1];
+                })
+                .splice(0, amount)
+                .map(pair => pair[0]);
+        }
 
         return [];
     }
 
     public async updateFrequentlyUsedTags(tag: Tag) {
+        let freqUsed = (await browser.storage.sync.get(litags.keys.frequentlyUsed))[litags.keys.frequentlyUsed];
+        const options = await this.getOptions();
 
+        if (!freqUsed)
+            freqUsed = {};
+
+        // add/inc freq used entry
+        if (freqUsed[tag.id])
+            freqUsed[tag.id] += 1;
+        else
+            freqUsed[tag.id] = 1;
+
+        if (Object.keys(freqUsed).length > options.frequentlyUsedCap) {
+            let min = [Number.MAX_VALUE, tag.id];
+
+            for (const id in freqUsed) {
+                if (freqUsed.hasOwnProperty(id)) {
+                    const value = freqUsed[id];
+                    min = value < min[0] ? [value, id] : min;
+                }
+            }
+
+            delete freqUsed[min[1]];
+        }
+
+        browser.storage.sync.set({[litags.keys.frequentlyUsed]: freqUsed});
     }
 }
 
