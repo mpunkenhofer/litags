@@ -54,10 +54,10 @@ class StorageService {
     }
 
     public setTags(tags: Tag[]) {
-        let dict: { [_: number]: [string, string, string[], number[]] } = {};
+        let dict: { [_: number]: [string, string, string[], string] } = {};
 
         for (const tag of tags)
-            dict[tag.id] = [tag.name, tag.symbol, tag.aliases, tag.colors];
+            dict[tag.id] = [tag.name, tag.symbol, tag.aliases, tag.color];
 
         browser.storage.sync.set({[litags.keys.tags]: dict});
     }

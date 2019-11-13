@@ -94,8 +94,11 @@ export class List {
             for (const tag of this.user.tags) {
                 const listElement = document.createElement('li');
                 listElement.title = tag.name;
-                listElement.innerHTML = tag.symbol;
+                listElement.innerText = tag.symbol;
                 listElement.className = `${litags.selectors.list.tag}-${tag.id}`;
+                if(tag.color.length > 0)
+                    listElement.style.color = tag.color;
+
                 this.list.append(listElement);
             }
 
