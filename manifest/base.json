@@ -22,7 +22,7 @@
     {
       "matches": [ "http://*.lichess.org/*", "https://*.lichess.org/*" ],
       "js": ["content.js"],
-      "css": [ "styles.css" ]
+      "css": [ "content.css" ]
     }
   ]
 }

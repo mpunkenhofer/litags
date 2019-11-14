@@ -2,14 +2,8 @@ import {storageService} from "./storage";
 
 const browser = require("webextension-polyfill");
 
-// we put those requries because of some hotreload issues
-require('../stylesheets/font.scss');
-require('../stylesheets/layout.scss');
-require('../stylesheets/button.scss');
-require('../stylesheets/list.scss');
-//require('./options.scss');
 
-console.log('Litags! Hello from background script!');
+console.log('[Background-Script] LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 browser.runtime.onInstalled.addListener(() => {
     // console.log('onInstalled...');

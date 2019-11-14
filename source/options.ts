@@ -13,3 +13,5 @@ export const defaults: Options = {
     maxTags: 8,
     frequentlyUsedCap: 20
 };
+
+console.log('1[Options-Script] LiTags is open source! https://github.com/mpunkenhofer/litags');
