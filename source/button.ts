@@ -1,5 +1,5 @@
 import {User} from "./user";
-import {searchTags, Tag} from "./tag";
+import {createTagElement, searchTags, Tag} from "./tag";
 import {List} from "./list";
 import {litags} from "./selectors";
 import {storageService} from "./storage";
@@ -233,13 +233,7 @@ export class Button {
         element.className = litags.selectors.popup.tag;
         element.title = tag.name;
 
-        const symbol = document.createElement('span');
-        symbol.className = litags.selectors.popup.symbol;
-        symbol.innerText = tag.symbol;
-        if(tag.color.length > 0)
-            symbol.style.color = tag.color;
-
-        element.append(symbol);
+        element.append(createTagElement(tag, 'span', litags.selectors.popup.symbol));
 
         element.onclick = () => {
             this.user.addTag(tag).then(() => this.list.update());

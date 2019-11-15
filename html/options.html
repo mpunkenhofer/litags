@@ -5,6 +5,7 @@
     <meta content="Options page for the Litags browser extension." name="description">
     <title>Litags - Options</title>
     <link rel="stylesheet" type="text/css" href="options.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <script type="text/javascript" src="options.js"></script>
     <script src="https://kit.fontawesome.com/b27c41c594.js" crossorigin="anonymous"></script>
 </head>
@@ -30,45 +31,26 @@
             </div>
         </nav>
     </div>
-    <div class="lt-content-wrap">
-        <div class="lt-content lt-top-margin">
-            <h1>Settings</h1>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac tellus ac magna aliquam rhoncus
-            interdum ac nulla. Donec cursus ultrices purus eget tincidunt. Cras at pharetra quam. Cras congue tortor
-            diam, pulvinar luctus odio malesuada sed. Sed a mollis nunc. Vestibulum eu libero enim. Orci varius natoque
-            penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque malesuada tellus augue, nec
-            gravida enim interdum in. Duis quis nisi at augue ultrices vulputate. Mauris ullamcorper ante vitae egestas
-            ornare. Aenean quis turpis at quam sodales rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Pellentesque interdum odio magna, non luctus dui pharetra at.
-
-            <h2>Hello</h2>
-            In nec dictum odio. Morbi eros sem, posuere sed dolor at, fringilla facilisis ipsum. Integer ornare lacus
-            orci, non maximus leo iaculis non. Fusce condimentum, dolor nec sollicitudin consequat, justo mauris
-            accumsan massa, ac lacinia odio urna nec ante. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-            Vestibulum egestas magna ligula, ut vehicula odio iaculis eget. Aliquam magna tellus, pellentesque pretium
-            condimentum sed, volutpat eget enim. Ut et bibendum mauris. Curabitur rhoncus rhoncus tellus, accumsan
-            egestas nibh luctus sit amet. Sed posuere dui eu turpis lobortis finibus. Suspendisse finibus in magna
-            congue ultricies. Nam rutrum mauris vitae lacinia maximus. Donec feugiat odio vel purus tincidunt suscipit.
-            Vestibulum eu sagittis orci, non faucibus massa. Cras semper congue commodo. Etiam eu interdum massa.
-
-            Donec eleifend purus et auctor imperdiet. Sed laoreet orci non porta scelerisque. Morbi mollis volutpat
-            dolor, porttitor tempor orci vulputate eu. Quisque faucibus tristique tortor, aliquam mollis ex cursus
-            vitae. Aliquam tincidunt felis cursus, pulvinar eros vel, malesuada dolor. Nullam dictum auctor dignissim.
-            Vestibulum ornare, ex quis cursus laoreet, eros nisl mollis turpis, sit amet mattis massa elit id est.
-
-            Vestibulum diam felis, viverra vitae quam vitae, egestas congue velit. Morbi varius, felis vel elementum
-            tristique, eros ante dictum nunc, vitae bibendum mauris massa mollis augue. Duis id rutrum sem, sed viverra
-            dui. Aliquam in elit vel orci gravida porttitor ac et ligula. Sed nibh diam, convallis eu vulputate et,
-            condimentum aliquam sem. Sed orci nisi, mattis et consequat vel, vehicula ac est. Nulla augue est, dignissim
-            a laoreet quis, maximus eu nisl. Donec in dui vitae sapien lacinia tempor.
-
-            Donec sed elit lectus. Fusce erat ipsum, lacinia vitae magna in, tincidunt faucibus dui. Nulla lacinia
-            mauris a est pellentesque pulvinar. Vestibulum interdum, ligula ut egestas mollis, nisl purus luctus dui,
-            sed elementum enim ipsum nec metus. Sed porttitor hendrerit arcu vel pellentesque. Nullam lorem felis,
-            iaculis ac odio a, sodales auctor nibh. Nam porttitor mauris euismod est venenatis varius. Cras neque mi,
-            facilisis non odio condimentum, maximus tristique ligula. Vivamus volutpat libero lacus, quis placerat massa
-            sodales id. Curabitur venenatis interdum posuere. Nullam molestie lobortis porttitor. Ut ac egestas lacus.
-            Nullam lacinia ut justo iaculis ultrices. Duis non sem eget eros finibus accumsan.
+    <div class="lt-content-wrap lt-top-margin">
+        <div id="lt-content">
+            <div class="lt-content-users">
+                <h1>Tagged Users</h1>
+                <div class="lt-content-users-header">
+                    <span id="lt-content-users-count" class="lt-content-info-text">13 Users</span>
+                    <input id="lt-content-user-search">
+                </div>
+                <div class="lt-content-separator"></div>
+                <div class="lt-content-user">
+                    <span class="lt-content-userName">Test</span>
+                    <div class="lt-content-userRemove">X</div>
+                    <div class="lt-content-separator"></div>
+                </div>
+                <div class="lt-content-user">
+                    <span class="lt-content-userName">Test</span>
+                    <div class="lt-content-userRemove">X</div>
+                    <div class="lt-content-separator"></div>
+                </div>
+            </div>
         </div>
     </div>
 </main>

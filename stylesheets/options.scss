@@ -67,6 +67,9 @@ h2 {
 
 .lt-content-wrap {
   grid-area: licontent;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
 }
 
 nav {
@@ -142,15 +145,26 @@ nav {
   }
 }
 
-.lt-content {
+#lt-content {
   display: block;
-  overflow-y: auto;
-  overflow-x: hidden;
   margin-left: 4em;
+
+  .lt-content-separator {
+    opacity: .5;
+    border-bottom: 1px solid;
+    border-color: $background-accent;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .lt-top-margin {
   margin-top: 5em;
+}
+
+.lt-content-info-text {
+  color: $header-secondary;
+  font-size: .9em;
 }
 
 //body ::-webkit-scrollbar, body ::-webkit-scrollbar-corner {

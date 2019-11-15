@@ -1,7 +1,7 @@
 import {User} from "./user";
 import {litags} from "./selectors";
 import {SortableEvent} from "sortablejs";
-import {getTagsFromId} from "./tag";
+import {createTagElement, getTagsFromId} from "./tag";
 
 const Sortable = require('sortablejs');
 
@@ -102,14 +102,9 @@ export class List {
             this.list.innerHTML = '';
 
             for (const tag of this.user.tags) {
-                const listElement = document.createElement('li');
-                listElement.title = tag.name;
-                listElement.innerText = tag.symbol;
-                listElement.className = `${litags.selectors.list.tag}-${tag.id}`;
-                if(tag.color.length > 0)
-                    listElement.style.color = tag.color;
-
-                this.list.append(listElement);
+                const tagElement =
+                    createTagElement(tag, 'li', `${litags.selectors.list.tag}-${tag.id}`);
+                this.list.append(tagElement);
             }
 
             this.hideTrash();

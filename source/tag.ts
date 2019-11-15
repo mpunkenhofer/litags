@@ -1,4 +1,5 @@
 import {storageService} from "./storage";
+import {litags} from "./selectors";
 
 export class Tag {
     readonly id: number;
@@ -40,6 +41,17 @@ export async function searchTags(term: string, filter: Tag[] = []): Promise<Tag[
     return tags.filter(tag =>
         tag.name.toLowerCase().includes(term) || tag.aliases.find(alias => alias.toLowerCase().includes(term))
     );
+}
+
+export function createTagElement(tag: Tag, type: string = 'span', className: string = '') {
+    const tagElement = document.createElement(type);
+    tagElement.className = className;
+    tagElement.innerText = tag.symbol;
+
+    if(tag.color.length > 0)
+        tagElement.style.color = tag.color;
+
+    return tagElement;
 }
 
 export const defaults: { [_: number]: [string, string, string[], string] } = {
