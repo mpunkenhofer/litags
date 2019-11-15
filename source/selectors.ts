@@ -43,6 +43,16 @@ export const litags = {
             trashSymbol: 'lt-list-trashSymbol',
             sortableGroup: 'lt-list-sortableGroup',
             hiddenDragGhost: 'lt-list-hiddenDragGhost'
+        },
+        options: {
+            nav: {
+                main: 'lt-nav',
+                title: 'lt-nav-title',
+                button: 'lt-nav-button',
+                socials: 'lt-nav-socials',
+                separator: 'lt-nav-separator'
+            },
+            content: 'lt-content'
         }
     }
 };

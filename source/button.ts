@@ -31,7 +31,7 @@ export class Button {
         </div>
         <div class="${litags.selectors.popup.wrappers.search}">
             <input type="search" id="${litags.selectors.popup.search}" autocapitalize="off" autocomplete="off" spellcheck="false"
-            placeholder="${browser.i18n.getMessage("appSearchPlaceholder")}">
+            placeholder="${browser.i18n.getMessage("appSearchTagPlaceholder")}">
         </div>`;
 
 
@@ -114,14 +114,8 @@ export class Button {
         const search = document.getElementById(litags.selectors.popup.search);
 
         if (search) {
-            search.onkeydown = (e: KeyboardEvent) => {
+            search.oninput = (e: Event) => {
                 let term = (<HTMLInputElement>e.target).value;
-                // TODO handle special keys better
-                if (e.key === 'Backspace') {
-                    term = term.substr(0, term.length - 1);
-                } else if (e.key.match(/(\w|\s)/g)) {
-                    term += e.key;
-                }
 
                 if (term.length > 0) {
                     const searchTerm = debounce(searchTags, 100, {leading: true});

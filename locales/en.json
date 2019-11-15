@@ -11,8 +11,28 @@
     "message": "Add Tag",
     "description": "The tooltip of the add tag button."
   },
-  "appSearchPlaceholder": {
+  "appSearchTagPlaceholder": {
     "message": "Search for a Tag...",
     "description": "Placeholder text displayed in the search input element."
+  },
+  "appTitleSettings": {
+    "message": "Settings",
+    "description": "'Settigns' title"
+  },
+  "appTitleTags": {
+    "message": "Tags",
+    "description": "'Tags' title"
+  },
+  "appTitleUsers": {
+    "message": "Users",
+    "description": "'Users' title"
+  },
+  "appTitleBackup": {
+    "message": "Backup",
+    "description": "'Backup' title"
+  },
+  "appTitleData": {
+    "message": "Data",
+    "description": "'Data' title"
   }
 }

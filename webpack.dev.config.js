@@ -21,7 +21,10 @@ module.exports = {
             './stylesheets/list.scss'
 		],
         background: './source/background.ts',
-        options: ['./source/options.ts', './stylesheets/options.scss'],
+        options: [
+            './source/options.ts',
+            './stylesheets/options/options.scss',
+        ],
     },
 
     output: {

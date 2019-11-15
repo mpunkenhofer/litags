@@ -1,0 +1,74 @@
+@import '../list';
+@import '../font';
+@import 'dropdown';
+@import 'colors';
+@import 'nav';
+@import 'content';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  color: $text-normal;
+}
+
+body {
+  display: block;
+  background: $background-primary;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 20% 70% auto;
+  grid-template-areas: 'linav licontent .';
+  height: 100%;
+}
+
+h1 {
+  color: $header-primary;
+  font-size: 1.5em;
+}
+
+h2 {
+  color: $header-secondary;
+  font-size: 1.2em;
+}
+
+input {
+  -webkit-appearance: searchfield;
+}
+
+input, textarea {
+  background: $background-tertiary;
+  border: 1px solid $background-accent;
+  color: $text-normal;
+  outline-color: $input-outline;
+  padding: .25em .6em;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.lt-content-wrap, .lt-nav-wrap {
+  height: 100%;
+}
+
+.lt-top-margin {
+  margin-top: 5em;
+}
+
+.lt-button-effect {
+  color: $interactive-normal;
+  transition: transform .2s;
+
+  &:hover {
+    color: $interactive-hover;
+    transform: scale(1.2);
+  }
+}

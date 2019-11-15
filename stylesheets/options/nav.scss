@@ -1,0 +1,76 @@
+@import 'colors';
+
+.lt-nav-wrap {
+  display: grid;
+  grid-template-columns: auto auto 1em;
+  grid-template-areas: '. limenuitems .';
+  grid-area: linav;
+  background: $background-secondary;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+nav {
+  overflow-y: auto;
+  overflow-x: hidden;
+  grid-area: limenuitems;
+
+  .active, .active:hover {
+    background-color: $button-active;
+    border-radius: 4px;
+  }
+
+  .lt-nav-button, .lt-nav-title, .lt-nav-separator {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    padding-right: 2vw;
+    padding-left: .8rem;
+    font-weight: 600;
+  }
+
+  .lt-nav-button {
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+    cursor: pointer;
+    color: $interactive-normal;
+
+    &:hover {
+      color: $interactive-hover;
+      background-color: $button-hover;
+      border-radius: 4px;
+    }
+  }
+
+  .lt-nav-title {
+    color: $text-muted;
+    margin-top: .7rem;
+    margin-bottom: .4rem;
+    font-size: .9em;
+  }
+
+  .lt-nav-separator {
+    opacity: .5;
+    border-bottom: 1px solid;
+    border-color: $background-accent;
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+  }
+
+  .lt-nav-socials {
+    display: flex;
+    position: absolute;
+    margin-top: .5em;
+    font-size: 1.5em;
+    font-weight: 400;
+    padding-right: 2vw;
+    padding-left: .8rem;
+    border: 0;
+    outline: none;
+
+    a {
+      padding-right: .5em;
+    }
+  }
+}

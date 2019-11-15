@@ -1,0 +1,58 @@
+@import 'colors';
+
+.lt-content-wrap {
+  grid-area: licontent;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+}
+
+#lt-content {
+  display: block;
+  margin-left: 4em;
+}
+
+.lt-content-info-text {
+  color: $header-secondary;
+  font-size: .9em;
+}
+
+.lt-content-separator {
+  opacity: .5;
+  border-bottom: 1px solid;
+  border-color: $background-accent;
+  margin-top: .8rem;
+  margin-bottom: .8rem;
+}
+
+.lt-content-users-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .lt-content-search-wrap {
+    margin-left: 2em;
+  }
+}
+
+.lt-content-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+  .lt-content-userName {
+    margin-left: 1em;
+  }
+
+  .lt-content-userRemove {
+    margin-left: auto;
+    margin-right: 1em;
+  }
+
+  .lt-list, ul {
+    margin: 0 0 0 1em;
+    padding: 0;
+  }
+}

@@ -1,0 +1,18 @@
+@import 'colors';
+
+.lt-dropdown-info {
+  color: $text-muted;
+  font-size: .8em;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.lt-dropdown {
+  margin-left: .8em;
+  .lt-dropdown-button {
+    font-size: .9em;
+    i {
+      margin-left: .5em;
+    }
+  }
+}
