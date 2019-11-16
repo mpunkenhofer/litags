@@ -108,7 +108,7 @@ class OptionsPage {
 
     showUsers() {
         document.getElementById(litags.selectors.options.content.main).innerHTML =
-            `<h1>Tagged Users</h1>
+            `<h1>${browser.i18n.getMessage("appTitleTaggedUsers")}</h1>
                 <div class="lt-content-users-header">
                     <span id="${litags.selectors.options.content.userCount}" class="lt-content-infoText"></span>
                     <span class="lt-dropdown-info">Sort by:</span>

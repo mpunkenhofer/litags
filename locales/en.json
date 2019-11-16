@@ -27,6 +27,10 @@
     "message": "Users",
     "description": "'Users' title"
   },
+  "appTitleTaggedUsers": {
+    "message": "Tagged Users",
+    "description": "'Tagged Users' title"
+  },
   "appTitleBackup": {
     "message": "Backup",
     "description": "'Backup' title"
