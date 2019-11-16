@@ -1,4 +1,4 @@
-import {litags} from "./selectors";
+import {litags} from "./constants";
 import {defaults as optionsDefaults, Options} from "./options";
 import {defaults as tagsDefaults, filterTags, getTagsFromIds, Tag} from "./tag";
 import {User} from "./user";
@@ -75,6 +75,28 @@ class StorageService {
 
     public setUser(user: User) {
         return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
+    }
+
+    //TODO: caching
+    public async getUsers(): Promise<User[]> {
+        // get all
+        const data = await browser.storage.local.get(null);
+        const users: User[] = [];
+
+        for(const key in data) {
+            if (data.hasOwnProperty(key)) {
+                if (!key.startsWith('litags.')) {
+                    const tags = await getTagsFromIds(data[key]);
+                    users.push(new User(key, tags))
+                }
+            }
+        }
+
+        return users;
+    }
+
+    public removeUser(user: User) {
+        browser.storage.local.remove(user.username);
     }
 
     public async getFrequentlyUsedTags(filter: Tag[] = [], amount: number = 8): Promise<Tag[]> {

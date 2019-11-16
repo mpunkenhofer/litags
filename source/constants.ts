@@ -4,6 +4,10 @@ export const litags = {
         options: 'litags.options',
         frequentlyUsed: 'litags.frequentlyUsed'
     },
+    links: {
+      discord: 'https://discord.gg/4d7QWUK',
+      github: 'https://github.com/mpunkenhofer/litags'
+    },
     selectors: {
         app: {
             appElement: '.round__app',
@@ -52,7 +56,23 @@ export const litags = {
                 socials: 'lt-nav-socials',
                 separator: 'lt-nav-separator'
             },
-            content: 'lt-content'
+            content: {
+                main: 'lt-content',
+                user: 'lt-content-user',
+                userName: 'lt-content-userName',
+                userList: 'lt-content-userList',
+                userCount: 'lt-content-userCount',
+                userRemove: 'lt-content-userRemove',
+                separator: 'lt-content-separator',
+            },
+            buttonEffect: 'lt-button-effect'
+        },
+        icons: {
+            discord: 'lt-icon-discord',
+            github: 'lt-icon-github',
+            trash: 'lt-icon-trash',
+            chevup: 'lt-icon-chevron-up',
+            chevdown: 'lt-icon-chevron-down'
         }
     }
 };

@@ -1,5 +1,5 @@
 import {User} from "./user";
-import {litags} from "./selectors";
+import {litags} from "./constants";
 import {SortableEvent} from "sortablejs";
 import {createTagElement, getTagsFromId} from "./tag";
 

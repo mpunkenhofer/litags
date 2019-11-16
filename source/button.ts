@@ -1,7 +1,7 @@
 import {User} from "./user";
 import {createTagElement, searchTags, Tag} from "./tag";
 import {List} from "./list";
-import {litags} from "./selectors";
+import {litags} from "./constants";
 import {storageService} from "./storage";
 
 const browser = require("webextension-polyfill");

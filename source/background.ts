@@ -3,11 +3,11 @@ import {storageService} from "./storage";
 const browser = require("webextension-polyfill");
 
 
-console.log('[Background-Script] LiTags is open source! https://github.com/mpunkenhofer/litags');
+console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 browser.runtime.onInstalled.addListener(() => {
     // console.log('onInstalled...');
-    // store default tags
+    // store defaults
     storageService.setDefaultTags();
     storageService.setDefaultOptions();
     // create alarm after extension is installed / upgraded

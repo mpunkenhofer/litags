@@ -1,4 +1,7 @@
-import {litags} from "./selectors";
+import {litags} from "./constants";
+import {storageService} from "./storage";
+import {List} from "./list";
+import {User} from "./user";
 
 const browser = require("webextension-polyfill");
 
@@ -24,6 +27,9 @@ class OptionsPage {
 
     constructor() {
         this.navElement = document.getElementById(litags.selectors.options.nav.main);
+
+        if (!this.navElement)
+            return;
 
         const settingsElement =
             this.createNavElement(browser.i18n.getMessage("appTitleSettings"), this.showSettings, true);
@@ -61,6 +67,9 @@ class OptionsPage {
     }
 
     addNavElements(anchor: HTMLElement, elements: HTMLElement[], title: string = ''): HTMLElement {
+        if (!anchor)
+            return;
+
         if (title) {
             const titleElement = document.createElement('div');
             titleElement.className = litags.selectors.options.nav.title;
@@ -79,31 +88,32 @@ class OptionsPage {
     }
 
     addNavSocialElements(anchor: HTMLElement) {
+        if (!anchor)
+            return;
+
         const socialElement = document.createElement('div');
         socialElement.className = litags.selectors.options.nav.socials;
-        socialElement.innerHTML =
-            `<a href="https://discord.gg/4d7QWUK" target="_blank">
-                    <i class="fab fa-discord lt-button-effect"></i>D
-                </a>
-                <a href="https://github.com/mpunkenhofer/litags" target="_blank">
-                    <i class="fab fa-github-square lt-button-effect"></i>G
-                </a>`;
+        socialElement.innerHTML = `<a href="${litags.links.discord}" target="_blank">
+<i class="${litags.selectors.icons.discord} ${litags.selectors.options.buttonEffect}"></i>
+</a>
+<a href="${litags.links.github}" target="_blank">
+<i class="${litags.selectors.icons.github} ${litags.selectors.options.buttonEffect}"></i>
+</a>`;
         anchor.append(socialElement);
     }
 
     showSettings() {
-        document.getElementById(litags.selectors.options.content).innerHTML = `<h1>Settings</h1>`;
+        document.getElementById(litags.selectors.options.content.main).innerHTML = `<h1>Settings</h1>`;
     }
 
     showUsers() {
-        document.getElementById(litags.selectors.options.content).innerHTML =
-            `<div class="lt-content-users">
-                <h1>Tagged Users</h1>
+        document.getElementById(litags.selectors.options.content.main).innerHTML =
+            `<h1>Tagged Users</h1>
                 <div class="lt-content-users-header">
-                    <span id="lt-content-users-count" class="lt-content-info-text">13 Users</span>
+                    <span id="${litags.selectors.options.content.userCount}" class="lt-content-infoText"></span>
                     <span class="lt-dropdown-info">Sort by:</span>
                     <div class="lt-dropdown">
-                        <div class="lt-dropdown-button">Name<i class="fa fa-angle-down" aria-hidden="true"></i></div>
+                        <div class="lt-dropdown-button">Name<i class=""></i></div>
                         <div class="lt-dropdown-list">
                             <div class="lt-dropdown-item"></div>
                             <div class="lt-dropdown-item"></div>
@@ -112,62 +122,70 @@ class OptionsPage {
                     <div class="lt-content-search-wrap">
                         <input type="search" id="lt-content-user-search" placeholder="Search for a user..." autocapitalize="off" autocomplete="off" spellcheck="false">
                     </div>
-                </div>
-                <div class="lt-content-separator"></div>
-                <div class="lt-content-user">
-                    <span class="lt-content-userName">Test</span>
-                    <div class="lt-list">
-                        <ul>
-                            <li>0</li>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                            <li>6</li>
-                        </ul>
-                    </div>
-                    <div class="lt-content-userRemove">
-                        <i class="fa fa-trash-o lt-button-effect" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="lt-content-separator"></div>
-                <div class="lt-content-user">
-                    <span class="lt-content-userName">Test</span>
-                    <div class="lt-list">
-                        <ul>
-                            <li>0</li>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                            <li>6</li>
-                        </ul>
-                    </div>
-                    <div class="lt-content-userRemove">
-                        <i class="fa fa-trash-o lt-button-effect" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>`;
+                </div>`;
 
+        const userList = document.createElement('div');
+        userList.id = litags.selectors.options.content.userList;
+        document.getElementById(litags.selectors.options.content.main).append(userList);
+
+        OptionsPage.addUsers(userList).catch(e => console.error(e));
+    }
+
+    static async addUsers(anchor: HTMLElement) {
+        if (!anchor)
+            return;
+
+        const users = await storageService.getUsers();
+
+        const userCountElement = document.getElementById(litags.selectors.options.content.userCount);
+        userCountElement.innerText = users.length == 1 ? '1 User' : `${users.length} Users`;
+
+        if (users.length > 0) {
+            OptionsPage.addSeparator(anchor);
+
+            for (const user of users) {
+                const userElement = document.createElement('div');
+                userElement.className = litags.selectors.options.content.user;
+
+                const userNameElement = document.createElement('span');
+                userNameElement.className = litags.selectors.options.content.userName;
+                userNameElement.textContent = user.username;
+
+                userElement.append(userNameElement);
+                anchor.append(userElement);
+
+                const list = new List(userElement, user);
+                list.show();
+
+                const userRemoveElement = document.createElement('div');
+                userRemoveElement.className = litags.selectors.options.content.userRemove;
+                userRemoveElement.innerHTML =
+                    `<i class="${litags.selectors.icons.trash} ${litags.selectors.options.buttonEffect}"></i>`;
+                userElement.append(userRemoveElement);
+
+                OptionsPage.addSeparator(anchor);
+            }
+        }
+    }
+
+    static addSeparator(anchor: HTMLElement) {
+        if (!anchor)
+            return;
+
+        anchor.insertAdjacentHTML('beforeend',
+            `<div class="${litags.selectors.options.content.separator}"></div>`);
     }
 
     showTags() {
-        document.getElementById(litags.selectors.options.content).innerHTML = `<h1>Tags</h1>`;
+        document.getElementById(litags.selectors.options.content.main).innerHTML = `<h1>Tags</h1>`;
 
     }
 
     showBackup() {
-        document.getElementById(litags.selectors.options.content).innerHTML = `<h1>Backup</h1>`;
+        document.getElementById(litags.selectors.options.content.main).innerHTML = `<h1>Backup</h1>`;
     }
 }
 
-console.log('[Options-Script] LiTags is open source! https://github.com/mpunkenhofer/litags');
+console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-document.addEventListener("DOMContentLoaded", function () {
-    new OptionsPage();
-});
-
-
-
+new OptionsPage();

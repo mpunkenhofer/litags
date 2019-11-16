@@ -7,3 +7,41 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: lt-icons;
+  src: url("../fonts/lt-icons.woff") format("woff");
+  font-display: block;
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.lt-icon-chevron-down,
+.lt-icon-chevron-up,
+.lt-icon-discord,
+.lt-icon-github,
+.lt-icon-trash {
+  display: inline-block;
+  font-family: lt-icons, serif;
+  font-style: normal;
+  border: 0;
+}
+.lt-icon-discord:after  {
+  content: "\e900";
+}
+
+.lt-icon-github:after {
+  content: "\eab0";
+}
+
+.lt-icon-chevron-up:after {
+  content: "\e901";
+}
+
+.lt-icon-chevron-down:after {
+  content: "\e902";
+}
+
+.lt-icon-trash:after {
+  content: "\e9ac";
+}

@@ -1,4 +1,5 @@
 @import 'colors';
+@import '../list';
 
 .lt-content-wrap {
   grid-area: licontent;
@@ -12,7 +13,7 @@
   margin-left: 4em;
 }
 
-.lt-content-info-text {
+.lt-content-infoText {
   color: $header-secondary;
   font-size: .9em;
 }
@@ -35,24 +36,23 @@
   }
 }
 
-.lt-content-user {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1em;
-  margin-bottom: 1em;
+#lt-content-userList {
+  .lt-content-user {
+    display: flex;
+    margin-top: 1em;
+    margin-bottom: 1em;
 
-  .lt-content-userName {
-    margin-left: 1em;
-  }
+    .lt-content-userName {
+      margin-left: 1em;
+    }
 
-  .lt-content-userRemove {
-    margin-left: auto;
-    margin-right: 1em;
-  }
+    .lt-content-userRemove {
+      margin-right: 1em;
+    }
 
-  .lt-list, ul {
-    margin: 0 0 0 1em;
-    padding: 0;
+    .lt-list, ul {
+      margin: 0;
+      padding: 0;
+    }
   }
 }

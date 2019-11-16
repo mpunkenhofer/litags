@@ -1,5 +1,5 @@
 import {storageService} from "./storage";
-import {litags} from "./selectors";
+import {litags} from "./constants";
 
 export class Tag {
     readonly id: number;

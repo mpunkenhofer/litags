@@ -54,6 +54,10 @@ module.exports = {
         new IgnoreEmitPlugin('styles.js'),
         new ExtensionReloader({
             reloadPage: true, // Force the reload of the page also
+            entries: { // The entries used for the content/background scripts
+                contentScript: 'content', // Use the entry names, not the file name or the path
+                background: 'background' // *REQUIRED
+            }
         }),
     ],
 

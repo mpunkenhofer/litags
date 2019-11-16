@@ -1,7 +1,7 @@
 import {Options} from "./options";
 import {Button} from "./button";
 import {List} from "./list";
-import {litags} from "./selectors";
+import {litags} from "./constants";
 import {storageService} from "./storage";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
