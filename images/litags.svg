@@ -12,7 +12,10 @@
    height="45"
    id="svg4546"
    sodipodi:docname="litags.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:export-filename="C:\Users\Neca-ThinkPad\WebstormProjects\litags\images\litags2.png"
+   inkscape:export-xdpi="1092.2667"
+   inkscape:export-ydpi="1092.2667">
   <metadata
      id="metadata4552">
     <rdf:RDF>
@@ -21,12 +24,108 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs4550" />
+     id="defs4550">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Colorize"
+       id="filter840">
+      <feComposite
+         in2="SourceGraphic"
+         operator="arithmetic"
+         k1="0"
+         k2="1"
+         result="composite1"
+         id="feComposite826" />
+      <feColorMatrix
+         in="composite1"
+         values="1"
+         type="saturate"
+         result="colormatrix1"
+         id="feColorMatrix828" />
+      <feFlood
+         flood-opacity="0"
+         flood-color="rgb(54,146,231)"
+         result="flood1"
+         id="feFlood830" />
+      <feBlend
+         in="flood1"
+         in2="colormatrix1"
+         mode="multiply"
+         result="blend1"
+         id="feBlend832" />
+      <feBlend
+         in2="blend1"
+         mode="screen"
+         result="blend2"
+         id="feBlend834" />
+      <feColorMatrix
+         in="blend2"
+         values="1"
+         type="saturate"
+         result="colormatrix2"
+         id="feColorMatrix836" />
+      <feComposite
+         in="colormatrix2"
+         in2="SourceGraphic"
+         operator="in"
+         k2="1"
+         result="fbSourceGraphic"
+         id="feComposite838" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix842" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite844"
+         operator="arithmetic"
+         k1="0"
+         k2="1"
+         result="composite1"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         id="feColorMatrix846"
+         in="composite1"
+         values="1"
+         type="saturate"
+         result="colormatrix1" />
+      <feFlood
+         id="feFlood848"
+         flood-opacity="0"
+         flood-color="rgb(54,146,231)"
+         result="flood1" />
+      <feBlend
+         in2="colormatrix1"
+         id="feBlend850"
+         in="flood1"
+         mode="multiply"
+         result="blend1" />
+      <feBlend
+         in2="blend1"
+         id="feBlend852"
+         mode="screen"
+         result="blend2" />
+      <feColorMatrix
+         id="feColorMatrix854"
+         in="blend2"
+         values="1"
+         type="saturate"
+         result="colormatrix2" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite856"
+         in="colormatrix2"
+         operator="in"
+         k2="1"
+         result="composite2" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -40,9 +139,9 @@
      inkscape:window-height="987"
      id="namedview4548"
      showgrid="false"
-     inkscape:zoom="6.5682363"
-     inkscape:cx="5.2383514"
-     inkscape:cy="39.713316"
+     inkscape:zoom="13.136473"
+     inkscape:cx="15.481988"
+     inkscape:cy="26.562058"
      inkscape:window-x="1912"
      inkscape:window-y="13"
      inkscape:window-maximized="1"
@@ -57,7 +156,9 @@
     <g
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="g4544"
-       transform="translate(-1.2499977,1.25)">
+       transform="matrix(0.96000003,0,0,0.9609048,1.9200021,-0.1568703)"
+       inkscape:export-xdpi="1366.5723"
+       inkscape:export-ydpi="1366.5723">
       <path
          d="m 19.236911,14.131456 c 9.39478,0.894741 14.763226,7.157928 14.315856,25.947488 H 12.973724 c 0,-8.052669 8.94741,-5.815816 7.157928,-18.78956"
          style="fill:#ffffff;stroke:#000000;stroke-width:1.34211147"
@@ -79,15 +180,28 @@
          id="path4542"
          inkscape:connector-curvature="0" />
     </g>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.89999998"
+       id="rect883"
+       width="11.064613"
+       height="10.859079"
+       x="26.845253"
+       y="9.7938986"
+       ry="1.453347"
+       inkscape:export-xdpi="1366.5723"
+       inkscape:export-ydpi="1366.5723" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="plus">
     <path
-       style="fill:currentColor;stroke-width:0.03652968"
+       style="opacity:1;fill:#0337e7;fill-opacity:1;stroke-width:0.03196347;filter:url(#filter840)"
        inkscape:connector-curvature="0"
-       d="M 40.333333,10.657534 V 9.342466 q 0,-0.292237 -0.182648,-0.474886 Q 39.931506,8.648402 39.675799,8.648402 H 36.351598 V 5.3242013 q 0,-0.2557078 -0.219178,-0.4748859 Q 35.949771,4.666667 35.657534,4.666667 h -1.315068 q -0.292238,0 -0.474886,0.1826484 -0.219178,0.2191781 -0.219178,0.4748859 V 8.648402 h -3.324201 q -0.255708,0 -0.474886,0.219178 -0.182649,0.182649 -0.182649,0.474886 v 1.315068 q 0,0.292238 0.182649,0.474887 0.219178,0.219177 0.474886,0.219177 h 3.324201 v 3.324201 q 0,0.255708 0.219178,0.474886 0.182648,0.182649 0.474886,0.182649 h 1.315068 q 0.292237,0 0.474886,-0.182649 0.219178,-0.219178 0.219178,-0.474886 v -3.324201 h 3.324201 q 0.255707,0 0.474886,-0.219177 0.182648,-0.182649 0.182648,-0.474887 z M 43,4.9954342 V 15.004566 q 0,1.242009 -0.876713,2.118722 Q 41.246575,18 40.004566,18 H 29.995434 Q 28.753425,18 27.876712,17.123288 27,16.246575 27,15.004566 V 4.9954342 Q 27,3.753425 27.876712,2.8767127 28.753425,2.0000004 29.995434,2.0000004 h 10.009132 q 1.242009,0 2.118721,0.8767123 Q 43,3.753425 43,4.9954342 Z"
-       id="path4566" />
+       d="m 38.722012,11.44353 v -1.15 q 0,-0.256 -0.159817,-0.4160002 -0.191781,-0.192 -0.415525,-0.192 h -2.908676 v -2.908 q 0,-0.224 -0.19178,-0.416 -0.159818,-0.16 -0.415526,-0.16 h -1.150684 q -0.255708,0 -0.415525,0.16 -0.191781,0.192 -0.191781,0.416 v 2.908 h -2.908676 q -0.223745,0 -0.415525,0.192 -0.159818,0.1600002 -0.159818,0.4160002 v 1.15 q 0,0.256 0.159818,0.416 0.19178,0.192 0.415525,0.192 h 2.908676 v 2.908 q 0,0.224 0.191781,0.416 0.159817,0.16 0.415525,0.16 h 1.150684 q 0.255708,0 0.415525,-0.16 0.191781,-0.192 0.191781,-0.416 v -2.908 h 2.908676 q 0.223744,0 0.415525,-0.192 0.159817,-0.16 0.159817,-0.416 z M 41.055346,6.4895298 V 15.24753 q 0,1.087 -0.767124,1.854 -0.767123,0.767 -1.853881,0.767 h -8.75799 q -1.086758,0 -1.853882,-0.767 -0.767123,-0.767 -0.767123,-1.854 V 6.4895298 q 0,-1.087 0.767123,-1.854 0.767124,-0.767 1.853882,-0.767 h 8.75799 q 1.086758,0 1.853881,0.767 0.767124,0.767 0.767124,1.854 z"
+       id="path4566"
+       transform="matrix(0.96428565,0,0,0.96428565,-0.739082,4.4196322)"
+       inkscape:export-xdpi="1366.5723"
+       inkscape:export-ydpi="1366.5723" />
   </g>
 </svg>
