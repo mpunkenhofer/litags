@@ -18,6 +18,7 @@ module.exports = {
             './stylesheets/font.scss',
             './stylesheets/layout.scss',
             './stylesheets/button.scss',
+            './stylesheets/popup.scss',
             './stylesheets/list.scss'
 		],
         background: './source/background.ts',

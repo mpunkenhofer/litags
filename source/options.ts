@@ -93,12 +93,11 @@ class OptionsPage {
 
         const socialElement = document.createElement('div');
         socialElement.className = litags.selectors.options.nav.socials;
-        socialElement.innerHTML = `<a href="${litags.links.discord}" target="_blank">
-<i class="${litags.selectors.icons.discord} ${litags.selectors.options.buttonEffect}"></i>
-</a>
-<a href="${litags.links.github}" target="_blank">
-<i class="${litags.selectors.icons.github} ${litags.selectors.options.buttonEffect}"></i>
-</a>`;
+        socialElement.innerHTML =
+            `<a href="${litags.links.discord}" target="_blank">
+                <i class="${litags.selectors.icons.discord} ${litags.selectors.options.buttonEffect}"></i></a>
+                <a href="${litags.links.github}" target="_blank">
+                <i class="${litags.selectors.icons.github} ${litags.selectors.options.buttonEffect}"></i></a>`;
         anchor.append(socialElement);
     }
 
@@ -111,13 +110,6 @@ class OptionsPage {
             `<h1>${browser.i18n.getMessage("appTitleTaggedUsers")}</h1>
                 <div class="lt-content-users-header">
                     <span id="${litags.selectors.options.content.userCount}" class="lt-content-infoText"></span>
-                    <span class="lt-dropdown-info">Sort by:</span>
-                    <div class="lt-dropdown">
-                        <div class="lt-dropdown-button">Name<i class=""></i></div>
-                        <div class="lt-dropdown-list">
-                            <div class="lt-dropdown-item"></div>
-                            <div class="lt-dropdown-item"></div>
-                        </div>
                     </div>
                     <div class="lt-content-search-wrap">
                         <input type="search" id="lt-content-user-search" placeholder="Search for a user..." autocapitalize="off" autocomplete="off" spellcheck="false">
