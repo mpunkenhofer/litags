@@ -56,3 +56,14 @@
     }
   }
 }
+
+.lt-settings-wrap {
+  .lt-setting {
+    display: flex;
+    align-items: center;
+  }
+
+  .lt-switch {
+    margin-left: auto;
+  }
+}

@@ -12,7 +12,8 @@
     "default_icon": {
       "16": "assets/litags_icon16.png",
       "32": "assets/litags_icon32.png",
-      "48": "assets/litags_icon48.png"
+      "48": "assets/litags_icon48.png",
+      "128": "assets/litags_icon128.png"
     }
   },
   "options_page": "options.html",
