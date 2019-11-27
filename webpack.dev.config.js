@@ -36,7 +36,7 @@ module.exports = {
     plugins: [
         new webpack.ProgressPlugin(),
         new CopyPlugin([
-            {from: 'images/litags_*', to: 'assets/[name].[ext]'},
+            {from: 'images/litags_icon*', to: 'assets/[name].[ext]'},
             {from: 'locales', to: '_locales/[name]/messages.json'},
             {from: 'html', to: ''},
         ]),
