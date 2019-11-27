@@ -49,11 +49,18 @@ $switch-inactive: $text-muted;
   }
 
   input:checked + .lt-slider {
+    opacity: 1;
     background-color: $switch-active;
   }
 
   input:focus + .lt-slider {
+    opacity: 1;
     box-shadow: 0 0 1px $switch-active;
+  }
+
+  input:disabled + .lt-slider {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 
   input:checked + .lt-slider:before {

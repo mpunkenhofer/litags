@@ -21,8 +21,89 @@ export const defaults: Options = {
     frequentlyUsedCap: 20
 };
 
-// class OptionsPage {
-//
+class ToggleSetting {
+    private readonly element: HTMLInputElement = null;
+    private readonly parent: ToggleSetting = null;
+    private children: ToggleSetting[] = [];
+
+    constructor(
+        handler: (option: Options, b?: boolean) => boolean,
+        anchor: HTMLElement,
+        categoryTitle: string,
+        title: string,
+        description: string,
+        parent: ToggleSetting = null,
+        separator: boolean = true) {
+
+        this.parent = parent;
+        if(this.parent)
+            this.parent.children.push(this);
+
+        title = `<span class="${litags.selectors.options.headerPrimary}">${title}</span>`;
+
+        if(categoryTitle)
+            categoryTitle = `<span class="${litags.selectors.options.headerSecondary}">${categoryTitle}</span>`;
+
+        if(description)
+            description = `<span class="${litags.selectors.options.content.infoText}">${description}</span>`;
+
+        const id =
+            Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
+
+        const settingHtml =
+            `<div class="${litags.selectors.options.settings.wrapper}">
+            ${categoryTitle}
+            <div class="${litags.selectors.options.settings.main}">
+                ${title}
+                <label class="${litags.selectors.options.switch}">
+                <input id="${id}" type="checkbox">
+                <span class="${litags.selectors.options.slider}"></span>
+                </label>
+            </div>
+            ${description}
+        </div>`;
+
+        anchor.insertAdjacentHTML('beforeend', settingHtml);
+
+        this.element = <HTMLInputElement>document.getElementById(id);
+
+        if(!this.element)
+            return;
+
+        async function asyncHandler(b?: boolean): Promise<boolean> {
+            const options = await storageService.getOptions();
+            const r = handler(options, b);
+            if(b != undefined)
+                storageService.setOptions(options);
+            return r;
+        }
+
+        asyncHandler().then(b => {
+            this.element.checked = b;
+            if(this.parent && !this.parent.element.checked)
+                this.element.disabled = true;
+        });
+
+        this.element.onchange = (ev) => {
+            const element = <HTMLInputElement> ev.target;
+            if(element) {
+                if(this.children.length > 0)
+                    this.setChildrenDisabled();
+                asyncHandler(element.checked);
+            }
+        };
+
+        if(separator)
+            addSeparator(anchor);
+    }
+
+    private setChildrenDisabled() {
+        for(const child of this.children) {
+            child.element.disabled = !this.element.checked;
+        }
+    }
+}
+
 //     showUsers() {
 //         document.getElementById(litags.selectors.options.content.main).innerHTML =
 //             `<h1>${browser.i18n.getMessage("appTitleTaggedUsers")}</h1>
@@ -37,45 +118,7 @@ export const defaults: Options = {
 //         const userList = document.createElement('div');
 //         userList.id = litags.selectors.options.content.userList;
 //         document.getElementById(litags.selectors.options.content.main).append(userList);
-//
-//         OptionsPage.addUsers(userList).catch(e => console.error(e));
 //     }
-//
-//     static async addUsers(anchor: HTMLElement) {
-//         if (!anchor)
-//             return;
-//
-//         const users = await storageService.getUsers();
-//
-//         const userCountElement = document.getElementById(litags.selectors.options.content.userCount);
-//         userCountElement.innerText = users.length == 1 ? '1 User' : `${users.length} Users`;
-//
-//         if (users.length > 0) {
-//
-//             for (const user of users) {
-//                 const userElement = document.createElement('div');
-//                 userElement.className = litags.selectors.options.content.user;
-//
-//                 const userNameElement = document.createElement('span');
-//                 userNameElement.className = litags.selectors.options.content.userName;
-//                 userNameElement.textContent = user.username;
-//
-//                 userElement.append(userNameElement);
-//                 anchor.append(userElement);
-//
-//                 const list = new List(userElement, user);
-//                 list.show();
-//
-//                 const userRemoveElement = document.createElement('div');
-//                 userRemoveElement.className = litags.selectors.options.content.userRemove;
-//                 userRemoveElement.innerHTML =
-//                     `<i class="${litags.selectors.icons.trash} ${litags.selectors.options.buttonEffect}"></i>`;
-//                 userElement.append(userRemoveElement);
-//
-//             }
-//         }
-//     }
-// }
 
 init();
 
@@ -116,23 +159,57 @@ function localize() {
 
 function displaySettings() {
     const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleSettings")}</h1>`;
 
-    addSwitch(content, 'Title', 'Litags Enabled', 'Desc', () => {});
+    const parent =
+        new ToggleSetting(setOptionEnabled, content,'Litags', 'Litags Enabled', 'Desc');
+
+    new ToggleSetting(setOptionEnabled, content, '', 'Game Enabled', 'Desc', parent);
 }
 
 function displayTags() {
     const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleTags")}</h1>`;
 }
 
 function displayUsers() {
     const content = document.getElementById(litags.selectors.options.content.main);
-    content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleUsers")}</h1>`;
-}
+    if(!content)
+        return;
 
+    content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleUsers")}</h1>`;
+
+    const tableElement = <HTMLTableElement>document.createElement('table');
+
+    storageService.getUsers().then(users => {
+        for(const user of users) {
+            const newRowElement = <HTMLTableRowElement>tableElement.insertRow();
+            // username
+            newRowElement.insertCell().innerHTML =
+                `<a href="https://lichess.org/@/${user.username}" target="_blank">${user.username}</a>`;
+            // tag list
+            const listCell = newRowElement.insertCell();
+            const list = new List(listCell, user);
+            list.show();
+            // remove button
+            newRowElement.insertCell().innerHTML =
+                `<i class="${litags.selectors.icons.trash} ${litags.selectors.options.buttonEffect}"></i>`;
+        }
+    });
+
+    content.append(tableElement);
+}
 function displayBackup() {
     const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleBackup")}</h1>`;
 }
 
@@ -144,68 +221,11 @@ function addSeparator(anchor: HTMLElement) {
         `<div class="${litags.selectors.options.content.separator}"></div>`);
 }
 
-function addSwitch(
-    anchor: HTMLElement,
-    categoryTitle: string = '',
-    title: string = '',
-    description: string = '',
-    handler: () => any,
-    parent?: HTMLInputElement): HTMLInputElement {
-    const settingsWrapElement = document.createElement('div');
-    settingsWrapElement.className = litags.selectors.options.settings.wrapper;
-
-    if(categoryTitle) {
-        settingsWrapElement.innerHTML +=
-            `<span class="${litags.selectors.options.headerSecondary}">${categoryTitle}</span>`
+function setOptionEnabled(option: Options, bool?: boolean): boolean {
+    if(bool != undefined) {
+        // if(option.enabled != bool)
+        //     browser.runtime.sendMessage({enabled: bool});
+        option.enabled = bool;
     }
-
-    const settingsElement = document.createElement('div');
-    settingsElement.className = litags.selectors.options.settings.main;
-
-    if(title) {
-        settingsElement.innerHTML +=
-            `<span class="${litags.selectors.options.headerPrimary}">${title}</span>`
-    }
-
-    const switchElement = document.createElement('label');
-    switchElement.className = litags.selectors.options.switch;
-
-    const checkboxElement = document.createElement('input');
-    checkboxElement.type = 'checkbox';
-
-    let checked = handler();
-    checked = parent ? parent.checked : checked;
-    checkboxElement.setAttribute('checked', checked ? 'true' : 'false');
-
-    checkboxElement.onchange = () => {
-        if(parent && parent.checked) {
-
-        }
-
-        console.log('hih');
-    };
-
-    checkboxElement.onclick = (ev: Event) => {
-        console.log('ho');
-        console.log(ev.target);
-    };
-
-
-    switchElement.append(checkboxElement);
-    switchElement.innerHTML += `<span class="${litags.selectors.options.slider}"></span>`;
-
-
-    settingsElement.append(switchElement);
-    settingsWrapElement.append(settingsElement);
-
-    if(description) {
-        settingsWrapElement.innerHTML +=
-            `<span class="${litags.selectors.options.content.infoText}">${description}</span>`;
-    }
-
-    anchor.append(settingsWrapElement);
-
-    addSeparator(anchor);
-
-    return checkboxElement;
+    return option.enabled;
 }
