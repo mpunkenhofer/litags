@@ -21,163 +21,211 @@ export const defaults: Options = {
     frequentlyUsedCap: 20
 };
 
-class OptionsPage {
-    navElement: HTMLElement;
-    activeElement: HTMLElement;
+class ToggleSetting {
+    private readonly element: HTMLInputElement = null;
+    private readonly parent: ToggleSetting = null;
+    private children: ToggleSetting[] = [];
 
-    constructor() {
-        this.navElement = document.getElementById(litags.selectors.options.nav.main);
+    constructor(
+        handler: (option: Options, b?: boolean) => boolean,
+        anchor: HTMLElement,
+        categoryTitle: string,
+        title: string,
+        description: string,
+        parent: ToggleSetting = null,
+        separator: boolean = true) {
 
-        if (!this.navElement)
+        this.parent = parent;
+        if(this.parent)
+            this.parent.children.push(this);
+
+        title = `<span class="${litags.selectors.options.headerPrimary}">${title}</span>`;
+
+        if(categoryTitle)
+            categoryTitle = `<span class="${litags.selectors.options.headerSecondary}">${categoryTitle}</span>`;
+
+        if(description)
+            description = `<span class="${litags.selectors.options.content.infoText}">${description}</span>`;
+
+        const id =
+            Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
+
+        const settingHtml =
+            `<div class="${litags.selectors.options.settings.wrapper}">
+            ${categoryTitle}
+            <div class="${litags.selectors.options.settings.main}">
+                ${title}
+                <label class="${litags.selectors.options.switch}">
+                <input id="${id}" type="checkbox">
+                <span class="${litags.selectors.options.slider}"></span>
+                </label>
+            </div>
+            ${description}
+        </div>`;
+
+        anchor.insertAdjacentHTML('beforeend', settingHtml);
+
+        this.element = <HTMLInputElement>document.getElementById(id);
+
+        if(!this.element)
             return;
 
-        const settingsElement =
-            this.createNavElement(browser.i18n.getMessage("appTitleSettings"), this.showSettings, true);
-        this.addNavElements(this.navElement, [settingsElement], 'LiTags');
+        async function asyncHandler(b?: boolean): Promise<boolean> {
+            const options = await storageService.getOptions();
+            const r = handler(options, b);
+            if(b != undefined)
+                storageService.setOptions(options);
+            return r;
+        }
 
-        const dataElements = [];
+        asyncHandler().then(b => {
+            this.element.checked = b;
+            if(this.parent && !this.parent.element.checked)
+                this.element.disabled = true;
+        });
 
-        dataElements.push(this.createNavElement(browser.i18n.getMessage("appTitleTags"), this.showTags));
-        dataElements.push(this.createNavElement(browser.i18n.getMessage("appTitleUsers"), this.showUsers));
-        dataElements.push(this.createNavElement(browser.i18n.getMessage("appTitleBackup"), this.showBackup));
-        this.addNavElements(this.navElement, dataElements, browser.i18n.getMessage("appTitleData"));
-
-        this.addNavSocialElements(this.navElement);
-
-        this.showSettings();
-    }
-
-    createNavElement(name: string, handler: () => any, active: boolean = false): HTMLElement {
-        const navElement = document.createElement('a');
-        navElement.className = litags.selectors.options.nav.button;
-        navElement.innerText = name;
-        navElement.onclick = (ev: Event) => {
-            this.activeElement.classList.remove('active');
-            handler();
-            navElement.classList.add('active');
-            this.activeElement = navElement;
+        this.element.onchange = (ev) => {
+            const element = <HTMLInputElement> ev.target;
+            if(element) {
+                if(this.children.length > 0)
+                    this.setChildrenDisabled();
+                asyncHandler(element.checked);
+            }
         };
 
-        if (active) {
-            navElement.classList.add('active');
-            this.activeElement = navElement;
+        if(separator)
+            addSeparator(anchor);
+    }
+
+    private setChildrenDisabled() {
+        for(const child of this.children) {
+            child.element.disabled = !this.element.checked;
         }
-
-        return navElement;
     }
+}
 
-    addNavElements(anchor: HTMLElement, elements: HTMLElement[], title: string = ''): HTMLElement {
-        if (!anchor)
-            return;
+init();
 
-        if (title) {
-            const titleElement = document.createElement('div');
-            titleElement.className = litags.selectors.options.nav.title;
-            titleElement.textContent = title;
-            anchor.append(titleElement);
-        }
+function init() {
+    console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-        for (let i = 0; i < elements.length; i++)
-            anchor.append(elements[i]);
+    localize();
 
-        const separatorElement = document.createElement('div');
-        separatorElement.className = litags.selectors.options.nav.separator;
-        anchor.append(separatorElement);
+    function attachOnClickHandler(element: HTMLElement, handler: () => any) {
+        if(element) {
+            element.onclick = (ev: Event) => {
+                const activeElement = document.querySelector('.active');
 
-        return anchor;
-    }
+                if(activeElement)
+                    activeElement.classList.remove('active');
 
-    addNavSocialElements(anchor: HTMLElement) {
-        if (!anchor)
-            return;
+                const newActiveElement = <HTMLElement>ev.target;
 
-        const socialElement = document.createElement('div');
-        socialElement.className = litags.selectors.options.nav.socials;
-        socialElement.innerHTML =
-            `<a href="${litags.links.discord}" target="_blank">
-                <i class="${litags.selectors.icons.discord} ${litags.selectors.options.buttonEffect}"></i></a>
-                <a href="${litags.links.github}" target="_blank">
-                <i class="${litags.selectors.icons.github} ${litags.selectors.options.buttonEffect}"></i></a>`;
-        anchor.append(socialElement);
-    }
+                if(newActiveElement)
+                    newActiveElement.classList.add('active');
 
-    showSettings() {
-        document.getElementById(litags.selectors.options.content.main).innerHTML = `<h1>Settings</h1>`;
-    }
-
-    showUsers() {
-        document.getElementById(litags.selectors.options.content.main).innerHTML =
-            `<h1>${browser.i18n.getMessage("appTitleTaggedUsers")}</h1>
-                <div class="lt-content-users-header">
-                    <span id="${litags.selectors.options.content.userCount}" class="lt-content-infoText"></span>
-                    </div>
-                    <div class="lt-content-search-wrap">
-                        <input type="search" id="lt-content-user-search" placeholder="Search for a user..." autocapitalize="off" autocomplete="off" spellcheck="false">
-                    </div>
-                </div>`;
-
-        const userList = document.createElement('div');
-        userList.id = litags.selectors.options.content.userList;
-        document.getElementById(litags.selectors.options.content.main).append(userList);
-
-        OptionsPage.addUsers(userList).catch(e => console.error(e));
-    }
-
-    static async addUsers(anchor: HTMLElement) {
-        if (!anchor)
-            return;
-
-        const users = await storageService.getUsers();
-
-        const userCountElement = document.getElementById(litags.selectors.options.content.userCount);
-        userCountElement.innerText = users.length == 1 ? '1 User' : `${users.length} Users`;
-
-        if (users.length > 0) {
-            OptionsPage.addSeparator(anchor);
-
-            for (const user of users) {
-                const userElement = document.createElement('div');
-                userElement.className = litags.selectors.options.content.user;
-
-                const userNameElement = document.createElement('span');
-                userNameElement.className = litags.selectors.options.content.userName;
-                userNameElement.textContent = user.username;
-
-                userElement.append(userNameElement);
-                anchor.append(userElement);
-
-                const list = new List(userElement, user);
-                list.show();
-
-                const userRemoveElement = document.createElement('div');
-                userRemoveElement.className = litags.selectors.options.content.userRemove;
-                userRemoveElement.innerHTML =
-                    `<i class="${litags.selectors.icons.trash} ${litags.selectors.options.buttonEffect}"></i>`;
-                userElement.append(userRemoveElement);
-
-                OptionsPage.addSeparator(anchor);
+                handler();
             }
         }
     }
 
-    static addSeparator(anchor: HTMLElement) {
-        if (!anchor)
-            return;
+    attachOnClickHandler(document.getElementById(litags.selectors.options.nav.settings), displaySettings);
+    attachOnClickHandler(document.getElementById(litags.selectors.options.nav.tags), displayTags);
+    attachOnClickHandler(document.getElementById(litags.selectors.options.nav.users), displayUsers);
+    attachOnClickHandler(document.getElementById(litags.selectors.options.nav.backup), displayBackup);
 
-        anchor.insertAdjacentHTML('beforeend',
-            `<div class="${litags.selectors.options.content.separator}"></div>`);
-    }
-
-    showTags() {
-        document.getElementById(litags.selectors.options.content.main).innerHTML = `<h1>Tags</h1>`;
-
-    }
-
-    showBackup() {
-        document.getElementById(litags.selectors.options.content.main).innerHTML = `<h1>Backup</h1>`;
-    }
+    displaySettings();
 }
 
-console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
+function localize() {
 
-new OptionsPage();
+}
+
+function displaySettings() {
+    const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
+    content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleSettings")}</h1>`;
+
+    new ToggleSetting(setOptionEnabled, content,'Litags', 'Litags Enabled', 'Desc');
+}
+
+function displayTags() {
+    const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
+    content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleTags")}</h1>`;
+}
+
+function displayUsers() {
+    const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
+    content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleUsers")}</h1>`;
+
+    const tableElement = <HTMLTableElement>document.createElement('table');
+    // const headElement = tableElement.createTHead();
+    // headElement
+    storageService.getUsers().then(users => {
+        for(const user of users) {
+            const newRowElement = <HTMLTableRowElement>tableElement.insertRow();
+            // username
+            newRowElement.insertCell().innerHTML =
+                `<a href="https://lichess.org/@/${user.username}" target="_blank">${user.username}</a>`;
+            // tag list
+            const listCell = newRowElement.insertCell();
+            const list = new List(listCell, user);
+            list.show();
+            // remove button
+            newRowElement.insertCell().innerHTML =
+                `<i class="${litags.selectors.icons.trash} ${litags.selectors.options.buttonEffect}"></i>`;
+        }
+    });
+
+    content.append(tableElement);
+}
+function displayBackup() {
+    const content = document.getElementById(litags.selectors.options.content.main);
+    if(!content)
+        return;
+
+    content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleBackup")}</h1>`;
+
+    const fileElement = document.createElement('input');
+    fileElement.type = 'file';
+    fileElement.textContent = 'Test';
+    fileElement.onchange = (ev) => {
+        const f = (<HTMLInputElement>ev.target).files[0];
+
+        if(f) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const contents = e.target.result;
+                console.log(contents);
+            };
+            reader.readAsText(f);
+        }
+    };
+
+    content.append(fileElement);
+}
+
+function addSeparator(anchor: HTMLElement) {
+    if (!anchor)
+        return;
+
+    anchor.insertAdjacentHTML('beforeend',
+        `<div class="${litags.selectors.options.content.separator}"></div>`);
+}
+
+function setOptionEnabled(option: Options, bool?: boolean): boolean {
+    if(bool != undefined) {
+        // if(option.enabled != bool)
+        //     browser.runtime.sendMessage({enabled: bool});
+        option.enabled = bool;
+    }
+    return option.enabled;
+}

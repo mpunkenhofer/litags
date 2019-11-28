@@ -6,19 +6,14 @@ const browser = require("webextension-polyfill");
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 browser.runtime.onInstalled.addListener(() => {
-    // console.log('onInstalled...');
     // store defaults
     storageService.setDefaultTags();
     storageService.setDefaultOptions();
-    // create alarm after extension is installed / upgraded
-    //browser.alarms.create('refresh', { periodInMinutes: 3 });
 });
 
-// browser.runtime.onStartup.addListener(() => {
-//     console.log('onStartup....');
-// });
-
-// browser.alarms.onAlarm.addListener((alarm: { name: any; }) => {
-//     console.log(alarm.name); // refresh
-//     helloWorld();
+// browser.runtime.onMessage.addListener((request: { enabled: boolean; }) => {
+//     console.log(request);
+//
+//     if(request.enabled)
+//         browser.pageAction.setIcon({path: "assets/litags_icon32.png"});
 // });

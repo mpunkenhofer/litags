@@ -51,21 +51,29 @@ export const litags = {
         options: {
             nav: {
                 main: 'lt-nav',
+                tags: 'lt-nav-tags',
+                users: 'lt-nav-users',
                 title: 'lt-nav-title',
+                backup: 'lt-nav-backup',
                 button: 'lt-nav-button',
                 socials: 'lt-nav-socials',
+                settings: 'lt-nav-settings',
                 separator: 'lt-nav-separator'
             },
             content: {
                 main: 'lt-content',
-                user: 'lt-content-user',
-                userName: 'lt-content-userName',
-                userList: 'lt-content-userList',
-                userCount: 'lt-content-userCount',
-                userRemove: 'lt-content-userRemove',
+                infoText: 'lt-infoText',
                 separator: 'lt-content-separator',
             },
-            buttonEffect: 'lt-button-effect'
+            settings: {
+                main: 'lt-setting',
+                wrapper: 'lt-settings-wrap'
+            },
+            buttonEffect: 'lt-button-effect',
+            switch: 'lt-switch',
+            slider: 'lt-slider',
+            headerPrimary: 'lt-header-primary',
+            headerSecondary: 'lt-header-secondary'
         },
         icons: {
             discord: 'lt-icon-discord',

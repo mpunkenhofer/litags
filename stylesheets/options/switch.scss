@@ -1,0 +1,71 @@
+@import 'colors';
+
+$switch-size: 3.5em;
+$switch-rel-height: 0.55;
+$slider-margin: 0em;
+
+$slider-color: white;
+$switch-active: $input-outline;
+$switch-inactive: $text-muted;
+
+.lt-switch {
+  position: relative;
+  display: inline-block;
+  width: $switch-size;
+  height: $switch-size * $switch-rel-height;
+
+  /* Hide default HTML checkbox */
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  /* The slider */
+  .lt-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $switch-inactive;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: $switch-size * $switch-rel-height;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: ($switch-size * $switch-rel-height) - $slider-margin;
+      width: ($switch-size * $switch-rel-height) - $slider-margin;
+      left: $slider-margin / 2;
+      bottom: $slider-margin / 2;
+      background-color: $slider-color;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .lt-slider {
+    opacity: 1;
+    background-color: $switch-active;
+  }
+
+  input:focus + .lt-slider {
+    opacity: 1;
+    box-shadow: 0 0 1px $switch-active;
+  }
+
+  input:disabled + .lt-slider {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  input:checked + .lt-slider:before {
+    -webkit-transform: translateX($switch-size * (1 - $switch-rel-height));
+    -ms-transform: translateX($switch-size * (1 - $switch-rel-height));
+    transform: translateX($switch-size * (1 - $switch-rel-height));
+  }
+}

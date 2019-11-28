@@ -13,7 +13,7 @@
   margin-left: 4em;
 }
 
-.lt-content-infoText {
+.lt-infoText {
   color: $header-secondary;
   font-size: .9em;
 }
@@ -26,33 +26,13 @@
   margin-bottom: .8rem;
 }
 
-.lt-content-users-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .lt-content-search-wrap {
-    margin-left: 2em;
-  }
-}
-
-#lt-content-userList {
-  .lt-content-user {
+.lt-settings-wrap {
+  .lt-setting {
     display: flex;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    align-items: center;
+  }
 
-    .lt-content-userName {
-      margin-left: 1em;
-    }
-
-    .lt-content-userRemove {
-      margin-right: 1em;
-    }
-
-    .lt-list, ul {
-      margin: 0;
-      padding: 0;
-    }
+  .lt-switch {
+    margin-left: auto;
   }
 }

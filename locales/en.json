@@ -16,27 +16,18 @@
     "description": "Placeholder text displayed in the search input element."
   },
   "appTitleSettings": {
-    "message": "Settings",
-    "description": "'Settigns' title"
+    "message": "Settings"
   },
   "appTitleTags": {
-    "message": "Tags",
-    "description": "'Tags' title"
+    "message": "Tags"
   },
   "appTitleUsers": {
-    "message": "Users",
-    "description": "'Users' title"
-  },
-  "appTitleTaggedUsers": {
-    "message": "Tagged Users",
-    "description": "'Tagged Users' title"
+    "message": "Users"
   },
   "appTitleBackup": {
-    "message": "Backup",
-    "description": "'Backup' title"
+    "message": "Backup"
   },
   "appTitleData": {
-    "message": "Data",
-    "description": "'Data' title"
+    "message": "Data"
   }
 }

@@ -15,6 +15,10 @@ class StorageService {
         browser.storage.sync.set({[litags.keys.options]: optionsDefaults});
     }
 
+    public async setOptions(options: Options) {
+        browser.storage.sync.set({[litags.keys.options]: options});
+    }
+
     public setDefaultTags() {
         browser.storage.sync.set({[litags.keys.tags]: tagsDefaults});
     }
