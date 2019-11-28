@@ -62,13 +62,8 @@ export const litags = {
             },
             content: {
                 main: 'lt-content',
-                user: 'lt-content-user',
-                userName: 'lt-content-userName',
-                userList: 'lt-content-userList',
-                infoText: 'lt-content-infoText',
+                infoText: 'lt-infoText',
                 separator: 'lt-content-separator',
-                userCount: 'lt-content-userCount',
-                userRemove: 'lt-content-userRemove',
             },
             settings: {
                 main: 'lt-setting',

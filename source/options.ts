@@ -104,22 +104,6 @@ class ToggleSetting {
     }
 }
 
-//     showUsers() {
-//         document.getElementById(litags.selectors.options.content.main).innerHTML =
-//             `<h1>${browser.i18n.getMessage("appTitleTaggedUsers")}</h1>
-//                 <div class="lt-content-users-header">
-//                     <span id="${litags.selectors.options.content.userCount}" class="lt-content-infoText"></span>
-//                     </div>
-//                     <div class="lt-content-search-wrap">
-//                         <input type="search" id="lt-content-user-search" placeholder="Search for a user..." autocapitalize="off" autocomplete="off" spellcheck="false">
-//                     </div>
-//                 </div>`;
-//
-//         const userList = document.createElement('div');
-//         userList.id = litags.selectors.options.content.userList;
-//         document.getElementById(litags.selectors.options.content.main).append(userList);
-//     }
-
 init();
 
 function init() {
@@ -164,10 +148,7 @@ function displaySettings() {
 
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleSettings")}</h1>`;
 
-    const parent =
-        new ToggleSetting(setOptionEnabled, content,'Litags', 'Litags Enabled', 'Desc');
-
-    new ToggleSetting(setOptionEnabled, content, '', 'Game Enabled', 'Desc', parent);
+    new ToggleSetting(setOptionEnabled, content,'Litags', 'Litags Enabled', 'Desc');
 }
 
 function displayTags() {
@@ -186,7 +167,8 @@ function displayUsers() {
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleUsers")}</h1>`;
 
     const tableElement = <HTMLTableElement>document.createElement('table');
-
+    // const headElement = tableElement.createTHead();
+    // headElement
     storageService.getUsers().then(users => {
         for(const user of users) {
             const newRowElement = <HTMLTableRowElement>tableElement.insertRow();
@@ -211,6 +193,24 @@ function displayBackup() {
         return;
 
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleBackup")}</h1>`;
+
+    const fileElement = document.createElement('input');
+    fileElement.type = 'file';
+    fileElement.textContent = 'Test';
+    fileElement.onchange = (ev) => {
+        const f = (<HTMLInputElement>ev.target).files[0];
+
+        if(f) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const contents = e.target.result;
+                console.log(contents);
+            };
+            reader.readAsText(f);
+        }
+    };
+
+    content.append(fileElement);
 }
 
 function addSeparator(anchor: HTMLElement) {
