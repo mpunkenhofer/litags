@@ -1,13 +1,22 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowUnreachableCode": false,
     "noImplicitAny": true,
     "target": "es6",
     "module": "commonjs",
-    "allowJs": true,
-    "types": ["@types/chrome", "node"],
-    "typeRoots": ["node_modules/@types"]
-  }
+    "allowJs": false,
+    "types": [
+      "@types/chrome",
+      "node"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -15,15 +15,11 @@ module.exports = {
     entry: {
         content: [
         	'./source/content.ts',
-            './stylesheets/font.scss',
-            './stylesheets/layout.scss',
-            './stylesheets/button.scss',
-            './stylesheets/popup.scss',
-            './stylesheets/list.scss'
+            './stylesheets/content.scss',
 		],
         background: './source/background.ts',
         options: [
-            './source/options.ts',
+            './source/options/options.ts',
             './stylesheets/options/options.scss',
         ],
     },

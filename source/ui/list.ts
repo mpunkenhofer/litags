@@ -1,7 +1,7 @@
-import {User} from "./user";
-import {litags} from "./constants";
+import {User} from "../user/user";
+import {selectors} from "../constants/selectors";
 import {SortableEvent} from "sortablejs";
-import {createTagElement, getTagsFromId} from "./tag";
+import {createTagElement, getTagsFromId} from "../tag/tag";
 
 const Sortable = require('sortablejs');
 
@@ -21,12 +21,12 @@ export class List {
 
         // create list
         this.list = document.createElement('ul');
-        this.list.id = `${litags.selectors.list.tags}-${this.user.username}`;
+        this.list.id = `${selectors.list.tags}-${this.user.username}`;
         this.list.style.display = 'inline-block';
 
         let dragGhostElement: HTMLElement;
         // make sortable
-        const sortableGroup = litags.selectors.list.sortableGroup;
+        const sortableGroup = selectors.list.sortableGroup;
         Sortable.create(this.list, {
             group: sortableGroup,
             animation: 100,
@@ -42,7 +42,7 @@ export class List {
                 // Create the clone (with content)
                 dragGhostElement = <HTMLElement>draggedElement.cloneNode(true);
                 // Stylize it
-                dragGhostElement.classList.add(litags.selectors.list.hiddenDragGhost);
+                dragGhostElement.classList.add(selectors.list.hiddenDragGhost);
                 // Place it into the DOM tree
                 document.body.appendChild(dragGhostElement);
                 // Set the new stylized "drag image" of the dragged element
@@ -61,9 +61,9 @@ export class List {
 
         //create remove element
         const trashList = document.createElement('ul');
-        trashList.className = litags.selectors.list.trash;
+        trashList.className = selectors.list.trash;
         this.trash = document.createElement('li');
-        this.trash.id = litags.selectors.list.trashSymbol;
+        this.trash.id = selectors.list.trashSymbol;
         this.trash.innerText = 'L';
         // create trash bin
         Sortable.create(trashList, {
@@ -87,7 +87,7 @@ export class List {
 
         // create wrappers
         this.listWrap = document.createElement('div');
-        this.listWrap.className = litags.selectors.list.main;
+        this.listWrap.className = selectors.list.main;
         this.listWrap.append(this.list);
         this.listWrap.append(trashList);
 
@@ -103,7 +103,7 @@ export class List {
 
             for (const tag of this.user.tags) {
                 const tagElement =
-                    createTagElement(tag, 'li', `${litags.selectors.list.tag}-${tag.id}`);
+                    createTagElement(tag, 'li', `${selectors.list.tag}-${tag.id}`);
                 this.list.append(tagElement);
             }
 

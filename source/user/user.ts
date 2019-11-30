@@ -1,5 +1,7 @@
-import {getTagsFromIds, Tag} from "./tag";
-import {storageService} from "./storage";
+import {getTagsFromIds, Tag} from "../tag/tag";
+import {optionService} from "../options/options.service";
+import {tagService} from "../tag/tag.service";
+import {userService} from "./user.service";
 
 export class User {
     username: string;
@@ -11,23 +13,23 @@ export class User {
     }
 
     public async addTag(tag: Tag) {
-        const options = await storageService.getOptions();
+        const options = await optionService.get();
         if (this.tags.length < options.maxTags) {
             this.tags.push(tag);
-            storageService.updateFrequentlyUsedTags(tag).then(() => storageService.setUser(this));
+            tagService.updateFrequentlyUsed(tag).then(() => userService.set(this));
         }
     }
 
     public removeTag(tag: Tag | number) {
         const id = (typeof tag === "number") ? tag : tag.id;
         this.tags = this.tags.filter(t => t.id !== id);
-        storageService.setUser(this);
+        userService.set(this);
     }
 
     public reArrange(newOrder: number[]) {
         getTagsFromIds(newOrder).then(tags => {
             this.tags = tags;
-            storageService.setUser(this);
+            userService.set(this);
         });
     }
 }
