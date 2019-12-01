@@ -55,7 +55,7 @@ export class ToggleSetting {
             const options = await optionService.get();
             const r = handler(options, b);
             if (b != undefined)
-                optionService.set(options);
+                await optionService.set(options);
             return r;
         }
 
