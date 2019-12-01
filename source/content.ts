@@ -40,7 +40,7 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
 
     userService.get(username)
         .then(user => {
-            console.log(`user: ${user.username}, tags: ${user.tags.length}`);
+            user.debugPrint();
             const list = new List(anchor, user);
             const btn = new Button(anchor, user, list);
             btn.show();

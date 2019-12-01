@@ -97,11 +97,11 @@ export class List {
         this.hide();
     }
 
-    public update() {
-        if (this.user.tags.length > 0) {
+    update() {
+        if (this.user.getTags().length > 0) {
             this.list.innerHTML = '';
 
-            for (const tag of this.user.tags) {
+            for (const tag of this.user.getTags()) {
                 const tagElement =
                     createTagElement(tag, 'li', `${selectors.list.tag}-${tag.id}`);
                 this.list.append(tagElement);
@@ -114,13 +114,13 @@ export class List {
         }
     }
 
-    public show() {
-        if (this.user.tags.length > 0) {
+    show() {
+        if (this.user.getTags().length > 0) {
             this.listWrap.style.display = 'block';
         }
     }
 
-    public hide() {
+    hide() {
         this.listWrap.style.display = 'none';
         this.hideTrash();
     }

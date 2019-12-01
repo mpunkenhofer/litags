@@ -25,21 +25,24 @@ export class Popup {
             popupElement.innerHTML = `
             <div class="${selectors.popup.wrappers.main}">
                 <div id="${selectors.popup.wrappers.searchResults}">
-                    <div class="${selectors.popup.title}">Search Results</div>
+                    <div class="${selectors.popup.title}">
+                        ${browser.i18n.getMessage("appTitleSearchResults")}</div>
                     <div id="${selectors.popup.searchResults}"></div>
                 </div>
                 <div id="${selectors.popup.wrappers.freq}">
-                    <div class="${selectors.popup.title}">Frequently Used</div>
+                    <div class="${selectors.popup.title}">
+                        ${browser.i18n.getMessage("appTitleFrequentlyUsed")}</div>
                     <div id="${selectors.popup.freq}"></div>
                 </div>
                 <div id="${selectors.popup.wrappers.all}">
-                    <div class="${selectors.popup.title}">Available Tags</div>
+                    <div class="${selectors.popup.title}">
+                        ${browser.i18n.getMessage("appTitleAvailableTags")}</div>
                     <div id="${selectors.popup.all}"></div>
                 </div>
             </div>
             <div class="${selectors.popup.wrappers.search}">
-                <input type="search" id="${selectors.popup.search}" autocapitalize="off" autocomplete="off" spellcheck="false"
-                placeholder="${browser.i18n.getMessage("appSearchTagPlaceholder")}">
+                <input type="search" id="${selectors.popup.search}" autocapitalize="off" autocomplete="off" 
+                spellcheck="false" placeholder="${browser.i18n.getMessage("appSearchTagPlaceholder")}">
             </div>`;
 
             document.body.append(popupElement);
@@ -91,7 +94,7 @@ export class Popup {
             const freqElement = document.getElementById(selectors.popup.freq);
             freqElement.innerHTML = '';
 
-            const freqUsedTags = await tagService.getFrequentlyUsed(this.user.tags);
+            const freqUsedTags = await tagService.getFrequentlyUsed(this.user.getTags());
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
@@ -104,7 +107,7 @@ export class Popup {
             const allElement = document.getElementById(selectors.popup.all);
             allElement.innerHTML = '';
 
-            const allAvailableTags = await tagService.getAll(freqUsedTags.concat(this.user.tags));
+            const allAvailableTags = await tagService.getAll(freqUsedTags.concat(this.user.getTags()));
 
             if (allElement && allAvailableTags.length > 0) {
                 for (const tag of allAvailableTags) {
@@ -140,7 +143,7 @@ export class Popup {
     private tagSearch(term: string) {
         if (term.length > 0) {
             const searchTerm = debounce(searchTags, 100, {leading: true});
-            searchTerm(term, this.user.tags).then((result: Tag[]) => {
+            searchTerm(term, this.user.getTags()).then((result: Tag[]) => {
                 document.getElementById(selectors.popup.wrappers.freq).style.display = 'none';
                 const searchResultsElement = document.getElementById(selectors.popup.searchResults);
                 searchResultsElement.innerHTML = '';
@@ -152,7 +155,7 @@ export class Popup {
             });
         } else {
             document.getElementById(selectors.popup.wrappers.searchResults).style.display = 'none';
-            tagService.getFrequentlyUsed(this.user.tags).then(value => {
+            tagService.getFrequentlyUsed(this.user.getTags()).then(value => {
                 if (value.length > 0)
                     document.getElementById(selectors.popup.wrappers.freq).style.display = 'block';
             });

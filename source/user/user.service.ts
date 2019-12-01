@@ -1,35 +1,33 @@
 import {User} from "./user";
-import {getTagsFromIds} from "../tag/tag";
 import {keys} from "../constants/keys";
 import {cache} from "../util/cache";
 
 const browser = require("webextension-polyfill");
 
 class UserService {
-    public async get(username: string): Promise<User> {
+    async get(username: string): Promise<User> {
         const userData = await browser.storage.local.get(username);
 
         if (Object.keys(userData).length !== 0) {
-            const tags = await getTagsFromIds(userData[username]);
-            return new User(username, tags);
+            return User.fromStorage(username, userData[username]);
         } else {
             return new User(username);
         }
     }
 
-    public async set(user: User) {
+    async set(user: User) {
         cache.del(keys.cache.users);
 
-        return browser.storage.local.set({[user.username]: user.tags.map(t => t.id)});
+        return browser.storage.local.set({[user.username]: user.toStorage()});
     }
 
-    public remove(user: User) {
+    remove(user: User) {
         cache.del(keys.cache.users);
 
         browser.storage.local.remove(user.username);
     }
 
-    public async getAll(): Promise<User[]> {
+    async getAll(): Promise<User[]> {
         let users = cache.get(keys.cache.users);
 
         if(users != undefined)
@@ -42,8 +40,8 @@ class UserService {
         for(const key in data) {
             if (data.hasOwnProperty(key)) {
                 if (!key.startsWith(keys.prefix)) {
-                    const tags = await getTagsFromIds(data[key]);
-                    users.push(new User(key, tags))
+                    const user = await User.fromStorage(key, data[key]);
+                    users.push(user);
                 }
             }
         }

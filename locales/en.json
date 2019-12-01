@@ -29,5 +29,14 @@
   },
   "appTitleData": {
     "message": "Data"
+  },
+  "appTitleSearchResults": {
+    "message": "Search Results"
+  },
+  "appTitleFrequentlyUsed": {
+    "message": "Frequently Used"
+  },
+  "appTitleAvailableTags": {
+    "message": "Available Tags"
   }
 }

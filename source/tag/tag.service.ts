@@ -6,7 +6,7 @@ import {cache} from "../util/cache";
 const browser = require("webextension-polyfill");
 
 class TagService {
-    public async getAll(filter: Tag[] = []): Promise<Tag[]> {
+    async getAll(filter: Tag[] = []): Promise<Tag[]> {
         let tags = cache.get(keys.cache.tags);
 
         if(tags != undefined)
@@ -23,7 +23,7 @@ class TagService {
 
         for (const id in tagData) {
             if (tagData.hasOwnProperty(id)) {
-                let [name, symbol, aliases, colors] = tagData[id];
+                const [name, symbol, aliases, colors] = tagData[id];
                 tags.push(new Tag(Number(id), symbol, name, aliases, colors));
             }
         }
@@ -33,7 +33,7 @@ class TagService {
         return filterTags(tags, filter);
     }
 
-    public set(tags: Tag[]) {
+    set(tags: Tag[]) {
         cache.del(keys.cache.tags);
 
         let dict: { [_: number]: [string, string, string[], string] } = {};
@@ -44,7 +44,7 @@ class TagService {
         browser.storage.sync.set({[keys.tags]: dict});
     }
 
-    public async getFrequentlyUsed(filter: Tag[] = [], amount: number = 8): Promise<Tag[]> {
+    async getFrequentlyUsed(filter: Tag[] = [], amount: number = 8): Promise<Tag[]> {
         const freqUsedData = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
 
         if (freqUsedData) {
@@ -65,7 +65,7 @@ class TagService {
         return [];
     }
 
-    public async updateFrequentlyUsed(tag: Tag) {
+    async updateFrequentlyUsed(tag: Tag) {
         cache.del(keys.cache.tags);
 
         let freqUsed = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
