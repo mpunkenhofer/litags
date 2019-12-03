@@ -1,5 +1,6 @@
 import {TagSet} from "./tag-set";
 import {storageService} from "../util/storage";
+import {selectors} from "../constants/selectors";
 
 export abstract class Tag {
     protected readonly set: TagSet;
@@ -116,11 +117,11 @@ export async function searchTags(term: string, filter: Tag[] = []): Promise<Tag[
     );
 }
 
-export function createTagElement(tag: Tag, type: string = 'span', className: string = '') {
+export function createTagElement(tag: Tag, type: string = 'span') {
     const tagElement = document.createElement(type);
-    tagElement.className = className;
 
     if(tag instanceof FontTag) {
+        tagElement.className = selectors.fontTag;
         tagElement.innerText = tag.getCharacter();
 
         const color = tag.getColor();
@@ -128,6 +129,7 @@ export function createTagElement(tag: Tag, type: string = 'span', className: str
         if (color.length > 0)
             tagElement.style.color = color;
     } else if(tag instanceof IconTag) {
+        tagElement.className = selectors.iconTag;
         const image = new Image();
         image.src = tag.getURL();
         tagElement.append(image);

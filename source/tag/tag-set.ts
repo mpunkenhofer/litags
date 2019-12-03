@@ -7,9 +7,9 @@ export class TagSet {
     private readonly name: string;
     private tags: Tag[];
 
-    constructor(name: string, tags: Tag[] = []) {
+    constructor(name: string) {
         this.name = name;
-        this.tags = tags;
+        this.tags = [];
     }
 
     createTag(name: string, aliases: string[] = [], resource: string, color?: string): Tag {
@@ -64,6 +64,8 @@ export class TagSet {
         if (setNames && !setNames.includes(this.name)) {
             setNames.push(this.name);
             await browser.storage.sync.set({[keys.sets]: setNames});
+        } else {
+            await browser.storage.sync.set({[keys.sets]: [this.name]})
         }
 
         return browser.storage.sync.set({[this.name]: tagData})

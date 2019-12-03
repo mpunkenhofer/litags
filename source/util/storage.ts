@@ -14,9 +14,15 @@ class StorageService {
 
         if (!setNames || setNames.length == 0) {
             //default sets
-            const lichessSet = TagSet.fromData('lichess', lichessTagSetData);
+            const lichessSet = TagSet.fromData('Lichess', lichessTagSetData);
+
+            const testSet = new TagSet('Test');
+            testSet.createTag('monkaS', [], 'https://cdn.frankerfacez.com/emoticon/413512/1');
+
             await lichessSet.store();
-            return [lichessSet];
+            await testSet.store();
+
+            return [lichessSet, testSet];
         } else {
             return await Promise.all(setNames.map(setName => TagSet.load(setName)));
         }

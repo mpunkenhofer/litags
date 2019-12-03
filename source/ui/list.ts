@@ -103,8 +103,8 @@ export class List {
             this.list.innerHTML = '';
 
             for (const tag of this.user.getTags()) {
-                const tagElement =
-                    createTagElement(tag, 'li', tag.getID());
+                const tagElement = createTagElement(tag, 'li');
+                tagElement.classList.add(tag.getID());
                 this.list.append(tagElement);
             }
 
@@ -136,6 +136,6 @@ export class List {
 }
 
 function getTagId(element: Element): string {
-    const result = element.className.match(/[_a-z]\w*\.[a-z](\w|-)*/g);
+    const result = element.className.match(/\w\w*\.\w(\w|-)*/g);
     return result ? result.pop() : '';
 }

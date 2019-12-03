@@ -1,7 +1,7 @@
 import {selectors} from "../constants/selectors";
 import {User} from "../user/user";
 import {List} from "./list";
-import {createTagElement, searchTags, Tag} from "../tag/tag";
+import {createTagElement, filterTags, searchTags, Tag} from "../tag/tag";
 import {storageService} from "../util/storage";
 
 const browser = require("webextension-polyfill");
@@ -34,11 +34,7 @@ export class Popup {
                         ${browser.i18n.getMessage("appTitleFrequentlyUsed")}</div>
                     <div id="${selectors.popup.freq}"></div>
                 </div>
-                <div id="${selectors.popup.wrappers.all}">
-                    <div class="${selectors.popup.title}">
-                        ${browser.i18n.getMessage("appTitleAvailableTags")}</div>
-                    <div id="${selectors.popup.all}"></div>
-                </div>
+                <div id="${selectors.popup.sets}"></div>
             </div>
             <div class="${selectors.popup.wrappers.search}">
                 <input type="search" id="${selectors.popup.search}" autocapitalize="off" autocomplete="off" 
@@ -77,8 +73,7 @@ export class Popup {
                 // position popup in viewport
                 if (location !== undefined)
                     calculatePopupPosition(location, 10);
-            })
-            .catch(e => console.error(e));
+            });
     }
 
     isShowing(): boolean {
@@ -90,38 +85,53 @@ export class Popup {
     }
 
     private async populate() {
-        try {
-            const freqElement = document.getElementById(selectors.popup.freq);
-            freqElement.innerHTML = '';
+        const freqElement = document.getElementById(selectors.popup.freq);
+        freqElement.innerHTML = '';
 
-            const freqUsedTags = await storageService.getFrequentlyUsed(this.user.getTags());
+        const freqUsedTags = await storageService.getFrequentlyUsed(this.user.getTags());
 
-            if (freqElement && freqUsedTags.length > 0) {
-                for (const tag of freqUsedTags)
-                    this.addTag(tag, freqElement);
-                document.getElementById(selectors.popup.wrappers.freq).style.display = 'block';
-            } else {
-                document.getElementById(selectors.popup.wrappers.freq).style.display = 'none';
-            }
+        if (freqElement && freqUsedTags.length > 0) {
+            for (const tag of freqUsedTags)
+                this.addTag(tag, freqElement);
+            document.getElementById(selectors.popup.wrappers.freq).style.display = 'block';
+        } else
+            document.getElementById(selectors.popup.wrappers.freq).style.display = 'none';
 
-            const allElement = document.getElementById(selectors.popup.all);
-            allElement.innerHTML = '';
+        const setsElement = document.getElementById(selectors.popup.sets);
+        setsElement.innerHTML = '';
 
-            const allAvailableTags = await storageService.getAllTags(freqUsedTags.concat(this.user.getTags()));
+        const sets = await storageService.getTagSets();
 
-            if (allElement && allAvailableTags.length > 0) {
-                for (const tag of allAvailableTags) {
-                    this.addTag(tag, allElement);
+        if (setsElement && sets.length > 0) {
+            for (const set of sets) {
+                const tags = filterTags(set.getTags(), freqUsedTags.concat(this.user.getTags()));
+
+                if(tags && tags.length > 0) {
+                    const wrapElement = document.createElement('div');
+                    wrapElement.className = selectors.popup.wrappers.tagset;
+
+                    const setTitleElement = document.createElement('div');
+                    setTitleElement.className = selectors.popup.title;
+                    setTitleElement.innerText = set.getName();
+
+                    const setElement = document.createElement('div');
+                    setElement.className = selectors.popup.tagset;
+
+                    for (const tag of tags)
+                        this.addTag(tag, setElement);
+
+                    wrapElement.append(setTitleElement);
+                    wrapElement.append(setElement);
+
+                    setsElement.append(wrapElement);
                 }
-                document.getElementById(selectors.popup.wrappers.all).style.display = 'block';
-            } else {
-                if (freqUsedTags.length === 0)
-                    this.hide();   // no tags to display - hide popup
-                else
-                    document.getElementById(selectors.popup.wrappers.all).style.display = 'none';
             }
-        } catch (e) {
-            console.error(e);
+            document.getElementById(selectors.popup.sets).style.display = 'block';
+        } else {
+            if (freqUsedTags.length === 0)
+                this.hide();   // no tags to display - hide popup
+            else
+                document.getElementById(selectors.popup.sets).style.display = 'none';
         }
     }
 
@@ -130,7 +140,7 @@ export class Popup {
         element.className = selectors.popup.tag;
         element.title = tag.getName();
 
-        element.append(createTagElement(tag, 'span', selectors.popup.symbol));
+        element.append(createTagElement(tag));
 
         element.onclick = () => {
             clearSearch();

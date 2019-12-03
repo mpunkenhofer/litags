@@ -15,10 +15,11 @@ export const selectors = {
         main: 'lt-popup',
         all: 'lt-popup-all',
         tag: 'lt-popup-tag',
+        sets: 'lt-popup-sets',
         freq: 'lt-popup-freq',
         title: 'lt-popup-title',
         search: 'lt-popup-search',
-        symbol: 'lt-popup-symbol',
+        tagset: 'lt-popup-tagset',
         searchResults: 'lt-popup-searchResults',
         wrappers: {
             main: 'lt-popup-wrap',
@@ -26,6 +27,7 @@ export const selectors = {
             freq: 'lt-popup-freq-wrap',
             list: 'lt-popup-list',
             search: 'lt-popup-search-wrap',
+            tagset: 'lt-popup-tagset-wrap',
             searchResults: 'lt-popup-searchResults-wrap'
         },
     },
@@ -71,5 +73,7 @@ export const selectors = {
         trash: 'lt-icon-trash',
         chevup: 'lt-icon-chevron-up',
         chevdown: 'lt-icon-chevron-down'
-    }
+    },
+    fontTag: 'lt-fontTag',
+    iconTag: 'lt-iconTag'
 };
