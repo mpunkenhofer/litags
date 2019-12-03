@@ -2,7 +2,7 @@ import {List} from "../ui/list";
 import {User} from "../user/user";
 import {ToggleSetting} from "./toggle-setting";
 import {selectors} from "../constants/selectors";
-import {userService} from "../user/user.service";
+import {storageService} from "../util/storage";
 
 const browser = require("webextension-polyfill");
 
@@ -80,7 +80,7 @@ function displayUsers() {
     // headElement
     createHeader(tableElement);
     // users
-    userService.getAll().then(users => addUsers(tableElement, users));
+    storageService.getAllUsers().then(users => addUsers(tableElement, users));
     //add to dom
     content.append(tableElement);
 }

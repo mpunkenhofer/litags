@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "allowJs": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     "allowUnreachableCode": false,
-    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "es6",
     "module": "commonjs",
-    "allowJs": false,
+    "moduleResolution": "node",
     "types": [
       "@types/chrome",
       "node"

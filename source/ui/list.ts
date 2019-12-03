@@ -1,7 +1,7 @@
 import {User} from "../user/user";
 import {selectors} from "../constants/selectors";
 import {SortableEvent} from "sortablejs";
-import {createTagElement, getTagsFromId} from "../tag/tag";
+import {createTagElement, FontTag, Tag} from "../tag/tag";
 
 const Sortable = require('sortablejs');
 
@@ -31,8 +31,9 @@ export class List {
             group: sortableGroup,
             animation: 100,
             onChange: (event: SortableEvent) => {
-                getTagsFromId(getTagId(event.item)).then(tag => {
-                    event.item.style.color = (tag && tag.color.length > 0) ? tag.color : '';
+                Tag.fromID(getTagId(event.item)).then(tag => {
+                    if(tag instanceof FontTag)
+                        event.item.style.color = (tag && tag.getColor().length > 0) ? tag.getColor() : '';
                 });
                 this.showTrash()
             },
@@ -103,7 +104,7 @@ export class List {
 
             for (const tag of this.user.getTags()) {
                 const tagElement =
-                    createTagElement(tag, 'li', `${selectors.list.tag}-${tag.id}`);
+                    createTagElement(tag, 'li', tag.getID());
                 this.list.append(tagElement);
             }
 
@@ -134,7 +135,7 @@ export class List {
     }
 }
 
-function getTagId(element: Element) {
-    const stringID = element.className.match(/\d+/g);
-    return stringID.length > 0 ? Number(stringID) : -1;
+function getTagId(element: Element): string {
+    const result = element.className.match(/[_a-z]\w*\.[a-z](\w|-)*/g);
+    return result ? result.pop() : '';
 }

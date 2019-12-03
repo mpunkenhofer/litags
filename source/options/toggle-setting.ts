@@ -1,6 +1,6 @@
 import {Options} from "./options";
 import {selectors} from "../constants/selectors";
-import {optionService} from "./options.service";
+import {storageService} from "../util/storage";
 
 export class ToggleSetting {
     private readonly element: HTMLInputElement = null;
@@ -52,10 +52,10 @@ export class ToggleSetting {
             return;
 
         async function asyncHandler(b?: boolean): Promise<boolean> {
-            const options = await optionService.get();
+            const options = await storageService.getOptions();
             const r = handler(options, b);
             if (b != undefined)
-                await optionService.set(options);
+                await storageService.setOptions(options);
             return r;
         }
 

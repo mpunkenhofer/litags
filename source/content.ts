@@ -1,13 +1,13 @@
 import {Options} from "./options/options";
 import {Button} from "./ui/button";
 import {List} from "./ui/list";
-import {optionService} from "./options/options.service";
-import {userService} from "./user/user.service";
 import {selectors} from "./constants/selectors";
+import {storageService} from "./util/storage";
+import {User} from "./user/user";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-optionService.get().then((options: Options) => {
+storageService.getOptions().then((options: Options) => {
     const element = document.querySelector(selectors.app.appElement);
 
     if (element && options.enabled && options.gameEnabled) {
@@ -38,7 +38,7 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
     if (!anchor || !username)
         return;
 
-    userService.get(username)
+    User.load(username)
         .then(user => {
             user.debugPrint();
             const list = new List(anchor, user);

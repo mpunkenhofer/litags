@@ -1,6 +1,6 @@
 export const keys = {
     prefix: 'litags.',
-    tags: 'litags.tags',
+    sets: 'litags.sets',
     options: 'litags.options',
     frequentlyUsed: 'litags.frequentlyUsed',
     cache: {

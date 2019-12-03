@@ -2,7 +2,7 @@ import {selectors} from "../constants/selectors";
 import {User} from "../user/user";
 import {List} from "./list";
 import {createTagElement, searchTags, Tag} from "../tag/tag";
-import {tagService} from "../tag/tag.service";
+import {storageService} from "../util/storage";
 
 const browser = require("webextension-polyfill");
 const debounce = require('debounce-promise');
@@ -94,7 +94,7 @@ export class Popup {
             const freqElement = document.getElementById(selectors.popup.freq);
             freqElement.innerHTML = '';
 
-            const freqUsedTags = await tagService.getFrequentlyUsed(this.user.getTags());
+            const freqUsedTags = await storageService.getFrequentlyUsed(this.user.getTags());
 
             if (freqElement && freqUsedTags.length > 0) {
                 for (const tag of freqUsedTags)
@@ -107,7 +107,7 @@ export class Popup {
             const allElement = document.getElementById(selectors.popup.all);
             allElement.innerHTML = '';
 
-            const allAvailableTags = await tagService.getAll(freqUsedTags.concat(this.user.getTags()));
+            const allAvailableTags = await storageService.getAllTags(freqUsedTags.concat(this.user.getTags()));
 
             if (allElement && allAvailableTags.length > 0) {
                 for (const tag of allAvailableTags) {
@@ -128,7 +128,7 @@ export class Popup {
     private addTag(tag: Tag, anchor: HTMLElement) {
         const element = document.createElement('div');
         element.className = selectors.popup.tag;
-        element.title = tag.name;
+        element.title = tag.getName();
 
         element.append(createTagElement(tag, 'span', selectors.popup.symbol));
 
@@ -155,7 +155,7 @@ export class Popup {
             });
         } else {
             document.getElementById(selectors.popup.wrappers.searchResults).style.display = 'none';
-            tagService.getFrequentlyUsed(this.user.getTags()).then(value => {
+            storageService.getFrequentlyUsed(this.user.getTags()).then(value => {
                 if (value.length > 0)
                     document.getElementById(selectors.popup.wrappers.freq).style.display = 'block';
             });
