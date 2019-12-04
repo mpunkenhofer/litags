@@ -61,6 +61,11 @@ export const selectors = {
             main: 'lt-setting',
             wrapper: 'lt-settings-wrap'
         },
+        backup: {
+            export: 'lt-export',
+            import: 'lt-import',
+            wrapper: 'lt-backup-wrap'
+        },
         buttonEffect: 'lt-button-effect',
         switch: 'lt-switch',
         slider: 'lt-slider',

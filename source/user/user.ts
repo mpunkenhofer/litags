@@ -5,10 +5,10 @@ import {storageService} from "../util/storage";
 const browser = require("webextension-polyfill");
 
 export class User {
-    username: string;
-    tags: { tag: Tag, gameID: string }[];
-    lastSeen: Date;
-    encounters: number;
+    private readonly username: string;
+    private tags: { tag: Tag, gameID: string }[];
+    private lastSeen: Date;
+    private encounters: number;
 
     constructor(username: string, tags?: Tag[] | { tag: Tag, gameID: string }[], lastSeen?: number, encounters?: number) {
         this.username = username;
@@ -25,6 +25,10 @@ export class User {
 
         this.lastSeen = (lastSeen !== undefined) ? new Date(lastSeen) : new Date();
         this.encounters = (encounters !== undefined) ? encounters + 1 : 1;
+    }
+
+    getUserName(): string {
+        return this.username;
     }
 
     async addTag(tag: Tag) {
@@ -65,11 +69,9 @@ export class User {
         return this.tags.map((obj) => obj.tag);
     }
 
-    static async load(username: string): Promise<User> {
-        const userData = (await browser.storage.local.get(username))[username];
-
-        if (userData && Object.keys(userData).length !== 0) {
-            const [lastSeen, encounters, encodedTags] = userData;
+    static async fromData(username: string, data: [number, number, [string, string][]]): Promise<User> {
+        if (data && Object.keys(data).length !== 0) {
+            const [lastSeen, encounters, encodedTags] = data;
             const tags = await Promise.all(encodedTags.map(encTag => Tag.fromID(encTag[0])));
             const tagsWithGameId = [];
             for (let i = 0; i < tags.length; i++) {
@@ -87,12 +89,21 @@ export class User {
         }
     }
 
+    toData() {
+        const tags: [string, string][] = this.tags.map(t => [t.tag.getID(), t.gameID]);
+        return [this.lastSeen.getTime(), this.encounters, tags];
+    }
+
+    static async load(username: string): Promise<User> {
+        const userData = (await browser.storage.local.get(username))[username];
+        return User.fromData(username, userData);
+    }
+
     store() {
         if (this.username.startsWith(keys.prefix))
             return Promise.reject(`User names starting with ${keys.prefix} are not allowed.`);
 
-        const tags: [string, string][] = this.tags.map(t => [t.tag.getID(), t.gameID]);
-        return browser.storage.local.set({[this.username]: [this.lastSeen.getTime(), this.encounters, tags]});
+        return browser.storage.local.set({[this.username]: this.toData()});
     }
 
     delete() {

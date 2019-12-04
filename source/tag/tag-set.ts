@@ -50,15 +50,6 @@ export class TagSet {
     }
 
     async store() {
-        const tagData = {};
-
-        for (const tag of this.tags) {
-            if (tag instanceof FontTag)
-                tagData[tag.getName()] = [tag.getCharacter(), tag.getAliases(), tag.getColor()];
-            else if (tag instanceof IconTag)
-                tagData[tag.getName()] = [tag.getURL(), tag.getAliases()];
-        }
-
         const setNames: string[] = (await browser.storage.sync.get(keys.sets))[keys.sets];
 
         if (setNames && !setNames.includes(this.name)) {
@@ -68,7 +59,7 @@ export class TagSet {
             await browser.storage.sync.set({[keys.sets]: [this.name]})
         }
 
-        return browser.storage.sync.set({[this.name]: tagData})
+        return browser.storage.sync.set({[this.name]: this.toData()})
     }
 
     static fromData(name: string, data: Object): TagSet {
@@ -89,5 +80,14 @@ export class TagSet {
         }
 
         return set;
+    }
+
+    toData() {
+        const tagData = {};
+
+        for (const tag of this.tags)
+            tagData[tag.getName()] = tag.toData();
+
+        return tagData;
     }
 }

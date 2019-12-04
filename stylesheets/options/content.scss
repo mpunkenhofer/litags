@@ -1,6 +1,16 @@
 @import 'colors';
 @import '../ui/list';
 
+.lt-header-primary {
+  color: $header-primary;
+  font-size: 1.5em;
+}
+
+.lt-header-secondary {
+  color: $header-secondary;
+  font-size: 1.2em;
+}
+
 .lt-content-wrap {
   grid-area: licontent;
   overflow-y: auto;
@@ -35,4 +45,8 @@
   .lt-switch {
     margin-left: auto;
   }
+}
+
+.lt-backup-wrap {
+  display: flex;
 }

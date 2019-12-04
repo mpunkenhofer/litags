@@ -7,5 +7,13 @@ export const keys = {
         prefix: 'cache.',
         tags: 'litags.cache.tags',
         users: 'litags.cache.users'
+    },
+    backup: {
+        sets: 'sets',
+        date: 'date',
+        users: 'users',
+        version: 'version',
+        settings: 'settings',
+        frequentlyUsed: 'frequentlyUsed'
     }
 };

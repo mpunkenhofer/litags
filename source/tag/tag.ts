@@ -60,6 +60,15 @@ export abstract class Tag {
 
         return tag;
     }
+
+    toData() {
+        if (this instanceof FontTag)
+            return [this.getCharacter(), this.aliases, this.getColor()];
+        else if (this instanceof IconTag)
+            return [this.getURL(), this.aliases];
+        else
+            return ['', this.aliases];
+    }
 }
 
 export class FontTag extends Tag {

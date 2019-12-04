@@ -30,16 +30,6 @@ main {
   height: 100%;
 }
 
-.lt-header-primary {
-  color: $header-primary;
-  font-size: 1.5em;
-}
-
-.lt-header-secondary {
-  color: $header-secondary;
-  font-size: 1.2em;
-}
-
 input {
   -webkit-appearance: searchfield;
 }
@@ -71,3 +61,4 @@ input, textarea {
     transform: scale(1.2);
   }
 }
+

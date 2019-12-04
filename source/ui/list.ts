@@ -21,7 +21,7 @@ export class List {
 
         // create list
         this.list = document.createElement('ul');
-        this.list.id = `${selectors.list.tags}-${this.user.username}`;
+        this.list.id = `${selectors.list.tags}-${this.user.getUserName()}`;
         this.list.style.display = 'inline-block';
 
         let dragGhostElement: HTMLElement;

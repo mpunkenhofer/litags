@@ -3,7 +3,7 @@ import {TagSet} from "../tag/tag-set";
 import {User} from "../user/user";
 import {cache} from "./cache";
 import {filterTags, Tag} from "../tag/tag";
-import {Options} from "../options/options";
+import {defaultOptions, Options} from "../options/options";
 import {lichessTagSetData} from "../constants/lichess-set";
 
 const browser = require("webextension-polyfill");
@@ -115,17 +115,9 @@ class StorageService {
     }
 
     async getOptions(): Promise<Options> {
-        const options = await browser.storage.sync.get(keys.options)[keys.options];
+        const options = (await browser.storage.sync.get(keys.options))[keys.options];
 
         if (!options) {
-            const defaultOptions: Options = {
-                enabled: true,
-                gameEnabled: true,
-                profileEnabled: true,
-                maxTags: 8,
-                frequentlyUsedCap: 20
-            };
-
             this.setOptions(defaultOptions);
             return defaultOptions;
         }
