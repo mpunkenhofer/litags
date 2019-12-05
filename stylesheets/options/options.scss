@@ -31,19 +31,19 @@ main {
   height: 100%;
 }
 
-input {
-  -webkit-appearance: searchfield;
-}
-
-input, textarea {
-  background: $background-tertiary;
-  border: 1px solid $background-accent;
-  color: $text-normal;
-  outline-color: $input-outline;
-  padding: .25em .6em;
-  border-radius: 4px;
-  font: inherit;
-}
+//input {
+//  -webkit-appearance: searchfield;
+//}
+//
+//input, textarea {
+//  background: $background-tertiary;
+//  border: 1px solid $background-accent;
+//  color: $text-normal;
+//  outline-color: $input-outline;
+//  padding: .25em .6em;
+//  border-radius: 4px;
+//  font: inherit;
+//}
 
 .lt-content-wrap, .lt-nav-wrap {
   //height: 100%;

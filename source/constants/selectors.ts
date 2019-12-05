@@ -71,7 +71,10 @@ export const selectors = {
             type: 'lt-sortby-type',
             order: 'lt-sortby-order',
             popup: 'lt-sortby-popup',
-            checkbox: 'lt-sortby-checkbox'
+            checkbox: 'lt-sortby-checkbox',
+            wrappers: {
+                checkbox: 'lt-sortby-checkbox-wrap',
+            }
         },
         buttonEffect: 'lt-button-effect',
         switch: 'lt-switch',

@@ -10,6 +10,9 @@ export function createSortBy(user: User[]): HTMLElement {
     const popup = document.createElement('div');
     popup.id = selectors.options.sortby.popup;
 
+    const checkboxWrap = document.createElement('div');
+    checkboxWrap.className = selectors.options.sortby.wrappers.checkbox;
+
     const nameCheckbox = document.createElement('input');
     nameCheckbox.type = 'checkbox';
     nameCheckbox.className = selectors.options.sortby.checkbox;
@@ -25,9 +28,11 @@ export function createSortBy(user: User[]): HTMLElement {
     encountersCheckbox.className = selectors.options.sortby.checkbox;
     encountersCheckbox.innerText =  browser.i18n.getMessage("appSortByEncounters");
 
-    popup.append(nameCheckbox);
-    popup.append(lastSeenCheckbox);
-    popup.append(encountersCheckbox);
+    checkboxWrap.append(nameCheckbox);
+    checkboxWrap.append(lastSeenCheckbox);
+    checkboxWrap.append(encountersCheckbox);
+
+    popup.append(checkboxWrap);
 
     document.body.append(popup);
 
@@ -39,8 +44,8 @@ export function createSortBy(user: User[]): HTMLElement {
 
         if(popup.style.display == 'block') {
             popup.style.right = element.style.bottom = "auto";
-            popup.style.top = `${ev.clientX}px`;
-            popup.style.left = `${ev.clientY}px`;
+            popup.style.top = `${ev.clientY}px`;
+            popup.style.left = `${ev.clientX}px`;
         }
     };
 

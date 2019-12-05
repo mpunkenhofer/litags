@@ -108,10 +108,15 @@ function displayUsers() {
 
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleUsers")}</h1>`;
 
+    const header = document.createElement('div');
+    header.className = 'lt-user-header';
+
+    content.append(header);
+
     const tableElement = <HTMLTableElement>document.createElement('table');
     // users
     storageService.getAllUsers().then(users => {
-        content.append(createSortBy(users));
+        header.append(createSortBy(users));
         addUsers(tableElement, users);
     }).catch(err => console.error(err));
     //add to dom
