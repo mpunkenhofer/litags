@@ -3,7 +3,8 @@ import {User} from "../user/user";
 import {createToggle} from "./toggle";
 import {selectors} from "../constants/selectors";
 import {storageService} from "../util/storage";
-import {exportBackup} from "../util/backup";
+import {exportBackup, importBackup} from "../util/backup";
+import {createSortBy} from "./sortby";
 
 const browser = require("webextension-polyfill");
 
@@ -108,10 +109,11 @@ function displayUsers() {
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleUsers")}</h1>`;
 
     const tableElement = <HTMLTableElement>document.createElement('table');
-    // headElement
-    createHeader(tableElement);
     // users
-    storageService.getAllUsers().then(users => addUsers(tableElement, users));
+    storageService.getAllUsers().then(users => {
+        content.append(createSortBy(users));
+        addUsers(tableElement, users);
+    }).catch(err => console.error(err));
     //add to dom
     content.append(tableElement);
 }
@@ -126,17 +128,7 @@ function addUsers(table: HTMLTableElement, users: User[]) {
         const listCell = newRowElement.insertCell();
         const list = new List(listCell, user);
         list.show();
-        // remove button
-        newRowElement.insertCell().innerHTML =
-            `<i class="${selectors.icons.trash} ${selectors.options.buttonEffect}"></i>`;
     }
-}
-
-function createHeader(table: HTMLTableElement) {
-    const headElement = table.createTHead();
-    const headerRow = headElement.insertRow();
-    const userNameCell = headerRow.insertCell();
-    userNameCell.textContent = 'Username';
 }
 
 function displayBackup() {
@@ -145,24 +137,6 @@ function displayBackup() {
         return;
 
     content.innerHTML = `<h1>${browser.i18n.getMessage("appTitleBackup")}</h1>`;
-
-    // const fileElement = document.createElement('input');
-    // fileElement.type = 'file';
-    // fileElement.textContent = 'Test';
-    // fileElement.onchange = (ev) => {
-    //     const f = (<HTMLInputElement>ev.target).files[0];
-    //
-    //     if (f) {
-    //         const reader = new FileReader();
-    //         reader.onload = (e) => {
-    //             const contents = e.target.result;
-    //             console.log(contents);
-    //         };
-    //         reader.readAsText(f);
-    //     }
-    // };
-    //
-    // content.append(fileElement);
 
     const backupElement = document.createElement('div');
     backupElement.className = selectors.options.backup.wrapper;
@@ -173,32 +147,57 @@ function displayBackup() {
     importElement.className = selectors.options.backup.import;
 
     exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'settings'),'', 'Settings',
-            'Export LiTags settings.'));
+        createToggle(setOptionFactory('exportOptions', 'settings'),'',
+            browser.i18n.getMessage("appBackupToggleTitleSettings"),'Export LiTags settings.'));
     exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'sets'),'', 'Tag Sets'));
+        createToggle(setOptionFactory('exportOptions', 'sets'),'',
+            browser.i18n.getMessage("appBackupToggleTitleTagSets")));
     exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'users'),'', 'Users'));
+        createToggle(setOptionFactory('exportOptions', 'users'),'',
+            browser.i18n.getMessage("appBackupToggleTitleUsers")));
     exportElement.append(
         createToggle(setOptionFactory('exportOptions', 'frequentlyUsed'), '',
-            'Frequently Used Tags'));
+            browser.i18n.getMessage("appBackupToggleTitleFrequentlyUsed")));
 
     importElement.append(
-        createToggle(setOptionFactory('importOptions', 'settings'),'', 'Settings'));
+        createToggle(setOptionFactory('importOptions', 'settings'),'',
+            browser.i18n.getMessage("appBackupToggleTitleSettings")));
     importElement.append(
-        createToggle(setOptionFactory('importOptions', 'sets'),'', 'Tag Sets'));
+        createToggle(setOptionFactory('importOptions', 'sets'),'',
+            browser.i18n.getMessage("appBackupToggleTitleTagSets")));
     importElement.append(
-        createToggle(setOptionFactory('importOptions', 'users'),'', 'Users'));
+        createToggle(setOptionFactory('importOptions', 'users'),'',
+            browser.i18n.getMessage("appBackupToggleTitleUsers")));
     importElement.append(
         createToggle(setOptionFactory('importOptions', 'frequentlyUsed'), '',
-            'Frequently Used Tags'));
+            browser.i18n.getMessage("appBackupToggleTitleFrequentlyUsed")));
 
 
     const exportButton = document.createElement('button');
-    exportButton.innerText = 'Export';
-    exportButton.onclick = _ => exportBackup().then(backup => console.log(backup)).catch(err => console.error(err));
-    const importButton = document.createElement('button');
-    importButton.innerText = 'Import';
+    exportButton.innerText = browser.i18n.getMessage("appBackupExport");
+    exportButton.onclick = _ => exportBackup().then(backup => {
+        const a = document.createElement('a');
+        a.download = `litags-backup-${new Date().getTime()}`;
+        a.href = URL.createObjectURL(new Blob([backup], {type: 'application/json'}));
+        a.onload = _ => URL.revokeObjectURL(a.href);
+        a.click();
+    }).catch(err => console.error(err));
+
+    const importButton = <HTMLInputElement>document.createElement('input');
+    importButton.innerText =  browser.i18n.getMessage("appBackupImport");
+    importButton.type = 'file';
+    importButton.accept = '.json';
+    importButton.onchange = (ev) => {
+        const f = (<HTMLInputElement>ev.target).files[0];
+            if (f) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const contents = e.target.result;
+                    importBackup(contents as string).catch(err => console.error(err));
+                };
+                reader.readAsText(f);
+            }
+    };
 
     exportElement.append(exportButton);
     importElement.append(importButton);

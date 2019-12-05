@@ -21,7 +21,7 @@ export class Popup {
         if(!document.getElementById(selectors.popup.main)) {
             const popupElement = document.createElement('div');
             popupElement.id = selectors.popup.main;
-            popupElement.onmouseleave = () => this.hide();
+            popupElement.onmouseleave = _ => this.hide();
             popupElement.innerHTML = `
             <div class="${selectors.popup.wrappers.main}">
                 <div id="${selectors.popup.wrappers.searchResults}">

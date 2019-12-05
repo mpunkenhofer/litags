@@ -38,5 +38,32 @@
   },
   "appTitleAvailableTags": {
     "message": "Available Tags"
+  },
+  "appBackupToggleTitleTagSets": {
+    "message": "Tag Sets"
+  },
+  "appBackupToggleTitleUsers": {
+    "message": "Users"
+  },
+  "appBackupToggleTitleSettings": {
+    "message": "Settings"
+  },
+  "appBackupToggleTitleFrequentlyUsed": {
+    "message": "Frequently Used Tags"
+  },
+  "appBackupExport": {
+    "message": "Export"
+  },
+  "appBackupImport": {
+    "message": "Import"
+  },
+  "appSortByName": {
+    "message": "Name"
+  },
+  "appSortByLastSeen": {
+    "message": "Last Seen"
+  },
+  "appSortByEncounters": {
+    "message": "Encounters"
   }
 }

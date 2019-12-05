@@ -66,6 +66,13 @@ export const selectors = {
             import: 'lt-import',
             wrapper: 'lt-backup-wrap'
         },
+        sortby: {
+            main: 'lt-sortby',
+            type: 'lt-sortby-type',
+            order: 'lt-sortby-order',
+            popup: 'lt-sortby-popup',
+            checkbox: 'lt-sortby-checkbox'
+        },
         buttonEffect: 'lt-button-effect',
         switch: 'lt-switch',
         slider: 'lt-slider',
