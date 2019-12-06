@@ -55,6 +55,7 @@ export const selectors = {
         content: {
             main: 'lt-content',
             infoText: 'lt-infoText',
+            userTable: 'lt-content-userTable',
             separator: 'lt-content-separator',
         },
         settings: {
@@ -70,11 +71,14 @@ export const selectors = {
             main: 'lt-sortby',
             type: 'lt-sortby-type',
             order: 'lt-sortby-order',
-            popup: 'lt-sortby-popup',
-            checkbox: 'lt-sortby-checkbox',
-            wrappers: {
-                checkbox: 'lt-sortby-checkbox-wrap',
-            }
+            orderWrap: 'lt-sortby-order-wrap',
+            popup: {
+                main: 'lt-sortby-popup',
+                check: 'lt-sortby-popup-check',
+                checkBoxes: 'lt-sortby-popup-checkBoxes',
+                checkBox: 'lt-sortby-popup-checkBox',
+                checkBoxWrap: 'lt-sortby-popup-checkBox-wrap'
+            },
         },
         buttonEffect: 'lt-button-effect',
         switch: 'lt-switch',

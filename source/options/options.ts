@@ -1,5 +1,5 @@
 import {List} from "../ui/list";
-import {User} from "../user/user";
+import {sortByEncounters, sortByLastSeen, sortByName, User} from "../user/user";
 import {createToggle} from "./toggle";
 import {selectors} from "../constants/selectors";
 import {storageService} from "../util/storage";
@@ -114,18 +114,27 @@ function displayUsers() {
     content.append(header);
 
     const tableElement = <HTMLTableElement>document.createElement('table');
+    tableElement.id = selectors.options.content.userTable;
+
     // users
-    storageService.getAllUsers().then(users => {
-        header.append(createSortBy(users));
-        addUsers(tableElement, users);
+    storageService.getMockUsers().then(users => {
+        header.append(createSortBy(users, displayUser,
+            {label: browser.i18n.getMessage("appSortByName"), handler: sortByName},
+            {label: browser.i18n.getMessage("appSortByLastSeen"), handler: sortByLastSeen},
+            {label: browser.i18n.getMessage("appSortByEncounters"), handler: sortByEncounters}));
+
+        displayUser(sortByName(users));
     }).catch(err => console.error(err));
     //add to dom
     content.append(tableElement);
 }
 
-function addUsers(table: HTMLTableElement, users: User[]) {
+function displayUser(users: User[]) {
+    const tableElement = <HTMLTableElement>document.getElementById(selectors.options.content.userTable);
+    tableElement.innerHTML = '';
+
     for (const user of users) {
-        const newRowElement = <HTMLTableRowElement>table.insertRow();
+        const newRowElement = <HTMLTableRowElement>tableElement.insertRow();
         // username
         newRowElement.insertCell().innerHTML =
             `<a href="https://lichess.org/@/${user.getUserName()}" target="_blank">${user.getUserName()}</a>`;

@@ -31,6 +31,14 @@ export class User {
         return this.username;
     }
 
+    getLastSeen(): Date {
+        return this.lastSeen;
+    }
+
+    getEncounters(): number {
+        return this.encounters;
+    }
+
     async addTag(tag: Tag) {
         this.updateLastSeen();
         const options = await storageService.getOptions();
@@ -132,4 +140,32 @@ export class User {
 export function isTagAndGameIDArray(tags: Tag[] | { tag: Tag, gameID: string }[]): tags is { tag: Tag, gameID: string }[] {
     return (tags !== undefined && tags.length > 0) ?
         (tags as { tag: Tag, gameID: string }[])[0].gameID !== undefined : false;
+}
+
+export function sortByName(users: User[], ascending: boolean = false): User[] {
+    const sorted = users.sort((a, b) => {
+        return a.getUserName().localeCompare(b.getUserName());
+    });
+
+    return ascending ? sorted.reverse() : sorted;
+}
+
+export function sortByLastSeen(users: User[], ascending: boolean = false): User[] {
+    const sorted = users.sort((a, b) => {
+        return b.getLastSeen().getTime() - a.getLastSeen().getTime();
+    });
+
+    return ascending ? sorted.reverse() : sorted;
+}
+
+export function sortByEncounters(users: User[], ascending: boolean = false): User[] {
+    const sorted = users.sort((a, b) => {
+        return (a.getLastSeen() > b.getLastSeen()) ? 1 : -1;
+    });
+
+    return ascending ? sorted.reverse() : sorted;
+}
+
+export function searchUsers(term: string, users: User[]): User[] {
+    return users.filter(user => user.getUserName().includes(term));
 }

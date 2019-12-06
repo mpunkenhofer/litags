@@ -62,6 +62,18 @@ class StorageService {
         return users;
     }
 
+    async getMockUsers(): Promise<User[]> {
+        const users: User[] = [];
+
+        users.push(new User('John'));
+        users.push(new User('Sam'));
+        users.push(new User('Neca'));
+        users.push(new User('Ahidis'));
+        users.push(new User('Charlie'));
+
+        return users;
+    }
+
     async getFrequentlyUsed(filter: Tag[] = [], amount: number = 8): Promise<Tag[]> {
         const freqUsedData = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
 
