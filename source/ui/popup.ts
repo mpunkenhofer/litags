@@ -26,19 +26,19 @@ export class Popup {
             <div class="${selectors.popup.wrappers.main}">
                 <div id="${selectors.popup.wrappers.searchResults}">
                     <div class="${selectors.popup.title}">
-                        ${browser.i18n.getMessage("appTitleSearchResults")}</div>
+                        ${browser.i18n.getMessage("searchResults")}</div>
                     <div id="${selectors.popup.searchResults}"></div>
                 </div>
                 <div id="${selectors.popup.wrappers.freq}">
                     <div class="${selectors.popup.title}">
-                        ${browser.i18n.getMessage("appTitleFrequentlyUsed")}</div>
+                        ${browser.i18n.getMessage("frequentlyUsed")}</div>
                     <div id="${selectors.popup.freq}"></div>
                 </div>
                 <div id="${selectors.popup.sets}"></div>
             </div>
             <div class="${selectors.popup.wrappers.search}">
                 <input type="search" id="${selectors.popup.search}" autocapitalize="off" autocomplete="off" 
-                spellcheck="false" placeholder="${browser.i18n.getMessage("appSearchTagPlaceholder")}">
+                spellcheck="false" placeholder="${browser.i18n.getMessage("searchTagPlaceholder")}">
             </div>`;
 
             document.body.append(popupElement);
@@ -151,9 +151,9 @@ export class Popup {
     }
 
     private tagSearch(term: string) {
-        if (term.length > 0) {
-            const searchTerm = debounce(searchTags, 100, {leading: true});
-            searchTerm(term, this.user.getTags()).then((result: Tag[]) => {
+        if (term && term.length > 0) {
+            const searchFunction = debounce(searchTags, 100, {leading: true});
+            searchFunction(term, this.user.getTags()).then((result: Tag[]) => {
                 document.getElementById(selectors.popup.wrappers.freq).style.display = 'none';
                 const searchResultsElement = document.getElementById(selectors.popup.searchResults);
                 searchResultsElement.innerHTML = '';

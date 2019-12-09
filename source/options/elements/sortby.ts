@@ -1,10 +1,15 @@
-import {selectors} from "../constants/selectors";
+import {selectors} from "../../constants/selectors";
 
 const debounce = require('debounce-promise');
 
 let idCount = 0;
 
-export function createSortBy<T>(item: T[], display: (item: T[]) => void,
+export function createSortDirection<T>(item: T[], display: (item: T[]) => void,
+                                       config: {label: string, handler: (item: T[], ascending: boolean) => T[]}) {
+    return createSortBy<T>(document.body, item, display, config);
+}
+
+export function createSortBy<T>(popupAnchor: HTMLElement, item: T[], display: (item: T[]) => void,
                                 ...configs: {label: string, handler: (item: T[], ascending: boolean) => T[]}[])
     : HTMLElement {
     if(!item || !display || configs.length < 1)
@@ -14,12 +19,6 @@ export function createSortBy<T>(item: T[], display: (item: T[]) => void,
 
     const element = document.createElement('div');
     element.className = selectors.options.sortby.main;
-
-    const popupID = `${selectors.options.sortby.popup.main}-${idCount}`;
-
-    const popup = document.createElement('div');
-    popup.className = selectors.options.sortby.popup.main;
-    popup.id = popupID;
 
     const order = document.createElement('input');
     order.type = 'checkbox';
@@ -32,6 +31,11 @@ export function createSortBy<T>(item: T[], display: (item: T[]) => void,
     type.textContent = configs[0].label;
 
     if(configs.length > 1) {
+        const popupID = `${selectors.options.sortby.popup.main}-${idCount}`;
+        const popup = document.createElement('div');
+        popup.className = selectors.options.sortby.popup.main;
+        popup.id = popupID;
+
         type.onclick = ev => {
             const typeElement = <HTMLElement>ev.target;
             if (!typeElement)
@@ -57,7 +61,7 @@ export function createSortBy<T>(item: T[], display: (item: T[]) => void,
 
             const checkBoxWrapElement = document.createElement('div');
             checkBoxWrapElement.className = selectors.options.sortby.popup.checkBoxWrap;
-            checkBoxWrapElement.onclick = ev => {
+            checkBoxWrapElement.onclick = _ => {
                 document.querySelectorAll<HTMLInputElement>(`#${popupID} input`).forEach(input => {
                     input.checked = false;
                 });
@@ -84,7 +88,18 @@ export function createSortBy<T>(item: T[], display: (item: T[]) => void,
             idCount++;
         }
 
-        document.body.append(popup);
+        popupAnchor.append(popup);
+
+        //hide when clicked outside popup
+        document.body.onclick = e => {
+            const popup = document.getElementById(popupID);
+            if(popup.contains(<Node>e.target) || type.isSameNode(<Node>e.target))
+                return;
+
+            popup.style.display = 'none';
+        }
+    } else {
+        type.onclick = _ => displayFunction(getHandler(type.textContent, configs)(item, order.checked));
     }
 
     const orderWrap = document.createElement('div');

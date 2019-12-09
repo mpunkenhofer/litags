@@ -25,7 +25,9 @@ nav {
     position: relative;
     padding-right: 2vw;
     padding-left: .8rem;
+    font-size: 1.5em;
     font-weight: 600;
+    text-decoration: none;
   }
 
   .lt-nav-button {
@@ -47,7 +49,7 @@ nav {
     color: $text-muted;
     margin-top: .7rem;
     margin-bottom: .4rem;
-    font-size: .9em;
+    font-size: 1.1em;
   }
 
   .lt-nav-separator {
@@ -60,7 +62,7 @@ nav {
 
   .lt-nav-socials {
     display: flex;
-    position: absolute;
+    position: relative;
     margin-top: .5em;
     font-size: 1.5em;
     font-weight: 400;
@@ -70,7 +72,9 @@ nav {
     outline: none;
 
     a {
-      padding-right: .5em;
+      //padding-right: .5em;
+      margin: .2em .3em .2em .3em;
+
       text-decoration: none;
     }
   }

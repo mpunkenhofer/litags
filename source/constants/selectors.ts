@@ -52,12 +52,6 @@ export const selectors = {
             settings: 'lt-nav-settings',
             separator: 'lt-nav-separator'
         },
-        content: {
-            main: 'lt-content',
-            infoText: 'lt-infoText',
-            userTable: 'lt-content-userTable',
-            separator: 'lt-content-separator',
-        },
         settings: {
             main: 'lt-setting',
             wrapper: 'lt-settings-wrap'
@@ -80,6 +74,25 @@ export const selectors = {
                 checkBoxWrap: 'lt-sortby-popup-checkBox-wrap'
             },
         },
+        users: {
+            table: 'lt-users-table',
+            count: 'lt-users-count',
+            header: 'lt-users-header',
+            search: 'lt-users-search',
+            remove: 'lt-users-remove',
+            tableSeparator: 'lt-users-tableSeparator'
+        },
+        modal: {
+            main: 'lt-modal',
+            content: 'lt-modal-content',
+            no: 'lt-modal-no',
+            yes: 'lt-modal-yes',
+            text: 'lt-modal-text',
+            close: 'lt-modal-close',
+            buttonWrap: 'lt-users-button-wrap'
+        },
+        content: 'lt-content',
+        infoText: 'lt-infoText',
         buttonEffect: 'lt-button-effect',
         switch: 'lt-switch',
         slider: 'lt-slider',

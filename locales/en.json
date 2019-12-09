@@ -7,63 +7,78 @@
     "message": "A browser extension that enables you to assign tags to players on lichess.org.",
     "description": "The description of the application"
   },
-  "appAddTagButtonTitle": {
+  "yes": {
+    "message": "Yes"
+  },
+  "no": {
+    "message": "No"
+  },
+  "tags": {
+    "message": "Tags"
+  },
+  "users": {
+    "message": "Users"
+  },
+  "name": {
+    "message": "Name"
+  },
+  "data": {
+    "message": "Data"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "backup": {
+    "message": "Backup"
+  },
+  "export": {
+    "message": "Export"
+  },
+  "import": {
+    "message": "Import"
+  },
+  "lastSeen": {
+    "message": "Last Seen"
+  },
+  "encounters": {
+    "message": "Encounters"
+  },
+  "searchResults": {
+    "message": "Search Results"
+  },
+  "frequentlyUsed": {
+    "message": "Frequently Used"
+  },
+  "availableTags": {
+    "message": "Available Tags"
+  },
+  "tagSets": {
+    "message": "Tag Sets"
+  },
+  "usersFound": {
+    "message": "Users found"
+  },
+  "taggedUsers": {
+    "message": "Tagged Users",
+    "description": "Users with tags."
+  },
+  "frequentlyUsedTags": {
+    "message": "Frequently Used Tags"
+  },
+  "addTagButtonTitle": {
     "message": "Add Tag",
     "description": "The tooltip of the add tag button."
   },
-  "appSearchTagPlaceholder": {
+  "searchTagPlaceholder": {
     "message": "Search for a Tag...",
-    "description": "Placeholder text displayed in the search input element."
+    "description": "Placeholder text displayed in the tag search input element."
   },
-  "appTitleSettings": {
-    "message": "Settings"
+  "searchUserPlaceholder": {
+    "message": "Search for a User...",
+    "description": "Placeholder text displayed in the user search input element."
   },
-  "appTitleTags": {
-    "message": "Tags"
-  },
-  "appTitleUsers": {
-    "message": "Users"
-  },
-  "appTitleBackup": {
-    "message": "Backup"
-  },
-  "appTitleData": {
-    "message": "Data"
-  },
-  "appTitleSearchResults": {
-    "message": "Search Results"
-  },
-  "appTitleFrequentlyUsed": {
-    "message": "Frequently Used"
-  },
-  "appTitleAvailableTags": {
-    "message": "Available Tags"
-  },
-  "appBackupToggleTitleTagSets": {
-    "message": "Tag Sets"
-  },
-  "appBackupToggleTitleUsers": {
-    "message": "Users"
-  },
-  "appBackupToggleTitleSettings": {
-    "message": "Settings"
-  },
-  "appBackupToggleTitleFrequentlyUsed": {
-    "message": "Frequently Used Tags"
-  },
-  "appBackupExport": {
-    "message": "Export"
-  },
-  "appBackupImport": {
-    "message": "Import"
-  },
-  "appSortByName": {
-    "message": "Name"
-  },
-  "appSortByLastSeen": {
-    "message": "Last Seen"
-  },
-  "appSortByEncounters": {
-    "message": "Encounters"
+  "deleteUserConfirm": {
+    "message": "Are you sure you want to delete user %s?",
+    "description": "${user} is a placeholder for the username of the to be deleted user."
   }
 }

@@ -115,7 +115,7 @@ export class User {
     }
 
     delete() {
-        browser.storage.local.remove(this.username);
+       browser.storage.local.remove(this.username);
     }
 
     debugPrint() {
@@ -160,12 +160,13 @@ export function sortByLastSeen(users: User[], ascending: boolean = false): User[
 
 export function sortByEncounters(users: User[], ascending: boolean = false): User[] {
     const sorted = users.sort((a, b) => {
-        return (a.getLastSeen() > b.getLastSeen()) ? 1 : -1;
+        return b.getEncounters() - a.getEncounters();
     });
 
     return ascending ? sorted.reverse() : sorted;
 }
 
 export function searchUsers(term: string, users: User[]): User[] {
-    return users.filter(user => user.getUserName().includes(term));
+    term = term.toLocaleLowerCase();
+    return users.filter(user => user.getUserName().toLocaleLowerCase().includes(term));
 }

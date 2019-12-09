@@ -62,14 +62,33 @@ class StorageService {
         return users;
     }
 
+    getRandomTags(set: TagSet, maxTags: number = 8): Tag[] {
+        const result = [];
+        const tags = set.getTags();
+        const randomNrTags = Math.floor(Math.random() * (maxTags - 1)) + 1;
+        for(let i = 0; i < randomNrTags; i++) {
+            const random = Math.floor(Math.random() * tags.length);
+
+            result.push(tags[random]);
+        }
+
+        return result;
+    }
+
     async getMockUsers(): Promise<User[]> {
         const users: User[] = [];
+        const lichessSet = TagSet.fromData('Lichess', lichessTagSetData);
 
-        users.push(new User('John'));
-        users.push(new User('Sam'));
-        users.push(new User('Neca'));
-        users.push(new User('Ahidis'));
-        users.push(new User('Charlie'));
+        users.push(new User('John', this.getRandomTags(lichessSet), 1,
+            Math.floor(Math.random() * 100) + 1));
+        users.push(new User('Sam', this.getRandomTags(lichessSet), 310000005460,
+            Math.floor(Math.random() * 100) + 1));
+        users.push(new User('Neca', this.getRandomTags(lichessSet), 700004560800,
+            Math.floor(Math.random() * 100) + 1));
+        users.push(new User('Ahidis', this.getRandomTags(lichessSet), 120004560000,
+            Math.floor(Math.random() * 100) + 1));
+        users.push(new User('Charlie', this.getRandomTags(lichessSet), 1510000045600,
+            Math.floor(Math.random() * 100) + 1));
 
         return users;
     }

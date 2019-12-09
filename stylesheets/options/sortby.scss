@@ -39,26 +39,29 @@
 
 .lt-sortby {
   display: flex;
-  user-select: none;
+  //user-select: none;
   cursor: pointer;
 
-  .lt-sortby-type {
-    padding: .5em;
+  button, div {
     background: $background-primary;
-    border-radius: 3px;
-    border: 0;
-
-    &:hover {
-      background: $background-accent;
-    }
 
     &:focus {
       outline: 0;
     }
   }
 
-  .lt-sortby-order-wrap {
+  button {
     padding: .5em;
+    border-radius: 3px;
+    border: 0;
+
+    &:hover {
+      background: $background-accent;
+    }
+  }
+
+  .lt-sortby-order-wrap {
+    //padding: .5em;
     align-items: center;
     justify-content: center;
     background: $background-primary;
