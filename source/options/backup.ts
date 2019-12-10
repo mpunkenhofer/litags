@@ -20,31 +20,35 @@ export function displayBackup() {
     const importElement = document.createElement('div');
     importElement.className = selectors.options.backup.import;
 
-    exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'settings'),'',
-            browser.i18n.getMessage("settings"),'Export LiTags settings.'));
-    exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'sets'),'',
-            browser.i18n.getMessage("tagSets")));
-    exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'users'),'',
-            browser.i18n.getMessage("users")));
-    exportElement.append(
-        createToggle(setOptionFactory('exportOptions', 'frequentlyUsed'), '',
-            browser.i18n.getMessage("frequentlyUsedTags")));
+    const exportTitle = document.createElement('span');
+    exportTitle.className = selectors.options.headerSecondary;
+    exportTitle.innerHTML = browser.i18n.getMessage("export");
 
-    importElement.append(
-        createToggle(setOptionFactory('importOptions', 'settings'),'',
-            browser.i18n.getMessage("settings")));
-    importElement.append(
-        createToggle(setOptionFactory('importOptions', 'sets'),'',
-            browser.i18n.getMessage("tagSets")));
-    importElement.append(
-        createToggle(setOptionFactory('importOptions', 'users'),'',
+    exportElement.append(exportTitle);
+
+    exportElement.append(createToggle(setOptionFactory('exportOptions', 'users'), '',
             browser.i18n.getMessage("users")));
-    importElement.append(
-        createToggle(setOptionFactory('importOptions', 'frequentlyUsed'), '',
+    exportElement.append(createToggle(setOptionFactory('exportOptions', 'sets'), '',
+            browser.i18n.getMessage("tagSets")));
+    exportElement.append(createToggle(setOptionFactory('exportOptions', 'frequentlyUsed'), '',
             browser.i18n.getMessage("frequentlyUsedTags")));
+    exportElement.append(createToggle(setOptionFactory('exportOptions', 'settings'), '',
+            browser.i18n.getMessage("settings")));
+
+    const importTitle = document.createElement('span');
+    importTitle.className = selectors.options.headerSecondary;
+    importTitle.innerHTML = browser.i18n.getMessage("import");
+
+    importElement.append(importTitle);
+
+    importElement.append(createToggle(setOptionFactory('importOptions', 'users'), '',
+            browser.i18n.getMessage("users")));
+    importElement.append(createToggle(setOptionFactory('importOptions', 'sets'), '',
+            browser.i18n.getMessage("tagSets")));
+    importElement.append(createToggle(setOptionFactory('importOptions', 'frequentlyUsed'), '',
+            browser.i18n.getMessage("frequentlyUsedTags")));
+    importElement.append(createToggle(setOptionFactory('importOptions', 'settings'), '',
+            browser.i18n.getMessage("settings")));
 
 
     const exportButton = document.createElement('button');

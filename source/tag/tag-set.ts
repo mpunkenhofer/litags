@@ -1,5 +1,6 @@
 import {FontTag, IconTag, Tag} from "./tag";
 import {keys} from "../constants/keys";
+import {cache} from "../util/cache";
 
 const browser = require("webextension-polyfill");
 
@@ -32,7 +33,13 @@ export class TagSet {
         return this.tags;
     }
 
+    deleteTag(tag: Tag[]) {
+        cache.del(keys.cache.tags);
+    }
+
     clearTags() {
+        cache.del(keys.cache.tags);
+
         this.tags = [];
     }
 
@@ -50,6 +57,8 @@ export class TagSet {
     }
 
     async store() {
+        cache.del(keys.cache.tags);
+
         const setNames: string[] = (await browser.storage.sync.get(keys.sets))[keys.sets];
 
         if (setNames && !setNames.includes(this.name)) {

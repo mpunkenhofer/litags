@@ -47,7 +47,7 @@ export function displayUsers() {
                         clearTable(table);
 
                     createUserTable(table, result, userCount, browser.i18n.getMessage('usersFound'));
-                });
+                }).catch(err => console.error(err));
             } else {
                 createUserTable(table, users, userCount, browser.i18n.getMessage('taggedUsers'));
             }

@@ -34,7 +34,7 @@ export class List {
                 Tag.fromID(getTagId(event.item)).then(tag => {
                     if(tag instanceof FontTag)
                         event.item.style.color = (tag && tag.getColor().length > 0) ? tag.getColor() : '';
-                });
+                }).catch(err => console.error(err));
                 this.showTrash()
             },
             onChoose: () => this.showTrash(),

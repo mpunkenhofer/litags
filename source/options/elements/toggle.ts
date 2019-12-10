@@ -23,7 +23,7 @@ export function createToggle(handler: (bool?: boolean) => Promise<boolean>,
         handler(element && element.checked).catch(err => console.error(err));
     };
 
-    handler().then(b => inputElement.checked = b);
+    handler().then(b => inputElement.checked = b).catch(err => console.error(err));
 
     const spanElement = document.createElement('span');
     spanElement.className = selectors.options.slider;

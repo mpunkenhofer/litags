@@ -91,13 +91,21 @@ export const selectors = {
             close: 'lt-modal-close',
             buttonWrap: 'lt-users-button-wrap'
         },
+        tags: {
+          wrap: 'lt-tags-wrap',
+          sets: 'lt-tags-sets',
+          details: 'lt-tags-details',
+          setList: 'lt-tags-setList',
+          setListHeader: 'lt-tags-setListHeader'
+        },
         content: 'lt-content',
         infoText: 'lt-infoText',
         buttonEffect: 'lt-button-effect',
         switch: 'lt-switch',
         slider: 'lt-slider',
         headerPrimary: 'lt-header-primary',
-        headerSecondary: 'lt-header-secondary'
+        headerSecondary: 'lt-header-secondary',
+        version: 'lt-version'
     },
     icons: {
         discord: 'lt-icon-discord',

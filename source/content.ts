@@ -7,8 +7,6 @@ import {User} from "./user/user";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-//TODO: catch errors
-
 storageService.getOptions().then((options: Options) => {
     const element = document.querySelector(selectors.app.appElement);
 

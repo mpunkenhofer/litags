@@ -1,6 +1,7 @@
 import {Tag} from "../tag/tag";
 import {keys} from "../constants/keys";
 import {storageService} from "../util/storage";
+import {cache} from "../util/cache";
 
 const browser = require("webextension-polyfill");
 
@@ -8,7 +9,7 @@ export class User {
     private readonly username: string;
     private tags: { tag: Tag, gameID: string }[];
     private lastSeen: Date;
-    private encounters: number;
+    private readonly encounters: number;
 
     constructor(username: string, tags?: Tag[] | { tag: Tag, gameID: string }[], lastSeen?: number, encounters?: number) {
         this.username = username;
@@ -46,7 +47,7 @@ export class User {
             const match = document.URL.match(/lichess\.org\/(\w{8})/);
             const gameID: string = match ? match[1] : "";
             this.tags.push({tag, gameID});
-            storageService.updateFrequentlyUsed(tag).then(() => this.store());
+            storageService.updateFrequentlyUsed(tag).then(() => this.store()).catch(err => console.error(err));
         }
     }
 
@@ -111,11 +112,14 @@ export class User {
         if (this.username.startsWith(keys.prefix))
             return Promise.reject(`User names starting with ${keys.prefix} are not allowed.`);
 
+        cache.del(keys.cache.users);
+
         return browser.storage.local.set({[this.username]: this.toData()});
     }
 
     delete() {
-       browser.storage.local.remove(this.username);
+        cache.del(keys.cache.users);
+        browser.storage.local.remove(this.username);
     }
 
     debugPrint() {

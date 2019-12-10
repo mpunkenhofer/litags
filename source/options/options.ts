@@ -5,6 +5,9 @@ import {displayBackup} from "./backup";
 import {displayTags} from "./tags";
 import {displayUsers} from "./users";
 
+const browser = require("webextension-polyfill");
+const pkg = require('../../package.json');
+
 export interface BackupOptions {
     sets: boolean,
     users: boolean,
@@ -68,10 +71,10 @@ init();
 function init() {
     console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-    localize();
-
-    function attachOnClickHandler(element: HTMLElement, handler: () => any) {
+    function attachOnClickHandler(element: HTMLElement, handler: () => any, text?: string) {
         if (element) {
+            if (text != undefined && text && text.length > 0)
+                element.innerText = text;
             element.onclick = (ev: Event) => {
                 const activeElement = document.querySelector('.active');
 
@@ -88,15 +91,17 @@ function init() {
         }
     }
 
-    attachOnClickHandler(document.getElementById(selectors.options.nav.settings), displaySettings);
-    attachOnClickHandler(document.getElementById(selectors.options.nav.tags), displayTags);
-    attachOnClickHandler(document.getElementById(selectors.options.nav.users), displayUsers);
-    attachOnClickHandler(document.getElementById(selectors.options.nav.backup), displayBackup);
+    attachOnClickHandler(document.getElementById(selectors.options.nav.settings), displaySettings,
+        browser.i18n.getMessage('settings'));
+    attachOnClickHandler(document.getElementById(selectors.options.nav.tags), displayTags,
+        browser.i18n.getMessage('tags'));
+    attachOnClickHandler(document.getElementById(selectors.options.nav.users), displayUsers,
+        browser.i18n.getMessage('users'));
+    attachOnClickHandler(document.getElementById(selectors.options.nav.backup), displayBackup,
+        browser.i18n.getMessage('backup'));
 
     displaySettings();
+
+    const version = document.getElementById(selectors.options.version);
+    version.textContent = `v${pkg.version}`;
 }
-
-function localize() {
-
-}
-

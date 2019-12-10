@@ -11,6 +11,8 @@ export function displaySettings() {
 
     content.innerHTML = `<h1>${browser.i18n.getMessage("settings")}</h1>`;
 
+    const litagsEnabledTitle = browser.i18n.getMessage("settingLitagsEnabledTitle");
+    const litagsEnabledDesc = browser.i18n.getMessage("settingLitagsEnabledDescription");
     content.append(
-        createToggle(setOptionFactory('enabled'), 'Litags', 'Litags Enabled', 'Desc'));
+        createToggle(setOptionFactory('enabled'), '', litagsEnabledTitle, litagsEnabledDesc));
 }

@@ -65,6 +65,12 @@
   "frequentlyUsedTags": {
     "message": "Frequently Used Tags"
   },
+  "settingLitagsEnabledTitle": {
+    "message": "Enable Litags"
+  },
+  "settingLitagsEnabledDescription": {
+    "message": "Use the silder to enable / disable Litags."
+  },
   "addTagButtonTitle": {
     "message": "Add Tag",
     "description": "The tooltip of the add tag button."
@@ -79,6 +85,6 @@
   },
   "deleteUserConfirm": {
     "message": "Are you sure you want to delete user %s?",
-    "description": "${user} is a placeholder for the username of the to be deleted user."
+    "description": "%s is a placeholder for the username of the to be deleted user."
   }
 }

@@ -6,10 +6,12 @@ import {storageService} from "../util/storage";
 
 const browser = require("webextension-polyfill");
 const debounce = require('debounce-promise');
+const focusTrap = require('focus-trap');
 
 export class Popup {
     private user: User;
     private list: List;
+    private readonly trap;
 
     constructor(user: User, list: List) {
         if (!user || !list)
@@ -21,7 +23,6 @@ export class Popup {
         if(!document.getElementById(selectors.popup.main)) {
             const popupElement = document.createElement('div');
             popupElement.id = selectors.popup.main;
-            popupElement.onmouseleave = _ => this.hide();
             popupElement.innerHTML = `
             <div class="${selectors.popup.wrappers.main}">
                 <div id="${selectors.popup.wrappers.searchResults}">
@@ -53,8 +54,26 @@ export class Popup {
                     else if (e.key.match(/(\w|\s)/g)) {
                         document.getElementById(selectors.popup.search).focus();
                     }
+
+                    console.log(e);
                 }
             };
+            // hide popup when clicked outside of it
+            document.body.onclick = e => {
+                this.trap.deactivate();
+
+                const popup = getPopupElement();
+                console.log('click', popup.contains(<Node>e.target));
+
+                if(popup.contains(<Node>e.target)) {
+                    this.trap.activate();
+                    return;
+                }
+
+                this.hide();
+            };
+
+            this.trap = focusTrap(`#${selectors.popup.main}`);
         }
     }
 
@@ -73,7 +92,10 @@ export class Popup {
                 // position popup in viewport
                 if (location !== undefined)
                     calculatePopupPosition(location, 10);
-            });
+
+                // if(this.trap !== undefined)
+                //     this.trap.activate();
+            }).catch(err => console.error(err));
     }
 
     isShowing(): boolean {
@@ -81,6 +103,9 @@ export class Popup {
     }
 
     hide() {
+        // if(this.trap !== undefined)
+        //     this.trap.deactivate();
+
         getPopupElement().style.display = 'none';
     }
 
@@ -139,12 +164,14 @@ export class Popup {
         const element = document.createElement('div');
         element.className = selectors.popup.tag;
         element.title = tag.getName();
+/*        element.innerText = 'T';
+        element.href = '#';*/
 
         element.append(createTagElement(tag));
 
         element.onclick = () => {
             clearSearch();
-            this.user.addTag(tag).then(() => this.list.update());
+            this.user.addTag(tag).then(() => this.list.update()).catch(err => console.error(err));
             this.hide();
         };
         anchor.append(element);
@@ -162,13 +189,13 @@ export class Popup {
                     this.addTag(tag, searchResultsElement);
 
                 document.getElementById(selectors.popup.wrappers.searchResults).style.display = 'block';
-            });
+            }).catch(err => console.error(err));
         } else {
             document.getElementById(selectors.popup.wrappers.searchResults).style.display = 'none';
             storageService.getFrequentlyUsed(this.user.getTags()).then(value => {
                 if (value.length > 0)
                     document.getElementById(selectors.popup.wrappers.freq).style.display = 'block';
-            });
+            }).catch(err => console.error(err));
         }
     }
 }

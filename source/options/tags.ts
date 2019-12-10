@@ -6,6 +6,16 @@ export function displayTags() {
     const content = document.getElementById(selectors.options.content);
     if (!content)
         return;
+    content.innerHTML = '';
 
-    content.innerHTML = `<h1>${browser.i18n.getMessage("tags")}</h1>`;
+    const wrap = document.createElement('div');
+    wrap.className = selectors.options.tags.wrap;
+    wrap.innerHTML =
+        `<div class="${selectors.options.tags.sets}">
+            <div class="${selectors.options.tags.setListHeader}"></div>
+            <div class="${selectors.options.tags.setList}"></div>
+        </div>
+        <div class="${selectors.options.tags.details}"></div>`;
+
+    content.append(wrap);
 }

@@ -29,11 +29,18 @@ class StorageService {
     }
 
     async getAllTags(filter: Tag[] = []): Promise<Tag[]> {
+        let tags: Tag[] = cache.get(keys.cache.tags);
+
+        if (tags != undefined)
+            return filterTags(tags, filter);
+
         const sets = await this.getTagSets();
-        const tags: Tag[] = [];
+        tags= [];
 
         for (const set of sets)
             Array.prototype.push.apply(tags, set.getTags());
+
+        cache.set(keys.cache.tags, tags);
 
         return filterTags(tags, filter);
     }
@@ -115,8 +122,6 @@ class StorageService {
     }
 
     async updateFrequentlyUsed(tag: Tag) {
-        cache.del(keys.cache.tags);
-
         let freqUsed = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
         const options = await this.getOptions();
 
