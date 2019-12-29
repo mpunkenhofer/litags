@@ -4,27 +4,37 @@ import {User} from "../user/user";
 import {cache} from "./cache";
 import {filterTags, Tag} from "../tag/tag";
 import {defaultOptions, Options} from "../options/options";
-import {lichessTagSetData} from "../constants/lichess-set";
+import {ID} from "./id";
+import {lichessSet} from "../constants/lichess-set";
 
 const browser = require("webextension-polyfill");
 
 class StorageService {
     async getTagSets(): Promise<TagSet[]> {
-        const setNames: string[] = (await browser.storage.sync.get(keys.sets))[keys.sets];
+        const setIDs: string[] = (await browser.storage.sync.get(keys.sets))[keys.sets];
 
-        if (!setNames || setNames.length == 0) {
+        if (!setIDs || setIDs.length == 0) {
             //default sets
-            const lichessSet = TagSet.fromData('Lichess', lichessTagSetData);
+            const liSetName = lichessSet.name;
+            const liSetTags = lichessSet.tags;
+            const liSet = new TagSet(liSetName);
+
+            for (const key in liSetTags) {
+                if (liSetTags.hasOwnProperty(key)) {
+                    const [resource, aliases, color] = liSetTags[key];
+                    liSet.createFontTag(key, aliases, resource, color);
+                }
+            }
 
             const testSet = new TagSet('Test');
-            testSet.createTag('monkaS', [], 'https://cdn.frankerfacez.com/emoticon/413512/1');
+            testSet.createIconTag('monkaS', [], 'https://cdn.frankerfacez.com/emoticon/413512/1');
 
-            await lichessSet.store();
+            await liSet.store();
             await testSet.store();
 
-            return [lichessSet, testSet];
+            return [liSet, testSet];
         } else {
-            return await Promise.all(setNames.map(setName => TagSet.load(setName)));
+            return await Promise.all(setIDs.map(setID => TagSet.load(new ID(setID))));
         }
     }
 
@@ -43,6 +53,17 @@ class StorageService {
         cache.set(keys.cache.tags, tags);
 
         return filterTags(tags, filter);
+    }
+
+    async getTag(id: ID): Promise<Tag> {
+        const tags = await this.getAllTags();
+
+        for (const tag of tags) {
+            if (id.equals(tag.getID()))
+                return tag;
+        }
+
+        return Promise.reject(`Failed to load tag: ${id}`)
     }
 
     async getAllUsers(): Promise<User[]> {
@@ -69,9 +90,9 @@ class StorageService {
         return users;
     }
 
-    getRandomTags(set: TagSet, maxTags: number = 8): Tag[] {
+    async getRandomTags(maxTags: number = 8): Promise<Tag[]> {
         const result = [];
-        const tags = set.getTags();
+        const tags = await this.getAllTags();
         const randomNrTags = Math.floor(Math.random() * (maxTags - 1)) + 1;
         for(let i = 0; i < randomNrTags; i++) {
             const random = Math.floor(Math.random() * tags.length);
@@ -84,17 +105,16 @@ class StorageService {
 
     async getMockUsers(): Promise<User[]> {
         const users: User[] = [];
-        const lichessSet = TagSet.fromData('Lichess', lichessTagSetData);
 
-        users.push(new User('John', this.getRandomTags(lichessSet), 1,
+        users.push(new User('John', await this.getRandomTags(), 1,
             Math.floor(Math.random() * 100) + 1));
-        users.push(new User('Sam', this.getRandomTags(lichessSet), 310000005460,
+        users.push(new User('Sam', await this.getRandomTags(), 310000005460,
             Math.floor(Math.random() * 100) + 1));
-        users.push(new User('Neca', this.getRandomTags(lichessSet), 700004560800,
+        users.push(new User('Neca', await this.getRandomTags(), 700004560800,
             Math.floor(Math.random() * 100) + 1));
-        users.push(new User('Ahidis', this.getRandomTags(lichessSet), 120004560000,
+        users.push(new User('Ahidis', await this.getRandomTags(), 120004560000,
             Math.floor(Math.random() * 100) + 1));
-        users.push(new User('Charlie', this.getRandomTags(lichessSet), 1510000045600,
+        users.push(new User('Charlie', await this.getRandomTags(), 1510000045600,
             Math.floor(Math.random() * 100) + 1));
 
         return users;
@@ -104,11 +124,11 @@ class StorageService {
         const freqUsedData = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
 
         if (freqUsedData) {
-            const tags: Tag[] = await Promise.all(Object.keys(freqUsedData).map(key => Tag.fromID(key)));
+            const tags: Tag[] = await Promise.all(Object.keys(freqUsedData).map(key => Tag.fromID(new ID(key))));
             const frequencies: number[] = Object.values(freqUsedData);
 
             let pairs: [Tag, number][] = tags.map((tag, i) => [tag, frequencies[i]]);
-            pairs = pairs.filter(pair => !filter.find(filterTag => filterTag.getID() === pair[0].getID()));
+            pairs = pairs.filter(pair => !filter.find(filterTag => filterTag.getID().equals(pair[0].getID())));
 
             return pairs
                 .sort((a, b): number => {
@@ -129,13 +149,13 @@ class StorageService {
             freqUsed = {};
 
         // add/inc freq used entry
-        if (freqUsed[tag.getID()])
-            freqUsed[tag.getID()] += 1;
+        if (freqUsed[tag.getID().toString()])
+            freqUsed[tag.getID().toString()] += 1;
         else
-            freqUsed[tag.getID()] = 1;
+            freqUsed[tag.getID().toString()] = 1;
 
         if (Object.keys(freqUsed).length > options.frequentlyUsedCap) {
-            let min = [Number.MAX_VALUE, tag.getID()];
+            let min = [Number.MAX_VALUE, tag.getID().toString()];
 
             for (const id in freqUsed) {
                 if (freqUsed.hasOwnProperty(id)) {

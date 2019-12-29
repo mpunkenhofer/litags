@@ -3,6 +3,10 @@ export const keys = {
     sets: 'litags.sets',
     options: 'litags.options',
     frequentlyUsed: 'litags.frequentlyUsed',
+    tagSet: {
+        name: 'name',
+        tags: 'tags'
+    },
     cache: {
         prefix: 'cache.',
         tags: 'litags.cache.tags',

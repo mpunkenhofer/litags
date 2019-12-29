@@ -2,6 +2,7 @@ import {User} from "../user/user";
 import {selectors} from "../constants/selectors";
 import {SortableEvent} from "sortablejs";
 import {createTagElement, FontTag, Tag} from "../tag/tag";
+import {ID} from "../util/id";
 
 const Sortable = require('sortablejs');
 
@@ -31,7 +32,7 @@ export class List {
             group: sortableGroup,
             animation: 100,
             onChange: (event: SortableEvent) => {
-                Tag.fromID(getTagId(event.item)).then(tag => {
+                Tag.fromID(new ID(getTagId(event.item))).then(tag => {
                     if(tag instanceof FontTag)
                         event.item.style.color = (tag && tag.getColor().length > 0) ? tag.getColor() : '';
                 }).catch(err => console.error(err));
@@ -104,7 +105,7 @@ export class List {
 
             for (const tag of this.user.getTags()) {
                 const tagElement = createTagElement(tag, 'li');
-                tagElement.classList.add(tag.getID());
+                tagElement.classList.add(`${selectors.id}-${tag.getID().toString()}`);
                 this.list.append(tagElement);
             }
 
@@ -136,6 +137,11 @@ export class List {
 }
 
 function getTagId(element: Element): string {
-    const result = element.className.match(/\w\w*\.\w(\w|-)*/g);
-    return result ? result.pop() : '';
+    const result = element.className.match( new RegExp(`${selectors.id}-([0-9A-fa-f-]+)`, 'g'));
+    if(result && result.length > 0) {
+        const r = result[0].split(`${selectors.id}-`);
+        return r.length > 0  ? r[1] : '';
+    } else {
+        return '';
+    }
 }

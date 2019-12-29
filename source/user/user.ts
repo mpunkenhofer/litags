@@ -2,6 +2,7 @@ import {Tag} from "../tag/tag";
 import {keys} from "../constants/keys";
 import {storageService} from "../util/storage";
 import {cache} from "../util/cache";
+import {ID} from "../util/id";
 
 const browser = require("webextension-polyfill");
 
@@ -55,7 +56,7 @@ export class User {
         if (tag) {
             this.updateLastSeen();
             const id = (typeof tag === "string") ? tag : tag.getID();
-            this.tags = this.tags.filter(t => t.tag.getID() !== id);
+            this.tags = this.tags.filter(t => !t.tag.getID().equals(id));
             this.store();
         }
     }
@@ -64,7 +65,7 @@ export class User {
         this.updateLastSeen();
 
         this.tags.sort((a, b) => {
-            return (newOrder.indexOf(a.tag.getID()) > newOrder.indexOf(b.tag.getID())) ? 1 : -1;
+            return (newOrder.indexOf(a.tag.getID().toString()) > newOrder.indexOf(b.tag.getID().toString())) ? 1 : -1;
         });
 
         this.store();
@@ -81,7 +82,7 @@ export class User {
     static async fromData(username: string, data: [number, number, [string, string][]]): Promise<User> {
         if (data && Object.keys(data).length !== 0) {
             const [lastSeen, encounters, encodedTags] = data;
-            const tags = await Promise.all(encodedTags.map(encTag => Tag.fromID(encTag[0])));
+            const tags = await Promise.all(encodedTags.map(encTag => Tag.fromID(new ID(encTag[0]))));
             const tagsWithGameId = [];
             for (let i = 0; i < tags.length; i++) {
                 tagsWithGameId.push({tag: tags[i], gameID: encodedTags[i][1]})
@@ -99,7 +100,7 @@ export class User {
     }
 
     toData() {
-        const tags: [string, string][] = this.tags.map(t => [t.tag.getID(), t.gameID]);
+        const tags: [string, string][] = this.tags.map(t => [t.tag.getID().toString(), t.gameID]);
         return [this.lastSeen.getTime(), this.encounters, tags];
     }
 
@@ -126,7 +127,7 @@ export class User {
         const user = `User: ${this.username}`;
         const tags =
             `${this.tags.map(obj => {
-                let str = ` ID: ${obj.tag.getID()}`;
+                let str = ` ${obj.tag.getName()}`;
                 if (obj.gameID.length > 0)
                     str += ` gameID: ${obj.gameID}`;
                 return str;

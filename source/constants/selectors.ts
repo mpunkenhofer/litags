@@ -115,5 +115,6 @@ export const selectors = {
         chevdown: 'lt-icon-chevron-down'
     },
     fontTag: 'lt-fontTag',
-    iconTag: 'lt-iconTag'
+    iconTag: 'lt-iconTag',
+    id: 'lt-id'
 };

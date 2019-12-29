@@ -1,21 +1,23 @@
 import {TagSet} from "./tag-set";
 import {storageService} from "../util/storage";
 import {selectors} from "../constants/selectors";
+import {ID} from "../util/id";
 
 export abstract class Tag {
-    protected readonly id: string;
+    protected readonly id: ID;
     protected readonly set: TagSet;
     protected name: string;
     protected aliases: string[];
 
-    protected constructor(set: TagSet, name: string, aliases: string[] = []) {
+    protected constructor(set: TagSet, name: string, aliases: string[] = [], id: ID = new ID()) {
         this.set = set;
         this.name = name;
         this.aliases = aliases;
+        this.id = id;
     }
 
-    getID(): string {
-        return `${this.set.getName()}.${this.name}`;
+    getID(): ID {
+        return this.id;
     }
 
     getName(): string {
@@ -44,29 +46,18 @@ export abstract class Tag {
         return this.set.store();
     }
 
-    static async fromID(id: string): Promise<Tag> {
-        if(!id)
+    static async fromID(id: ID): Promise<Tag> {
+        if (!id || id.toString().length === 0)
             return Promise.reject('Empty id string.');
 
-        const [set, name] = id.split('.');
-
-        if(!set || !name)
-            return Promise.reject('Failed to get set and/or name from id.');
-
-        const tagSet = await TagSet.load(set);
-        const tag = tagSet.getTag(name);
-
-        if(!tag)
-            return Promise.reject(`Failed to get tag: ${name} in set ${set}.`);
-
-        return tag;
+        return storageService.getTag(id);
     }
 
     toData() {
         if (this instanceof FontTag)
-            return [this.getCharacter(), this.aliases, this.getColor()];
+            return [this.name, this.aliases, this.getCharacter(), this.getColor()];
         else if (this instanceof IconTag)
-            return [this.getURL(), this.aliases];
+            return [this.name, this.aliases, this.getURL()];
         else
             return ['', this.aliases];
     }
@@ -76,8 +67,9 @@ export class FontTag extends Tag {
     protected readonly character: string;
     protected color: string;
 
-    constructor(set: TagSet, name: string, aliases: string[] = [], character: string, color: string = '') {
-        super(set, name, aliases);
+    constructor(set: TagSet, name: string, aliases: string[] = [], character: string, color: string = '',
+                id: ID = new ID()) {
+        super(set, name, aliases, id);
 
         this.character = character;
         this.color = color;
@@ -99,8 +91,8 @@ export class FontTag extends Tag {
 export class IconTag extends Tag {
     protected url: string;
 
-    constructor(set: TagSet, name: string, aliases: string[] = [], url: string) {
-        super(set, name, aliases);
+    constructor(set: TagSet, name: string, aliases: string[] = [], url: string, id = new ID()) {
+        super(set, name, aliases, id);
 
         this.url = url;
     }
@@ -115,7 +107,8 @@ export class IconTag extends Tag {
 }
 
 export const filterTags = (tags: Tag[], filter: Tag[]): Tag[] => {
-    return filter ? tags.filter(tag => !filter.find(filterTag => filterTag.getID() === tag.getID())) : tags;
+    return filter ?
+        tags.filter(tag => !filter.find(filterTag => filterTag.getID().equals(tag.getID()))) : tags;
 };
 
 export async function searchTags(term: string, filter: Tag[] = []): Promise<Tag[]> {
@@ -130,7 +123,7 @@ export async function searchTags(term: string, filter: Tag[] = []): Promise<Tag[
 export function createTagElement(tag: Tag, type: string = 'span') {
     const tagElement = document.createElement(type);
 
-    if(tag instanceof FontTag) {
+    if (tag instanceof FontTag) {
         tagElement.className = selectors.fontTag;
         tagElement.innerText = tag.getCharacter();
 
@@ -138,7 +131,7 @@ export function createTagElement(tag: Tag, type: string = 'span') {
 
         if (color.length > 0)
             tagElement.style.color = color;
-    } else if(tag instanceof IconTag) {
+    } else if (tag instanceof IconTag) {
         tagElement.className = selectors.iconTag;
         const image = new Image();
         image.src = tag.getURL();
