@@ -6,12 +6,12 @@ import {storageService} from "../util/storage";
 
 const browser = require("webextension-polyfill");
 const debounce = require('debounce-promise');
-const focusTrap = require('focus-trap');
+// const focusTrap = require('focus-trap');
 
 export class Popup {
     private user: User;
     private list: List;
-    private readonly trap;
+    // private readonly trap;
 
     constructor(user: User, list: List) {
         if (!user || !list)
@@ -24,7 +24,7 @@ export class Popup {
             const popupElement = document.createElement('div');
             popupElement.id = selectors.popup.main;
             popupElement.innerHTML = `
-            <div class="${selectors.popup.wrappers.main}">
+            <div id="${selectors.popup.wrappers.main}">
                 <div id="${selectors.popup.wrappers.searchResults}">
                     <div class="${selectors.popup.title}">
                         ${browser.i18n.getMessage("searchResults")}</div>
@@ -55,25 +55,25 @@ export class Popup {
                         document.getElementById(selectors.popup.search).focus();
                     }
 
-                    console.log(e);
+                    // console.log(e);
                 }
             };
             // hide popup when clicked outside of it
             document.body.onclick = e => {
-                this.trap.deactivate();
+                // this.trap.deactivate();
 
                 const popup = getPopupElement();
-                console.log('click', popup.contains(<Node>e.target));
+                //console.log('click', popup.contains(<Node>e.target));
 
                 if(popup.contains(<Node>e.target)) {
-                    this.trap.activate();
+                    // this.trap.activate();
                     return;
                 }
 
                 this.hide();
             };
 
-            this.trap = focusTrap(`#${selectors.popup.main}`);
+            // this.trap = focusTrap(`#${selectors.popup.main}`);
         }
     }
 
@@ -105,7 +105,7 @@ export class Popup {
     hide() {
         // if(this.trap !== undefined)
         //     this.trap.deactivate();
-
+        clearSearch();
         getPopupElement().style.display = 'none';
     }
 

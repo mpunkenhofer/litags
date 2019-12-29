@@ -3,6 +3,7 @@ import {storageService} from "../util/storage";
 import {selectors} from "../constants/selectors";
 
 export abstract class Tag {
+    protected readonly id: string;
     protected readonly set: TagSet;
     protected name: string;
     protected aliases: string[];

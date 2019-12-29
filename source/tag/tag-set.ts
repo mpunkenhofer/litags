@@ -5,6 +5,7 @@ import {cache} from "../util/cache";
 const browser = require("webextension-polyfill");
 
 export class TagSet {
+    private readonly id: string;
     private readonly name: string;
     private tags: Tag[];
 

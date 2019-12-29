@@ -103,5 +103,6 @@ function init() {
     displaySettings();
 
     const version = document.getElementById(selectors.options.version);
-    version.textContent = `v${pkg.version}`;
+    if (version)
+        version.textContent = `v${pkg.version}`;
 }
