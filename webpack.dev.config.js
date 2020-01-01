@@ -19,7 +19,7 @@ module.exports = {
 		],
         background: './source/background.ts',
         options: [
-            './source/options/options.ts',
+            './source/options/options.tsx',
             './stylesheets/options/options.scss',
         ],
     },
@@ -97,8 +97,8 @@ module.exports = {
         }
     },
 
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    }
+    // externals: {
+    //     "react": "React",
+    //     "react-dom": "ReactDOM"
+    // }
 };
