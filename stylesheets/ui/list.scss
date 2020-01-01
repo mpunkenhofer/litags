@@ -3,7 +3,7 @@
   list-style-type: none;
   user-select: none;
   font-family: lichess, serif;
-  font-size: 1.5em;
+  font-size: 2em;
 
   ul {
     display: inline-block;
@@ -32,8 +32,10 @@
   top: 0;
   left: 0;
   visibility: hidden;
+  opacity: 0;
 }
 
 .lt-list-dragHandle {
   cursor: grabbing;
+  opacity: 0;
 }

@@ -71,7 +71,7 @@
   "settingLitagsEnabledDescription": {
     "message": "Use the silder to enable / disable Litags."
   },
-  "addTagButtonTitle": {
+  "addTagButtonTooltip": {
     "message": "Add Tag",
     "description": "The tooltip of the add tag button."
   },

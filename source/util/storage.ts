@@ -5,36 +5,41 @@ import {cache} from "./cache";
 import {filterTags, Tag} from "../tag/tag";
 import {defaultOptions, Options} from "../options/options";
 import {ID} from "./id";
-import {lichessSet} from "../constants/lichess-set";
+import {lichessSetData} from "../constants/lichess-set";
+import {frankerfacezSetData} from "../constants/frankerfacez-set";
 
 const browser = require("webextension-polyfill");
 
 class StorageService {
-    async getTagSets(): Promise<TagSet[]> {
-        const setIDs: string[] = (await browser.storage.sync.get(keys.sets))[keys.sets];
+    async getTagSets(onlyEnabledSets = false): Promise<TagSet[]> {
+        const setIDs: Object = (await browser.storage.sync.get(keys.sets))[keys.sets];
 
-        if (!setIDs || setIDs.length == 0) {
+        if (!setIDs || Object.keys(setIDs).length === 0) {
             //default sets
-            const liSetName = lichessSet.name;
-            const liSetTags = lichessSet.tags;
-            const liSet = new TagSet(liSetName);
 
-            for (const key in liSetTags) {
-                if (liSetTags.hasOwnProperty(key)) {
-                    const [resource, aliases, color] = liSetTags[key];
-                    liSet.createFontTag(key, aliases, resource, color);
+            const lichessSet = TagSet.createSetFromData(lichessSetData);
+            const frankerfacezSet = TagSet.createSetFromData(frankerfacezSetData);
+            frankerfacezSet.setEnabled(false);
+            await lichessSet.store();
+            await frankerfacezSet.store();
+
+            return [lichessSet, frankerfacezSet];
+        } else {
+            const sets: TagSet[] = [];
+            for (const setID in setIDs) {
+                if (setIDs.hasOwnProperty(setID)) {
+                    if (onlyEnabledSets && !setIDs[setID])
+                        continue;
+
+                    const tagSet = await TagSet.load(new ID(setID));
+                    if (tagSet) {
+                        sets.push(tagSet);
+                    } else {
+                        console.error(`Failed to load tagset: ${setID}.`);
+                    }
                 }
             }
-
-            const testSet = new TagSet('Test');
-            testSet.createIconTag('monkaS', [], 'https://cdn.frankerfacez.com/emoticon/413512/1');
-
-            await liSet.store();
-            await testSet.store();
-
-            return [liSet, testSet];
-        } else {
-            return await Promise.all(setIDs.map(setID => TagSet.load(new ID(setID))));
+            return sets;
         }
     }
 
@@ -44,7 +49,7 @@ class StorageService {
         if (tags != undefined)
             return filterTags(tags, filter);
 
-        const sets = await this.getTagSets();
+        const sets = await this.getTagSets(true);
         tags= [];
 
         for (const set of sets)
@@ -121,21 +126,24 @@ class StorageService {
     }
 
     async getFrequentlyUsed(filter: Tag[] = [], amount: number = 8): Promise<Tag[]> {
-        const freqUsedData = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
+        try {
+            const freqUsedData = (await browser.storage.sync.get(keys.frequentlyUsed))[keys.frequentlyUsed];
+            if (freqUsedData) {
+                const tags: Tag[] = await Promise.all(Object.keys(freqUsedData).map(key => Tag.fromID(new ID(key))));
+                const frequencies: number[] = Object.values(freqUsedData);
 
-        if (freqUsedData) {
-            const tags: Tag[] = await Promise.all(Object.keys(freqUsedData).map(key => Tag.fromID(new ID(key))));
-            const frequencies: number[] = Object.values(freqUsedData);
+                let pairs: [Tag, number][] = tags.map((tag, i) => [tag, frequencies[i]]);
+                pairs = pairs.filter(pair => !filter.find(filterTag => filterTag.getID().equals(pair[0].getID())));
 
-            let pairs: [Tag, number][] = tags.map((tag, i) => [tag, frequencies[i]]);
-            pairs = pairs.filter(pair => !filter.find(filterTag => filterTag.getID().equals(pair[0].getID())));
-
-            return pairs
-                .sort((a, b): number => {
-                    return b[1] - a[1];
-                })
-                .splice(0, amount)
-                .map(pair => pair[0]);
+                return pairs
+                    .sort((a, b): number => {
+                        return b[1] - a[1];
+                    })
+                    .splice(0, amount)
+                    .map(pair => pair[0]);
+            }
+        } catch (e) {
+            console.error(e);
         }
 
         return [];

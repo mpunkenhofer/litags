@@ -22,7 +22,7 @@ export class Button {
         //create the button
         this.button = document.createElement('div');
         this.button.className = selectors.button.wrapper;
-        const title = browser.i18n.getMessage("appAddTagButtonTitle");
+        const title = browser.i18n.getMessage("addTagButtonTooltip");
         this.button.innerHTML = `<button class="${selectors.button.main}" title="${title}">O</button>`;
         this.button.onclick = ev => this.popup.show([ev.clientX, ev.clientY]);
 

@@ -111,10 +111,13 @@ export class Popup {
 
     private async populate() {
         const freqElement = document.getElementById(selectors.popup.freq);
-        freqElement.innerHTML = '';
+        const setsElement = document.getElementById(selectors.popup.sets);
+        setsElement.innerHTML = freqElement.innerHTML = '';
+
+        if(!freqElement || !setsElement)
+            throw Error('Failed to get required html elements.');
 
         const freqUsedTags = await storageService.getFrequentlyUsed(this.user.getTags());
-
         if (freqElement && freqUsedTags.length > 0) {
             for (const tag of freqUsedTags)
                 this.addTag(tag, freqElement);
@@ -122,10 +125,7 @@ export class Popup {
         } else
             document.getElementById(selectors.popup.wrappers.freq).style.display = 'none';
 
-        const setsElement = document.getElementById(selectors.popup.sets);
-        setsElement.innerHTML = '';
-
-        const sets = await storageService.getTagSets();
+        const sets = await storageService.getTagSets(true);
 
         if (setsElement && sets.length > 0) {
             for (const set of sets) {

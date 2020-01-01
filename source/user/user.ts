@@ -115,7 +115,12 @@ export class User {
 
         cache.del(keys.cache.users);
 
-        return browser.storage.local.set({[this.username]: this.toData()});
+        try {
+            return browser.storage.local.set({[this.username]: this.toData()});
+        } catch (e) {
+            console.error(`Failed to store user: ${this.username}`, e);
+            return Promise.reject(`Failed to store user: ${this.username}`);
+        }
     }
 
     delete() {

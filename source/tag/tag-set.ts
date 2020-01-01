@@ -9,6 +9,7 @@ export class TagSet {
     private readonly id: ID;
     private name: string;
     private tags: Tag[];
+    private enabled = true;
 
     constructor(name: string, id: ID = new ID()) {
         this.name = name;
@@ -51,34 +52,72 @@ export class TagSet {
         this.name = name
     }
 
+    setEnabled(bool: boolean) {
+        this.enabled = bool;
+        this.storeSetID()
+    }
+
+    getEnabled() {
+        return this.enabled;
+    }
+
     static async load(id: ID): Promise<TagSet> {
-        const setData = (await browser.storage.sync.get(id.toString()))[id.toString()];
-
-        if (!setData)
-            return Promise.reject(`Could not load tag set: ${id.toString()}`);
-
-        return TagSet.fromData(setData, id);
+        try {
+            const setData = (await browser.storage.sync.get(id.toString()))[id.toString()];
+            if (!setData) {
+                return null;
+            }
+            return TagSet.fromData(setData, id);
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
     }
 
     async store() {
         cache.del(keys.cache.tags);
-
-        const setIDs: string[] = (await browser.storage.sync.get(keys.sets))[keys.sets];
-
-        if (setIDs && !setIDs.includes(this.id.toString())) {
-            setIDs.push(this.id.toString());
-            await browser.storage.sync.set({[keys.sets]: setIDs});
-        } else {
-            await browser.storage.sync.set({[keys.sets]: [this.id.toString()]})
+        this.storeSetID();
+        try {
+            await browser.storage.sync.set({[this.id.toString()]: this.toData()})
+        } catch (e) {
+            console.error(`Failed to store set data of set ${this.name} with setID: ${this.id.toString()}`, e)
         }
-
-        return browser.storage.sync.set({[this.id.toString()]: this.toData()})
     }
 
+    storeSetID() {
+        browser.storage.sync.get(keys.sets).then(obj => {
+            const setIDs = obj[keys.sets];
+
+            if (setIDs && !Object.keys(setIDs).includes(this.id.toString())) {
+                setIDs[this.id.toString()] = this.enabled;
+                browser.storage.sync.set({[keys.sets]: setIDs}).catch(err => console.error(`Failed to add setID: ${this.id.toString()} of set ${this.name}`, err));
+            } else {
+                browser.storage.sync.set({[keys.sets]: {[this.id.toString()]: this.enabled}}).catch(err => console.error(`Failed to create setID array with setID: ${this.id.toString()} set ${this.name}`, err));
+            }
+        });
+    }
+
+    static createSetFromData(data: Object): TagSet {
+        const set = new this(data[keys.tagSet.name], new ID());
+        const tags = data[keys.tagSet.tags];
+
+        for (const key in tags) {
+            if (tags.hasOwnProperty(key)) {
+                const [aliases, resource, color] = tags[key];
+                if (color != undefined) {
+                    set.createFontTag(key, aliases, resource, color);
+                } else {
+                    set.createIconTag(key, aliases, resource);
+                }
+            }
+        }
+
+        return set;
+    }
 
     static fromData(data: Object, id: ID = new ID()): TagSet {
         if (!data.hasOwnProperty(keys.tagSet.name) || !data.hasOwnProperty(keys.tagSet.tags))
-            throw Error(`data misses expected field ${keys.tagSet.name} or/and ${keys.tagSet.tags}`);
+            throw Error(`Data misses expected field ${keys.tagSet.name} or/and ${keys.tagSet.tags}`);
 
         const setName = data[keys.tagSet.name];
         const tagData = data[keys.tagSet.tags];
