@@ -61,7 +61,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts$/,
+                test: /\.ts(x?)$/,
                 loader: 'ts-loader',
                 include: [path.resolve(__dirname, 'source')],
                 exclude: [/node_modules/]
@@ -89,11 +89,16 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.scss'],
+        extensions: ['.ts', '.tsx', '.js', '.scss'],
         alias: {
             "sortablejs": "sortablejs/Sortable.js",
             "webextension-polyfill": "webextension-polyfill/dist/browser-polyfill.js",
             modules: path.join(__dirname, "node_modules"),
         }
+    },
+
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
     }
 };

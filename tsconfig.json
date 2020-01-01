@@ -6,6 +6,7 @@
     "allowUnreachableCode": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "jsx": "react",
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
