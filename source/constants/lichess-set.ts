@@ -1,5 +1,6 @@
-export const lichessSetData: {name: string, tags: { [_: string]: [string[], string, string] }} = {
+export const lichessSetData: {name: string, enabled: boolean, tags: { [_: string]: [string[], string, string] }} = {
     "name": "Lichess",
+    "enabled": true,
     "tags": {
         "exit": [[], "0", ""],
         "tv": [[], "1", ""],

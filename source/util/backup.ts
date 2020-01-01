@@ -2,6 +2,7 @@ import {storageService} from "./storage";
 import {keys} from "../constants/keys";
 import {TagSet} from "../tag/tag-set";
 import {User} from "../user/user";
+import {ID} from "./id";
 
 const browser = require("webextension-polyfill");
 const pkg = require('../../package.json');
@@ -20,7 +21,7 @@ export async function importBackup(data: string) {
 
         for(const set in sets) {
             if(sets.hasOwnProperty(set))
-                await TagSet.fromData(set, sets[set]).store();
+                await TagSet.fromData(sets[set], new ID(set)).store();
         }
     }
 
@@ -59,7 +60,7 @@ export async function exportBackup(): Promise<string> {
             const setBackup = {};
 
             for (const set of sets) {
-                setBackup[set.getName()] = set.toData();
+                setBackup[set.getID().toString()] = set.toData();
             }
 
             backup[keys.backup.sets] = setBackup;

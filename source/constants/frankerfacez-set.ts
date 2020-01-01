@@ -1,5 +1,7 @@
-export const frankerfacezSetData: {name: string, tags: { [_: string]: [string[], string, string?] }} = {
+export const frankerfacezSetData:
+    {name: string, enabled: boolean, tags: { [_: string]: [string[], string, string?] }} = {
     "name": "FrakerFaceZ",
+    "enabled": true,
     "tags": {
         "AYAYA": [[], "https://cdn.frankerfacez.com/emoticon/162146/1"],
         "OMEGALUL": [[], "https://cdn.frankerfacez.com/emoticon/128054/1"],

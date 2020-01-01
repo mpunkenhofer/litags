@@ -79,11 +79,11 @@ export class Popup {
 
     show(location?: [number, number]) {
         this.populate()
-            .then(() => {
+            .then(displayedTags => {
                 // add user specific search function (to filter out assigned used tags)
                 const search = document.getElementById(selectors.popup.search);
                 if(search)
-                    search.oninput = (e: Event) => this.tagSearch((<HTMLInputElement>e.target).value);
+                    search.oninput = (e: Event) => this.tagSearch(displayedTags, (<HTMLInputElement>e.target).value);
 
                   // determine popup color
                 determinePopupColor();
@@ -109,7 +109,8 @@ export class Popup {
         getPopupElement().style.display = 'none';
     }
 
-    private async populate() {
+    private async populate(): Promise<Tag[]> {
+        let displayedTags: Tag[] = [];
         const freqElement = document.getElementById(selectors.popup.freq);
         const setsElement = document.getElementById(selectors.popup.sets);
         setsElement.innerHTML = freqElement.innerHTML = '';
@@ -118,6 +119,8 @@ export class Popup {
             throw Error('Failed to get required html elements.');
 
         const freqUsedTags = await storageService.getFrequentlyUsed(this.user.getTags());
+        displayedTags.concat(freqUsedTags);
+
         if (freqElement && freqUsedTags.length > 0) {
             for (const tag of freqUsedTags)
                 this.addTag(tag, freqElement);
@@ -130,6 +133,7 @@ export class Popup {
         if (setsElement && sets.length > 0) {
             for (const set of sets) {
                 const tags = filterTags(set.getTags(), freqUsedTags.concat(this.user.getTags()));
+                displayedTags.concat(tags);
 
                 if(tags && tags.length > 0) {
                     const wrapElement = document.createElement('div');
@@ -152,11 +156,15 @@ export class Popup {
                 }
             }
             document.getElementById(selectors.popup.sets).style.display = 'block';
+
+            return displayedTags;
         } else {
             if (freqUsedTags.length === 0)
                 this.hide();   // no tags to display - hide popup
             else
                 document.getElementById(selectors.popup.sets).style.display = 'none';
+
+            return [];
         }
     }
 
@@ -177,10 +185,10 @@ export class Popup {
         anchor.append(element);
     }
 
-    private tagSearch(term: string) {
+    private tagSearch(tags: Tag[], term: string) {
         if (term && term.length > 0) {
             const searchFunction = debounce(searchTags, 100, {leading: true});
-            searchFunction(term, this.user.getTags()).then((result: Tag[]) => {
+            searchFunction(term, tags, this.user.getTags()).then((result: Tag[]) => {
                 document.getElementById(selectors.popup.wrappers.freq).style.display = 'none';
                 const searchResultsElement = document.getElementById(selectors.popup.searchResults);
                 searchResultsElement.innerHTML = '';

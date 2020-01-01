@@ -16,6 +16,9 @@
   "tags": {
     "message": "Tags"
   },
+  "tag": {
+    "message": "Tag"
+  },
   "users": {
     "message": "Users"
   },
@@ -36,6 +39,12 @@
   },
   "import": {
     "message": "Import"
+  },
+  "aliases": {
+    "message": "Aliases"
+  },
+  "URL": {
+    "message": "URL"
   },
   "lastSeen": {
     "message": "Last Seen"
@@ -58,12 +67,18 @@
   "usersFound": {
     "message": "Users found"
   },
+  "tagsFound": {
+    "message": "Tags found"
+  },
   "taggedUsers": {
     "message": "Tagged Users",
     "description": "Users with tags."
   },
   "frequentlyUsedTags": {
     "message": "Frequently Used Tags"
+  },
+  "tagSetEnabledDescription": {
+    "message": "Enable / disable this set. Once disabled the tags associated with this set will no longer be displayed."
   },
   "settingLitagsEnabledTitle": {
     "message": "Enable Litags"
@@ -86,5 +101,9 @@
   "deleteUserConfirm": {
     "message": "Are you sure you want to delete user %s?",
     "description": "%s is a placeholder for the username of the to be deleted user."
+  },
+  "deleteTagConfirm": {
+    "message": "Are you sure you want to delete tag %s?",
+    "description": "%s is a placeholder for the tag name of the to be deleted tag."
   }
 }

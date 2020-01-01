@@ -9,10 +9,11 @@ export class TagSet {
     private readonly id: ID;
     private name: string;
     private tags: Tag[];
-    private enabled = true;
+    private enabled;
 
-    constructor(name: string, id: ID = new ID()) {
+    constructor(name: string, enabled: boolean = true, id: ID = new ID()) {
         this.name = name;
+        this.enabled = enabled;
         this.id = id;
         this.tags = [];
     }
@@ -61,6 +62,10 @@ export class TagSet {
         return this.enabled;
     }
 
+    getID() {
+        return this.id;
+    }
+
     static async load(id: ID): Promise<TagSet> {
         try {
             const setData = (await browser.storage.sync.get(id.toString()))[id.toString()];
@@ -98,7 +103,7 @@ export class TagSet {
     }
 
     static createSetFromData(data: Object): TagSet {
-        const set = new this(data[keys.tagSet.name], new ID());
+        const set = new this(data[keys.tagSet.name], data[keys.tagSet.enabled], new ID());
         const tags = data[keys.tagSet.tags];
 
         for (const key in tags) {
@@ -121,8 +126,9 @@ export class TagSet {
 
         const setName = data[keys.tagSet.name];
         const tagData = data[keys.tagSet.tags];
+        const enabled = data[keys.tagSet.enabled];
 
-        const set = new this(setName, id);
+        const set = new this(setName, enabled, id);
 
         for (const key in tagData) {
             if (tagData.hasOwnProperty(key)) {
@@ -144,6 +150,7 @@ export class TagSet {
     toData() {
         const setData = {};
         setData[keys.tagSet.name] = this.name;
+        setData[keys.tagSet.enabled] = this.enabled;
 
         const tagData = {};
 

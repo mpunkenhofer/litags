@@ -32,7 +32,7 @@ export class List {
             group: sortableGroup,
             animation: 100,
             onChange: (event: SortableEvent) => {
-                Tag.fromID(new ID(getTagId(event.item))).then(tag => {
+                Tag.fromID(new ID(getTagID(event.item))).then(tag => {
                     if(tag instanceof FontTag)
                         event.item.style.color = (tag && tag.getColor().length > 0) ? tag.getColor() : '';
                 }).catch(err => console.error(err));
@@ -55,7 +55,7 @@ export class List {
             onUpdate: () => {
                 const newOrder = [];
                 for (let i = 0; i < this.list.children.length; i++) {
-                    newOrder.push(getTagId(this.list.children[i]))
+                    newOrder.push(getTagID(this.list.children[i]))
                 }
                 this.user.reArrange(newOrder);
             }
@@ -74,7 +74,7 @@ export class List {
             animation: 100,
             onAdd: (event: SortableEvent) => {
                 const element = event.item;
-                this.user.removeTag(getTagId(element));
+                this.user.removeTag(getTagID(element));
                 element.parentElement.removeChild(element);
                 this.update();
             },
@@ -136,7 +136,7 @@ export class List {
     }
 }
 
-function getTagId(element: Element): string {
+function getTagID(element: Element): string {
     const result = element.className.match( new RegExp(`${selectors.id}-([0-9A-fa-f-]+)`, 'g'));
     if(result && result.length > 0) {
         const r = result[0].split(`${selectors.id}-`);

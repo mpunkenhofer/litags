@@ -46,6 +46,10 @@ export abstract class Tag {
         return this.set.store();
     }
 
+    delete() {
+        return this.set.deleteTag([this])
+    }
+
     static async fromID(id: ID): Promise<Tag> {
         if (!id || id.toString().length === 0)
             return Promise.reject('Empty id string.');
@@ -111,9 +115,17 @@ export const filterTags = (tags: Tag[], filter: Tag[]): Tag[] => {
         tags.filter(tag => !filter.find(filterTag => filterTag.getID().equals(tag.getID()))) : tags;
 };
 
-export async function searchTags(term: string, filter: Tag[] = []): Promise<Tag[]> {
+export function sortByName(tags: Tag[], ascending: boolean = false): Tag[] {
+    const sorted = tags.sort((a, b) => {
+        return a.getName().localeCompare(b.getName());
+    });
+
+    return ascending ? sorted.reverse() : sorted;
+}
+
+export async function searchTags(term: string, tags: Tag[], filter: Tag[] = []): Promise<Tag[]> {
     term = term.toLowerCase();
-    const tags = await storageService.getAllTags(filter);
+    tags = filterTags(tags, filter);
     return tags.filter(tag =>
         tag.getName().toLowerCase().includes(term)
         || tag.getAliases().find(alias => alias.toLowerCase().includes(term))

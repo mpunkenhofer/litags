@@ -5,7 +5,8 @@ export const keys = {
     frequentlyUsed: 'litags.frequentlyUsed',
     tagSet: {
         name: 'name',
-        tags: 'tags'
+        tags: 'tags',
+        enabled: 'enabled'
     },
     cache: {
         prefix: 'cache.',

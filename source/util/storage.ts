@@ -68,7 +68,18 @@ class StorageService {
                 return tag;
         }
 
-        return Promise.reject(`Failed to load tag: ${id}`)
+        return Promise.reject(`Failed to load tag: ${id}.`);
+    }
+
+    async getTagSet(id: ID): Promise<TagSet> {
+        const sets = await this.getTagSets();
+
+        for (const set of sets) {
+            if (id.equals(set.getID()))
+                return set;
+        }
+
+        return Promise.reject(`Failed to load set: ${id}.`);
     }
 
     async getAllUsers(): Promise<User[]> {

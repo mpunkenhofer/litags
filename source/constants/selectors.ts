@@ -92,11 +92,19 @@ export const selectors = {
             buttonWrap: 'lt-users-button-wrap'
         },
         tags: {
-          wrap: 'lt-tags-wrap',
-          sets: 'lt-tags-sets',
-          details: 'lt-tags-details',
-          setList: 'lt-tags-setList',
-          setListHeader: 'lt-tags-setListHeader'
+            set: 'lt-tags-set',
+            sets: 'lt-tags-sets',
+            table: 'lt-tags-table',
+            details: 'lt-tags-details',
+            count: 'lt-tags-count',
+            header: 'lt-tags-header',
+            search: 'lt-tags-search',
+            setList: 'lt-tags-setList',
+            setListHeader: 'lt-tags-setListHeader',
+            wrappers: {
+                main: 'lt-tags-wrap',
+                setList: 'lt-tags-setList-wrap'
+            }
         },
         content: 'lt-content',
         infoText: 'lt-infoText',
