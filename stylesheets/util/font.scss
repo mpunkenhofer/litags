@@ -1,6 +1,5 @@
 @font-face {
   font-family: "lichess";
-  //src: url("https://lichess1.org/assets/_n0bLMg/font/lichess.woff2") format("woff");
   src: url("../../fonts/lichess.woff2") format("woff2");
   font-display: block;
   font-weight: normal;
@@ -26,6 +25,18 @@
   font-style: normal;
   border: 0;
 }
+
+.lt-icon-addTag {
+  display: inline-block;
+  font-family: lichess, serif;
+  font-style: normal;
+  border: 0;
+}
+
+.lt-icon-addTag:after {
+  content: 'O';
+}
+
 .lt-icon-discord:after  {
   content: "\e900";
 }

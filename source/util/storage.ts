@@ -3,7 +3,7 @@ import {TagSet} from "../tag/tag-set";
 import {User} from "../user/user";
 import {cache} from "./cache";
 import {filterTags, Tag} from "../tag/tag";
-import {defaultOptions, Options} from "../options/options";
+import {defaultOptions, Options} from "../XOLDoptions/options";
 import {ID} from "./id";
 import {lichessSetData} from "../constants/lichess-set";
 import {frankerfacezSetData} from "../constants/frankerfacez-set";
