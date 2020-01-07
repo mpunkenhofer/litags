@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {useState} from "react";
+import {useState} from 'react';
 import {TagChooser} from "./TagChooser";
 
 const browser = require("webextension-polyfill");
 
-export default function AddTagButton() {
+export default function TagChooserButton(props) {
     const [enabled, setEnabled] = useState(false);
 
     return (

@@ -1,11 +1,10 @@
-import {Options} from "./XOLDoptions/options";
-import {storageService} from "./util/storage";
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+import {Options} from "./XOLDoptions/options";
+import {storageService} from "./util/storage";
 import TagList from "./components/TagList";
-import AddTagButton from "./components/AddTagButton";
+import TagChooserButton from "./components/TagChooserButton";
+
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
@@ -48,5 +47,5 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
     anchor.append(buttonElement);
 
     ReactDOM.render(<TagList user={username}/>, listElement);
-    ReactDOM.render(<AddTagButton user={username}/>, buttonElement);
+    ReactDOM.render(<TagChooserButton user={username}/>, buttonElement);
 }
