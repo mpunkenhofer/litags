@@ -2,22 +2,22 @@
   margin-top: 0.25em;
   list-style-type: none;
   user-select: none;
-  font-family: lichess, serif;
-  font-size: 2em;
 
   ul {
     display: inline-block;
   }
+}
 
-  li {
-    display: inline-block;
-    margin-right: 0.4em;
-    cursor: pointer;
-    filter: brightness(90%);
+.li-tag {
+  display: inline-block;
+  margin-right: 0.4em;
+  font-family: lichess, serif;
+  font-size: 2em;
+  cursor: pointer;
+  filter: brightness(90%);
 
-    &:hover {
-      filter: brightness(100%);
-    }
+  &:hover {
+    filter: brightness(100%);
   }
 }
 

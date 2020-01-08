@@ -1,9 +1,5 @@
 import {keys} from "../constants/keys";
-import {cache} from "./cache";
 import {defaultOptions, Options} from "../XOLDoptions/options";
-import {ID} from "./id";
-import {lichessSetData} from "../constants/lichess-set";
-import {frankerfacezSetData} from "../constants/frankerfacez-set";
 
 const browser = require("webextension-polyfill");
 

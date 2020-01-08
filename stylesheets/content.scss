@@ -1,7 +1,7 @@
-@import "ui/button";
 @import "ui/list";
 @import "ui/popup";
 @import "util/font";
+@import "util/colors";
 
 .lt-list {
   grid-area: lilist;
@@ -9,6 +9,16 @@
 
 .lt-button {
   grid-area: libutton;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5em;
+
+  button {
+    border: 0;
+    outline: none;
+  }
 }
 
 .ruser {
@@ -31,5 +41,14 @@
 
   good, bad {
     grid-area: lichange;
+  }
+}
+
+.lt-effect-button {
+  background-color: inherit;
+  transition: transform .2s;
+
+  &:hover {
+    transform: scale(1.2);
   }
 }

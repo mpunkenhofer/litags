@@ -1,7 +1,9 @@
-export const frankerfacezSetData:
-    {name: string, enabled: boolean, tags: { [_: string]: [string[], string, string?] }} = {
+import SetType from "./set-type";
+
+const frankerfacezSetData: SetType = {
     "name": "FrakerFaceZ",
     "enabled": true,
+    "fontSet": false,
     "tags": {
         "AYAYA": [[], "https://cdn.frankerfacez.com/emoticon/162146/1"],
         "OMEGALUL": [[], "https://cdn.frankerfacez.com/emoticon/128054/1"],
@@ -194,3 +196,5 @@ export const frankerfacezSetData:
         // "MeguminHappy": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"],
     }
 };
+
+export default frankerfacezSetData;

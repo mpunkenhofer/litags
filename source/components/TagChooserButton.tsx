@@ -10,7 +10,7 @@ export default function TagChooserButton(props) {
     return (
         <>
             <button title={browser.i18n.getMessage("addTagButtonTooltip")}
-                    className='lt-icon-addTag' onClick={() => setEnabled(!enabled)}/>
+                    className='lt-icon-button lt-effect-button' onClick={() => setEnabled(!enabled)}/>
             { enabled && <TagChooser/> }
         </>
     );
