@@ -1,4 +1,5 @@
-export const links = {
-    discord: 'https://discord.gg/4d7QWUK',
-    github: 'https://github.com/mpunkenhofer/litags'
+export const LINKS = {
+    DISCORD: 'https://discord.gg/4d7QWUK',
+    GITHUB: 'https://github.com/mpunkenhofer/litags',
+    PAYPAL: 'paypal.me/litags'
 };

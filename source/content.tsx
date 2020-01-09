@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import TagList from "./components/TagList";
 import TagChooserButton from "./components/TagChooserButton";
-import configureStore from "./store/configureStore"
+import configureStore from "./store/configure-store"
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 

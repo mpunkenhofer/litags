@@ -20,7 +20,6 @@ module.exports = {
         background: './source/background.ts',
         options: [
             './source/options.tsx',
-            './stylesheets/options/newOptions.scss',
         ],
     },
 

@@ -1,4 +1,4 @@
-import SetType from "./set-type";
+import {SetType} from "./index";
 
 const frankerfacezSetData: SetType = {
     "name": "FrakerFaceZ",
