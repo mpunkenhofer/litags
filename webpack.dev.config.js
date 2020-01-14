@@ -90,7 +90,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.scss'],
         alias: {
-            "sortablejs": "sortablejs/Sortable.js",
             "webextension-polyfill": "webextension-polyfill/dist/browser-polyfill.js",
             modules: path.join(__dirname, "node_modules"),
         }

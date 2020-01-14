@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import TagList from "./components/TagList";
 import TagChooserButton from "./components/TagChooserButton";
 import configureStore from "./store/configure-store"
+import TagList from "./components/TagList";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
@@ -48,13 +48,13 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
 
     ReactDOM.render(
         <Provider store={store}>
-            <TagList user={username}/>
+            <TagList username={username}/>
         </Provider>,
         listElement);
 
     ReactDOM.render(
         <Provider store={store}>
-            <TagChooserButton user={username}/>
+            <TagChooserButton username={username}/>
         </Provider>,
         buttonElement);
 }

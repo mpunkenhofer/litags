@@ -11,8 +11,8 @@ export const addUser = username => ({type: types.ADD_USER, username});
 export const deleteUser = username => ({type: types.DELETE_USER, username});
 export const updateUser = (username, user) => ({type: types.UPDATE_USER, username, user});
 export const fetchUserRequest = (username) => ({type: types.FETCH_USER_REQUEST, username});
-export const fetchUserSuccess = (response) => ({type: types.FETCH_USER_SUCCESS, response});
-export const fetchUserFailure = (message) => ({type: types.FETCH_USER_FAILURE, message});
+export const fetchUserSuccess = (username, response) => ({type: types.FETCH_USER_SUCCESS, username, response});
+export const fetchUserFailure = (username, message) => ({type: types.FETCH_USER_FAILURE, username, message});
 
 export const fetchOptionsRequest = () => ({type: types.FETCH_OPTIONS_REQUEST});
 export const fetchOptionsSuccess = (response) => ({type: types.FETCH_OPTIONS_SUCCESS, response});
@@ -22,13 +22,3 @@ export const updateFrequentlyUsed = (tags) => ({type: types.UPDATE_FREQUENTLY_US
 export const fetchFrequentlyUsedRequest = () => ({type: types.FETCH_FREQUENTLY_USED_REQUEST});
 export const fetchFrequentlyUsedSuccess = (response) => ({type: types.FETCH_FREQUENTLY_USED_SUCCESS, response});
 export const fetchFrequentlyUsedFailure = (message) => ({type: types.FETCH_FREQUENTLY_USED_FAILURE, message});
-
-// export const fetch = (type, arg?) => (dispatch, getState) => {
-//     if (getIsFetching(getState(), type, arg)) {
-//         return Promise.resolve();
-//     }
-//
-//     switch (type) {
-//
-//     }
-// };
