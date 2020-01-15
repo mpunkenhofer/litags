@@ -5,7 +5,7 @@ export const getUserIsFetching = (username) => (state) => {
     return (username != undefined && state.user.hasOwnProperty(username)) ? state.user[username].isFetching : false;
 };
 
-export const getTagErrorMessage= (state) => state.tags.errorMessage;
+export const getTagErrorMessage = (state) => state.tags.errorMessage;
 export const getOptionsErrorMessage = (state) => state.options.errorMessage;
 export const getFrequentlyUsedErrorMessage = (state) => state.frequently_used.errorMessage;
 export const getUserErrorMessage = (username) => (state) => {
@@ -15,3 +15,6 @@ export const getUserErrorMessage = (username) => (state) => {
 export const getUser = (username) => (state) => {
     return (username != undefined && state.hasOwnProperty(username)) ? state[username] : null;
 };
+export const getTags = (state) => state.tags;
+export const getFrequentlyUsed = (state) => state.frequently_used;
+export const getOptions = (state) => state.options;

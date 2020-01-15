@@ -3,7 +3,7 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import {useState} from 'react';
 import arrayMove from 'array-move';
 import {useApi} from '../hooks';
-import {ENDPOINTS} from "../api";
+import {ENDPOINTS, METHODS} from "../api";
 
 const SortableItem = SortableElement(({value}) => <li className='li-tag'>{value}</li>);
 const SortableList = SortableContainer(({items}) =>
@@ -16,7 +16,9 @@ const SortableList = SortableContainer(({items}) =>
 
 const TagList = ({username}) => {
     const [items, setItems] = useState(['A', 'B', 'C']);
-    const t = useApi(ENDPOINTS.USERS, username);
+    const [{...r}, setArg] = useApi(ENDPOINTS.USERS, METHODS.GET, username);
+
+    console.log(r);
 
     const onSortEnd = ({oldIndex, newIndex}) => {
       setItems(items => arrayMove(items, oldIndex, newIndex));

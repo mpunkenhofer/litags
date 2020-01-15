@@ -10,6 +10,23 @@ export const ENDPOINTS = {
     FREQUENTLY_USED: 'FREQUENTLY_USED'
 };
 
+export const METHODS = {
+    GET: 'GET',
+    POST: 'POST'
+};
+
+export const fetch = async (endpoint: 'USERS', method: 'GET', argument?) => {
+    switch (method) {
+        case METHODS.GET: {
+            const data = await browser.storage.local.get(endpoint)[endpoint];
+            return data[argument];
+        }
+        default: {
+            return Promise.reject('Unknown Method.');
+        }
+    }
+};
+
 export const fetchUser = async (username) => {
     const users = await browser.storage.local.get(ENDPOINTS.USERS)[ENDPOINTS.USERS];
     return users[username];
