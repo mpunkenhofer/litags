@@ -2,16 +2,6 @@
   display: none;
 }
 
-.lt-popup-search-wrap {
-  margin: 0.4em;
-
-  input {
-    width: 100%;
-    //background-image:url();
-    //background-repeat:no-repeat
-  }
-}
-
 .lt-tc {
   display: block;
   opacity: 1;
@@ -63,4 +53,9 @@
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   border-top: 1px solid;
+}
+
+.lt-tc-search {
+  margin: 0.4em;
+  width: 100%;
 }

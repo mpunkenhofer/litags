@@ -5,6 +5,7 @@ import {useEffect, useRef} from "react";
 import * as actions from "../actions";
 import {useDispatch, useSelector} from 'react-redux'
 import TagChooserGroup from "./TagChooserGroup";
+import {TagSearch} from "./TagSearch";
 
 const background = () => {
     const backgroundElement = document.querySelector('.round__app__table');
@@ -58,7 +59,8 @@ export const TagChooser = ({visible}) => {
 
     if (visible && !isFetching && tags)
         return <div ref={ref} className='lt-tc' style={{background: background()}}>
-            {Object.entries(groupBySet(tags)).map(([key, value]) => <TagChooserGroup key={key} title={key} tags={value}/>)}</div>;
+            {Object.entries(groupBySet(tags)).map(([key, value]) => <TagChooserGroup key={key} title={key} tags={value}/>)}
+            <TagSearch/></div>;
     else {
         return <></>;
     }
