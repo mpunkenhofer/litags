@@ -3,58 +3,56 @@ import defaultSets from "../constants/sets";
 const browser = require("webextension-polyfill");
 const uuidv4 = require('uuid/v4');
 
-export const ENDPOINTS = {
+interface Endpoints {
+    USERS: string,
+    TAGS: string,
+    OPTIONS: string,
+    FREQUENTLY_USED: string
+}
+
+export const ENDPOINTS: Endpoints = {
     USERS: 'USERS',
     TAGS: 'TAGS',
     OPTIONS: 'OPTIONS',
     FREQUENTLY_USED: 'FREQUENTLY_USED'
 };
 
-export const METHODS = {
+interface Methods {
+    GET: string,
+    POST: string
+}
+
+export const METHODS: Methods = {
     GET: 'GET',
     POST: 'POST'
 };
 
-export const fetch = async (endpoint: 'USERS', method: 'GET', argument?) => {
+export const fetch = async<E extends keyof Endpoints, M extends keyof Methods> (endpoint:E, method: M, argument?) => {
+    const data = await browser.storage.local.get(endpoint)[endpoint];
+
     switch (method) {
         case METHODS.GET: {
-            const data = await browser.storage.local.get(endpoint)[endpoint];
-            return data[argument];
+            if(endpoint == ENDPOINTS.TAGS && !data)
+                return fetch(endpoint, 'POST', getDefaultTags());
+
+            return (argument && data.hasOwnProperty(argument)) ? data[argument] : data;
+        }
+        case METHODS.POST: {
+            if (!argument)
+                return Promise.reject(`Method: ${method} but non-valid argument: ${argument}`);
+
+            if (data) {
+                const newData = {...data, ...argument};
+                await browser.storage.local.set({[endpoint]: newData});
+            } else {
+                await browser.storage.local.set({[endpoint]: argument});
+            }
+
+            return argument;
         }
         default: {
-            return Promise.reject('Unknown Method.');
+            return Promise.reject(`Unknown method: ${method}`);
         }
-    }
-};
-
-export const fetchUser = async (username) => {
-    const users = await browser.storage.local.get(ENDPOINTS.USERS)[ENDPOINTS.USERS];
-    return users[username];
-};
-
-export const fetchTags = async () => {
-    const tags = await browser.storage.local.get(ENDPOINTS.USERS)[ENDPOINTS.USERS];
-
-    if (!tags) {
-        return addDefaultTags();
-    } else {
-        return tags;
-    }
-};
-
-export const fetchFrequentlyUsed = async () => {
-    const frequentlyUsed = await browser.storage.local.get(ENDPOINTS.FREQUENTLY_USED)[ENDPOINTS.FREQUENTLY_USED];
-    return frequentlyUsed || [];
-};
-
-
-export const fetchOptions = async () => {
-    const options = await browser.storage.local.get(ENDPOINTS.OPTIONS)[ENDPOINTS.OPTIONS];
-
-    if (!options) {
-        return {};
-    } else {
-        return {};
     }
 };
 
@@ -66,43 +64,24 @@ const createTag = (name, set, aliases, resource, color?) => {
     return {[uuidv4()]: tag}
 };
 
-const addDefaultTags = () => {
+export const getDefaultTags = () => {
     let tags = {};
 
     for (const set of defaultSets) {
         let tagsWithId = {};
-        for (const key in set) {
-            if (set.hasOwnProperty(key)) {
-                let [aliases, resource, color] = set[key];
+        for (const key in set.tags) {
+            if (set.tags.hasOwnProperty(key)) {
+                let [aliases, resource, color] = set.tags[key];
 
                 if(set.fontSet && color === undefined)
                     color = '';
 
                 const tag = createTag(key, set.name, aliases, resource, color);
-                tagsWithId = {...tagsWithId, tag};
+
+                tagsWithId = {...tagsWithId, ...tag};
             }
         }
         tags = {...tags, ...tagsWithId};
     }
-
-    return addTags(tags);
+    return tags;
 };
-
-export const addTag = async (tag) => {
-    const storedTags = await browser.storage.local.get(ENDPOINTS.TAGS)[ENDPOINTS.TAGS];
-
-    const newTags = {...storedTags, tag};
-    await browser.storage.local.set({[ENDPOINTS.TAGS]: newTags});
-
-    return tag;
-};
-
-export const addTags = async (tags) => {
-    const storedTags = await browser.storage.local.get(ENDPOINTS.TAGS)[ENDPOINTS.TAGS];
-
-    const newTags = {...storedTags, ...tags};
-    await browser.storage.local.set({[ENDPOINTS.TAGS]: newTags});
-
-    return newTags;
-};
-

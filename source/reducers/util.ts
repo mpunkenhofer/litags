@@ -13,7 +13,7 @@ export const isFetchingReducer = (request, success, failure) => ( state = false,
 export const errorMessageReducer = (request, success, failure) => ( state = null, action ) => {
     switch (action.type) {
         case failure:
-            return action.message;
+            return action.error;
         case request:
         case success:
             return null;
