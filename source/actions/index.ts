@@ -26,6 +26,8 @@ const FetchActions = {
 };
 
 export const fetch = (endpoint, method, argument = null) => (dispatch, isFetching) => {
+    console.log(`fetch(endpoint: ${endpoint}, method: ${method}, argument: ${argument})`);
+
     if (!(Object.keys(FetchActions).includes(endpoint)))
         throw Error(`Unknown endpoint: ${endpoint}`);
 

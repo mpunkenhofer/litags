@@ -1,11 +1,9 @@
 import * as React from 'react';
 import {ENDPOINTS, METHODS} from "../api";
-import {getTags, getTagsErrorMessage, getTagsIsFetching} from "../selectors";
 import {useEffect, useRef} from "react";
-import * as actions from "../actions";
-import {useDispatch, useSelector} from 'react-redux'
 import TagChooserGroup from "./TagChooserGroup";
 import {TagSearch} from "./TagSearch";
+import {useApi} from "../hooks/api";
 
 const background = () => {
     const backgroundElement = document.querySelector('.round__app__table');
@@ -49,15 +47,8 @@ const groupBySet = (tags) => {
 };
 
 export const TagChooser = ({visible}) => {
-    const dispatch = useDispatch();
-    const tags = useSelector(getTags);
-    const isFetching = useSelector(getTagsIsFetching);
-    const errorMessage = useSelector(getTagsErrorMessage);
     const ref = useRef(null);
-
-    useEffect(() => {
-        actions.fetch(ENDPOINTS.TAGS, METHODS.GET)(dispatch, isFetching);
-    }, []);
+    const {data, isFetching, errorMessage} = useApi(ENDPOINTS.TAGS, METHODS.GET);
 
     useEffect(() => {
         if (visible && ref.current) {
@@ -71,11 +62,11 @@ export const TagChooser = ({visible}) => {
         console.error(errorMessage);
     }
 
-    if (visible && !isFetching && tags)
+    if (visible && !isFetching && data)
         return (
             <div ref={ref} className='lt-tc' style={{background: background()}}>
                 <div className='lt-tcgs'>
-                    {Object.entries(groupBySet(tags)).map(([key, value]) =>
+                    {Object.entries(groupBySet(data)).map(([key, value]) =>
                         <TagChooserGroup key={key} title={key} tags={value}/>)}
                 </div>
                 <TagSearch/>
