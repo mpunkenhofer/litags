@@ -10,15 +10,14 @@
   border-radius: 3px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   cursor: default;
-  padding: .5em;
+  padding: 0.3em 0.5em .3em;
+  overflow: hidden;
+}
+
+.lt-tcgs {
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 12rem;
-}
-
-.lt-t-button {
-  border: none;
-  background: none;
 }
 
 .lt-tcg-title {
@@ -28,11 +27,23 @@
   margin-bottom: 0.5em;
 }
 
+.lt-tcg-tags {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  border-top: 1px solid;
+  padding-top: .5em;
+}
+
+
+.lt-t-button {
+  border: none;
+  background: none;
+}
+
 .lt-tag {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.2em;
   font-size: 1.5em;
   filter: brightness(90%);
   transition: transform .2s;
@@ -49,13 +60,9 @@
   }
 }
 
-.lt-tcg-tags {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  border-top: 1px solid;
-}
-
 .lt-tc-search {
-  margin: 0.4em;
+  margin-top: .5em;
+  font-size: 1em;
   width: 100%;
+  padding: 0.4em .4em;
 }

@@ -17,11 +17,24 @@ const background = () => {
     return 'inherit';
 };
 
+const calculatePos = (rect: DOMRect, padding: number = 0) => {
+    let [x, y] = [rect.x, rect.y];
+
+    // TODO fix positioning while scrolling
+    if ((rect.y + rect.height + padding) > (window.innerHeight - window.scrollY))
+        y = rect.y - ((rect.y + rect.height + padding) - (window.innerHeight - window.scrollY));
+
+    if ((rect.x + rect.width + padding) > window.innerWidth)
+        x = rect.x - ((rect.x + rect.width + padding) - window.innerWidth);
+
+    return [x, y];
+};
+
 const groupBySet = (tags) => {
     const result = {};
     for (const tag in tags) {
         if (tags.hasOwnProperty(tag)) {
-            if(!tags[tag].hasOwnProperty('set'))
+            if (!tags[tag].hasOwnProperty('set'))
                 break;
 
             const setName = tags[tag].set;
@@ -46,10 +59,11 @@ export const TagChooser = ({visible}) => {
         actions.fetch(ENDPOINTS.TAGS, METHODS.GET)(dispatch, isFetching);
     }, []);
 
-
     useEffect(() => {
-        if (visible) {
-
+        if (visible && ref.current) {
+            const [x, y] = calculatePos(ref.current.getBoundingClientRect(), 100);
+            ref.current.style.top = `${y}px`;
+            ref.current.style.left = `${x}px`;
         }
     }, [visible]);
 
@@ -58,9 +72,14 @@ export const TagChooser = ({visible}) => {
     }
 
     if (visible && !isFetching && tags)
-        return <div ref={ref} className='lt-tc' style={{background: background()}}>
-            {Object.entries(groupBySet(tags)).map(([key, value]) => <TagChooserGroup key={key} title={key} tags={value}/>)}
-            <TagSearch/></div>;
+        return (
+            <div ref={ref} className='lt-tc' style={{background: background()}}>
+                <div className='lt-tcgs'>
+                    {Object.entries(groupBySet(tags)).map(([key, value]) =>
+                        <TagChooserGroup key={key} title={key} tags={value}/>)}
+                </div>
+                <TagSearch/>
+            </div>);
     else {
         return <></>;
     }
