@@ -1,40 +1,39 @@
-import * as types from '../constants/action-types'
 import * as api from "../api";
-import {ENDPOINTS} from "../api";
+import {ENDPOINTS, METHODS} from "../api";
+import * as actionTypes from "../constants/action-types";
 
-const FetchActions = {
-    [ENDPOINTS.USERS]: {
-        request: (arg) => ({type: types.FETCH_USER_REQUEST, arg}),
-        success: (arg, response) => ({type: types.FETCH_USER_SUCCESS, arg, response}),
-        failure: (arg, error) => ({type: types.FETCH_USER_FAILURE, arg, error})
-    },
-    [ENDPOINTS.TAGS]: {
-        request: (arg) => ({type: types.FETCH_TAGS_REQUEST, arg}),
-        success: (arg, response) => ({type: types.FETCH_TAGS_SUCCESS, arg, response}),
-        failure: (arg, error) => ({type: types.FETCH_TAGS_FAILURE, arg, error})
-    },
-    [ENDPOINTS.FREQUENTLY_USED]: {
-        request: (arg) => ({type: types.FETCH_FREQUENTLY_USED_REQUEST, arg}),
-        success: (arg, response) => ({type: types.FETCH_FREQUENTLY_USED_SUCCESS, arg, response}),
-        failure: (arg, error) => ({type: types.FETCH_FREQUENTLY_USED_FAILURE, arg, error})
-    },
-    [ENDPOINTS.OPTIONS]: {
-        request: (arg) => ({type: types.FETCH_OPTIONS_REQUEST, arg}),
-        success: (arg, response) => ({type: types.FETCH_OPTIONS_SUCCESS, arg, response}),
-        failure: (arg, error) => ({type: types.FETCH_OPTIONS_FAILURE, arg, error})
+export const fetch = (dispatch, endpoint, method, argument = null) => {
+    switch (endpoint) {
+        case ENDPOINTS.USERS: {
+            dispatch(({type: actionTypes.USER_API_REQUEST, arg: argument}));
+            api.fetch(endpoint, method, argument).then(
+                response => dispatch(({type: actionTypes.USER_API_SUCCESS, arg: argument, response})),
+                error => dispatch(({type: actionTypes.USER_API_FAILURE, arg: argument, error})));
+            return;
+        }
+        case ENDPOINTS.TAGS: {
+            dispatch(({type: actionTypes.TAGS_API_REQUEST, arg: argument}));
+            api.fetch(endpoint, method, argument).then(
+                response => dispatch(({type: actionTypes.TAGS_API_SUCCESS, arg: argument, response})),
+                error => dispatch(({type: actionTypes.TAGS_API_FAILURE, arg: argument, error})));
+            return;
+        }
+        case ENDPOINTS.OPTIONS: {
+            dispatch(({type: actionTypes.OPTIONS_API_REQUEST, arg: argument}));
+            api.fetch(endpoint, method, argument).then(
+                response => dispatch(({type: actionTypes.OPTIONS_API_SUCCESS, arg: argument, response})),
+                error => dispatch(({type: actionTypes.OPTIONS_API_FAILURE, arg: argument, error})));
+            return;
+        }
+        default:
+            throw Error(`Unknown endpoint: ${endpoint}`);
     }
 };
 
-export const fetch = (endpoint, method, argument = null) => (dispatch, isFetching) => {
-    console.log(`fetch(endpoint: ${endpoint}, method: ${method}, argument: ${argument})`);
-
-    if (!(Object.keys(FetchActions).includes(endpoint)))
-        throw Error(`Unknown endpoint: ${endpoint}`);
-
-    if (!isFetching) {
-        dispatch(FetchActions[endpoint].request(argument));
-        api.fetch(endpoint, method, argument).then(
-            response => dispatch(FetchActions[endpoint].success(argument, response)),
-            error => dispatch(FetchActions[endpoint].failure(argument, error)));
-    }
+export const addTagToUser = (dispatch, user, tag) => {
+    console.group('%c Add Tag to User', 'font-size: 2em; font-weight: bold; color: pink');
+    console.log(user, tag);
+    console.groupEnd();
+    //dispatch(({type: actionTypes.ADD_TAG, user, tag}));
+    //fetch(dispatch, ENDPOINTS.USERS, METHODS.POST, user);
 };

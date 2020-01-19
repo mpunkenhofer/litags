@@ -1,6 +1,11 @@
 import * as React from 'react';
-import {Tag} from "./Tag";
+import Tag from "./Tag";
 
-export const TagButton = ({tag}) => {
-    return <button className='lt-t-button'><Tag tag={tag}/></button>;
-};
+const TagButton = ({tag, onClick}) => (
+    <button title={tag.name} className='lt-t-button' onClick={() => onClick(tag)}>
+        <Tag tag={tag}/>
+    </button>
+);
+
+
+export default TagButton;

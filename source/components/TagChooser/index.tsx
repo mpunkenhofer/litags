@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {TagChooser} from "./TagChooser";
 import {useRef} from "react";
-import {useClickedOutside} from "../hooks/clickedOutside";
+import {useClickedOutside} from "../../hooks/clickedOutside";
+import {TagProvider} from "../../contexts/tags";
+import TagChooserPopup from "./TagChooserPopup";
 
-const browser = require("webextension-polyfill");
-
-export default function TagChooserButton(props) {
+const TagChooser = () => {
     const ref = useRef(null);
     const [visible, setVisible] = useState(false);
 
@@ -16,7 +15,11 @@ export default function TagChooserButton(props) {
         <div ref={ref}>
             <button title='Show Tags'
                     className='lt-icon-button lt-effect-button' onClick={() => setVisible(!visible)}/>
-            <TagChooser visible={visible}/>
+            <TagProvider>
+                <TagChooserPopup visible={visible}/>
+            </TagProvider>
         </div>
     );
-}
+};
+
+export default TagChooser;

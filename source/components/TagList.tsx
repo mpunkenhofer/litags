@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
+// @ts-ignore
 import arrayMove from 'array-move';
-import {ENDPOINTS, METHODS} from "../api";
-import {useApi} from "../hooks/api";
+import {UserContext} from "../contexts/user";
 
 const SortableItem = SortableElement(({value}) => <li className='li-tag'>{value}</li>);
 const SortableList = SortableContainer(({items}) =>
@@ -14,9 +14,9 @@ const SortableList = SortableContainer(({items}) =>
     </ul>
 );
 
-const TagList = ({username}) => {
+const TagList = () => {
     const [items, setItems] = useState(['A', 'B', 'C']);
-    const {data, isFetching, errorMessage} = useApi(ENDPOINTS.USERS, METHODS.GET, username);
+    const {user, isFetching, errorMessage} = useContext(UserContext);
 
     const onSortEnd = ({oldIndex, newIndex}) => {
       setItems(items => arrayMove(items, oldIndex, newIndex));
@@ -26,7 +26,7 @@ const TagList = ({username}) => {
         console.error(errorMessage);
     }
 
-    if(!isFetching && data)
+    if(!isFetching && user)
         return <SortableList items={items}
                              nSortEnd={onSortEnd}
                              axis="x" lockAxis="x"

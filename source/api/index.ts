@@ -7,14 +7,12 @@ interface Endpoints {
     USERS: string,
     TAGS: string,
     OPTIONS: string,
-    FREQUENTLY_USED: string
 }
 
 export const ENDPOINTS: Endpoints = {
-    USERS: 'USERS',
+    USERS: 'USER',
     TAGS: 'TAGS',
     OPTIONS: 'OPTIONS',
-    FREQUENTLY_USED: 'FREQUENTLY_USED'
 };
 
 interface Methods {
@@ -58,8 +56,8 @@ export const fetch = async<E extends keyof Endpoints, M extends keyof Methods> (
 
 const createTag = (name, set, aliases, resource, color?) => {
     const tag = color != undefined ?
-        {name, set, aliases, resource, color} :
-        {name, set, aliases, resource};
+        {name, set, aliases, resource, frequency: 0, color} :
+        {name, set, aliases, resource, frequency: 0};
 
     return {[uuidv4()]: tag}
 };

@@ -1,8 +1,8 @@
 import {combineReducers} from "redux";
 import {
-    FETCH_OPTIONS_FAILURE,
-    FETCH_OPTIONS_REQUEST,
-    FETCH_OPTIONS_SUCCESS,
+    OPTIONS_API_FAILURE,
+    OPTIONS_API_REQUEST,
+    OPTIONS_API_SUCCESS,
 } from "../constants/action-types";
 import {errorMessageReducer, isFetchingReducer} from "./util";
 
@@ -10,7 +10,7 @@ const options = (state = {}, action) => {
     return state;
 };
 
-const isFetching = isFetchingReducer(FETCH_OPTIONS_REQUEST, FETCH_OPTIONS_SUCCESS, FETCH_OPTIONS_FAILURE);
-const errorMessage = errorMessageReducer(FETCH_OPTIONS_REQUEST, FETCH_OPTIONS_SUCCESS, FETCH_OPTIONS_FAILURE);
+const isFetching = isFetchingReducer(OPTIONS_API_REQUEST, OPTIONS_API_SUCCESS, OPTIONS_API_FAILURE);
+const errorMessage = errorMessageReducer(OPTIONS_API_REQUEST, OPTIONS_API_SUCCESS, OPTIONS_API_FAILURE);
 
 export default combineReducers({options, isFetching, errorMessage});

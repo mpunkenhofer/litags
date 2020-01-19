@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {ENDPOINTS, METHODS} from "../api";
-import {useEffect, useRef} from "react";
-import TagChooserGroup from "./TagChooserGroup";
-import {TagSearch} from "./TagSearch";
-import {useApi} from "../hooks/api";
+import {useContext, useEffect, useRef} from "react";
+import {TagSearch} from "../TagSearch";
+import {TagContext} from "../../contexts/tags";
+import {UserContext} from "../../contexts/user";
+import TagButton from "../TagButton";
 
 const background = () => {
     const backgroundElement = document.querySelector('.round__app__table');
@@ -46,9 +46,10 @@ const groupBySet = (tags) => {
     return result;
 };
 
-export const TagChooser = ({visible}) => {
+const TagChooserPopup = ({visible}) => {
     const ref = useRef(null);
-    const {data, isFetching, errorMessage} = useApi(ENDPOINTS.TAGS, METHODS.GET);
+    const {tags, isFetching, errorMessage} = useContext(TagContext);
+    const {addTag} = useContext(UserContext);
 
     useEffect(() => {
         if (visible && ref.current) {
@@ -62,12 +63,20 @@ export const TagChooser = ({visible}) => {
         console.error(errorMessage);
     }
 
-    if (visible && !isFetching && data)
+    if (visible && !isFetching && tags)
         return (
             <div ref={ref} className='lt-tc' style={{background: background()}}>
                 <div className='lt-tcgs'>
-                    {Object.entries(groupBySet(data)).map(([key, value]) =>
-                        <TagChooserGroup key={key} title={key} tags={value}/>)}
+                    {
+                        Object.entries.length != 0 && Object.entries(groupBySet(tags)).map(([title, tags]) => (
+                            <div key={title} className='lt-tcg'>
+                                <span className='lt-tcg-title'>{title}</span>
+                                <div className='lt-tcg-tags'>
+                                    {Object.length && Object.entries(tags).map(([key, tag]) =>
+                                        <TagButton key={key} tag={tag} onClick={addTag}/>)}
+                                </div>
+                            </div>))
+                    }
                 </div>
                 <TagSearch/>
             </div>);
@@ -75,3 +84,6 @@ export const TagChooser = ({visible}) => {
         return <></>;
     }
 };
+
+export default TagChooserPopup;
+
