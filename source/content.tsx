@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import configureStore from "./store/configure-store"
 import TagList from "./components/TagList";
 import {UserProvider} from "./contexts/user";
-import TagChooser from "./components/TagChooser";
+import TagChooser from "./components/TagChooser/TagChooser";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 

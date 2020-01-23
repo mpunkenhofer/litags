@@ -1,9 +1,11 @@
 import * as React from 'react';
-import {useContext, useEffect, useRef} from "react";
-import {TagSearch} from "../TagSearch";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {TagContext} from "../../contexts/tags";
 import {UserContext} from "../../contexts/user";
-import TagButton from "../TagButton";
+import TagChooserGroup from "./TagChooserGroup";
+import {groupBy, debounce} from 'lodash';
+import {VisibilityContext} from "../../contexts/visibity";
+import {useClickedOutside} from "../../hooks/clickedOutside";
 
 const background = () => {
     const backgroundElement = document.querySelector('.round__app__table');
@@ -28,36 +30,46 @@ const calculatePos = (rect: DOMRect, padding: number = 0) => {
     return [x, y];
 };
 
-const groupBySet = (tags) => {
-    const result = {};
-    for (const tag in tags) {
-        if (tags.hasOwnProperty(tag)) {
-            if (!tags[tag].hasOwnProperty('set'))
-                break;
+const setFocus = (inputRef) => () => {
+    const el: HTMLInputElement = inputRef.current;
 
-            const setName = tags[tag].set;
-
-            if (setName) {
-                const t = result[setName];
-                result[setName] = {...t, ...{[tag]: tags[tag]}}
-            }
-        }
-    }
-    return result;
+    if (el)
+        el.focus();
 };
 
-const TagChooserPopup = ({visible}) => {
-    const ref = useRef(null);
-    const {tags, isFetching, errorMessage} = useContext(TagContext);
+const TagChooserPopup = () => {
     const {addTag} = useContext(UserContext);
+    const {visible, setVisible} = useContext(VisibilityContext);
+    const {tags, isFetching, errorMessage, getFrequentlyUsed, search} = useContext(TagContext);
+
+    const popupRef = useRef(null);
+    const inputRef = useRef(null);
+
+    const [searchResults, setSearchResults] = useState([]);
+
+    const frequentlyUsed = useCallback(getFrequentlyUsed(), []);
+
+    useClickedOutside(popupRef, () => setVisible(false));
 
     useEffect(() => {
-        if (visible && ref.current) {
-            const [x, y] = calculatePos(ref.current.getBoundingClientRect(), 100);
-            ref.current.style.top = `${y}px`;
-            ref.current.style.left = `${x}px`;
-        }
-    }, [visible]);
+        // if (visible && popupRef.current) {
+        //     const [x, y] = calculatePos(popupRef.current.getBoundingClientRect(), 100);
+        //     // popupRef.current.style.top = `${y}px`;
+        //     // popupRef.current.style.left = `${x}px`;
+        // }
+        console.log('hello');
+        // Bind the event listener
+        document.addEventListener("keydown", setFocus(inputRef));
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("keydown", setFocus(inputRef));
+        };
+    });
+
+    const handleOnInput = (e) => {
+        const term = ((e.target as HTMLInputElement).value);
+        setSearchResults(search(term))
+    };
 
     if (errorMessage) {
         console.error(errorMessage);
@@ -65,21 +77,28 @@ const TagChooserPopup = ({visible}) => {
 
     if (visible && !isFetching && tags)
         return (
-            <div ref={ref} className='lt-tc' style={{background: background()}}>
+            <div ref={popupRef} className='lt-tc' style={{background: background()}}>
                 <div className='lt-tcgs'>
                     {
-                        Object.entries.length != 0 && Object.entries(groupBySet(tags)).map(([title, tags]) => (
-                            <div key={title} className='lt-tcg'>
-                                <span className='lt-tcg-title'>{title}</span>
-                                <div className='lt-tcg-tags'>
-                                    {Object.length && Object.entries(tags).map(([key, tag]) =>
-                                        <TagButton key={key} tag={tag} onClick={addTag}/>)}
-                                </div>
-                            </div>))
+                        (searchResults && searchResults.length != 0) &&
+                        <TagChooserGroup key={'litags.searchResults'} title={'Search results'} tags={searchResults}
+                                         addTag={addTag}/>
+                    }
+                    {
+                        frequentlyUsed.length != 0 &&
+                        <TagChooserGroup key={'litags.frequentlyUsed'} title={'Frequently used'} tags={frequentlyUsed}
+                                         addTag={addTag}/>
+                    }
+                    {
+                        Object.entries(groupBy(tags, (tag) => tag.set)).map(([title, tags]) =>
+                            <TagChooserGroup key={title} title={title} tags={tags} addTag={addTag}/>)
                     }
                 </div>
-                <TagSearch/>
-            </div>);
+                <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'
+                       spellCheck='false' placeholder='Search Tags...'
+                       onInput={handleOnInput}/>
+            </div>
+        );
     else {
         return <></>;
     }
