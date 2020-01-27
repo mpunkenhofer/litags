@@ -13,7 +13,7 @@ const UserProvider = ({username, children}) => {
     const errorMessage = useSelector(selectors.getUserErrorMessage(username));
 
     const addTag = (tag) => {
-        actions.addTagToUser(dispatch, {[username]: user}, tag);
+        actions.addTagToUser(dispatch, username, user, tag);
     };
 
     useEffect(() => {

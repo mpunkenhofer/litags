@@ -4,31 +4,23 @@ import {
     USER_API_SUCCESS
 } from "../constants/action-types";
 
-const createUser = (username, tags= []) => {
-    return {[username]: { tags, encounters: 0, lastSeen: new Date()}}
-};
-
 const user = (state = {}, action) => {
     switch (action.type) {
         case USER_API_REQUEST: {
             const user = {
-                [action.arg]: {isFetching: true}
+                [action.name]: {isFetching: true}
             };
 
             return {...state, ...user};
         }
         case USER_API_SUCCESS: {
-            const {[action.arg]: {...props}} = action.response;
-            const properties = {...props, isFetching: false};
-            const user = {[action.arg]: properties};
-            return {...state, ...user};
+            if(!action.response)
+                return state;
+
+            return {...state, ...{[action.name]: {...action.response, isFetching: false}}};
         }
         case USER_API_FAILURE: {
-            const new_user = createUser(action.arg);
-            const {[action.arg]: {...props}} = new_user;
-            const properties = {...props, isFetching: false};
-            const user = {[action.arg]: properties};
-            return {...state, ...user};
+            return {...state, ...{[action.name]: { tags: [], isFetching: false}}};
         }
         default:
             return state;

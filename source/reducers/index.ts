@@ -1,11 +1,11 @@
 import {combineReducers} from "redux";
-import tags from "./tags";
 import user from "./user";
+import sets from "./sets";
 import options from "./options";
 
 const rootReducer = combineReducers( {
     options,
-    tags,
+    sets,
     user,
 });
 

@@ -2,6 +2,7 @@ import {SetType} from "./index";
 
 const lichessSetData: SetType = {
     "name": "Lichess",
+    "icon": "https://lichess1.org/assets/logo/lichess-favicon-64.png",
     "enabled": true,
     "fontSet": true,
     "tags": {

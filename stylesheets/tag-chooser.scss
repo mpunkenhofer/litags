@@ -1,7 +1,3 @@
-#lt-popup-searchResults-wrap {
-  display: none;
-}
-
 .lt-tc {
   display: block;
   opacity: 1;
@@ -10,27 +6,33 @@
   border-radius: 3px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   cursor: default;
-  padding: 0.3em 0.5em .3em;
   overflow: hidden;
 }
 
 .lt-tcgs {
   overflow-y: scroll;
   overflow-x: hidden;
-  max-height: 12rem;
+  max-height: 15vh;
+  min-width: 20vw;
+}
+
+.lt-tcg {
+  margin-bottom: .5em;
 }
 
 .lt-tcg-title {
   font-weight: 500;
   font-size: 1.2em;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: rgb(50, 50, 50);
+  background-color: rgb(30, 30, 30);
 }
 
 .lt-tcg-tags {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  border-top: 1px solid;
+  grid-template-columns: repeat(auto-fill, minmax(32px, 2fr));
+  grid-auto-flow: dense;
   padding-top: .5em;
 }
 
@@ -45,19 +47,18 @@
   align-items: center;
   justify-content: center;
   font-size: 1.5em;
-  filter: brightness(90%);
-  transition: transform .2s;
 
   &:hover {
-    filter: brightness(100%);
+    background-color: #3692e7;
+    border-radius: 3px;
   }
 
   span {
     font-family: lichess, serif;
 
-    &:hover {
-      transform: scale(1.2);
-    }
+    //&:hover {
+    //  transform: scale(1.2);
+    //}
   }
 }
 

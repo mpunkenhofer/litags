@@ -5,13 +5,13 @@ const uuidv4 = require('uuid/v4');
 
 interface Endpoints {
     USERS: string,
-    TAGS: string,
+    SETS: string,
     OPTIONS: string,
 }
 
 export const ENDPOINTS: Endpoints = {
-    USERS: 'USER',
-    TAGS: 'TAGS',
+    USERS: 'USERS',
+    SETS: 'SETS',
     OPTIONS: 'OPTIONS',
 };
 
@@ -25,15 +25,25 @@ export const METHODS: Methods = {
     POST: 'POST'
 };
 
-export const fetch = async<E extends keyof Endpoints, M extends keyof Methods> (endpoint:E, method: M, argument?) => {
-    const data = await browser.storage.local.get(endpoint)[endpoint];
+export const fetch = async <E extends keyof Endpoints, M extends keyof Methods>(endpoint: E, method: M, key = null,
+                                                                                argument?) => {
+    const data = (await browser.storage.local.get(endpoint))[endpoint];
+
+    // console.group('Fetch Data');
+    // console.log(`%c FETCH DATA: endpoint: ${endpoint}, key: ${key}, arg: ${argument}`,
+    //     'font-weight: bold; font-size: 1.2em; color: orange;');
+    // console.log('data:', data);
+    // console.groupEnd();
 
     switch (method) {
         case METHODS.GET: {
-            if(endpoint == ENDPOINTS.TAGS && !data)
-                return fetch(endpoint, 'POST', getDefaultTags());
-
-            return (argument && data.hasOwnProperty(argument)) ? data[argument] : data;
+            if (endpoint == ENDPOINTS.SETS && !data)
+                return fetch('SETS', 'POST', null, getDefaultSets());
+            else if(key) {
+                return data.hasOwnProperty(key) ? data[key] : Promise.reject(`Key: ${key} not found in data.`);
+            } else {
+                return data;
+            }
         }
         case METHODS.POST: {
             if (!argument)
@@ -43,7 +53,11 @@ export const fetch = async<E extends keyof Endpoints, M extends keyof Methods> (
                 const newData = {...data, ...argument};
                 await browser.storage.local.set({[endpoint]: newData});
             } else {
-                await browser.storage.local.set({[endpoint]: argument});
+                if(key) {
+                    await browser.storage.local.set({[endpoint]: {[key]: argument}});
+                } else {
+                    await browser.storage.local.set({[endpoint]: argument});
+                }
             }
 
             return argument;
@@ -54,32 +68,24 @@ export const fetch = async<E extends keyof Endpoints, M extends keyof Methods> (
     }
 };
 
-const createTag = (name, set, aliases, resource, color?) => {
+const createTag = (name, aliases, resource, color?) => {
     const tag = color != undefined ?
-        {name, set, aliases, resource, frequency: 0, color} :
-        {name, set, aliases, resource, frequency: 0};
+        {name, aliases, resource, frequency: 0, color} :
+        {name, aliases, resource, frequency: 0};
 
     return {[uuidv4()]: tag}
 };
 
-export const getDefaultTags = () => {
-    let tags = {};
+export const getDefaultSets = () => {
+    let sets = {};
 
     for (const set of defaultSets) {
-        let tagsWithId = {};
-        for (const key in set.tags) {
-            if (set.tags.hasOwnProperty(key)) {
-                let [aliases, resource, color] = set.tags[key];
+        const tags = Object.entries(set.tags).map(([name, [aliases, resource, color]]) =>
+            Object.assign({},
+                createTag(name, aliases, resource, (set.fontSet && color == undefined) ? '' : color)));
 
-                if(set.fontSet && color === undefined)
-                    color = '';
 
-                const tag = createTag(key, set.name, aliases, resource, color);
-
-                tagsWithId = {...tagsWithId, ...tag};
-            }
-        }
-        tags = {...tags, ...tagsWithId};
+        sets = {...sets, [uuidv4()]: {...set, tags: tags}}
     }
-    return tags;
+    return sets;
 };

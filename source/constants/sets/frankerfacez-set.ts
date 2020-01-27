@@ -2,6 +2,7 @@ import {SetType} from "./index";
 
 const frankerfacezSetData: SetType = {
     "name": "FrakerFaceZ",
+    "icon": "https://frankerfacez.com/static/images/favicon-32.png",
     "enabled": true,
     "fontSet": false,
     "tags": {
@@ -187,7 +188,9 @@ const frankerfacezSetData: SetType = {
         "pepoHmm": [[], "https://cdn.frankerfacez.com/emoticon/204804/1"],
         "Kermitpls": [[], "https://cdn.frankerfacez.com/emoticon/33947/1"],
         "monkaSSS": [[], "https://cdn.frankerfacez.com/emoticon/201363/1"],
-        "MeguminHappy": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"]
+        "MeguminHappy": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"],
+        "TESTWIDE": [[], "https://cdn.frankerfacez.com/emoticon/430034/1"],
+        "MeguminHappy2": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"],
     }
 };
 
