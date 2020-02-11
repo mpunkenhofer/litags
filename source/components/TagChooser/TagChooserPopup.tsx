@@ -1,15 +1,16 @@
 import * as React from "react";
-import {useContext, useEffect, useRef, useState} from "react";
-import {UserContext} from "../../contexts/user";
+import {useEffect, useRef, useState} from "react";
 import TagChooserGroup from "./TagChooserGroup";
-import {VisibilityContext} from "../../contexts/visibity";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
-import {SetContext} from "../../contexts/sets";
 import {getBackgroundColor} from "../../util/color-tools";
+import * as selectors from "../../selectors";
+import {useCallback} from "react";
+import {useSelector} from 'react-redux'
+import {useMemo} from "react";
 
 const reposition = (ref, padding: number = 0) => {
-    if(ref && ref.current) {
+    if (ref && ref.current) {
         const rect = ref.current.getBoundingClientRect();
 
         let [x, y] = [rect.x, rect.y];
@@ -26,15 +27,40 @@ const reposition = (ref, padding: number = 0) => {
     }
 };
 
-const TagChooserPopup = () => {
-    const {addTag} = useContext(UserContext);
-    const {visible, setVisible} = useContext(VisibilityContext);
-    const {sets, isFetching, errorMessage, search} = useContext(SetContext);
+const TagChooserPopup = ({visible, setVisible}) => {
+    const addTag = () => {};
+    const sets = useSelector(selectors.getSets);
+    const isFetching = useSelector(selectors.getSetsIsFetching);
+    const errorMessage = useSelector(selectors.getSetsErrorMessage);
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
 
     const [searchResults, setSearchResults] = useState([]);
+
+    const tags = useMemo(() => {
+        let allTags = [];
+
+        if (sets) {
+            for (const set of Object.values(sets))
+                if (set['enabled']) {
+                    allTags = [...allTags, ...set['tags']];
+                }
+        }
+        return allTags;
+    }, [sets]);
+
+    const searchTags = useCallback(term => {
+            if (!term || term.length < 1)
+                return [];
+
+            term = term.toLowerCase();
+            return tags.filter(tagObj => Object.values(tagObj).length > 0 &&
+                Object.values(tagObj)[0]['name'].toLowerCase().includes(term)
+                || Object.values(tagObj)[0]['aliases'].find(alias => alias.toLowerCase().includes(term))
+            )
+        }
+        , [sets]);
 
     useClickedOutside(popupRef, () => setVisible(false));
     useFocusOnKeydown(inputRef);
@@ -44,7 +70,7 @@ const TagChooserPopup = () => {
             reposition(popupRef, 50);
     });
 
-    const onInput = (e) => setSearchResults(search((e.target as HTMLInputElement).value));
+    const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
     if (errorMessage) {
         console.log(errorMessage);
@@ -58,7 +84,8 @@ const TagChooserPopup = () => {
                         (searchResults && searchResults.length != 0) &&
                         <TagChooserGroup key={'litags.searchResults'}
                                          set={{name: 'Search result', tags: searchResults}}
-                                         addTag={addTag}/>
+                                         addTag={addTag}
+                                         setVisible={setVisible}/>
                     }
                     {
                         // frequentlyUsed.length != 0 &&
@@ -68,7 +95,7 @@ const TagChooserPopup = () => {
                     }
                     {
                         Object.entries(sets).map(([id, set]) =>
-                            <TagChooserGroup key={id} set={set} addTag={addTag}/>)
+                            <TagChooserGroup key={id} set={set} addTag={addTag} setVisible={setVisible}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'

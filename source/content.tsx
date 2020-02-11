@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import configureStore from "./store/configure-store"
 import TagList from "./components/TagList";
-import {UserProvider} from "./contexts/user";
 import TagChooser from "./components/TagChooser/TagChooser";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
@@ -24,7 +23,6 @@ if (element) {
 } else {
     console.log('LiTags found no supported anchors on this page.');
 }
-
 
 function getUserName(elementName: string) {
     return removeTitle(document.querySelector(elementName).textContent);
@@ -49,17 +47,13 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
 
     ReactDOM.render(
         <Provider store={store}>
-            <UserProvider username={username}>
-                <TagList/>
-            </UserProvider>
+                <TagList username={username}/>
         </Provider>,
         listElement);
 
     ReactDOM.render(
         <Provider store={store}>
-            <UserProvider username={username}>
-                <TagChooser/>
-            </UserProvider>
+                <TagChooser username={username}/>
         </Provider>,
         buttonElement);
 }

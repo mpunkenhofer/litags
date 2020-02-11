@@ -2,7 +2,7 @@ import {
     USER_API_FAILURE,
     USER_API_REQUEST,
     USER_API_SUCCESS
-} from "../constants/action-types";
+} from "../actions";
 
 const user = (state = {}, action) => {
     switch (action.type) {

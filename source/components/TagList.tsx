@@ -1,9 +1,11 @@
 import * as React from 'react';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-import {useContext, useState} from 'react';
+import {useState} from 'react';
 import arrayMove from 'array-move';
-import {UserContext} from "../contexts/user";
-import {SetContext, SetProvider} from "../contexts/sets";
+import {useDispatch, useSelector} from 'react-redux'
+import * as selectors from "../selectors";
+import {useEffect} from "react";
+import * as actions from "../actions";
 
 const SortableItem = SortableElement(({value}) => <li className='li-tag'>{value}</li>);
 const SortableList = SortableContainer(({items}) =>
@@ -14,11 +16,24 @@ const SortableList = SortableContainer(({items}) =>
     </ul>
 );
 
-const TagListContainer = () => {
-    const {user, isFetching, errorMessage} = useContext(UserContext);
-    const {getTagByID} = useContext(SetContext);
+const TagList = ({username}) => {
+    const dispatch = useDispatch();
+    const user = useSelector(selectors.getUser(username));
+    const isFetching = useSelector(selectors.getUserIsFetching(username));
+    const errorMessage = useSelector(selectors.getUserErrorMessage(username));
 
     const [items, setItems] = useState(['A', 'B', 'C']);
+
+    useEffect(() => {
+        if (!isFetching) {
+            console.log(`%c FETCH USER: ${username}!`, 'font-size: 2em; font-weight: bold; color: blue');
+            actions.getUser(dispatch, username);
+        }
+        // if(!isFetchingFrequentlyUsed) {
+        //     console.log(`%c FETCH Frequently Used!`, 'font-size: 1.5em; font-weight: bold; color: blue');
+        //     actions.getFrequentlyUsed(dispatch);
+        // }
+    }, []);
 
     const onSortEnd = ({oldIndex, newIndex}) => {
         setItems(items => arrayMove(items, oldIndex, newIndex));
@@ -40,11 +55,5 @@ const TagListContainer = () => {
         return <></>
     }
 };
-
-const TagList = () => (
-    <SetProvider>
-        <TagListContainer/>
-    </SetProvider>
-);
 
 export default TagList;

@@ -3,7 +3,7 @@ import {
     OPTIONS_API_FAILURE,
     OPTIONS_API_REQUEST,
     OPTIONS_API_SUCCESS,
-} from "../constants/action-types";
+} from "../actions";
 import {errorMessageReducer, isFetchingReducer} from "./util";
 
 const options = (state = {}, action) => {

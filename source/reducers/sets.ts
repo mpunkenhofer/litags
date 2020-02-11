@@ -1,5 +1,9 @@
 import {combineReducers} from "redux";
-import {SETS_API_FAILURE, SETS_API_REQUEST, SETS_API_SUCCESS} from "../constants/action-types";
+import {
+    SETS_API_FAILURE,
+    SETS_API_REQUEST,
+    SETS_API_SUCCESS
+} from "../actions";
 import {errorMessageReducer, isFetchingReducer} from "./util";
 
 const sets = (state = [], action) => {

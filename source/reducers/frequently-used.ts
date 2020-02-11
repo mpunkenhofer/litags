@@ -3,7 +3,7 @@ import {
     FREQUENTLY_USED_API_FAILURE,
     FREQUENTLY_USED_API_REQUEST,
     FREQUENTLY_USED_API_SUCCESS,
-} from "../constants/action-types";
+} from "../actions";
 import {errorMessageReducer, isFetchingReducer} from "./util";
 
 const frequentlyUsed = (state = [], action) => {

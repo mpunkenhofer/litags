@@ -1,25 +1,29 @@
 import * as React from 'react';
-import {useContext} from 'react';
+import {useEffect, useState} from 'react';
 import TagChooserPopup from "./TagChooserPopup";
-import {VisibilityContext, VisibilityProvider} from "../../contexts/visibity";
-import {SetProvider} from "../../contexts/sets";
+import * as actions from "../../actions";
+import {useDispatch, useSelector} from 'react-redux'
 
-const TagChooserButton = () => {
-    const {visible, setVisible} = useContext(VisibilityContext);
+const TagChooserButton = ({onClick}) => (
+    <button title='Show Tags' className='lt-icon-button lt-effect-button' onClick={onClick}/>
+);
 
-    return (<button title='Show Tags'
-                    className='lt-icon-button lt-effect-button' onClick={() => setVisible(!visible)}/>);
-};
 
-const TagChooser = () => {
+const TagChooser = ({username}) => {
+    const dispatch = useDispatch();
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        actions.getSets(dispatch);
+        actions.getFrequentlyUsed(dispatch);
+    });
+
     return (
-    <VisibilityProvider>
-        <TagChooserButton/>
-        <SetProvider>
-                <TagChooserPopup/>
-        </SetProvider>
-    </VisibilityProvider>
-)
+        <>
+            <TagChooserButton onClick={() => setVisible(!visible)}/>
+            <TagChooserPopup visible={visible} setVisible={setVisible}/>
+        </>
+    )
 };
 
 
