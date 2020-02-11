@@ -2,8 +2,6 @@ import * as React from 'react';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import {useContext, useState} from 'react';
 import arrayMove from 'array-move';
-import {UserContext} from "../contexts/user";
-import {SetContext, SetProvider} from "../contexts/sets";
 
 const SortableItem = SortableElement(({value}) => <li className='li-tag'>{value}</li>);
 const SortableList = SortableContainer(({items}) =>
@@ -14,7 +12,7 @@ const SortableList = SortableContainer(({items}) =>
     </ul>
 );
 
-const TagListContainer = () => {
+const TagList = ({username}) => {
     const {user, isFetching, errorMessage} = useContext(UserContext);
     const {getTagByID} = useContext(SetContext);
 
@@ -40,11 +38,5 @@ const TagListContainer = () => {
         return <></>
     }
 };
-
-const TagList = () => (
-    <SetProvider>
-        <TagListContainer/>
-    </SetProvider>
-);
 
 export default TagList;

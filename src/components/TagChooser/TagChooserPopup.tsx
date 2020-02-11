@@ -1,12 +1,10 @@
 import React, { useGlobal } from 'reactn'; // <-- reactn
-import {useContext, useEffect, useRef, useState} from "react";
-import {UserContext} from "../../contexts/user";
+import {useEffect, useRef, useState} from "react";
 import TagChooserGroup from "./TagChooserGroup";
-import {VisibilityContext} from "../../contexts/visibity";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
-import {ColorContext} from "../../contexts/color";
-import {SetContext} from "../../contexts/sets";
+import {getBackgroundColor} from "../../util/background-color";
+import {shadeRGBAColor} from "../../util/shade-color";
 
 const reposition = (ref, padding: number = 0) => {
     if(ref && ref.current) {
@@ -26,11 +24,8 @@ const reposition = (ref, padding: number = 0) => {
     }
 };
 
-const TagChooserPopup = () => {
-    const {addTag} = useContext(UserContext);
-    const {visible, setVisible} = useContext(VisibilityContext);
-    const {sets, isFetching, errorMessage, search} = useContext(SetContext);
-    const {shade} = useContext(ColorContext);
+const TagChooserPopup = ({visible, setVisible}) => {
+    const [sets, setSets] = useGlobal('sets');
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
@@ -47,19 +42,15 @@ const TagChooserPopup = () => {
 
     const onInput = (e) => setSearchResults(search((e.target as HTMLInputElement).value));
 
-    if (errorMessage) {
-        console.log(errorMessage);
-    }
-
-    if (visible && !isFetching && sets)
+    if (visible && sets)
         return (
-            <div ref={popupRef} className='lt-tc' style={{backgroundColor: shade(-.15)}}>
+            <div ref={popupRef} className='lt-tc'
+                 style={{backgroundColor: shadeRGBAColor(getBackgroundColor(), -.15)}}>
                 <div className='lt-tcgs'>
                     {
                         (searchResults && searchResults.length != 0) &&
                         <TagChooserGroup key={'litags.searchResults'}
-                                         set={{name: 'Search result', tags: searchResults}}
-                                         addTag={addTag}/>
+                                         set={{name: 'Search result', tags: searchResults}} setVisible={setVisible}/>
                     }
                     {
                         // frequentlyUsed.length != 0 &&
@@ -69,7 +60,7 @@ const TagChooserPopup = () => {
                     }
                     {
                         Object.entries(sets).map(([id, set]) =>
-                            <TagChooserGroup key={id} set={set} addTag={addTag}/>)
+                            <TagChooserGroup key={id} set={set} setVisible={setVisible}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'

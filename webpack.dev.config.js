@@ -14,12 +14,12 @@ module.exports = {
 
     entry: {
         content: [
-        	'./source/content.tsx',
+        	'./src/content.tsx',
             './stylesheets/content.scss',
 		],
-        background: './source/background.ts',
+        background: './src/background.ts',
         options: [
-            './source/options.tsx',
+            './src/options.tsx',
         ],
     },
 

@@ -1,16 +1,13 @@
+import React, {useDispatch} from 'reactn';
 import TagButton from "../TagButton";
-import * as React from "react";
-import {useContext} from "react";
-import {ColorContext} from "../../contexts/color";
-import {VisibilityContext} from "../../contexts/visibity";
+import {shadeRGBAColor} from "../../util/shade-color";
+import {getBackgroundColor} from "../../util/background-color";
 
-const TagChooserGroup = ({set, addTag}) => {
-    const {shade} = useContext(ColorContext);
-    const {setVisible} = useContext(VisibilityContext);
-
+const TagChooserGroup = ({set, setVisible}) => {
     return (
         <section className='lt-tcg'>
-            <header style={{backgroundColor: shade(-.22), borderColor: shade(.15)}}
+            <header style={{backgroundColor:  shadeRGBAColor(getBackgroundColor(), -.22),
+                borderColor: shadeRGBAColor(getBackgroundColor(),.15)}}
                     className='lt-tcg-title'>{set.name}</header>
             <div className='lt-tcg-tags'>
                 {
