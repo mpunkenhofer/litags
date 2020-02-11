@@ -1,13 +1,16 @@
-import React, { useGlobal } from 'reactn'; // <-- reactn
+import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import TagChooserGroup from "./TagChooserGroup";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
-import {getBackgroundColor} from "../../util/background-color";
-import {shadeRGBAColor} from "../../util/shade-color";
+import {getBackgroundColor} from "../../util/color-tools";
+import * as selectors from "../../selectors";
+import {useCallback} from "react";
+import {useSelector} from 'react-redux'
+import {useMemo} from "react";
 
 const reposition = (ref, padding: number = 0) => {
-    if(ref && ref.current) {
+    if (ref && ref.current) {
         const rect = ref.current.getBoundingClientRect();
 
         let [x, y] = [rect.x, rect.y];
@@ -25,12 +28,40 @@ const reposition = (ref, padding: number = 0) => {
 };
 
 const TagChooserPopup = ({visible, setVisible}) => {
-    const [sets, setSets] = useGlobal('sets');
+    const addTag = () => {
+    };
+    const sets = useSelector(selectors.getSets);
+    const isFetching = useSelector(selectors.getSetsIsFetching);
+    const errorMessage = useSelector(selectors.getSetsErrorMessage);
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
 
     const [searchResults, setSearchResults] = useState([]);
+
+    const tags = useMemo(() => {
+        let allTags = [];
+
+        if (sets) {
+            for (const set of Object.values(sets))
+                if (set['enabled']) {
+                    allTags = [...allTags, ...set['tags']];
+                }
+        }
+        return allTags;
+    }, [sets]);
+
+    const searchTags = useCallback(term => {
+            if (!term || term.length < 1)
+                return [];
+
+            term = term.toLowerCase();
+            return tags.filter(tagObj => Object.values(tagObj).length > 0 &&
+                Object.values(tagObj)[0]['name'].toLowerCase().includes(term)
+                || Object.values(tagObj)[0]['aliases'].find(alias => alias.toLowerCase().includes(term))
+            )
+        }
+        , [sets]);
 
     useClickedOutside(popupRef, () => setVisible(false));
     useFocusOnKeydown(inputRef);
@@ -40,17 +71,18 @@ const TagChooserPopup = ({visible, setVisible}) => {
             reposition(popupRef, 50);
     });
 
-    const onInput = (e) => setSearchResults(search((e.target as HTMLInputElement).value));
+    const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
     if (visible && sets)
         return (
-            <div ref={popupRef} className='lt-tc'
-                 style={{backgroundColor: shadeRGBAColor(getBackgroundColor(), -.15)}}>
+            <div ref={popupRef} className='lt-tc' style={{backgroundColor: getBackgroundColor(-.15)}}>
                 <div className='lt-tcgs'>
                     {
                         (searchResults && searchResults.length != 0) &&
                         <TagChooserGroup key={'litags.searchResults'}
-                                         set={{name: 'Search result', tags: searchResults}} setVisible={setVisible}/>
+                                         set={{name: 'Search result', tags: searchResults}}
+                                         addTag={addTag}
+                                         setVisible={setVisible}/>
                     }
                     {
                         // frequentlyUsed.length != 0 &&
@@ -60,7 +92,7 @@ const TagChooserPopup = ({visible, setVisible}) => {
                     }
                     {
                         Object.entries(sets).map(([id, set]) =>
-                            <TagChooserGroup key={id} set={set} setVisible={setVisible}/>)
+                            <TagChooserGroup key={id} set={set} addTag={addTag} setVisible={setVisible}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'

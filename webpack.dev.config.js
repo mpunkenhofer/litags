@@ -62,7 +62,7 @@ module.exports = {
             {
                 test: /\.ts(x?)$/,
                 loader: 'ts-loader',
-                include: [path.resolve(__dirname, 'source')],
+                include: [path.resolve(__dirname, 'src')],
                 exclude: [/node_modules/]
             },
             {

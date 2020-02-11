@@ -1,25 +1,13 @@
-import React, { setGlobal, addCallback} from 'reactn';
+import * as React from "react";
 import * as ReactDOM from 'react-dom';
 import TagList from "./components/TagList";
 import TagChooser from "./components/TagChooser/TagChooser";
+import configureStore from "./store/configure-store";
+import { Provider } from 'react-redux'
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
-// Set an initial global state directly:
-setGlobal({
-    sets: [],
-    users: {},
-    options: {},
-    frequentlyUsed: [],
-    popupVisible: false
-});
-
-if (process.env.NODE_ENV !== "production") {
-    addCallback(global => {
-       console.log(global);
-       return null;
-    });
-}
+const store = configureStore();
 
 const element = document.querySelector('.round__app');
 
@@ -35,7 +23,6 @@ if (element) {
 } else {
     console.log('LiTags found no supported anchors on this page.');
 }
-
 
 function getUserName(elementName: string) {
     return removeTitle(document.querySelector(elementName).textContent);
@@ -58,6 +45,15 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
     anchor.append(listElement);
     anchor.append(buttonElement);
 
-    ReactDOM.render(<TagList username={username}/>, listElement);
-    ReactDOM.render(<TagChooser username={username}/>, buttonElement);
+    ReactDOM.render(
+        <Provider store={store}>
+                <TagList username={username}/>
+        </Provider>,
+        listElement);
+
+    ReactDOM.render(
+        <Provider store={store}>
+                <TagChooser username={username}/>
+        </Provider>,
+        buttonElement);
 }
