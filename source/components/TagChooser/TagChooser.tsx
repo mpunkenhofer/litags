@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {useContext} from 'react';
+import {useContext, useEffect} from 'react';
 import TagChooserPopup from "./TagChooserPopup";
 import {VisibilityContext, VisibilityProvider} from "../../contexts/visibity";
 import {ColorProvider} from "../../contexts/color";
 import {SetProvider} from "../../contexts/sets";
+import { setGlobal } from 'reactn';
 
 const backgroundColor = () => {
     const backgroundElement = document.querySelector('.round__app__table');
@@ -23,7 +24,12 @@ const TagChooserButton = () => {
                     className='lt-icon-button lt-effect-button' onClick={() => setVisible(!visible)}/>);
 };
 
-const TagChooser = () => (
+const TagChooser = () => {
+    useEffect(() => {
+        setGlobal({frequentlyUsed: [1, 2, 3]});
+    });
+
+    return (
     <VisibilityProvider>
         <TagChooserButton/>
         <SetProvider>
@@ -32,7 +38,8 @@ const TagChooser = () => (
             </ColorProvider>
         </SetProvider>
     </VisibilityProvider>
-);
+)
+};
 
 
 export default TagChooser;

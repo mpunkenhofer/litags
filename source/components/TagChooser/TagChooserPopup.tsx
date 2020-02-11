@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useGlobal } from 'reactn'; // <-- reactn
 import {useContext, useEffect, useRef, useState} from "react";
 import {UserContext} from "../../contexts/user";
 import TagChooserGroup from "./TagChooserGroup";
@@ -29,7 +29,7 @@ const reposition = (ref, padding: number = 0) => {
 const TagChooserPopup = () => {
     const {addTag} = useContext(UserContext);
     const {visible, setVisible} = useContext(VisibilityContext);
-    const {sets, isFetching, errorMessage, frequentlyUsed, search} = useContext(SetContext);
+    const {sets, isFetching, errorMessage, search} = useContext(SetContext);
     const {shade} = useContext(ColorContext);
 
     const popupRef = useRef(null);
@@ -62,10 +62,10 @@ const TagChooserPopup = () => {
                                          addTag={addTag}/>
                     }
                     {
-                        frequentlyUsed.length != 0 &&
-                        <TagChooserGroup key={'litags.frequentlyUsed'}
-                                         set={{name: 'Frequently used', tags: frequentlyUsed}}
-                                         addTag={addTag}/>
+                        // frequentlyUsed.length != 0 &&
+                        // <TagChooserGroup key={'litags.frequentlyUsed'}
+                        //                  set={{name: 'Frequently used', tags: frequentlyUsed}}
+                        //                  addTag={addTag}/>
                     }
                     {
                         Object.entries(sets).map(([id, set]) =>

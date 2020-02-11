@@ -3,80 +3,78 @@ import defaultSets from "../constants/sets";
 const browser = require("webextension-polyfill");
 const uuidv4 = require('uuid/v4');
 
-interface Endpoints {
-    USERS: string,
-    SETS: string,
-    OPTIONS: string,
-}
-
-export const ENDPOINTS: Endpoints = {
+const ENDPOINTS = {
     USERS: 'USERS',
     SETS: 'SETS',
     OPTIONS: 'OPTIONS',
+    FREQUENTLY_USED: 'FREQUENTLY_USED'
 };
 
-interface Methods {
-    GET: string,
-    POST: string
-}
+export const getSets = async () => {
+    const sets = (await browser.storage.local.get(ENDPOINTS.SETS))[ENDPOINTS.SETS];
 
-export const METHODS: Methods = {
-    GET: 'GET',
-    POST: 'POST'
-};
-
-export const fetch = async <E extends keyof Endpoints, M extends keyof Methods>(endpoint: E, method: M, key = null,
-                                                                                argument?) => {
-    const data = (await browser.storage.local.get(endpoint))[endpoint];
-
-    // console.group('Fetch Data');
-    // console.log(`%c FETCH DATA: endpoint: ${endpoint}, key: ${key}, arg: ${argument}`,
-    //     'font-weight: bold; font-size: 1.2em; color: orange;');
-    // console.log('data:', data);
-    // console.groupEnd();
-
-    switch (method) {
-        case METHODS.GET: {
-            if (endpoint == ENDPOINTS.SETS && !data)
-                return fetch('SETS', 'POST', null, getDefaultSets());
-            else if(key) {
-                return data.hasOwnProperty(key) ? data[key] : Promise.reject(`Key: ${key} not found in data.`);
-            } else {
-                return data;
-            }
-        }
-        case METHODS.POST: {
-            if (!argument)
-                return Promise.reject(`Method: ${method} but non-valid argument: ${argument}`);
-
-            if (data) {
-                const newData = {...data, ...argument};
-                await browser.storage.local.set({[endpoint]: newData});
-            } else {
-                if(key) {
-                    await browser.storage.local.set({[endpoint]: {[key]: argument}});
-                } else {
-                    await browser.storage.local.set({[endpoint]: argument});
-                }
-            }
-
-            return argument;
-        }
-        default: {
-            return Promise.reject(`Unknown method: ${method}`);
-        }
+    if(!sets) {
+        const defaultSets = getDefaultSets();
+        await browser.storage.local.set({[ENDPOINTS.SETS]: defaultSets});
+        return defaultSets;
+    } else {
+        return sets;
     }
+};
+
+export const getUser = async (username: string) => {
+    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
+
+    if(users && users.hasOwnProperty(username)) {
+        return users[username];
+    } else {
+        return Promise.reject(`User: ${username} not found.`);
+    }
+};
+
+export const putUser = async (username: string, userData: Object) => {
+    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
+    const updatedUsers = Object.assign({}, users, {[username]: userData});
+    await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
+    return updatedUsers[username];
+};
+
+export const getOptions = async () => {
+    const options = (await browser.storage.local.get(ENDPOINTS.OPTIONS))[ENDPOINTS.OPTIONS];
+
+    if(!options) {
+        await browser.storage.local.set({[ENDPOINTS.OPTIONS]: {}});
+        return {};
+    } else {
+        return options;
+    }
+};
+
+export const getFrequentlyUsed = async () => {
+    const frequentlyUsed = (await browser.storage.local.get(ENDPOINTS.FREQUENTLY_USED))[ENDPOINTS.FREQUENTLY_USED];
+
+    if(!frequentlyUsed) {
+        await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: []});
+        return [];
+    } else {
+        return frequentlyUsed;
+    }
+};
+
+export const putFrequentlyUsed = async (frequentlyUsedIDs: string[]) => {
+    await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: frequentlyUsedIDs});
+    return frequentlyUsedIDs;
 };
 
 const createTag = (name, aliases, resource, color?) => {
     const tag = color != undefined ?
-        {name, aliases, resource, frequency: 0, color} :
-        {name, aliases, resource, frequency: 0};
+        {name, aliases, resource, color} :
+        {name, aliases, resource};
 
     return {[uuidv4()]: tag}
 };
 
-export const getDefaultSets = () => {
+const getDefaultSets = () => {
     let sets = {};
 
     for (const set of defaultSets) {

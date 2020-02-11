@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { setGlobal } from 'reactn';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import configureStore from "./store/configure-store"
@@ -9,6 +9,15 @@ import TagChooser from "./components/TagChooser/TagChooser";
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 const store = configureStore();
+
+// Set an initial global state directly:
+setGlobal({
+    sets: {},
+    users: {},
+    options: {},
+    frequentlyUsed: []
+});
+
 
 const element = document.querySelector('.round__app');
 

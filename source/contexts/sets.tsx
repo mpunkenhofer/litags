@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo} from "react";
 import * as selectors from "../selectors";
 import * as actions from "../actions";
-import {ENDPOINTS, METHODS} from "../api";
 import {useDispatch, useSelector} from 'react-redux'
 
 const SetContext = React.createContext(null);
@@ -18,20 +17,12 @@ const SetProvider = ({children}) => {
 
         if (sets) {
             for (const set of Object.values(sets))
-                if (set['enabled']) {
+                if(set['enabled']) {
                     allTags = [...allTags, ...set['tags']];
                 }
         }
         return allTags;
     }, [sets]);
-
-    const frequentlyUsed = useMemo((amount: number = 8) => {
-        return [];
-        // return tags
-        //     .filter(tag => tag.frequency != 0)
-        //     .sort((a, b) => (b.frequency - a.frequency))
-        //     .splice(0, amount);
-    }, [tags]);
 
     const searchTags = (term: string) => {
         if (!term || term.length < 1)
@@ -51,12 +42,13 @@ const SetProvider = ({children}) => {
     useEffect(() => {
         if (!isFetching) {
             console.log('%c FETCH TAGS!', 'font-size: 2em; font-weight: bold; color: red');
-            actions.fetch(dispatch, ENDPOINTS.SETS, METHODS.GET);
+            actions.getSets(dispatch);
+            actions.getFrequentlyUsed(dispatch);
         }
     }, []);
 
     return (
-        <SetContext.Provider value={{sets, isFetching, errorMessage, frequentlyUsed, search, getTagByID}}>
+        <SetContext.Provider value={{sets, isFetching, errorMessage, search, getTagByID}}>
             {children}
         </SetContext.Provider>);
 };

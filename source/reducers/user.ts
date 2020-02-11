@@ -8,7 +8,7 @@ const user = (state = {}, action) => {
     switch (action.type) {
         case USER_API_REQUEST: {
             const user = {
-                [action.name]: {isFetching: true}
+                [action.username]: {isFetching: true}
             };
 
             return {...state, ...user};
@@ -17,10 +17,10 @@ const user = (state = {}, action) => {
             if(!action.response)
                 return state;
 
-            return {...state, ...{[action.name]: {...action.response, isFetching: false}}};
+            return {...state, ...{[action.username]: {...action.response, isFetching: false}}};
         }
         case USER_API_FAILURE: {
-            return {...state, ...{[action.name]: { tags: [], isFetching: false}}};
+            return {...state, ...{[action.username]: { tags: [], isFetching: false}}};
         }
         default:
             return state;
