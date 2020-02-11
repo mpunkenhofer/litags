@@ -1,4 +1,12 @@
-import React, {useState} from "react";
+const backgroundColor = () => {
+    const backgroundElement = document.querySelector('.round__app__table');
+    if (backgroundElement) {
+        const style = getComputedStyle(backgroundElement);
+        if (style && style.backgroundColor)
+            return style.backgroundColor;
+    }
+    return 'rgba(0,0,0,1)';
+};
 
 const shadeRGBAColor = (color, percent) => {
     const f = color.split(","), t = percent < 0 ? 0 : 255, p = percent < 0 ? percent * -1 : percent;
@@ -12,20 +20,4 @@ const shadeRGBAColor = (color, percent) => {
         (Math.min(Math.max(A + (A * -percent), 0.0), 1.0)) + ")";
 };
 
-const ColorContext = React.createContext(null);
-
-const ColorProvider = ({baseColor, children}) => {
-    const [color, setColor] = useState(baseColor);
-
-    const shade = (percent) => {
-        return shadeRGBAColor(color, percent)
-    };
-
-    return (
-        <ColorContext.Provider value={{color, shade}}>
-            {children}
-        </ColorContext.Provider>
-    );
-};
-
-export {ColorProvider, ColorContext}
+export const getBackgroundColor = (shadePercent=0) => (shadeRGBAColor(backgroundColor(), shadePercent));

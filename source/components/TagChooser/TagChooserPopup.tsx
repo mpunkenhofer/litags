@@ -1,12 +1,12 @@
-import React, { useGlobal } from 'reactn'; // <-- reactn
+import * as React from "react";
 import {useContext, useEffect, useRef, useState} from "react";
 import {UserContext} from "../../contexts/user";
 import TagChooserGroup from "./TagChooserGroup";
 import {VisibilityContext} from "../../contexts/visibity";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
-import {ColorContext} from "../../contexts/color";
 import {SetContext} from "../../contexts/sets";
+import {getBackgroundColor} from "../../util/color-tools";
 
 const reposition = (ref, padding: number = 0) => {
     if(ref && ref.current) {
@@ -30,7 +30,6 @@ const TagChooserPopup = () => {
     const {addTag} = useContext(UserContext);
     const {visible, setVisible} = useContext(VisibilityContext);
     const {sets, isFetching, errorMessage, search} = useContext(SetContext);
-    const {shade} = useContext(ColorContext);
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
@@ -53,7 +52,7 @@ const TagChooserPopup = () => {
 
     if (visible && !isFetching && sets)
         return (
-            <div ref={popupRef} className='lt-tc' style={{backgroundColor: shade(-.15)}}>
+            <div ref={popupRef} className='lt-tc' style={{backgroundColor: getBackgroundColor(-.15)}}>
                 <div className='lt-tcgs'>
                     {
                         (searchResults && searchResults.length != 0) &&
