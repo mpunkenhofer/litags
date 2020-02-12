@@ -1,13 +1,10 @@
 import * as React from "react";
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import TagChooserGroup from "./TagChooserGroup";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
 import {getBackgroundColor} from "../../util/color-tools";
-import * as selectors from "../../selectors";
-import {useCallback} from "react";
-import {useSelector} from 'react-redux'
-import {useMemo} from "react";
+import {SetContext} from "../../contexts/sets";
 
 const reposition = (ref, padding: number = 0) => {
     if (ref && ref.current) {
@@ -28,40 +25,12 @@ const reposition = (ref, padding: number = 0) => {
 };
 
 const TagChooserPopup = ({onClickOutside}) => {
-    const addTag = () => {
-    };
-    const sets = useSelector(selectors.getSets);
-    const isFetching = useSelector(selectors.getSetsIsFetching);
-    const errorMessage = useSelector(selectors.getSetsErrorMessage);
+    const {sets, isFetching, addTag, searchTags} = useContext(SetContext);
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
 
     const [searchResults, setSearchResults] = useState([]);
-
-    const tags = useMemo(() => {
-        let allTags = [];
-
-        if (sets) {
-            for (const set of Object.values(sets))
-                if (set['enabled']) {
-                    allTags = [...allTags, ...set['tags']];
-                }
-        }
-        return allTags;
-    }, [sets]);
-
-    const searchTags = useCallback(term => {
-            if (!term || term.length < 1)
-                return [];
-
-            term = term.toLowerCase();
-            return tags.filter(tagObj => Object.values(tagObj).length > 0 &&
-                Object.values(tagObj)[0]['name'].toLowerCase().includes(term)
-                || Object.values(tagObj)[0]['aliases'].find(alias => alias.toLowerCase().includes(term))
-            )
-        }
-        , [sets]);
 
     useClickedOutside(popupRef, onClickOutside);
     useFocusOnKeydown(inputRef);
@@ -72,7 +41,7 @@ const TagChooserPopup = ({onClickOutside}) => {
 
     const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
-    if (sets)
+    if (!isFetching && sets)
         return (
             <div ref={popupRef} className='lt-tc' style={{backgroundColor: getBackgroundColor(-.15)}}>
                 <div className='lt-tcgs'>
