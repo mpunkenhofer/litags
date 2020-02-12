@@ -8,20 +8,19 @@ const TagChooserButton = ({onClick}) => (
     <button title='Show Tags' className='lt-icon-button lt-effect-button' onClick={onClick}/>
 );
 
-
 const TagChooser = ({username}) => {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        actions.getSets(dispatch);
-        actions.getFrequentlyUsed(dispatch);
-    });
+        dispatch(actions.getSets());
+        dispatch(actions.getFrequentlyUsed());
+    }, []);
 
     return (
         <>
             <TagChooserButton onClick={() => setVisible(!visible)}/>
-            <TagChooserPopup visible={visible} setVisible={setVisible}/>
+            {visible && <TagChooserPopup onClickOutside={() => setVisible(false)}/>}
         </>
     )
 };

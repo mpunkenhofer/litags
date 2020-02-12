@@ -6,7 +6,7 @@ const TagChooserGroup = ({set, addTag, setVisible}) => {
     return (
         <section className='lt-tcg'>
             <header style={{
-                backgroundColor: getBackgroundColor(-.22),
+                backgroundColor: getBackgroundColor(-.3),
                 borderColor: getBackgroundColor(.15)
             }}
                     className='lt-tcg-title'>{set.name}</header>

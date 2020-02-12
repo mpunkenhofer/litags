@@ -27,7 +27,7 @@ const TagList = ({username}) => {
     useEffect(() => {
         if (!isFetching) {
             console.log(`%c FETCH USER: ${username}!`, 'font-size: 2em; font-weight: bold; color: blue');
-            actions.getUser(dispatch, username);
+            dispatch(actions.getUser(username));
         }
         // if(!isFetchingFrequentlyUsed) {
         //     console.log(`%c FETCH Frequently Used!`, 'font-size: 1.5em; font-weight: bold; color: blue');

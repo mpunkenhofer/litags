@@ -27,7 +27,7 @@ const reposition = (ref, padding: number = 0) => {
     }
 };
 
-const TagChooserPopup = ({visible, setVisible}) => {
+const TagChooserPopup = ({onClickOutside}) => {
     const addTag = () => {
     };
     const sets = useSelector(selectors.getSets);
@@ -63,17 +63,16 @@ const TagChooserPopup = ({visible, setVisible}) => {
         }
         , [sets]);
 
-    useClickedOutside(popupRef, () => setVisible(false));
+    useClickedOutside(popupRef, onClickOutside);
     useFocusOnKeydown(inputRef);
 
     useEffect(() => {
-        if (visible)
-            reposition(popupRef, 50);
+        reposition(popupRef, 50);
     });
 
     const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
-    if (visible && sets)
+    if (sets)
         return (
             <div ref={popupRef} className='lt-tc' style={{backgroundColor: getBackgroundColor(-.15)}}>
                 <div className='lt-tcgs'>
@@ -82,7 +81,7 @@ const TagChooserPopup = ({visible, setVisible}) => {
                         <TagChooserGroup key={'litags.searchResults'}
                                          set={{name: 'Search result', tags: searchResults}}
                                          addTag={addTag}
-                                         setVisible={setVisible}/>
+                                         setVisible={onClickOutside}/>
                     }
                     {
                         // frequentlyUsed.length != 0 &&
@@ -92,7 +91,7 @@ const TagChooserPopup = ({visible, setVisible}) => {
                     }
                     {
                         Object.entries(sets).map(([id, set]) =>
-                            <TagChooserGroup key={id} set={set} addTag={addTag} setVisible={setVisible}/>)
+                            <TagChooserGroup key={id} set={set} addTag={addTag} setVisible={onClickOutside}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'
