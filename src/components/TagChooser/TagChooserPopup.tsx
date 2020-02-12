@@ -5,6 +5,7 @@ import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
 import {getBackgroundColor} from "../../util/color-tools";
 import {SetContext} from "../../contexts/sets";
+import {UserContext} from "../../contexts/users";
 
 const reposition = (ref, padding: number = 0) => {
     if (ref && ref.current) {
@@ -25,7 +26,8 @@ const reposition = (ref, padding: number = 0) => {
 };
 
 const TagChooserPopup = ({onClickOutside}) => {
-    const {sets, isFetching, addTag, searchTags} = useContext(SetContext);
+    const {sets, isLoading, searchTags} = useContext(SetContext);
+    const {addTag} = useContext(UserContext);
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
@@ -41,7 +43,12 @@ const TagChooserPopup = ({onClickOutside}) => {
 
     const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
-    if (!isFetching && sets)
+    const onTagButtonClick = (tag) => () => {
+        addTag(tag);
+        onClickOutside();
+    };
+
+    if (!isLoading && sets)
         return (
             <div ref={popupRef} className='lt-tc' style={{backgroundColor: getBackgroundColor(-.15)}}>
                 <div className='lt-tcgs'>
@@ -49,8 +56,7 @@ const TagChooserPopup = ({onClickOutside}) => {
                         (searchResults && searchResults.length != 0) &&
                         <TagChooserGroup key={'litags.searchResults'}
                                          set={{name: 'Search result', tags: searchResults}}
-                                         addTag={addTag}
-                                         setVisible={onClickOutside}/>
+                                         onTagButtonClick={onTagButtonClick}/>
                     }
                     {
                         // frequentlyUsed.length != 0 &&
@@ -60,7 +66,7 @@ const TagChooserPopup = ({onClickOutside}) => {
                     }
                     {
                         Object.entries(sets).map(([id, set]) =>
-                            <TagChooserGroup key={id} set={set} addTag={addTag} setVisible={onClickOutside}/>)
+                            <TagChooserGroup key={id} set={set} onTagButtonClick={onTagButtonClick}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'

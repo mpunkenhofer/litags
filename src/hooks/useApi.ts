@@ -45,15 +45,18 @@ export const useApi = (endpoint: string, argument=null) => {
             dispatch({type: 'REQUEST'});
 
             const fetch = async () => {
-                console.log(`%cuseApi(endpoint: ${endpoint}, argument: ${argument}`,
-                    'font-size: 1.2em; font-weight: bold; color: pink');
                 try {
                     const data = (await browser.storage.local.get(route[0]))[route[0]];
 
+                    console.group(`%cuseApi(endpoint: ${endpoint}, argument: ${JSON.stringify(arg)}`,
+                        'font-size: 1.2em; font-weight: bold; color: aqua');
+                    console.log('data:', data);
+                    console.groupEnd();
+
                     if (data) {
-                        if(argument) {
+                        if(arg) {
                             const updatedData = route.length > 1 ?
-                                Object.assign({}, data, {[route[1]]: argument}) : argument;
+                                Object.assign({}, data, {[route[1]]: arg}) : arg;
                             console.log('updated data: ', updatedData);
                             await browser.storage.local.set({[route[0]]: updatedData});
                             dispatch({type: 'SUCCESS', payload: updatedData});
@@ -75,13 +78,19 @@ export const useApi = (endpoint: string, argument=null) => {
                             }
                             case 'users': {
                                 if(route.length > 1) {
-                                    dispatch({type: 'SUCCESS', payload: createUser(route[1])});
+                                    dispatch({type: 'SUCCESS', payload: createUserData()});
                                 } else {
                                     dispatch({type: 'FAILURE', errorMessage: 'Invalid user endpoint uri'});
                                 }
                                 break;
                             }
+                            case 'frequentlyUsed': {
+                                await browser.storage.local.set({['frequentlyUsed']: []});
+                                dispatch({type: 'SUCCESS', payload: []});
+                                break;
+                            }
                             default: {
+                                await browser.storage.local.set({[route[0]]: {}});
                                 console.log(`No data at this endpoint: ${endpoint}`);
                                 dispatch({type: 'SUCCESS', payload: null});
                             }
@@ -98,7 +107,7 @@ export const useApi = (endpoint: string, argument=null) => {
     return [state, setArg];
 };
 
-const createUser = (username) => ({[username]: {tags: []}});
+const createUserData = () => ({tags: []});
 
 const createTag = (name, aliases, resource, color?) => {
     const tag = color != undefined ?
