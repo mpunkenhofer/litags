@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const Tag = ({tag}) => (
     <div className='lt-tag'>
-        {tag.hasOwnProperty('color') ? <span>{tag.resource}</span> : <img src={tag.resource}></img>}
+        {(tag.hasOwnProperty('color') && tag.color.length > 2)? <span>{tag.uri}</span> : <img src={tag.uri}></img>}
     </div>
 );
 

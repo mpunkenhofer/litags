@@ -1,13 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from 'react-dom';
-import TagList from "./components/TagList";
-import TagChooser from "./components/TagChooser/TagChooser";
-import configureStore from "./store/configure-store";
-import { Provider } from 'react-redux'
+import TagList from "./features/TagList/TagList";
+import TagChooser from "./features/TagChooser/TagChooser";
+import {Provider} from 'react-redux'
+import store from './app/store'
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
-
-const store = configureStore();
 
 const element = document.querySelector('.round__app');
 
@@ -47,13 +45,13 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
 
     ReactDOM.render(
         <Provider store={store}>
-                <TagList username={username}/>
+            <TagList username={username}/>
         </Provider>,
         listElement);
 
     ReactDOM.render(
         <Provider store={store}>
-                <TagChooser username={username}/>
+            <TagChooser username={username}/>
         </Provider>,
         buttonElement);
 }

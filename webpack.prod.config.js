@@ -73,9 +73,5 @@ module.exports = {
 
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.scss'],
-		alias: {
-			"sortablejs": "sortablejs/Sortable.js",
-			modules: path.join(__dirname, "node_modules"),
-		}
 	},
 };

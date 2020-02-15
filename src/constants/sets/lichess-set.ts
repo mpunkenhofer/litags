@@ -1,10 +1,9 @@
-import {SetType} from "./index";
+import {SetData} from "./index";
 
-const lichessSetData: SetType = {
+const lichessSetData: SetData = {
     "name": "Lichess",
-    "icon": "https://lichess1.org/assets/logo/lichess-favicon-64.png",
-    "enabled": true,
-    "fontSet": true,
+    "icon_url": "https://lichess1.org/assets/logo/lichess-favicon-64.png",
+    "font_url": '',
     "tags": {
         "exit": [[], "0"],
         "tv": [[], "1"],

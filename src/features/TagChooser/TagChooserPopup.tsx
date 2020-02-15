@@ -1,13 +1,13 @@
 import * as React from "react";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import TagChooserGroup from "./TagChooserGroup";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
 import {getBackgroundColor} from "../../util/color-tools";
-import * as selectors from "../../selectors";
 import {useCallback} from "react";
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import {useMemo} from "react";
+import {RootState} from "../../app/rootReducer";
 
 const reposition = (ref, padding: number = 0) => {
     if (ref && ref.current) {
@@ -28,51 +28,53 @@ const reposition = (ref, padding: number = 0) => {
 };
 
 const TagChooserPopup = ({onClickOutside}) => {
-    const addTag = () => {
-    };
-    const sets = useSelector(selectors.getSets);
-    const isFetching = useSelector(selectors.getSetsIsFetching);
-    const errorMessage = useSelector(selectors.getSetsErrorMessage);
+    const addTag = () => {};
+    const dispatch = useDispatch();
+    const {sets, loading, error} = useSelector((state: RootState) => state.sets);
 
     const popupRef = useRef(null);
     const inputRef = useRef(null);
 
     const [searchResults, setSearchResults] = useState([]);
 
-    const tags = useMemo(() => {
-        let allTags = [];
-
-        if (sets) {
-            for (const set of Object.values(sets))
-                if (set['enabled']) {
-                    allTags = [...allTags, ...set['tags']];
-                }
-        }
-        return allTags;
-    }, [sets]);
+    // const tags = useMemo(() => {
+    //     let allTags = [];
+    //
+    //     if (sets) {
+    //         for (const set of Object.values(sets))
+    //             if (set['enabled']) {
+    //                 allTags = [...allTags, ...set['tags']];
+    //             }
+    //     }
+    //     return allTags;
+    // }, [sets]);
 
     const searchTags = useCallback(term => {
-            if (!term || term.length < 1)
-                return [];
-
-            term = term.toLowerCase();
-            return tags.filter(tagObj => Object.values(tagObj).length > 0 &&
-                Object.values(tagObj)[0]['name'].toLowerCase().includes(term)
-                || Object.values(tagObj)[0]['aliases'].find(alias => alias.toLowerCase().includes(term))
-            )
+            // if (!term || term.length < 1)
+            //     return [];
+            //
+            // term = term.toLowerCase();
+            // return tags.filter(tagObj => Object.values(tagObj).length > 0 &&
+            //     Object.values(tagObj)[0]['name'].toLowerCase().includes(term)
+            //     || Object.values(tagObj)[0]['aliases'].find(alias => alias.toLowerCase().includes(term))
+            // )
+            return [];
         }
         , [sets]);
 
     useClickedOutside(popupRef, onClickOutside);
     useFocusOnKeydown(inputRef);
 
-    useEffect(() => {
-        reposition(popupRef, 50);
-    });
+    // useEffect(() => {
+    //     reposition(popupRef, 50);
+    // });
 
     const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
-    if (sets)
+    if(error) {
+        console.error(error);
+        return <></>;
+    } else if (!loading && sets)
         return (
             <div ref={popupRef} className='lt-tc' style={{backgroundColor: getBackgroundColor(-.15)}}>
                 <div className='lt-tcgs'>
@@ -90,8 +92,8 @@ const TagChooserPopup = ({onClickOutside}) => {
                         //                  addTag={addTag}/>
                     }
                     {
-                        Object.entries(sets).map(([id, set]) =>
-                            <TagChooserGroup key={id} set={set} addTag={addTag} setVisible={onClickOutside}/>)
+                        Object.values(sets).map(set =>
+                            <TagChooserGroup key={set['id']} set={set} addTag={addTag} setVisible={onClickOutside}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'

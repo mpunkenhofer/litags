@@ -1,10 +1,9 @@
-import {SetType} from "./index";
+import {SetData} from "./index";
 
-const frankerfacezSetData: SetType = {
+const frankerfacezSetData: SetData = {
     "name": "FrakerFaceZ",
-    "icon": "https://frankerfacez.com/static/images/favicon-32.png",
-    "enabled": true,
-    "fontSet": false,
+    "icon_url": "https://frankerfacez.com/static/images/favicon-32.png",
+    "font_url": '',
     "tags": {
         "AYAYA": [[], "https://cdn.frankerfacez.com/emoticon/162146/1"],
         "OMEGALUL": [[], "https://cdn.frankerfacez.com/emoticon/128054/1"],

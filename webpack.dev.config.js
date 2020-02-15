@@ -89,10 +89,10 @@ module.exports = {
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.scss'],
-        alias: {
-            "webextension-polyfill": "webextension-polyfill/dist/browser-polyfill.js",
-            modules: path.join(__dirname, "node_modules"),
-        }
+        // alias: {
+        //     "webextension-polyfill": "webextension-polyfill/dist/browser-polyfill.js",
+        //     modules: path.join(__dirname, "node_modules"),
+        // }
     },
 
     // externals: {
