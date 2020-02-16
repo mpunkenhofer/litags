@@ -1,8 +1,13 @@
 import * as React from 'react';
+import {Tag} from "../api/storageAPI";
 
-const Tag = ({tag}) => (
+interface TagProps {
+    tag: Tag
+}
+
+const Tag = ({tag}: TagProps) => (
     <div className='lt-tag'>
-        {(tag.hasOwnProperty('color') && tag.color.length > 2)? <span>{tag.uri}</span> : <img src={tag.uri}></img>}
+        {(tag.color.length > 0)? <span>{tag.uri}</span> : <img src={tag.uri}></img>}
     </div>
 );
 

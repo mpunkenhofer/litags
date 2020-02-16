@@ -1,5 +1,5 @@
-@import "tag-list";
-@import "tag-chooser";
+@import "tagList";
+@import "tagChooser";
 @import "util/font";
 @import "util/colors";
 
@@ -50,5 +50,13 @@
 
   &:hover {
     transform: scale(1.2);
+  }
+}
+
+.lt-tag {
+  font-size: 1.5em;
+
+  span {
+    font-family: lichess, serif;
   }
 }

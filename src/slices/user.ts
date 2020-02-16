@@ -1,7 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppThunk} from "../app/store";
 import * as api from "../api/storageAPI";
-import {User} from "../api/storageAPI";
+import {Tag, User} from "../api/storageAPI";
+import {updateFrequentlyUsed} from "./frequentlyUsed";
+import isEqual from "lodash/isequal";
 
 interface UserLoadDetail {
     loading: boolean,
@@ -13,70 +15,81 @@ type UserRecord = {
 } & UserLoadDetail
 
 interface UserState {
-    user: Record<string, UserRecord | undefined>
+    userRecord: Record<string, UserRecord | undefined>
 }
 
 const usersInitialState: UserState = {
-    user: {},
+    userRecord: {},
 };
 
 const userSlice = createSlice({
     name: 'user',
     initialState: usersInitialState,
     reducers: {
-        getUserRequest(state, {payload}: PayloadAction<{username: string}>) {
-            state.user[payload.username] = {user: {name: payload.username, tags: []}, loading: true, error: null};
+        userRequest(state, {payload}: PayloadAction<{ username: string }>) {
+            if (state.userRecord[payload.username]) {
+                state.userRecord[payload.username].loading = true;
+                state.userRecord[payload.username].error = null;
+            } else {
+                state.userRecord[payload.username] =
+                    {user: {name: payload.username, tags: []}, loading: true, error: null};
+            }
         },
-        getUsersSuccess(state, {payload}: PayloadAction<{username: string, user: User}>) {
-            state.user[payload.username] = {user: payload.user, loading: false, error: null};
+        userSuccess(state, {payload}: PayloadAction<{ username: string, user: User }>) {
+            state.userRecord[payload.username] = {user: payload.user, loading: false, error: null};
         },
-        getUsersFailure(state, {payload}: PayloadAction<{username: string, error: string}>) {
-            state.user[payload.username] =
-                {user: {name: payload.username, tags: []}, loading: false, error: payload.error};
+        userFailure(state, {payload}: PayloadAction<{ username: string, error: string }>) {
+            state.userRecord[payload.username] =
+                {user: {name: payload.username, tags: []}, loading: false, error: null};
         }
     }
 });
 
 export const {
-    getUserRequest,
-    getUsersSuccess,
-    getUsersFailure,
+    userRequest,
+    userSuccess,
+    userFailure,
 } = userSlice.actions;
 
 export const getUser = (username: string): AppThunk => dispatch => {
-    dispatch(getUserRequest({username}));
+    dispatch(userRequest({username}));
     api.getUser(username)
-        .then(user => dispatch(getUsersSuccess({username, user})))
-        .catch(err => dispatch(getUsersFailure({username, error: err.toString()})));
+        .then(user => dispatch(userSuccess({username, user})))
+        .catch(err => dispatch(userFailure({username, error: err.toString()})));
 };
 
-export default userSlice.reducer;
+export const postUser = (user: User): AppThunk => dispatch => {
+    dispatch(userRequest({username: user.name}));
+    api.postUser(user)
+        .then(user => dispatch(userSuccess({username: user.name, user})))
+        .catch(err => dispatch(userFailure({username: user.name, error: err.toString()})));
+};
 
-// export const addTagToUser = (username, tagId) => {
-//     return (dispatch, getState) => {
-//         const userData = selectors.getUser(username)(getState());
-//         if (username && userData && !userData['tags'].includes(tagId)) {
-//             dispatch(updateFrequentlyUsed(tagId));
-//             console.group('%c Add Tag to User', 'font-size: 2em; font-weight: bold; color: pink');
-//             console.log(username, userData, tagId);
-//             const updatedUserData = {...userData, tags: [...userData['tags'], tagId]};
-//             console.log('updated userData: ', updatedUserData);
-//             console.groupEnd();
-//             dispatch(putUser(username, userData));
-//         }
-//     }
-// };
-//
-// const updateFrequentlyUsed = (id: string) => {
-//     return (dispatch, getState) => {
-//         const frequentlyUsedIDs = selectors.getFrequentlyUsed(getState());
-//         if (frequentlyUsedIDs && id) {
-//             console.group('%c Update freq used', 'font-size: 2em; font-weight: bold; color: pink');
-//             console.log(id, frequentlyUsedIDs);
-//             const updatedFrequentlyUsedIDs = [...frequentlyUsedIDs, id];
-//             console.log('updated freq used: ', updatedFrequentlyUsedIDs);
-//             console.groupEnd();
-//             dispatch(putFrequentlyUsed(updatedFrequentlyUsedIDs));
-//         }
-//     }
-// };
+export const addTag = (username: string, tag: Tag): AppThunk =>
+    (dispatch, getState) => {
+        const userRecord = getState().user.userRecord;
+        const user: User = userRecord[username] ? userRecord[username].user : null;
+
+        console.group(`%cAdd Tag! ${username}`, 'font-size: 1.2em; font-weight: bold; color: orange');
+        console.log(user, tag);
+        console.groupEnd();
+
+        if (user && !user.tags.includes(tag.id)) {
+            dispatch(updateFrequentlyUsed(tag.id));
+            const updatedUser = {...user, tags: [...user.tags, tag.id]};
+            dispatch(postUser(updatedUser));
+        }
+    };
+
+export const updateTags = (username: string, newOrder: string[]): AppThunk =>
+    (dispatch, getState) => {
+        const userRecord = getState().user.userRecord;
+        const user: User = userRecord[username] ? userRecord[username].user : null;
+
+        if (user && newOrder && !isEqual(user.tags, newOrder)) {
+            const updatedUser = {...user, tags: newOrder};
+            dispatch(postUser(updatedUser));
+        }
+    };
+
+export default userSlice.reducer;

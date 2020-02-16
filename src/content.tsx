@@ -4,8 +4,13 @@ import TagList from "./features/TagList/TagList";
 import TagChooser from "./features/TagChooser/TagChooser";
 import {Provider} from 'react-redux'
 import store from './app/store'
+import {enableStorageApiLogger} from "./api/storageAPI";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
+
+if(process.env.NODE_ENV === "development") {
+    enableStorageApiLogger();
+}
 
 const element = document.querySelector('.round__app');
 

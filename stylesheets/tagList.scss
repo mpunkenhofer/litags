@@ -3,21 +3,10 @@
   list-style-type: none;
   user-select: none;
 
-  ul {
+  li {
     display: inline-block;
-  }
-}
-
-.li-tag {
-  display: inline-block;
-  margin-right: 0.4em;
-  font-family: lichess, serif;
-  font-size: 2em;
-  cursor: pointer;
-  filter: brightness(90%);
-
-  &:hover {
-    filter: brightness(100%);
+    margin-right: .4em;
+    cursor: pointer;
   }
 }
 

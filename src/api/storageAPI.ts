@@ -59,7 +59,7 @@ export const getUser = async (username: string): Promise<User> => {
     }
 };
 
-export const putUser = async (user: User): Promise<User> => {
+export const postUser = async (user: User): Promise<User> => {
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
     const updatedUsers = Object.assign({}, users, {[user.name]: user});
     await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
@@ -81,14 +81,14 @@ export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
     const frequentlyUsed = (await browser.storage.local.get(ENDPOINTS.FREQUENTLY_USED))[ENDPOINTS.FREQUENTLY_USED];
 
     if (!frequentlyUsed) {
-        await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: [[]]});
+        await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: []});
         return [];
     } else {
         return frequentlyUsed as FrequentlyUsed;
     }
 };
 
-export const putFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
+export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
     await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: frequentlyUsedIDs});
     return frequentlyUsedIDs;
 };
@@ -108,4 +108,21 @@ const getDefaultSets = (): Set[] => {
     }
 
     return sets;
+};
+
+export const enableStorageApiLogger = () => {
+    browser.storage.onChanged.addListener((changes, area) => {
+        console.group('%cStorage area ' + `%c${area} ` + '%cchanged.',
+            'font-size: 1.3em; font-weight: bold; color: gray', 'font-size: 1.3em; font-weight: bold; color: red',
+            'font-size: 1.3em; font-weight: bold; color: gray');
+
+        const changedItems = Object.keys(changes);
+
+        for (const item of changedItems) {
+            console.log('item:' + `%c${item}`,  'font-size: 1.1em; font-weight: bold; color: blue');
+            console.log('prev value\n', changes[item].oldValue);
+            console.log('new value\n', changes[item].newValue);
+        }
+        console.groupEnd();
+    });
 };

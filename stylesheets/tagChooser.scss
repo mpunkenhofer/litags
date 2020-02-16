@@ -38,27 +38,15 @@
 
 
 .lt-t-button {
-  border: none;
-  background: none;
-}
-
-.lt-tag {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5em;
+  border: none;
+  background: none;
 
   &:hover {
     background-color: #3692e7;
     border-radius: 3px;
-  }
-
-  span {
-    font-family: lichess, serif;
-
-    //&:hover {
-    //  transform: scale(1.2);
-    //}
   }
 }
 

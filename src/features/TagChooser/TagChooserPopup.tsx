@@ -3,11 +3,12 @@ import {useRef, useState} from "react";
 import TagChooserGroup from "./TagChooserGroup";
 import {useClickedOutside} from "../../hooks/clickedOutside";
 import {useFocusOnKeydown} from "../../hooks/focusOnKeydown";
-import {getBackgroundColor} from "../../util/color-tools";
+import {getBackgroundColor} from "../../util/colorTools";
 import {useCallback} from "react";
-import {useSelector, useDispatch} from 'react-redux'
-import {useMemo} from "react";
+import {useSelector} from 'react-redux'
 import {RootState} from "../../app/rootReducer";
+import {Tag} from "../../api/storageAPI";
+import isEmpty from 'lodash/isempty';
 
 const reposition = (ref, padding: number = 0) => {
     if (ref && ref.current) {
@@ -27,40 +28,19 @@ const reposition = (ref, padding: number = 0) => {
     }
 };
 
-const TagChooserPopup = ({onClickOutside}) => {
-    const addTag = () => {};
-    const dispatch = useDispatch();
-    const {sets, loading, error} = useSelector((state: RootState) => state.sets);
+interface TagChooserPopupInterface {
+    onClickOutside: () => void,
+    onTagClicked: (tag: Tag) => () => void
+}
 
-    const popupRef = useRef(null);
-    const inputRef = useRef(null);
+const TagChooserPopup = ({onClickOutside, onTagClicked}: TagChooserPopupInterface) => {
+    const {sets, tagsById, loading, error} = useSelector((state: RootState) => state.sets);
+    const {frequentlyUsed} = useSelector((state: RootState) => state.frequentlyUsed);
 
     const [searchResults, setSearchResults] = useState([]);
 
-    // const tags = useMemo(() => {
-    //     let allTags = [];
-    //
-    //     if (sets) {
-    //         for (const set of Object.values(sets))
-    //             if (set['enabled']) {
-    //                 allTags = [...allTags, ...set['tags']];
-    //             }
-    //     }
-    //     return allTags;
-    // }, [sets]);
-
-    const searchTags = useCallback(term => {
-            // if (!term || term.length < 1)
-            //     return [];
-            //
-            // term = term.toLowerCase();
-            // return tags.filter(tagObj => Object.values(tagObj).length > 0 &&
-            //     Object.values(tagObj)[0]['name'].toLowerCase().includes(term)
-            //     || Object.values(tagObj)[0]['aliases'].find(alias => alias.toLowerCase().includes(term))
-            // )
-            return [];
-        }
-        , [sets]);
+    const popupRef = useRef(null);
+    const inputRef = useRef(null);
 
     useClickedOutside(popupRef, onClickOutside);
     useFocusOnKeydown(inputRef);
@@ -69,9 +49,19 @@ const TagChooserPopup = ({onClickOutside}) => {
     //     reposition(popupRef, 50);
     // });
 
+    const searchTags = useCallback(term => {
+        if (!term || term.length < 1)
+            return [];
+
+        term = term.toLowerCase();
+
+        return Object.values(tagsById).filter(tag => tag.name.toLowerCase().includes(term)
+            || tag.aliases.find(alias => alias.toLowerCase().includes(term)));
+    }, [tagsById]);
+
     const onInput = (e) => setSearchResults(searchTags((e.target as HTMLInputElement).value));
 
-    if(error) {
+    if (error) {
         console.error(error);
         return <></>;
     } else if (!loading && sets)
@@ -81,19 +71,26 @@ const TagChooserPopup = ({onClickOutside}) => {
                     {
                         (searchResults && searchResults.length != 0) &&
                         <TagChooserGroup key={'litags.searchResults'}
-                                         set={{name: 'Search result', tags: searchResults}}
-                                         addTag={addTag}
-                                         setVisible={onClickOutside}/>
+                                         set={{
+                                             id: '0', name: 'Search result', tags: searchResults,
+                                             icon_url: '', font_url: ''
+                                         }}
+                                         onTagClicked={onTagClicked}/>
                     }
                     {
-                        // frequentlyUsed.length != 0 &&
-                        // <TagChooserGroup key={'litags.frequentlyUsed'}
-                        //                  set={{name: 'Frequently used', tags: frequentlyUsed}}
-                        //                  addTag={addTag}/>
+                        (!isEmpty(tagsById) && frequentlyUsed && frequentlyUsed.length > 0) &&
+                        <TagChooserGroup key={'litags.frequentlyUsed'}
+                                         set={{
+                                             id: '1', name: 'Frequently used',
+                                             tags: frequentlyUsed.map(pair =>
+                                                 tagsById[pair[0]] ? tagsById[pair[0]] : null),
+                                             icon_url: '', font_url: ''
+                                         }}
+                                         onTagClicked={onTagClicked}/>
                     }
                     {
                         Object.values(sets).map(set =>
-                            <TagChooserGroup key={set['id']} set={set} addTag={addTag} setVisible={onClickOutside}/>)
+                            <TagChooserGroup key={set['id']} set={set} onTagClicked={onTagClicked}/>)
                     }
                 </div>
                 <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'
@@ -107,4 +104,3 @@ const TagChooserPopup = ({onClickOutside}) => {
 };
 
 export default TagChooserPopup;
-
