@@ -81,13 +81,24 @@ export const addTag = (username: string, tag: Tag): AppThunk =>
         }
     };
 
-export const updateTags = (username: string, newOrder: string[]): AppThunk =>
+export const updateTags = (username: string, tagIds: string[]): AppThunk =>
     (dispatch, getState) => {
         const userRecord = getState().user.userRecord;
         const user: User = userRecord[username] ? userRecord[username].user : null;
 
-        if (user && newOrder && !isEqual(user.tags, newOrder)) {
-            const updatedUser = {...user, tags: newOrder};
+        if (user && tagIds && !isEqual(user.tags, tagIds)) {
+            const updatedUser = {...user, tags: tagIds};
+            dispatch(postUser(updatedUser));
+        }
+    };
+
+export const removeTag = (username: string, tagId: string): AppThunk =>
+    (dispatch, getState) => {
+        const userRecord = getState().user.userRecord;
+        const user: User = userRecord[username] ? userRecord[username].user : null;
+
+        if (user && tagId) {
+            const updatedUser = {...user, tags: user.tags.filter(id => id !== tagId)};
             dispatch(postUser(updatedUser));
         }
     };

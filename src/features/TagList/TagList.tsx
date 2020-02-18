@@ -51,10 +51,10 @@ const TagList = ({username}: TagListProps) => {
         return null;
     } else if (!loading && user && user.tags.length > 0 && !isEmpty(tagsById)) {
         return (
-            <SortableList tags={user.tags.map(tagId => tagsById[tagId] ? tagsById[tagId] : null)}
-                          onSortEnd={onSortEnd}
-                          axis="x" lockAxis="x"
-                          lockToContainerEdges={true}/>
+                <SortableList tags={user.tags.map(tagId => tagsById[tagId] ? tagsById[tagId] : null)}
+                              onSortEnd={onSortEnd}
+                              axis="x" lockAxis="x"
+                              lockToContainerEdges={true}/>
         );
     } else {
         return null;
