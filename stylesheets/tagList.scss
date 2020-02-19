@@ -3,28 +3,20 @@
   list-style-type: none;
   user-select: none;
 
+  ul {
+    display: inline-block;
+  }
+
   li {
     display: inline-block;
     margin-right: .4em;
     cursor: pointer;
   }
-}
-
-.lt-list-trash {
-  display: none;
-  color: red;
-  width: 1fr;
-}
-
-.lt-list-hiddenDragGhost {
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.lt-list-dragHandle {
-  cursor: grabbing;
-  opacity: 0;
+  .lt-list-remove-zone {
+    display: inline-block;
+    margin-left: 1em;
+    background-color: red;
+    width: 1.5em;
+    height: 1.5em;
+  }
 }
