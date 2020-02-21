@@ -1,4 +1,4 @@
-const browser = require("webextension-polyfill");
+import { browser } from "webextension-polyfill-ts";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
@@ -14,3 +14,7 @@ console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 //     if(request.enabled)
 //         browser.pageAction.setIcon({path: "assets/litags_icon32.png"});
 // });
+
+browser.commands.onCommand.addListener(command =>  {
+    console.log('Command:', command);
+});

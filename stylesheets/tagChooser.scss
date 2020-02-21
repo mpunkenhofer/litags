@@ -1,24 +1,41 @@
+@import "util/colors";
+
 .lt-tc {
   display: block;
   opacity: 1;
   position: absolute;
-  z-index: 120;
+  z-index: 1337;
   border-radius: 3px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   cursor: default;
   overflow: hidden;
+
+  header {
+    display: flex;
+    align-content: center;
+    padding-top: .2em;
+    padding-bottom: .2em;
+    font-family: 'Noto Sans', serif;
+    img {
+      margin-left: .4em;
+    }
+    span {
+      margin-left: auto;
+      margin-right: 1em;
+    }
+  }
 }
 
 .lt-tcgs {
   overflow-y: scroll;
   overflow-x: hidden;
-  max-height: 15vh;
+  max-height: 18vh;
   min-width: 20vw;
 }
 
-.lt-tcg {
-  margin-bottom: .5em;
-}
+//.lt-tcg {
+//  margin-bottom: .5em;
+//}
 
 .lt-tcg-title {
   font-weight: 500;
@@ -33,7 +50,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 2fr));
   grid-auto-flow: dense;
-  padding-top: .5em;
+  padding: .4em;
+  //padding-top: .5em;
+  //padding-bottom: .5em;
 }
 
 
@@ -44,8 +63,13 @@
   border: none;
   background: none;
 
+  &:focus {
+    outline: 1px solid $selected;
+    background-color: rgba($selected, 0.2);
+  }
+
   &:hover {
-    background-color: #3692e7;
+    background-color: $selected;
     border-radius: 3px;
   }
 }

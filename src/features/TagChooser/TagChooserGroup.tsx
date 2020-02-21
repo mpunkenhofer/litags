@@ -5,7 +5,7 @@ import {Set, Tag} from "../../api/storageAPI";
 
 interface TagChooserGroupInterface {
     set: Set,
-    onTagClicked: (tag: Tag) => () => void
+    onTagClicked: (tag: Tag) => () => void,
 }
 
 const TagChooserGroup = ({set, onTagClicked}: TagChooserGroupInterface) => (
@@ -14,7 +14,10 @@ const TagChooserGroup = ({set, onTagClicked}: TagChooserGroupInterface) => (
             backgroundColor: getBackgroundColor(-.3),
             borderColor: getBackgroundColor(.15)
         }}
-                className='lt-tcg-title'>{set.name}</header>
+                className='lt-tcg-title'>
+            {set.icon_url && <img src={set.icon_url}></img>}
+            <span>{set.name}</span>
+        </header>
         <div className='lt-tcg-tags'>
             {
                 set.tags.map(tag => <TagButton key={tag.id} tag={tag} onClick={onTagClicked(tag)}/>)
@@ -24,3 +27,4 @@ const TagChooserGroup = ({set, onTagClicked}: TagChooserGroupInterface) => (
 );
 
 export default TagChooserGroup;
+

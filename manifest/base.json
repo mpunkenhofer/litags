@@ -16,6 +16,15 @@
       "128": "assets/litags_icon128.png"
     }
   },
+  "commands": {
+    "toggle-feature-foo": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+1",
+        "mac": "Command+Shift+1"
+      },
+      "description": "Toggle feature foo"
+    }
+  },
   "options_page": "options.html",
   "background": {
     "scripts": ["background.js"]

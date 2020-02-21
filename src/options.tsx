@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+import { browser } from "webextension-polyfill-ts";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
-
-const browser = require("webextension-polyfill");
 
 function Options() {
     return (

@@ -6,6 +6,7 @@ import {getSets} from "../../slices/sets";
 import {getFrequentlyUsed} from "../../slices/frequentlyUsed";
 import {Tag} from "../../api/storageAPI";
 import {addTag} from "../../slices/user";
+import {browser} from "webextension-polyfill-ts";
 
 interface TagChooserButtonProps {
     onClick: () => void
@@ -19,6 +20,10 @@ interface TagChooserProps {
     username: string
 }
 
+// const randomHandler = (message) => {
+//     console.log('>>>>>>>>>>>..........', message);
+// };
+
 const TagChooser = ({username}: TagChooserProps) => {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
@@ -28,6 +33,13 @@ const TagChooser = ({username}: TagChooserProps) => {
         dispatch(getSets());
         dispatch(getFrequentlyUsed());
     }, [dispatch]);
+
+    // useEffect(() => {
+    //     browser.runtime.onMessage.addListener(randomHandler);
+    //     return () => {
+    //         browser.runtime.onMessage.removeListener(randomHandler)
+    //     }
+    // }, []);
 
     const onTagClicked = (tag: Tag) => () => {
         dispatch(addTag(username, tag));

@@ -1,17 +1,18 @@
 import {useEffect} from "react";
 
-export const useFocusOnKeydown = (ref) => {
-    const setFocus = (ref) => () => {
-        if (ref && ref.current)
-            ref.current.focus();
-    };
+const setFocus = (ref, key: string, filter?: string[]) => (keyboardEvent: KeyboardEvent) => {
+    if (ref && ref.current) {
+        if (filter && filter.includes(keyboardEvent.key) || key && key !== keyboardEvent.key)
+            return;
+        ref.current.focus();
+    }
+};
 
+export const useFocusOnAnyKeydown = (ref, filter?: string[]) => {
     useEffect(() => {
-        // Bind the event listener
-        document.addEventListener("keydown", setFocus(ref));
+        document.addEventListener("keydown", setFocus(ref, null, filter));
         return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("keydown", setFocus(ref));
+            document.removeEventListener("keydown", setFocus(ref, null, filter));
         };
     }, [ref]);
 };
