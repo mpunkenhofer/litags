@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useEffect, useState} from "react";
 import {getUser, removeTag, updateTags} from "../../slices/user";
 import {RootState} from "../../app/rootReducer";
-import Tag from "../../components/Tag";
+import Tag from "../Tag";
 import {Tag as TagType} from "../../api/storageAPI"
 
 interface SortableItemProps {
@@ -29,7 +29,7 @@ const SortableList = SortableContainer(({tags,
         {
             removeZoneVisible && <div className={'lt-list-remove-zone'}
                                       onMouseEnter={() => setHoveringRemoveZone(true)}
-                                      onMouseLeave={() => setHoveringRemoveZone(false)}/>
+                                      onMouseLeave={() => setHoveringRemoveZone(false)}>L</div>
         }
     </>
 );
@@ -92,6 +92,7 @@ const TagList = ({username}: TagListProps) => {
 
     return (
         <SortableList tags={tags}
+                      helperClass={'lt-list-helper'}
                       removeZoneVisible={removeZoneVisible}
                       setHoveringRemoveZone={setHoveringRemoveZone}
                       onSortStart={onSortStart}

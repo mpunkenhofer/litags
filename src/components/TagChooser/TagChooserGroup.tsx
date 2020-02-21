@@ -1,5 +1,5 @@
 import * as React from "react";
-import TagButton from "../../components/TagButton";
+import TagButton from "../TagButton";
 import {getBackgroundColor} from "../../util/colorTools";
 import {Set, Tag} from "../../api/storageAPI";
 

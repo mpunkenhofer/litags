@@ -1,7 +1,10 @@
+@import "util/constants";
+
 .lt-list {
   margin-top: 0.25em;
   list-style-type: none;
   user-select: none;
+  z-index: $zIndex;
 
   ul {
     display: inline-block;
@@ -12,11 +15,16 @@
     margin-right: .4em;
     cursor: pointer;
   }
+
   .lt-list-remove-zone {
+    z-index: $zIndex + 1;
     display: inline-block;
     margin-left: 1em;
-    background-color: red;
-    width: 1.5em;
-    height: 1.5em;
+    justify-content: center;
+    align-content: center;
+    font-family: lichess, serif;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: red;
   }
 }

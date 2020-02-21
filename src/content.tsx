@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from 'react-dom';
-import TagList from "./features/TagList/TagList";
-import TagChooser from "./features/TagChooser/TagChooser";
+import TagList from "./components/TagList/TagList";
+import TagChooser from "./components/TagChooser/TagChooser";
 import {Provider} from 'react-redux'
 import store from './app/store'
 import {enableStorageApiLogger} from "./api/storageAPI";

@@ -1,10 +1,11 @@
 @import "util/colors";
+@import "util/constants";
 
 .lt-tc {
   display: block;
   opacity: 1;
   position: absolute;
-  z-index: 1337;
+  z-index: $zIndex;
   border-radius: 3px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   cursor: default;
@@ -75,7 +76,7 @@
 }
 
 .lt-tc-search {
-  margin-top: .5em;
+  //margin: .5em .2em .2em .2em;
   font-size: 1em;
   width: 100%;
   padding: 0.4em .4em;
