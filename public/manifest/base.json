@@ -17,12 +17,12 @@
     }
   },
   "commands": {
-    "toggle-feature-foo": {
+    "toggle-tag-chooser-popup": {
       "suggested_key": {
         "default": "Ctrl+Shift+1",
         "mac": "Command+Shift+1"
       },
-      "description": "Toggle feature foo"
+      "description": "Show/Hide Tag Chooser Popup"
     }
   },
   "options_page": "options.html",

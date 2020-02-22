@@ -1,58 +1,59 @@
 @font-face {
   font-family: "lichess";
-  src: url("../../fonts/lichess.woff2") format("woff2");
+  src: url("../../public/fonts/lichess.woff2") format("woff2");
   font-display: block;
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: lt-icons;
-  src: url("../../fonts/lt-icons.woff") format("woff");
+  font-family: litags;
+  src: url("../../public/fonts/litags.woff2") format("woff2");
   font-display: block;
   font-weight: normal;
   font-style: normal;
 }
 
-
-.lt-icon-chevron-down,
-.lt-icon-chevron-up,
-.lt-icon-discord,
-.lt-icon-github,
-.lt-icon-trash {
+%font-icon {
   display: inline-block;
-  font-family: lt-icons, serif;
   font-style: normal;
   border: 0;
 }
 
-.lt-icon-button {
-  display: inline-block;
+%litags-icon {
+  @extend %font-icon;
+  font-family: litags, serif;
+}
+
+%lichess-icon {
+  @extend %font-icon;
   font-family: lichess, serif;
-  font-style: normal;
-  border: 0;
 }
 
-.lt-icon-button:after {
-  content: 'O';
+.lt-plus-icon {
+  @extend %lichess-icon;
+  &:after {
+    content: 'O';
+  }
 }
 
-.lt-icon-discord:after  {
-  content: "\e900";
+.lt-star-icon {
+  @extend %lichess-icon;
+  &:after {
+    content: 's';
+  }
 }
 
-.lt-icon-github:after {
-  content: "\eab0";
+.lt-star-full-icon {
+  @extend %lichess-icon;
+  &:after {
+    content: 't';
+  }
 }
 
-.lt-icon-chevron-up:after {
-  content: "\e901";
-}
-
-.lt-icon-chevron-down:after {
-  content: "\e902";
-}
-
-.lt-icon-trash:after {
-  content: "\e9ac";
+.lt-search-icon {
+  @extend %lichess-icon;
+  &:after {
+    content: 'y';
+  }
 }

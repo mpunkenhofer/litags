@@ -7,7 +7,7 @@ interface TagProps {
 
 const Tag = ({tag}: TagProps) => (
     <div className='lt-tag'>
-        {(tag.color.length > 0)? <span>{tag.uri}</span> : <img src={tag.uri}></img>}
+        {(tag.color !== undefined) ? <span>{tag.uri}</span> : <img src={tag.uri} alt={tag.name}/>}
     </div>
 );
 

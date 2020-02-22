@@ -1,7 +1,7 @@
 # LiTags
 
 LiTags is a browser extension which enables you to assign certain tags
-to players on [lichess](https://www.lichess.org). The idea was to quickly determine the 
+to players on [lichess.org](https://www.lichess.org). The idea was being able to quickly determine the 
 type of player you face (playing for time, defensive, aggresive, 
 gives no rematches, ...).
 
@@ -22,6 +22,12 @@ If you want to start developing the extension and want to enable live reload use
 
 ## Packaging
 Run `npm run dist` to create a zipped, production-ready extension.
+
+## Attributions
+Files | Author(s) | Licence
+---|---|---
+public/font/lichess.woff2 | [ornicar/lila](https://github.com/ornicar/lila/blob/master/public/font/lichess.woff2) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
+public/font/litags.{sfd,woff,woff2} | [fontawesome](https://fontawesome.com/) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
 
 ## Project Status
 

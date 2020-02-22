@@ -188,8 +188,8 @@ const frankerfacezSetData: SetData = {
         "Kermitpls": [[], "https://cdn.frankerfacez.com/emoticon/33947/1"],
         "monkaSSS": [[], "https://cdn.frankerfacez.com/emoticon/201363/1"],
         "MeguminHappy": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"],
-        "TESTWIDE": [[], "https://cdn.frankerfacez.com/emoticon/430034/1"],
-        "MeguminHappy2": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"],
+        /*"TESTWIDE": [[], "https://cdn.frankerfacez.com/emoticon/430034/1"],
+        "MeguminHappy2": [[], "https://cdn.frankerfacez.com/emoticon/85103/1"],*/
     }
 };
 

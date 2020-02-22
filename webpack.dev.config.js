@@ -1,6 +1,6 @@
 const pkg = require('./package.json');
 const path = require('path');
-const baseManifest = require('./manifest/base');
+const baseManifest = require('./public/manifest/base');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
@@ -31,9 +31,9 @@ module.exports = {
     plugins: [
         new webpack.ProgressPlugin(),
         new CopyPlugin([
-            {from: 'images/litags_icon*', to: 'assets/[name].[ext]'},
+            {from: 'public/images/litags_icon*', to: 'assets/[name].[ext]'},
             {from: 'locales', to: '_locales/[name]/messages.json'},
-            {from: 'html', to: ''},
+            {from: 'public/*.html', to: '[name].[ext]'},
         ]),
         new WebpackExtensionManifestPlugin({
             config: {
@@ -73,7 +73,7 @@ module.exports = {
             },
             {
                 test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-                include: [path.resolve(__dirname, 'fonts')],
+                include: [path.resolve(__dirname, 'public/fonts')],
                 use: [
                     {
                         loader: 'file-loader',
@@ -89,14 +89,5 @@ module.exports = {
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.scss'],
-        // alias: {
-        //     "webextension-polyfill": "webextension-polyfill/dist/browser-polyfill.js",
-        //     modules: path.join(__dirname, "node_modules"),
-        // }
     },
-
-    // externals: {
-    //     "react": "React",
-    //     "react-dom": "ReactDOM"
-    // }
 };

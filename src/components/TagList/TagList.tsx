@@ -92,7 +92,7 @@ const TagList = ({username}: TagListProps) => {
 
     return (
         <SortableList tags={tags}
-                      helperClass={'lt-list-helper'}
+                      /*helperClass={'lt-list-helper'}*/
                       removeZoneVisible={removeZoneVisible}
                       setHoveringRemoveZone={setHoveringRemoveZone}
                       onSortStart={onSortStart}

@@ -15,7 +15,7 @@ export interface Tag {
     name: string,
     aliases: string[],
     uri: string,
-    color: string
+    color?: string
 }
 
 export interface Set {
@@ -93,8 +93,8 @@ export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Pro
     return frequentlyUsedIDs;
 };
 
-const createTag = (name: string, aliases: string[], uri: string, color: string = ''): Tag => {
-    return {id: uuidv4(), name, aliases, uri, color};
+const createTag = (name: string, aliases: string[], uri: string, color?): Tag => {
+    return (color !== undefined) ? {id: uuidv4(), name, aliases, uri, color} : {id: uuidv4(), name, aliases, uri};
 };
 
 const getDefaultSets = (): Set[] => {

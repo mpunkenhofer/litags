@@ -56,6 +56,7 @@ const TagChooserPopup = ({onClickOutside, onTagClicked}: TagChooserPopupInterfac
                                                  id: '0', name: 'Search result', tags: searchResults,
                                                  icon_url: '', font_url: ''
                                              }}
+                                             icon={<span className={'lt-search-icon'}/>}
                                              onTagClicked={onTagClicked}/>
                         }
                         {
@@ -67,6 +68,7 @@ const TagChooserPopup = ({onClickOutside, onTagClicked}: TagChooserPopupInterfac
                                                      tagsById[pair[0]] ? tagsById[pair[0]] : null),
                                                  icon_url: '', font_url: ''
                                              }}
+                                             icon={<span className={'lt-star-icon'}/>}
                                              onTagClicked={onTagClicked}/>
                         }
                         {

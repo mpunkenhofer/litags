@@ -9,6 +9,6 @@ export interface SetData {
     tags:  {[_: string]: [string[], string, string?]}
 }
 
-const defaultSets: SetData[] = [/*lichessSetData,*/ twitchSetData, frankerfacezSetData];
+const defaultSets: SetData[] = [lichessSetData, twitchSetData, frankerfacezSetData];
 
 export default defaultSets;

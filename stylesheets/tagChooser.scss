@@ -11,16 +11,27 @@
   cursor: default;
   overflow: hidden;
 
-  header {
+  .lt-tcg-header {
     display: flex;
     align-content: center;
     padding-top: .2em;
     padding-bottom: .2em;
     font-family: 'Noto Sans', serif;
-    img {
+    font-weight: 500;
+    font-size: 1.2em;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: rgb(50, 50, 50);
+    background-color: rgb(30, 30, 30);
+
+    .lt-tcg-header-icon {
+      display: flex;
+      align-content: center;
+      justify-content: center;
       margin-left: .4em;
     }
-    span {
+
+    .lt-tcg-header-title {
       margin-left: auto;
       margin-right: 1em;
     }
@@ -34,26 +45,11 @@
   min-width: 20vw;
 }
 
-//.lt-tcg {
-//  margin-bottom: .5em;
-//}
-
-.lt-tcg-title {
-  font-weight: 500;
-  font-size: 1.2em;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: rgb(50, 50, 50);
-  background-color: rgb(30, 30, 30);
-}
-
 .lt-tcg-tags {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(32px, 2fr));
   grid-auto-flow: dense;
   padding: .4em;
-  //padding-top: .5em;
-  //padding-bottom: .5em;
 }
 
 
@@ -76,7 +72,6 @@
 }
 
 .lt-tc-search {
-  //margin: .5em .2em .2em .2em;
   font-size: 1em;
   width: 100%;
   padding: 0.4em .4em;

@@ -19,7 +19,7 @@ if (element) {
         observerInstance.disconnect();
 
         createLiTagsElements(document.querySelector('.ruser-top'),
-            getUserName('.ruser-top a'));
+            getUserName('.ruser-top a'), true);
         createLiTagsElements(document.querySelector('.ruser-bottom'),
             getUserName('.ruser-bottom a'));
     }).observe(element, {childList: true, attributes: true, subtree: true, characterData: true});
@@ -36,7 +36,7 @@ function removeTitle(name: string) {
     return s ? s[s.length - 1] : '';
 }
 
-function createLiTagsElements(anchor: HTMLElement, username: string) {
+function createLiTagsElements(anchor: HTMLElement, username: string, keyboardShortcutsEnabled: boolean = false) {
     if (!anchor || !username)
         return;
 
@@ -56,7 +56,7 @@ function createLiTagsElements(anchor: HTMLElement, username: string) {
 
     ReactDOM.render(
         <Provider store={store}>
-            <TagChooser username={username}/>
+            <TagChooser username={username} keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>
         </Provider>,
         buttonElement);
 }

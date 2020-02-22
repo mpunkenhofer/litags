@@ -6,25 +6,22 @@ import {getSets} from "../../slices/sets";
 import {getFrequentlyUsed} from "../../slices/frequentlyUsed";
 import {Tag} from "../../api/storageAPI";
 import {addTag} from "../../slices/user";
-import {browser} from "webextension-polyfill-ts";
+import {useBrowserKeyboardShortcuts} from "../../hooks/browserKeybordShortcuts";
 
 interface TagChooserButtonProps {
     onClick: () => void
 }
 
 const TagChooserButton = ({onClick}: TagChooserButtonProps) => (
-    <button title='Show Tags' className='lt-icon-button lt-effect-button' onClick={onClick}/>
+    <button title='Show Tags' className='lt-plus-icon lt-effect-button' onClick={onClick}/>
 );
 
 interface TagChooserProps {
     username: string
+    keyboardShortcutsEnabled?: boolean
 }
 
-// const randomHandler = (message) => {
-//     console.log('>>>>>>>>>>>..........', message);
-// };
-
-const TagChooser = ({username}: TagChooserProps) => {
+const TagChooser = ({username, keyboardShortcutsEnabled }: TagChooserProps) => {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
 
@@ -34,12 +31,9 @@ const TagChooser = ({username}: TagChooserProps) => {
         dispatch(getFrequentlyUsed());
     }, [dispatch]);
 
-    // useEffect(() => {
-    //     browser.runtime.onMessage.addListener(randomHandler);
-    //     return () => {
-    //         browser.runtime.onMessage.removeListener(randomHandler)
-    //     }
-    // }, []);
+    if(keyboardShortcutsEnabled === true) {
+        useBrowserKeyboardShortcuts({shortcut: 'toggle-tag-chooser-popup', handler: () => setVisible(!visible)});
+    }
 
     const onTagClicked = (tag: Tag) => () => {
         dispatch(addTag(username, tag));
