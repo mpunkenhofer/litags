@@ -7,6 +7,18 @@
     "message": "A browser extension that enables you to assign tags to players on lichess.org.",
     "description": "The description of the application"
   },
+  "shortcutToggleDescription": {
+    "message": "Show/Hide Tag Chooser"
+  },
+  "shortcutAssignTag1Description": {
+    "message": "Assign a Custom Tag 1"
+  },
+  "shortcutAssignTag2Description": {
+    "message": "Assign a Custom Tag 2"
+  },
+  "shortcutAssignTag3Description": {
+    "message": "Assign a Custom Tag 3"
+  },
   "yes": {
     "message": "Yes"
   },

@@ -18,11 +18,16 @@
   },
   "commands": {
     "toggle-tag-chooser-popup": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+1",
-        "mac": "Command+Shift+1"
-      },
-      "description": "Show/Hide Tag Chooser Popup"
+      "description": "__MSG_shortcutToggleDescription__"
+    },
+    "assign-custom-tag-1": {
+      "description": "__MSG_shortcutAssignTag1Description__"
+    },
+    "assign-custom-tag-2": {
+      "description": "__MSG_shortcutAssignTag2Description__"
+    },
+    "assign-custom-tag-3": {
+      "description": "__MSG_shortcutAssignTag3Description__"
     }
   },
   "options_page": "options.html",

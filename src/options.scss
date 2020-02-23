@@ -1,1 +1,19 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+.lt-option-navbar {
+  min-height: 4rem;
+}
+
+.lt-options-sidebar {
+  height: calc(100vh - 4rem);
+}
+
+.lt-svg-icon {
+  width: 1rem;
+  height: 1rem;
+  opacity: .5;
+
+  &:hover {
+    opacity: 1;
+  }
+}

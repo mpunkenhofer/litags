@@ -13,7 +13,7 @@ interface TagChooserButtonProps {
 }
 
 const TagChooserButton = ({onClick}: TagChooserButtonProps) => (
-    <button title='Show Tags' className='lt-plus-icon lt-effect-button' onClick={onClick}/>
+    <button title='Show Tags' className='lt-plus-icon lt-button-effect' onClick={onClick}/>
 );
 
 interface TagChooserProps {

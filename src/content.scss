@@ -45,12 +45,12 @@
   }
 }
 
-.lt-effect-button {
+.lt-button-effect {
   background-color: inherit;
-  transition: transform .2s;
-
+  opacity: .75;
   &:hover {
     transform: scale(1.2);
+    opacity: 1;
   }
 }
 
