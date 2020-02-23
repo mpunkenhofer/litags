@@ -15,11 +15,12 @@ module.exports = {
     entry: {
         content: [
         	'./src/content.tsx',
-            './stylesheets/content.scss',
+            './src/content.scss',
 		],
         background: './src/background.ts',
         options: [
             './src/options.tsx',
+            './src/options.scss',
         ],
     },
 
@@ -67,8 +68,8 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                include: [path.resolve(__dirname, 'stylesheets')],
-                exclude: [/node_modules/],
+                include: [path.resolve(__dirname, 'src')],
+                //exclude: [/node_modules/],
                 use: [MiniCssExtractPlugin.loader, 'fast-css-loader', 'fast-sass-loader'],
             },
             {
