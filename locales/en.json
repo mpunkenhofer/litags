@@ -31,6 +31,9 @@
   "tag": {
     "message": "Tag"
   },
+  "home": {
+    "message": "Home"
+  },
   "users": {
     "message": "Users"
   },

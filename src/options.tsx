@@ -5,7 +5,7 @@ import {Provider, useDispatch} from "react-redux";
 import {getOptions} from "./slices/options";
 import store from "./app/store";
 import {Navbar} from "./components/Options/Navbar";
-import {MainSection} from "./components/Options/MainSection";
+import {Main} from "./components/Options/Main";
 
 const Options = () => {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Options = () => {
     return (
         <>
             <Navbar/>
-            <MainSection/>
+            <Main/>
         </>
     );
 };

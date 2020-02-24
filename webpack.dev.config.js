@@ -33,10 +33,7 @@ module.exports = {
         new webpack.ProgressPlugin(),
         new CopyPlugin([
             {from: 'public/images/litags_icon*', to: 'assets/[name].[ext]'},
-            {from: 'public/images/litags.svg', to: 'assets/[name].[ext]'},
-            {from: 'public/images/github.svg', to: 'assets/[name].[ext]'},
-            {from: 'public/images/discord.svg', to: 'assets/[name].[ext]'},
-            {from: 'public/images/paypal.svg', to: 'assets/[name].[ext]'},
+            {from: 'public/images/*.svg', to: 'assets/[name].[ext]'},
             {from: 'locales', to: '_locales/[name]/messages.json'},
             {from: 'public/*.html', to: '[name].[ext]'},
         ]),
