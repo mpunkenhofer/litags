@@ -27,16 +27,16 @@ if (element) {
     console.log('LiTags found no supported anchors on this page.');
 }
 
-function getUserName(elementName: string) {
+const getUserName = (elementName: string) => {
     return removeTitle(document.querySelector(elementName).textContent);
-}
+};
 
-function removeTitle(name: string) {
+const removeTitle = (name: string) => {
     const s = name.split(/(\s+)/);
     return s ? s[s.length - 1] : '';
-}
+};
 
-function createLiTagsElements(anchor: HTMLElement, username: string, keyboardShortcutsEnabled: boolean = false) {
+const createLiTagsElements = (anchor: HTMLElement, username: string, keyboardShortcutsEnabled: boolean = false) => {
     if (!anchor || !username)
         return;
 
@@ -59,4 +59,4 @@ function createLiTagsElements(anchor: HTMLElement, username: string, keyboardSho
             <TagChooser username={username} keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>
         </Provider>,
         buttonElement);
-}
+};

@@ -6,6 +6,9 @@ export const Settings = () => {
     useSetDocumentTitle(browser.i18n.getMessage('settings'), 'Litags');
 
     return (
-        <h1>Settings</h1>
+        <>
+            <h1>Settings</h1>
+            <hr/>
+        </>
     );
 };

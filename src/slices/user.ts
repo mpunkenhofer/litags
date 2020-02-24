@@ -16,10 +16,14 @@ type UserRecord = {
 
 interface UserState {
     userRecord: Record<string, UserRecord | undefined>
+    loading: boolean,
+    error: string | null
 }
 
 const usersInitialState: UserState = {
     userRecord: {},
+    loading: false,
+    error: null
 };
 
 const userSlice = createSlice({
@@ -27,6 +31,8 @@ const userSlice = createSlice({
     initialState: usersInitialState,
     reducers: {
         userRequest(state, {payload}: PayloadAction<{ username: string }>) {
+            console.log('eoathutnoaeuhtnaehu>>>', payload);
+
             if (state.userRecord[payload.username]) {
                 state.userRecord[payload.username].loading = true;
                 state.userRecord[payload.username].error = null;
@@ -35,6 +41,24 @@ const userSlice = createSlice({
                     {user: {name: payload.username, tags: []}, loading: true, error: null};
             }
         },
+        allUsersRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        allUsersSuccess(state, {payload}: PayloadAction<User[]>) {
+            for(const user of payload) {
+                state.userRecord[user.name] = {user: user, loading: false, error: null};
+            }
+
+            state.loading = false;
+            state.error = null;
+        },
+
+        allUsersFailure(state, {payload}: PayloadAction<string>) {
+            state.loading = false;
+            state.error = payload;
+        },
+
         userSuccess(state, {payload}: PayloadAction<{ username: string, user: User }>) {
             state.userRecord[payload.username] = {user: payload.user, loading: false, error: null};
         },
@@ -49,6 +73,9 @@ export const {
     userRequest,
     userSuccess,
     userFailure,
+    allUsersRequest,
+    allUsersSuccess,
+    allUsersFailure,
 } = userSlice.actions;
 
 export const getUser = (username: string): AppThunk => dispatch => {
@@ -56,6 +83,13 @@ export const getUser = (username: string): AppThunk => dispatch => {
     api.getUser(username)
         .then(user => dispatch(userSuccess({username, user})))
         .catch(err => dispatch(userFailure({username, error: err.toString()})));
+};
+
+export const getAllUsers = (): AppThunk => dispatch => {
+    dispatch(allUsersRequest());
+    api.getUsers()
+        .then(users => dispatch(allUsersSuccess(users)))
+        .catch(err => dispatch(allUsersFailure(err.toString())));
 };
 
 export const postUser = (user: User): AppThunk => dispatch => {

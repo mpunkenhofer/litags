@@ -6,6 +6,9 @@ export const Home = () => {
     useSetDocumentTitle(browser.i18n.getMessage('home'), 'Litags');
 
     return (
-       <h1>Home</h1>
+        <>
+            <h1>Home</h1>
+            <hr/>
+        </>
     );
 };

@@ -6,13 +6,14 @@ import {getOptions} from "./slices/options";
 import store from "./app/store";
 import {Navbar} from "./components/Options/Navbar";
 import {Main} from "./components/Options/Main";
+import {enableStorageApiLogger} from "./api/storageAPI";
 
 const Options = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getOptions());
-    });
+    }, []);
 
     return (
         <>
@@ -21,6 +22,10 @@ const Options = () => {
         </>
     );
 };
+
+if(process.env.NODE_ENV === "development") {
+    enableStorageApiLogger();
+}
 
 ReactDOM.render(
     <Provider store={store}>

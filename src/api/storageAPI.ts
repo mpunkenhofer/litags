@@ -50,6 +50,9 @@ export const getSets = async (): Promise<Set[]> => {
 };
 
 export const getUser = async (username: string): Promise<User> => {
+    if(!username)
+        return Promise.reject('getUser: Invalid argument!');
+
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
 
     if (users && users.hasOwnProperty(username)) {
@@ -59,7 +62,27 @@ export const getUser = async (username: string): Promise<User> => {
     }
 };
 
+export const getUsers = async (): Promise<User[]> => {
+    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
+
+    if (users) {
+        const users_array: User[] = [];
+
+        for(const user in users) {
+            if(users.hasOwnProperty(user))
+                users_array.push(users[user]);
+        }
+
+        return users_array;
+    } else {
+        return [];
+    }
+};
+
 export const postUser = async (user: User): Promise<User> => {
+    if(!user)
+        return Promise.reject('postUser: Invalid argument!');
+
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
     const updatedUsers = Object.assign({}, users, {[user.name]: user});
     await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
@@ -89,6 +112,9 @@ export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
 };
 
 export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
+    if(!frequentlyUsedIDs)
+        return Promise.reject('postFrequentlyUsed: Invalid argument!');
+
     await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: frequentlyUsedIDs});
     return frequentlyUsedIDs;
 };

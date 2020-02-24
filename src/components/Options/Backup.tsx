@@ -6,6 +6,8 @@ export const Backup = () => {
     useSetDocumentTitle(browser.i18n.getMessage('backup'), 'Litags');
 
     return (
-        <div><h1>Backup</h1></div>
+        <>
+            <h1 className={'h2'}>Backup</h1>
+        </>
     );
 };
