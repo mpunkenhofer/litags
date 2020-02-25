@@ -1,9 +1,7 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import TagChooserPopup from "./TagChooserPopup";
 import {useDispatch} from 'react-redux'
-import {getSets} from "../../slices/sets";
-import {getFrequentlyUsed} from "../../slices/frequentlyUsed";
 import {Tag} from "../../api/storageAPI";
 import {addTag} from "../../slices/user";
 import {useBrowserKeyboardShortcuts} from "../../hooks/browserKeybordShortcuts";
@@ -24,12 +22,6 @@ interface TagChooserProps {
 const TagChooser = ({username, keyboardShortcutsEnabled }: TagChooserProps) => {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
-
-    useEffect(() => {
-        console.log(`%cLoading Sets and Freq Used`, 'font-size: 1.5em; font-weight: bold; color: red');
-        dispatch(getSets());
-        dispatch(getFrequentlyUsed());
-    }, [dispatch]);
 
     if(keyboardShortcutsEnabled === true) {
         useBrowserKeyboardShortcuts({shortcut: 'toggle-tag-chooser-popup', handler: () => setVisible(!visible)});

@@ -3,7 +3,7 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import {useDispatch, useSelector} from 'react-redux'
 import {useEffect, useState} from "react";
-import {getUser, removeTag, updateTags} from "../../slices/user";
+import {removeTag, updateTags} from "../../slices/user";
 import {RootState} from "../../app/rootReducer";
 import Tag from "../Tag";
 import {Tag as TagType} from "../../api/storageAPI"
@@ -48,12 +48,8 @@ const TagList = ({username}: TagListProps) => {
     const {user, error} = useSelector((state: RootState) =>
         state.user.userRecord[username] ? state.user.userRecord[username] : {user: null, loading: false, error: null}
     );
-    const {tagsById} = useSelector((state: RootState) => state.sets);
 
-    useEffect(() => {
-        console.log(`%cLoading User: ${username}`, 'font-size: 1.5em; font-weight: bold; color: red');
-        dispatch(getUser(username));
-    }, [username, dispatch]);
+    const {tagsById} = useSelector((state: RootState) => state.sets);
 
 
     useEffect(() => {
@@ -92,13 +88,13 @@ const TagList = ({username}: TagListProps) => {
 
     return (
         <SortableList tags={tags}
-                      /*helperClass={'lt-list-helper'}*/
+                      helperClass={'lt-list-helper'}
                       removeZoneVisible={removeZoneVisible}
                       setHoveringRemoveZone={setHoveringRemoveZone}
                       onSortStart={onSortStart}
                       onSortEnd={onSortEnd}
                       axis="x" lockAxis="x"
-                      lockToContainerEdges={true}/>
+                      /*lockToContainerEdges={true}*//>
     );
 };
 

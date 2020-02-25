@@ -41,11 +41,13 @@ export const {
     getOptionsFailure,
 } = optionsSlice.actions;
 
-export const getOptions = (): AppThunk => dispatch => {
-    dispatch(getOptionRequest());
-    api.getOptions()
-        .then(options => dispatch(getOptionsSuccess(options)))
-        .catch(err => dispatch(getOptionsFailure(err.toString())));
+export const getOptions = (): AppThunk => (dispatch, getState) => {
+    if(!getState().options.loading) {
+        dispatch(getOptionRequest());
+        api.getOptions()
+            .then(options => dispatch(getOptionsSuccess(options)))
+            .catch(err => dispatch(getOptionsFailure(err.toString())));
+    }
 };
 
 export default optionsSlice.reducer;

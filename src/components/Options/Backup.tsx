@@ -8,6 +8,7 @@ export const Backup = () => {
     return (
         <>
             <h1 className={'h2'}>Backup</h1>
+            <hr/>
         </>
     );
 };

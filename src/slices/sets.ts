@@ -52,11 +52,13 @@ export const {
     getSetsFailure,
 } = setsSlice.actions;
 
-export const getSets = (): AppThunk => dispatch => {
-    dispatch(getSetsRequest());
-    api.getSets()
-        .then(sets => dispatch(getSetsSuccess(sets)))
-        .catch(err => dispatch(getSetsFailure(err.toString())));
+export const getSets = (): AppThunk => (dispatch, getState) => {
+    if(!getState().sets.loading) {
+        dispatch(getSetsRequest());
+        api.getSets()
+            .then(sets => dispatch(getSetsSuccess(sets)))
+            .catch(err => dispatch(getSetsFailure(err.toString())));
+    }
 };
 
 export default setsSlice.reducer;

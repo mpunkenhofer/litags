@@ -7,7 +7,7 @@ import {Home} from "./Home";
 import * as React from "react";
 
 export const NavOutlet = () => (
-    <main className={'col-md-9 col-xl-10 py-md-3 pl-md-5 bg-white'}>
+    <main className={'col-md-9 col-xl-10 py-1 py-md-3 pl-md-5 bg-white'}>
         <Switch>
             <Route path="/settings">
                 <Settings/>

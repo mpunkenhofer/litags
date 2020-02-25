@@ -7,7 +7,7 @@ export const Home = () => {
 
     return (
         <>
-            <h1>Home</h1>
+            <h1 className={'h2'}>Home</h1>
             <hr/>
         </>
     );

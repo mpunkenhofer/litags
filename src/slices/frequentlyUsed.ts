@@ -41,11 +41,13 @@ export const {
     frequentlyUsedError,
 } = frequentlyUsedSlice.actions;
 
-export const getFrequentlyUsed = (): AppThunk => (dispatch) => {
-    dispatch(frequentlyUsedRequest());
-    api.getFrequentlyUsed()
-        .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
-        .catch(err => dispatch(frequentlyUsedError(err.toString())));
+export const getFrequentlyUsed = (): AppThunk => (dispatch, getState) => {
+    if(!getState().frequentlyUsed.loading) {
+        dispatch(frequentlyUsedRequest());
+        api.getFrequentlyUsed()
+            .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
+            .catch(err => dispatch(frequentlyUsedError(err.toString())));
+    }
 };
 
 export const postFrequentlyUsed = (frequentlyUsed: FrequentlyUsed): AppThunk => dispatch => {

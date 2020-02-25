@@ -14,7 +14,7 @@ type UserRecord = {
     user: User
 } & UserLoadDetail
 
-interface UserState {
+export interface UserState {
     userRecord: Record<string, UserRecord | undefined>
     loading: boolean,
     error: string | null
@@ -85,11 +85,14 @@ export const getUser = (username: string): AppThunk => dispatch => {
         .catch(err => dispatch(userFailure({username, error: err.toString()})));
 };
 
-export const getAllUsers = (): AppThunk => dispatch => {
-    dispatch(allUsersRequest());
-    api.getUsers()
-        .then(users => dispatch(allUsersSuccess(users)))
-        .catch(err => dispatch(allUsersFailure(err.toString())));
+export const getAllUsers = (): AppThunk =>
+    (dispatch, getState) => {
+    if(!getState().user.loading) {
+        dispatch(allUsersRequest());
+        api.getUsers()
+            .then(users => dispatch(allUsersSuccess(users)))
+            .catch(err => dispatch(allUsersFailure(err.toString())));
+    }
 };
 
 export const postUser = (user: User): AppThunk => dispatch => {

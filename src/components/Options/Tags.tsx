@@ -7,7 +7,7 @@ export const Tags = () => {
 
     return (
         <>
-            <h1>Tags</h1>
+            <h1 className={'h2'}>Tags</h1>
             <hr/>
         </>
     );
