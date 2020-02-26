@@ -62,6 +62,21 @@ export const getUser = async (username: string): Promise<User> => {
     }
 };
 
+export const deleteUser = async (username: string): Promise<User> => {
+    if(!username)
+        return Promise.reject('deleteUser: Invalid argument!');
+
+    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
+
+    if(users && users.hasOwnProperty(username)) {
+        const {[username]: user, ...updatedUsers} = users;
+        await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
+        return user as User;
+    } else {
+        return Promise.reject(`User: ${username} not found.`);
+    }
+};
+
 export const getUsers = async (): Promise<User[]> => {
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
 

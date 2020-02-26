@@ -85,10 +85,6 @@
   "tagsFound": {
     "message": "Tags found"
   },
-  "taggedUsers": {
-    "message": "Tagged Users",
-    "description": "Users with tags."
-  },
   "frequentlyUsedTags": {
     "message": "Frequently Used Tags"
   },

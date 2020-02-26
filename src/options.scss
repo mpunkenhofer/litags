@@ -54,3 +54,16 @@
   width: 2rem;
   height: 2rem;
 }
+
+.lt-delete-btn {
+  display: none;
+}
+
+.lt-user-row {
+  &:hover {
+    background-color: $light;
+    .lt-delete-btn {
+      display: inline-block;
+    }
+  }
+}
