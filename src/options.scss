@@ -1,19 +1,20 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "components/TagList/tagList";
 
-.lt-option-navbar {
+.lt-options-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   min-height: 4rem;
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
-}
-
-.lt-options-sidebar {
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
 }
 
 @include media-breakpoint-up(md) {
   .lt-options-sidebar {
+    position: sticky;
+    top: 4rem;
+    z-index: 1000;
     height: calc(100vh - 4rem);
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
   }
 }
 

@@ -4,7 +4,7 @@ import {LINKS} from "../../constants/links";
 const pkg = require('../../../package.json');
 
 export const Navbar = () => (
-    <nav className={'navbar navbar-expand navbar-dark bg-primary flex-column flex-md-row lt-option-navbar'}>
+    <nav className={'navbar navbar-expand navbar-dark bg-primary flex-column flex-md-row lt-options-navbar'}>
         <a className={'navbar-brand'} href={'/options.html'}>
             <img src={'/assets/litags.svg'}
                  className={'d-inline-block align-top mr-2 mr-md-4 lt-brand-icon'} alt={'Litags Icon'}/>

@@ -10,7 +10,21 @@ interface OptionsState {
 }
 
 const OptionsInitialState: OptionsState = {
-    options: {enabled: true},
+    options: {
+        enabled: true,
+        import: {
+            users: true,
+            sets: true,
+            frequentlyUsedTags: true,
+            settings: true
+        },
+        export: {
+            users: true,
+            sets: true,
+            frequentlyUsedTags: true,
+            settings: true
+        }
+    },
     loading: false,
     error: null
 };
@@ -19,35 +33,77 @@ const optionsSlice = createSlice({
     name: 'options',
     initialState: OptionsInitialState,
     reducers: {
-        getOptionRequest(state) {
+        optionRequest(state) {
             state.loading = true;
             state.error = null;
         },
-        getOptionsSuccess(state, {payload}: PayloadAction<Options>) {
+        optionsSuccess(state, {payload}: PayloadAction<Options>) {
             state.options = payload;
             state.loading = false;
             state.error = null;
         },
-        getOptionsFailure(state, {payload}: PayloadAction<string>) {
+        optionsFailure(state, {payload}: PayloadAction<string>) {
             state.loading = false;
             state.error = payload;
-        }
+        },
+        setImportUsers(state, {payload}: PayloadAction<boolean>) {
+            state.options.import.users = payload;
+        },
+        setExportUsers(state, {payload}: PayloadAction<boolean>) {
+            state.options.export.users = payload;
+        },
+        setImportSets(state, {payload}: PayloadAction<boolean>) {
+            state.options.import.sets = payload;
+        },
+        setExportSets(state, {payload}: PayloadAction<boolean>) {
+            state.options.export.sets = payload;
+        },
+        setImportFrequentlyUsed(state, {payload}: PayloadAction<boolean>) {
+            state.options.import.frequentlyUsedTags = payload;
+        },
+        setExportFrequentlyUsed(state, {payload}: PayloadAction<boolean>) {
+            state.options.export.frequentlyUsedTags = payload;
+        },
+        setImportSettings(state, {payload}: PayloadAction<boolean>) {
+            state.options.import.settings = payload;
+        },
+        setExportSettings(state, {payload}: PayloadAction<boolean>) {
+            state.options.export.settings = payload;
+        },
     }
 });
 
 export const {
-    getOptionRequest,
-    getOptionsSuccess,
-    getOptionsFailure,
+    optionRequest,
+    optionsSuccess,
+    optionsFailure,
+    setImportUsers,
+    setImportSets,
+    setImportFrequentlyUsed,
+    setImportSettings,
+    setExportUsers,
+    setExportSets,
+    setExportFrequentlyUsed,
+    setExportSettings,
 } = optionsSlice.actions;
 
 export const getOptions = (): AppThunk => (dispatch, getState) => {
-    if(!getState().options.loading) {
-        dispatch(getOptionRequest());
+    if (!getState().options.loading) {
+        dispatch(optionRequest());
         api.getOptions()
-            .then(options => dispatch(getOptionsSuccess(options)))
-            .catch(err => dispatch(getOptionsFailure(err.toString())));
+            .then(options => dispatch(optionsSuccess(options)))
+            .catch(err => dispatch(optionsFailure(err.toString())));
     }
 };
+
+export const postOptions = (): AppThunk => (dispatch, getState) => {
+    const options = getState().options.options;
+
+    dispatch(optionRequest());
+    api.postOptions(options)
+        .then(options => dispatch(optionsSuccess(options)))
+        .catch(err => dispatch(optionsFailure(err.toString())));
+};
+
 
 export default optionsSlice.reducer;

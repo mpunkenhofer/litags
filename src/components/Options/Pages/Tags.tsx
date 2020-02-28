@@ -1,9 +1,9 @@
 import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
-import {browser} from "webextension-polyfill-ts";
+import {i18n} from "../../../constants/i18n";
 
 export const Tags = () => {
-    useSetDocumentTitle(browser.i18n.getMessage('tags'), 'Litags');
+    useSetDocumentTitle(i18n.tags, 'Litags');
 
     return (
         <>

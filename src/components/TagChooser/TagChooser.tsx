@@ -5,13 +5,14 @@ import {useDispatch} from 'react-redux'
 import {Tag} from "../../api/storageAPI";
 import {addTag} from "../../slices/user";
 import {useBrowserKeyboardShortcuts} from "../../hooks/browserKeybordShortcuts";
+import {i18n} from "../../constants/i18n";
 
 interface TagChooserButtonProps {
     onClick: () => void
 }
 
 const TagChooserButton = ({onClick}: TagChooserButtonProps) => (
-    <button title='Show Tags' className='lt-plus-icon lt-button-effect' onClick={onClick}/>
+    <button title={i18n.showTags} className='lt-plus-icon lt-button-effect' onClick={onClick}/>
 );
 
 interface TagChooserProps {

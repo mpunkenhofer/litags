@@ -1,11 +1,10 @@
 {
   "browserActionTitle": {
     "message": "LiTags",
-    "description": "The title of the browser action button"
+    "description": "[Don't Translate] The title of the browser action button"
   },
   "appDescription": {
-    "message": "A browser extension that enables you to assign tags to players on lichess.org.",
-    "description": "The description of the application"
+    "message": "A browser extension that enables you to assign tags to players on lichess.org."
   },
   "shortcutToggleDescription": {
     "message": "Show/Hide Tag Chooser"
@@ -25,11 +24,26 @@
   "no": {
     "message": "No"
   },
+  "delete": {
+    "message": "Delete"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "deleteUser": {
+    "message": "Delete User"
+  },
   "tags": {
     "message": "Tags"
   },
   "tag": {
     "message": "Tag"
+  },
+  "sets": {
+    "message": "Sets"
+  },
+  "set": {
+    "message": "Set"
   },
   "home": {
     "message": "Home"
@@ -62,7 +76,7 @@
     "message": "URL"
   },
   "lastSeen": {
-    "message": "Last Seen"
+    "message": "Last seen"
   },
   "encounters": {
     "message": "Encounters"
@@ -71,7 +85,7 @@
     "message": "Search Results"
   },
   "frequentlyUsed": {
-    "message": "Frequently Used"
+    "message": "Frequently used"
   },
   "availableTags": {
     "message": "Available Tags"
@@ -85,8 +99,11 @@
   "tagsFound": {
     "message": "Tags found"
   },
+  "chooseFile": {
+    "message": "Choose File"
+  },
   "frequentlyUsedTags": {
-    "message": "Frequently Used Tags"
+    "message": "Frequently used Tags"
   },
   "tagSetEnabledDescription": {
     "message": "Enable / disable this set. Once disabled the tags associated with this set will no longer be displayed."
@@ -95,19 +112,16 @@
     "message": "Enable Litags"
   },
   "settingLitagsEnabledDescription": {
-    "message": "Use the silder to enable / disable Litags."
+    "message": "Use the switch to enable / disable Litags."
   },
-  "addTagButtonTooltip": {
-    "message": "Add Tag",
-    "description": "The tooltip of the add tag button."
+  "showTags": {
+    "message": "Show Tags"
   },
-  "searchTagPlaceholder": {
-    "message": "Search for a Tag...",
-    "description": "Placeholder text displayed in the tag search input element."
+  "searchTagsPlaceholder": {
+    "message": "Search for a Tag..."
   },
-  "searchUserPlaceholder": {
-    "message": "Search for a User...",
-    "description": "Placeholder text displayed in the user search input element."
+  "searchUsersPlaceholder": {
+    "message": "Search Users..."
   },
   "deleteUserConfirm": {
     "message": "Are you sure you want to delete user %s?",
@@ -116,5 +130,20 @@
   "deleteTagConfirm": {
     "message": "Are you sure you want to delete tag %s?",
     "description": "%s is a placeholder for the tag name of the to be deleted tag."
+  },
+  "importConfirm": {
+    "message": "Are you sure you want to import this file? Importing will overwrite all existing data of the entries you have selected."
+  },
+  "exportNoneSelectedError": {
+    "message": "Choose at least one entity to export."
+  },
+  "importNoneSelectedError": {
+    "message": "Choose at least one entity to import."
+  },
+  "importJsonFileError": {
+    "message": "Expected a .json File"
+  },
+  "importSuccess": {
+    "message": "Successfully imported a backup file!"
   }
 }

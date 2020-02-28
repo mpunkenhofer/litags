@@ -9,6 +9,7 @@ import {RootState} from "../../app/rootReducer";
 import {Tag} from "../../api/storageAPI";
 import isEmpty from 'lodash/isempty';
 import FocusTrap from "focus-trap-react";
+import {i18n} from "../../constants/i18n";
 
 interface TagChooserPopupInterface {
     onClickOutside: () => void,
@@ -53,7 +54,7 @@ const TagChooserPopup = ({onClickOutside, onTagClicked}: TagChooserPopupInterfac
                             (searchResults && searchResults.length != 0) &&
                             <TagChooserGroup key={'litags.searchResults'}
                                              set={{
-                                                 id: '0', name: 'Search result', tags: searchResults,
+                                                 id: '0', name: i18n.searchResults, tags: searchResults,
                                                  icon_url: '', font_url: ''
                                              }}
                                              icon={<span className={'lt-search-icon'}/>}
@@ -63,7 +64,7 @@ const TagChooserPopup = ({onClickOutside, onTagClicked}: TagChooserPopupInterfac
                             (!isEmpty(tagsById) && frequentlyUsed && frequentlyUsed.length > 0) &&
                             <TagChooserGroup key={'litags.frequentlyUsed'}
                                              set={{
-                                                 id: '1', name: 'Frequently used',
+                                                 id: '1', name: i18n.frequentlyUsed,
                                                  tags: frequentlyUsed.map(pair =>
                                                      tagsById[pair[0]] ? tagsById[pair[0]] : null),
                                                  icon_url: '', font_url: ''
@@ -77,7 +78,7 @@ const TagChooserPopup = ({onClickOutside, onTagClicked}: TagChooserPopupInterfac
                         }
                     </div>
                     <input ref={inputRef} className='lt-tc-search' type='search' autoCapitalize='off' autoComplete='off'
-                           spellCheck='false' placeholder='Search Tags...'
+                           spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}
                            onInput={onInput}/>
                 </div>
             </FocusTrap>

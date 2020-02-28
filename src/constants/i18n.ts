@@ -1,0 +1,35 @@
+import {browser} from "webextension-polyfill-ts";
+
+const f = (key: string) => browser.i18n.getMessage(key);
+
+export const i18n = {
+    no: f('no'),
+    yes: f('yes'),
+    cancel: f('cancel'),
+    export: f('export'),
+    import: f('import'),
+    backup: f('backup'),
+    users: f('users'),
+    sets: f('sets'),
+    set: f('set'),
+    settings: f('settings'),
+    home: f('home'),
+    tags: f('tags'),
+    tag: f('tag'),
+    delete: f('delete'),
+    deleteUser: f('deleteUser'),
+    showTags: f('showTags'),
+    searchResults: f('searchResults'),
+    chooseFile: f('chooseFile'),
+    usersFound: f('usersFound'),
+    frequentlyUsed: f('frequentlyUsed'),
+    frequentlyUsedTags: f('frequentlyUsedTags'),
+    searchUsersPlaceHolder: f('searchUsersPlaceholder'),
+    searchTagsPlaceHolder: f('searchTagsPlaceholder'),
+    deleteUserConfirm: f('deleteUserConfirm'),
+    deleteTagConfirm: f('deleteTagConfirm'),
+    exportNoneSelectedError: f('exportNoneSelectedError'),
+    importNoneSelectedError: f('importNoneSelectedError'),
+    importJsonFileError: f('importJsonFileError'),
+    importSuccess: f('importSuccess'),
+};

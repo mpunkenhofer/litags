@@ -31,8 +31,17 @@ export interface User {
     tags: string[]
 }
 
+export interface ImportExportOptions {
+    users: boolean,
+    sets: boolean,
+    frequentlyUsedTags: boolean,
+    settings: boolean
+}
+
 export interface Options {
     enabled: true
+    import: ImportExportOptions,
+    export: ImportExportOptions,
 }
 
 export type FrequentlyUsed = [string, number][];
@@ -46,6 +55,16 @@ export const getSets = async (): Promise<Set[]> => {
         return defaultSets;
     } else {
         return sets as Set[];
+    }
+};
+
+export const postSets = async (sets: Set[]): Promise<Set[]> => {
+    if(!sets)
+        return Promise.reject('postSets: Invalid argument!');
+    else {
+        await browser.storage.local.set({[ENDPOINTS.SETS]: sets});
+
+        return sets;
     }
 };
 
@@ -94,6 +113,22 @@ export const getUsers = async (): Promise<User[]> => {
     }
 };
 
+export const postUsers = async (users: User[]): Promise<User[]> => {
+    if(!users)
+        return Promise.reject('postUsers: Invalid argument!');
+    else {
+        let userObj = {};
+
+        for(const user of users) {
+            userObj = {[user.name]: user, ...userObj}
+        }
+
+        await browser.storage.local.set({[ENDPOINTS.USERS]: userObj});
+
+        return users;
+    }
+};
+
 export const postUser = async (user: User): Promise<User> => {
     if(!user)
         return Promise.reject('postUser: Invalid argument!');
@@ -108,12 +143,22 @@ export const getOptions = async (): Promise<Options> => {
     const options = (await browser.storage.local.get(ENDPOINTS.OPTIONS))[ENDPOINTS.OPTIONS];
 
     if (!options) {
-        await browser.storage.local.set({[ENDPOINTS.OPTIONS]: {enabled: true}});
-        return {enabled: true};
+        const defaultOptions = getDefaultOptions();
+        await browser.storage.local.set({[ENDPOINTS.OPTIONS]: defaultOptions});
+        return defaultOptions;
     } else {
         return options as Options;
     }
 };
+
+export const postOptions = async (options: Options): Promise<Options> => {
+    if(!options)
+        return Promise.reject('postOptions: Invalid argument!');
+
+    await browser.storage.local.set({[ENDPOINTS.OPTIONS]: options});
+    return options;
+};
+
 
 export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
     const frequentlyUsed = (await browser.storage.local.get(ENDPOINTS.FREQUENTLY_USED))[ENDPOINTS.FREQUENTLY_USED];
@@ -149,6 +194,17 @@ const getDefaultSets = (): Set[] => {
     }
 
     return sets;
+};
+
+const getDefaultOptions = (): Options => {
+    const importExportDefaults: ImportExportOptions = {
+        users: true,
+        sets: true,
+        frequentlyUsedTags: true,
+        settings: true
+    };
+
+    return {enabled: true, export: importExportDefaults, import: importExportDefaults};
 };
 
 export const enableStorageApiLogger = () => {
