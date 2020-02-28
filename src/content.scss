@@ -3,6 +3,7 @@
 @import "util/font";
 @import "util/colors";
 @import "util/constants";
+@import "common";
 
 .lt-list {
   grid-area: lilist;
@@ -42,21 +43,5 @@
 
   good, bad {
     grid-area: lichange;
-  }
-}
-
-.lt-button-effect {
-  background-color: inherit;
-  opacity: .75;
-  &:hover {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-.lt-tag {
-  span {
-    font-family: lichess, serif;
-    font-size: 1.6em;
   }
 }

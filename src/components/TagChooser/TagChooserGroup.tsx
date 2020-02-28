@@ -16,7 +16,7 @@ const TagChooserGroup = ({set, onTagClicked, icon}: TagChooserGroupInterface) =>
             borderColor: getBackgroundColor(.15)
         }}
                 className={'lt-tcg-header'}>
-            {( (set && set.icon_url) || icon) &&
+            {((set && set.icon_url) || icon) &&
             <div className={'lt-tcg-header-icon'}>
                 {((set && set.icon_url) && !icon) && <img src={set.icon_url} alt={'Set Icon'}/>}
                 {icon && icon}

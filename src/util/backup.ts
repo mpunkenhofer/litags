@@ -27,9 +27,9 @@ interface Backup {
 export async function importBackup(options: Options, data: string) {
     const backup: Backup = JSON.parse(data);
 
-    console.log('IMPORT BACKUP');
-    console.log(backup);
-    console.log(options);
+    // console.log('IMPORT BACKUP');
+    // console.log(backup);
+    // console.log(options);
 
     if(options.import.settings && !isEmpty(backup.settings)) {
         await postOptions(backup.settings);

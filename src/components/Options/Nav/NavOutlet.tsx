@@ -1,6 +1,6 @@
 import {Redirect, Route, Switch} from "react-router-dom";
 import {Settings} from "../Pages/Settings";
-import {Tags} from "../Pages/Tags";
+import {Sets} from "../Pages/Sets/Sets";
 import {Users} from "../Pages/Users";
 import {Backup} from "../Pages/Backup";
 import {Home} from "../Pages/Home";
@@ -11,8 +11,8 @@ export const NavOutlet = () => (
         <Route path='/settings'>
             <Settings/>
         </Route>
-        <Route path='/tags'>
-            <Tags/>
+        <Route path='/sets'>
+            <Sets/>
         </Route>
         <Route path='/users'>
             <Users/>

@@ -1,7 +1,9 @@
 import defaultSets from "../constants/sets";
-import { browser } from "webextension-polyfill-ts";
+import {browser} from "webextension-polyfill-ts";
+import {NAMESPACE_UUID} from "../constants/uuid";
 
 const uuidv4 = require('uuid/v4');
+const uuidv5 = require('uuid/v5');
 
 const ENDPOINTS = {
     USERS: 'USERS',
@@ -59,7 +61,7 @@ export const getSets = async (): Promise<Set[]> => {
 };
 
 export const postSets = async (sets: Set[]): Promise<Set[]> => {
-    if(!sets)
+    if (!sets)
         return Promise.reject('postSets: Invalid argument!');
     else {
         await browser.storage.local.set({[ENDPOINTS.SETS]: sets});
@@ -69,7 +71,7 @@ export const postSets = async (sets: Set[]): Promise<Set[]> => {
 };
 
 export const getUser = async (username: string): Promise<User> => {
-    if(!username)
+    if (!username)
         return Promise.reject('getUser: Invalid argument!');
 
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
@@ -82,12 +84,12 @@ export const getUser = async (username: string): Promise<User> => {
 };
 
 export const deleteUser = async (username: string): Promise<User> => {
-    if(!username)
+    if (!username)
         return Promise.reject('deleteUser: Invalid argument!');
 
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
 
-    if(users && users.hasOwnProperty(username)) {
+    if (users && users.hasOwnProperty(username)) {
         const {[username]: user, ...updatedUsers} = users;
         await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
         return user as User;
@@ -102,8 +104,8 @@ export const getUsers = async (): Promise<User[]> => {
     if (users) {
         const users_array: User[] = [];
 
-        for(const user in users) {
-            if(users.hasOwnProperty(user))
+        for (const user in users) {
+            if (users.hasOwnProperty(user))
                 users_array.push(users[user]);
         }
 
@@ -114,12 +116,12 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 export const postUsers = async (users: User[]): Promise<User[]> => {
-    if(!users)
+    if (!users)
         return Promise.reject('postUsers: Invalid argument!');
     else {
         let userObj = {};
 
-        for(const user of users) {
+        for (const user of users) {
             userObj = {[user.name]: user, ...userObj}
         }
 
@@ -130,7 +132,7 @@ export const postUsers = async (users: User[]): Promise<User[]> => {
 };
 
 export const postUser = async (user: User): Promise<User> => {
-    if(!user)
+    if (!user)
         return Promise.reject('postUser: Invalid argument!');
 
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
@@ -152,7 +154,7 @@ export const getOptions = async (): Promise<Options> => {
 };
 
 export const postOptions = async (options: Options): Promise<Options> => {
-    if(!options)
+    if (!options)
         return Promise.reject('postOptions: Invalid argument!');
 
     await browser.storage.local.set({[ENDPOINTS.OPTIONS]: options});
@@ -172,15 +174,15 @@ export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
 };
 
 export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
-    if(!frequentlyUsedIDs)
+    if (!frequentlyUsedIDs)
         return Promise.reject('postFrequentlyUsed: Invalid argument!');
 
     await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: frequentlyUsedIDs});
     return frequentlyUsedIDs;
 };
 
-const createTag = (name: string, aliases: string[], uri: string, color?): Tag => {
-    return (color !== undefined) ? {id: uuidv4(), name, aliases, uri, color} : {id: uuidv4(), name, aliases, uri};
+const createTag = (id: string, name: string, aliases: string[], uri: string, color?): Tag => {
+    return (color !== undefined) ? {id, name, aliases, uri, color} : {id, name, aliases, uri};
 };
 
 const getDefaultSets = (): Set[] => {
@@ -188,7 +190,7 @@ const getDefaultSets = (): Set[] => {
 
     for (const set of defaultSets) {
         const tags = Object.entries(set.tags).map(([name, [aliases, uri, color]]) =>
-                createTag(name, aliases, uri, color));
+            createTag(uuidv5(`${set.name}${name}${uri}`, NAMESPACE_UUID), name, aliases, uri, color));
 
         sets.push({...set, id: uuidv4(), tags});
     }
@@ -216,7 +218,7 @@ export const enableStorageApiLogger = () => {
         const changedItems = Object.keys(changes);
 
         for (const item of changedItems) {
-            console.log('item:' + `%c${item}`,  'font-size: 1.1em; font-weight: bold; color: blue');
+            console.log('item:' + `%c${item}`, 'font-size: 1.1em; font-weight: bold; color: blue');
             console.log('prev value\n', changes[item].oldValue);
             console.log('new value\n', changes[item].newValue);
         }

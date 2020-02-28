@@ -27,6 +27,9 @@
   "delete": {
     "message": "Delete"
   },
+  "confirm": {
+    "message": "Confirm"
+  },
   "cancel": {
     "message": "Cancel"
   },

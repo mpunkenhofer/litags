@@ -1,5 +1,6 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "components/TagList/tagList";
+@import "common";
 
 .lt-options-navbar {
   position: sticky;
@@ -67,4 +68,17 @@
       display: inline-block;
     }
   }
+}
+
+.lt-options-drag-handle {
+  width: 1rem;
+  height: 1rem;
+  opacity: .4;
+  &:hover {
+    opacity: .9;
+  }
+}
+
+.lt-options-drag-helper {
+  list-style: none;
 }

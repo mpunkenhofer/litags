@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {i18n} from "../../../constants/i18n";
-import {Container, Row, Col, Button, Form, Alert, Fade} from "react-bootstrap";
+import {Container, Row, Col, Button, Form, Alert, Fade, Modal} from "react-bootstrap";
 import {FormEvent, useCallback, useState} from "react";
 import {exportBackup, importBackup} from "../../../util/backup";
 import {useDispatch, useSelector} from "react-redux";
@@ -19,9 +19,11 @@ import {
 } from "../../../slices/options";
 import {RootState} from "../../../app/rootReducer";
 import {throttle, delay} from 'lodash';
+import {ConfirmModal} from "../ConfirmModal";
 
 export const Backup = () => {
     const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertVariant, setAlertVariant] = useState<'danger' | 'success'>('danger');
@@ -43,15 +45,6 @@ export const Backup = () => {
     }, []);
 
     const onImport = useCallback(() => {
-        const allFalse = !options.import.settings && !options.import.users && !options.import.frequentlyUsedTags
-            && !options.import.sets;
-        if (allFalse) {
-            displayAlert(i18n.importNoneSelectedError);
-            return;
-        } else {
-            setShowAlert(false);
-        }
-
         if (fileBlob && fileName.endsWith('.json')) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -216,7 +209,19 @@ export const Backup = () => {
                             </div>
                             <div className="input-group-append">
                                 <button className="btn btn-outline-primary" type="button" id="lt-import-button"
-                                        onClick={onImport}>
+                                        onClick={() => {
+                                            const allFalse = !options.import.settings && !options.import.users &&
+                                                !options.import.frequentlyUsedTags && !options.import.sets;
+                                            if (allFalse) {
+                                                displayAlert(i18n.importNoneSelectedError);
+                                                return;
+                                            } else if (!fileBlob || !fileName || !fileName.endsWith('.json')) {
+                                                displayAlert(i18n.importJsonFileError);
+                                            } else {
+                                                setShowAlert(false);
+                                                setShowModal(true);
+                                            }
+                                        }}>
                                     {i18n.import}
                                 </button>
                             </div>
@@ -224,6 +229,11 @@ export const Backup = () => {
                     </Col>
                 </Row>
             </Container>
+            <ConfirmModal show={showModal} onCancel={() => setShowModal(false)}
+                          onConfirm={() => {
+                              setShowModal(false);
+                              onImport();}}
+                          variant='warning' title={i18n.import} body={i18n.importConfirm} confirm={i18n.import}/>
         </>
     );
 };

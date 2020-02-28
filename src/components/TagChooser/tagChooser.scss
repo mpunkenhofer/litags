@@ -1,5 +1,6 @@
 @import "../../util/colors";
 @import "../../util/constants";
+@import "../../common";
 
 .lt-tc {
   display: block;
@@ -50,25 +51,6 @@
   grid-template-columns: repeat(auto-fill, minmax(32px, 2fr));
   grid-auto-flow: dense;
   padding: .4em;
-}
-
-
-.lt-t-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: none;
-
-  &:focus {
-    outline: 1px solid $selected;
-    background-color: rgba($selected, 0.2);
-  }
-
-  &:hover {
-    background-color: $selected;
-    border-radius: 3px;
-  }
 }
 
 .lt-tc-search {

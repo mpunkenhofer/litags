@@ -9,6 +9,7 @@ import {getSets} from "../../../slices/sets";
 import {User} from "../../../api/storageAPI";
 import {i18n} from "../../../constants/i18n";
 import {Container, Row, Col, Button, Modal, Spinner} from "react-bootstrap";
+import {ConfirmModal} from "../ConfirmModal";
 
 interface UserListElementProps {
     name: string
@@ -31,10 +32,8 @@ const UserListHeader = ({count, onInput}: UserListHeaderProps) => (
 );
 
 const UserListElement = ({name, onDeleteButtonClicked}: UserListElementProps) => {
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
-    const showModal = () => setModalVisible(true);
-    const hideModal = () => setModalVisible(false);
     return (
         <>
             <Container fluid={true}>
@@ -46,28 +45,20 @@ const UserListElement = ({name, onDeleteButtonClicked}: UserListElementProps) =>
                         <TagList username={name}/>
                     </Col>
                     <Col>
-                        <Button variant='outline-danger' className='lt-delete-btn' onClick={showModal}>
+                        <Button variant='outline-danger' className='lt-delete-btn'
+                                onClick={() => setShowModal(true)}>
                             {i18n.delete}
                         </Button>
                     </Col>
                 </Row>
             </Container>
-            <Modal show={modalVisible} onHide={hideModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{i18n.deleteUser}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {i18n.deleteUserConfirm.replace('%s', name)}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={hideModal}>
-                        {i18n.cancel}
-                    </Button>
-                    <Button variant="danger" onClick={onDeleteButtonClicked(name)}>
-                        {i18n.delete}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <ConfirmModal show={showModal} onCancel={() => setShowModal(false)}
+                          onConfirm={() => {
+                              setShowModal(false);
+                              onDeleteButtonClicked(name)();
+                          }}
+                          variant={'danger'} title={i18n.deleteUser} confirm={i18n.delete}
+                          body={i18n.deleteUserConfirm.replace('%s', name)} />
         </>
     );
 };

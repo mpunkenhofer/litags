@@ -12,6 +12,7 @@ export const i18n = {
     users: f('users'),
     sets: f('sets'),
     set: f('set'),
+    confirm: f('confirm'),
     settings: f('settings'),
     home: f('home'),
     tags: f('tags'),
@@ -19,6 +20,7 @@ export const i18n = {
     delete: f('delete'),
     deleteUser: f('deleteUser'),
     showTags: f('showTags'),
+    tagSets: f('tagSets'),
     searchResults: f('searchResults'),
     chooseFile: f('chooseFile'),
     usersFound: f('usersFound'),
@@ -32,4 +34,5 @@ export const i18n = {
     importNoneSelectedError: f('importNoneSelectedError'),
     importJsonFileError: f('importJsonFileError'),
     importSuccess: f('importSuccess'),
+    importConfirm: f('importConfirm'),
 };

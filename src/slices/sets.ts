@@ -5,6 +5,7 @@ import {AppThunk} from "../app/store";
 
 interface SetsState {
     sets: Set[],
+    order: string[],
     tagsById: Record<string, Tag | undefined>,
     setsById: Record<string, Set | undefined>,
     loading: boolean,
@@ -13,6 +14,7 @@ interface SetsState {
 
 const setsInitialState: SetsState = {
     sets: [],
+    order: [],
     tagsById: {},
     setsById: {},
     loading: false,

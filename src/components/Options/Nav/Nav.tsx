@@ -20,10 +20,10 @@ export const Nav = () => (
                 </NavLink>
             </li>
             <li className={'nav-item'}>
-                <NavLink className={'nav-link d-flex'} to='/tags'>
+                <NavLink className={'nav-link d-flex'} to='/sets'>
                     <img src={'/assets/tags-solid.svg'} className={'mr-1 mr-md-3 lt-sidebar-icon'}
                          alt={'Tags Icon'}/>
-                    <span className={'d-none d-sm-flex'}>{i18n.tags}</span>
+                    <span className={'d-none d-sm-flex'}>{i18n.tagSets}</span>
                 </NavLink>
             </li>
             <li className={'nav-item'}>
