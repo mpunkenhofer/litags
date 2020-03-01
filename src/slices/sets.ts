@@ -3,13 +3,13 @@ import {Set, Tag} from "../api/storageAPI"
 import * as api from "../api/storageAPI"
 import {AppThunk} from "../app/store";
 
-interface SetsState {
-    sets: Set[],
-    order: string[],
-    tagsById: Record<string, Tag | undefined>,
-    setsById: Record<string, Set | undefined>,
-    loading: boolean,
-    error: string | null
+export type SetsState = {
+    sets: Set[];
+    order: string[];
+    tagsById: Record<string, Tag>;
+    setsById: Record<string, Set>;
+    loading: boolean;
+    error: string | null;
 }
 
 const setsInitialState: SetsState = {
@@ -25,11 +25,11 @@ const setsSlice = createSlice({
     name: 'sets',
     initialState: setsInitialState,
     reducers: {
-        getSetsRequest(state) {
+        getSetsRequest(state): void {
             state.loading = true;
             state.error = null;
         },
-        getSetsSuccess(state, {payload}: PayloadAction<Set[]>) {
+        getSetsSuccess(state, {payload}: PayloadAction<Set[]>): void {
             state.sets = payload;
             state.loading = false;
             state.error = null;
@@ -41,7 +41,7 @@ const setsSlice = createSlice({
                 }
             }
         },
-        getSetsFailure(state, {payload}: PayloadAction<string>) {
+        getSetsFailure(state, {payload}: PayloadAction<string>): void {
             state.loading = false;
             state.error = payload;
         }
@@ -54,7 +54,7 @@ export const {
     getSetsFailure,
 } = setsSlice.actions;
 
-export const getSets = (): AppThunk => (dispatch, getState) => {
+export const getSets = (): AppThunk => (dispatch, getState): void => {
     if(!getState().sets.loading) {
         dispatch(getSetsRequest());
         api.getSets()

@@ -2,7 +2,7 @@ import {NavLink} from "react-router-dom";
 import * as React from "react";
 import {i18n} from "../../../constants/i18n";
 
-export const Nav = () => (
+export const Nav: React.FunctionComponent = () => (
     <nav>
         <ul className={'nav flex-row flex-md-column justify-content-center'}>
             <li className={'nav-item'}>

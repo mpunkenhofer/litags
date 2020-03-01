@@ -6,11 +6,13 @@ import {Navbar} from "./components/Options/Navbar";
 import {Main} from "./components/Options/Main";
 import {enableStorageApiLogger} from "./api/storageAPI";
 
+console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
+
 if (process.env.NODE_ENV === "development") {
     enableStorageApiLogger();
 }
 
-const Options = () => (
+const Options: React.FunctionComponent = () => (
     <>
         <Navbar/>
         <Main/>

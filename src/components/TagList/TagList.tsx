@@ -9,15 +9,15 @@ import Tag from "../Tag";
 import {Tag as TagType} from "../../api/storageAPI"
 
 interface SortableItemProps {
-    tag: TagType
+    tag: TagType;
 }
 
 const SortableItem = SortableElement(({tag}: SortableItemProps) => <li><Tag tag={tag}/></li>);
 
 interface SortableListProps {
-    tags: TagType[],
-    removeZoneVisible: boolean,
-    setHoveringRemoveZone: (boolean) => void,
+    tags: TagType[];
+    removeZoneVisible: boolean;
+    setHoveringRemoveZone: (arg: boolean) => void;
 }
 
 const SortableList = SortableContainer(({tags,
@@ -28,26 +28,25 @@ const SortableList = SortableContainer(({tags,
         </ul>
         {
             removeZoneVisible && <div className={'lt-list-remove-zone'}
-                                      onMouseEnter={() => setHoveringRemoveZone(true)}
-                                      onMouseLeave={() => setHoveringRemoveZone(false)}>L</div>
+                                      onMouseEnter={(): void => setHoveringRemoveZone(true)}
+                                      onMouseLeave={(): void => setHoveringRemoveZone(false)}>L</div>
         }
     </>
 );
 
 interface TagListProps {
-    username: string
+    username: string;
 }
 
-const TagList = ({username}: TagListProps) => {
+const TagList: React.FunctionComponent<TagListProps> = ({username}: TagListProps) => {
     const dispatch = useDispatch();
 
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState<TagType[]>([]);
     const [removeZoneVisible, setRemoveZoneVisible] = useState(false);
     const [hoveringRemoveZone, setHoveringRemoveZone] = useState(false);
 
     const {user, error} = useSelector((state: RootState) =>
-        state.user.userRecord[username] ? state.user.userRecord[username] : {user: null, loading: false, error: null}
-    );
+        state.user.userRecord[username] || {user: null, loading: false, error: null});
 
     const {tagsById} = useSelector((state: RootState) => state.sets);
 
@@ -58,11 +57,11 @@ const TagList = ({username}: TagListProps) => {
         }
     }, [user, tagsById]);
 
-    const onSortStart = () => {
+    const onSortStart = (): void => {
         setRemoveZoneVisible(true);
     };
 
-    const onSortEnd = ({oldIndex, newIndex}) => {
+    const onSortEnd = ({oldIndex, newIndex}: {oldIndex: number; newIndex: number}): void => {
         setRemoveZoneVisible(false);
         setHoveringRemoveZone(false);
 

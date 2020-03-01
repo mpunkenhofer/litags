@@ -1,18 +1,18 @@
 import * as React from "react";
 import {useSetDocumentTitle} from "../../../../hooks/setDocumentTitle";
 import {i18n} from "../../../../constants/i18n";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {getSets} from "../../../../slices/sets";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../../app/rootReducer";
 import {Container, Col, Row, Spinner} from "react-bootstrap";
 import {SetList} from "./SetList";
-import {HashRouter, NavLink, Redirect, Route, Switch} from "react-router-dom";
+import {HashRouter, Redirect, Route, Switch} from "react-router-dom";
 import {SetDisplay} from "./SetDisplay";
 
-export const Sets = () => {
+export const Sets: React.FunctionComponent = () => {
     const dispatch = useDispatch();
-    const {sets, loading, error} = useSelector((state: RootState) => state.sets);
+    const {sets, loading} = useSelector((state: RootState) => state.sets);
 
     useEffect(() => {
         dispatch(getSets());

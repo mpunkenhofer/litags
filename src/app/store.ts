@@ -5,8 +5,8 @@ import rootReducer, { RootState } from './rootReducer'
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: process.env.NODE_ENV !== 'production' ?
-        [...getDefaultMiddleware(), logger] : [...getDefaultMiddleware()],
+    middleware: (process.env.NODE_ENV !== 'production') ?
+        [...getDefaultMiddleware<RootState>(), logger] as const : [...getDefaultMiddleware<RootState>()] as const, //eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
 });
 
 export type AppDispatch = typeof store.dispatch

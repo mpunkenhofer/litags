@@ -1,6 +1,6 @@
 import {browser} from "webextension-polyfill-ts";
 
-const f = (key: string) => browser.i18n.getMessage(key);
+const f = (key: string): string => browser.i18n.getMessage(key);
 
 export const i18n = {
     no: f('no'),

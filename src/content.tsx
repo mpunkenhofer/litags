@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
     enableStorageApiLogger();
 }
 
-const getLiTagsRoot = () => {
+const getLiTagsRoot = (): HTMLElement => {
     const root = document.getElementById('litags');
     if (root)
         return root;
@@ -22,6 +22,20 @@ const getLiTagsRoot = () => {
         return newRoot;
     }
 };
+
+const removeTitle = (name: string): string => {
+    if(!name)
+        return '';
+
+    const s = name.split(/(\s+)/);
+    return s ? s[s.length - 1] : '';
+};
+
+const getUserName = (elementName: string): string | null => {
+    const name = document.querySelector(elementName);
+    return (name && name.textContent) ? removeTitle(name.textContent) : null;
+};
+
 
 const element = document.querySelector('.round__app');
 
@@ -48,12 +62,3 @@ if (element) {
 } else {
     console.log('LiTags found no supported mounts on this page.');
 }
-
-const getUserName = (elementName: string) => {
-    return removeTitle(document.querySelector(elementName).textContent);
-};
-
-const removeTitle = (name: string) => {
-    const s = name.split(/(\s+)/);
-    return s ? s[s.length - 1] : '';
-};

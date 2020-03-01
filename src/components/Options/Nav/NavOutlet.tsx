@@ -6,7 +6,7 @@ import {Backup} from "../Pages/Backup";
 import {Home} from "../Pages/Home";
 import * as React from "react";
 
-export const NavOutlet = () => (
+export const NavOutlet: React.FunctionComponent = () => (
     <Switch>
         <Route path='/settings'>
             <Settings/>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {i18n} from "../../../constants/i18n";
-import {Container, Row, Col, Button, Form, Alert, Fade, Modal} from "react-bootstrap";
+import {Container, Row, Col, Button, Form, Alert} from "react-bootstrap";
 import {FormEvent, useCallback, useState} from "react";
 import {exportBackup, importBackup} from "../../../util/backup";
 import {useDispatch, useSelector} from "react-redux";
@@ -21,19 +21,19 @@ import {RootState} from "../../../app/rootReducer";
 import {throttle, delay} from 'lodash';
 import {ConfirmModal} from "../ConfirmModal";
 
-export const Backup = () => {
+export const Backup: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertVariant, setAlertVariant] = useState<'danger' | 'success'>('danger');
     const [fileName, setFileName] = useState(i18n.chooseFile);
-    const [fileBlob, setFileBlob] = useState(null);
+    const [fileBlob, setFileBlob] = useState<Blob | null>(null);
     const {options} = useSelector((state: RootState) => state.options);
 
     useEffect(() => {
         dispatch(getOptions());
-    }, []);
+    }, [dispatch]);
 
     useSetDocumentTitle(i18n.backup, 'Litags');
 
@@ -47,23 +47,25 @@ export const Backup = () => {
     const onImport = useCallback(() => {
         if (fileBlob && fileName.endsWith('.json')) {
             const reader = new FileReader();
-            reader.onload = (e) => {
-                const contents = e.target.result;
-                importBackup(options, contents as string)
-                    .then(() => displayAlert(i18n.importSuccess, 'success'))
-                    .catch(err => {
-                        displayAlert(err.toString());
-                        console.error(err);
-                    });
+            reader.onload = (e): void => {
+                if(e && e.target) {
+                    const contents = e.target.result;
+                    importBackup(options, contents as string)
+                        .then(() => displayAlert(i18n.importSuccess, 'success'))
+                        .catch(err => {
+                            displayAlert(err.toString());
+                            console.error(err);
+                        });
+                }
             };
             reader.readAsText(fileBlob);
         } else {
             displayAlert(i18n.importJsonFileError);
             return;
         }
-    }, [options, fileName, fileBlob]);
+    }, [fileBlob, fileName, options, displayAlert]);
 
-    const onImportChange = (e: FormEvent<HTMLInputElement>) => {
+    const onImportChange = (e: FormEvent<HTMLInputElement>): void => {
         const target = e.target as HTMLInputElement;
         if (target && target.files && target.files.length > 0) {
             setFileName(target.files[0].name);
@@ -89,7 +91,7 @@ export const Backup = () => {
                 const a = document.createElement('a');
                 a.download = `litags-backup-${new Date().getTime()}`;
                 a.href = URL.createObjectURL(new Blob([backup], {type: 'application/json'}));
-                a.onload = _ => URL.revokeObjectURL(a.href);
+                a.onload = (): void => URL.revokeObjectURL(a.href);
                 a.click();
             })
             .catch(err => {
@@ -101,16 +103,16 @@ export const Backup = () => {
 
     const persistOptions = throttle(() => dispatch(postOptions()), 1000, {trailing: true});
 
-    const onCheckChange = useCallback((action) => (ev: FormEvent<HTMLInputElement>) => {
+    const onCheckChange = useCallback((action) => (ev: FormEvent<HTMLInputElement>): void => {
         dispatch(action((ev.target as HTMLInputElement).checked));
         persistOptions();
-    }, [dispatch]);
+    }, [dispatch, persistOptions]);
 
     return (
         <>
             {
                 (showAlert && alertMessage && alertMessage.length > 0) &&
-                <Alert variant={alertVariant} dismissible onClose={() => setShowAlert(false)}>
+                <Alert variant={alertVariant} dismissible onClose={(): void => setShowAlert(false)}>
                     {alertMessage}
                 </Alert>
             }
@@ -209,7 +211,7 @@ export const Backup = () => {
                             </div>
                             <div className="input-group-append">
                                 <button className="btn btn-outline-primary" type="button" id="lt-import-button"
-                                        onClick={() => {
+                                        onClick={(): void => {
                                             const allFalse = !options.import.settings && !options.import.users &&
                                                 !options.import.frequentlyUsedTags && !options.import.sets;
                                             if (allFalse) {
@@ -229,8 +231,8 @@ export const Backup = () => {
                     </Col>
                 </Row>
             </Container>
-            <ConfirmModal show={showModal} onCancel={() => setShowModal(false)}
-                          onConfirm={() => {
+            <ConfirmModal show={showModal} onCancel={(): void => setShowModal(false)}
+                          onConfirm={(): void => {
                               setShowModal(false);
                               onImport();}}
                           variant='warning' title={i18n.import} body={i18n.importConfirm} confirm={i18n.import}/>

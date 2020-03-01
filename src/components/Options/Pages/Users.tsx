@@ -8,20 +8,16 @@ import TagList from "../../TagList/TagList";
 import {getSets} from "../../../slices/sets";
 import {User} from "../../../api/storageAPI";
 import {i18n} from "../../../constants/i18n";
-import {Container, Row, Col, Button, Modal, Spinner} from "react-bootstrap";
+import {Container, Row, Col, Button, Spinner} from "react-bootstrap";
 import {ConfirmModal} from "../ConfirmModal";
 
-interface UserListElementProps {
-    name: string
-    onDeleteButtonClicked: (name: string) => () => void
-}
-
 interface UserListHeaderProps {
-    count: number
-    onInput: (e: FormEvent<HTMLInputElement>) => void
+    count: number;
+    onInput: (e: FormEvent<HTMLInputElement>) => void;
 }
 
-const UserListHeader = ({count, onInput}: UserListHeaderProps) => (
+const UserListHeader: React.FunctionComponent<UserListHeaderProps> =
+    ({count, onInput}: UserListHeaderProps) => (
     <div className='border-bottom pb-1 pb-md-3'>
         <span className='text-muted'>
             {`${i18n.usersFound}: ${count}`}
@@ -31,7 +27,13 @@ const UserListHeader = ({count, onInput}: UserListHeaderProps) => (
     </div>
 );
 
-const UserListElement = ({name, onDeleteButtonClicked}: UserListElementProps) => {
+interface UserListElementProps {
+    name: string;
+    onDeleteButtonClicked: (name: string) => () => void;
+}
+
+const UserListElement: React.FunctionComponent<UserListElementProps> =
+    ({name, onDeleteButtonClicked}: UserListElementProps) => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     return (
@@ -39,21 +41,23 @@ const UserListElement = ({name, onDeleteButtonClicked}: UserListElementProps) =>
             <Container fluid={true}>
                 <Row className='lt-user-row align-items-center border-bottom'>
                     <Col xs={3}>
-                        <a href={`https://lichess.org/@/${name}`} target={'_blank'} rel={'noopener'}>{name}</a>
+                        <a href={`https://lichess.org/@/${name}`} target={'_blank'} rel={'noopener noreferrer'}>
+                            {name}
+                        </a>
                     </Col>
                     <Col xs={7} className='lt-list align-items-baseline'>
                         <TagList username={name}/>
                     </Col>
                     <Col>
                         <Button variant='outline-danger' className='lt-delete-btn'
-                                onClick={() => setShowModal(true)}>
+                                onClick={(): void => setShowModal(true)}>
                             {i18n.delete}
                         </Button>
                     </Col>
                 </Row>
             </Container>
-            <ConfirmModal show={showModal} onCancel={() => setShowModal(false)}
-                          onConfirm={() => {
+            <ConfirmModal show={showModal} onCancel={(): void => setShowModal(false)}
+                          onConfirm={(): void => {
                               setShowModal(false);
                               onDeleteButtonClicked(name)();
                           }}
@@ -64,10 +68,10 @@ const UserListElement = ({name, onDeleteButtonClicked}: UserListElementProps) =>
 };
 
 interface UserListProps {
-    users: User[]
+    users: User[];
 }
 
-const UserList = ({users}: UserListProps) => {
+const UserList: React.FunctionComponent<UserListProps> = ({users}: UserListProps) => {
     const dispatch = useDispatch();
     const [searchResults, setSearchResults] = useState<User[]>([]);
 
@@ -76,8 +80,10 @@ const UserList = ({users}: UserListProps) => {
         return users.filter(user => user.name.toLowerCase().includes(term));
     }, [users]);
 
-    const onInput = (e) => setSearchResults(searchUser((e.target as HTMLInputElement).value));
-    const onDeleteButtonClicked = (name: string) => () => {
+    const onInput = (e: FormEvent<HTMLInputElement>): void =>
+        setSearchResults(searchUser((e.target as HTMLInputElement).value));
+
+    const onDeleteButtonClicked = (name: string) => (): void => {
         dispatch(deleteUser(name));
     };
 
@@ -94,7 +100,7 @@ const UserList = ({users}: UserListProps) => {
     );
 };
 
-export const Users = () => {
+export const Users: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const {userRecord, loading, error} = useSelector((state: RootState) => state.user);
 

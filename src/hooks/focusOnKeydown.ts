@@ -1,18 +1,19 @@
-import {useEffect} from "react";
+import {MutableRefObject, useEffect} from "react";
 
-const setFocus = (ref, key: string, filter?: string[]) => (keyboardEvent: KeyboardEvent) => {
+const setFocus = (ref: MutableRefObject<HTMLInputElement | null>, filter?: string[]) =>
+    (keyboardEvent: KeyboardEvent): void => {
     if (ref && ref.current) {
-        if (filter && filter.includes(keyboardEvent.key) || key && key !== keyboardEvent.key)
+        if (filter && filter.includes(keyboardEvent.key))
             return;
         ref.current.focus();
     }
 };
 
-export const useFocusOnAnyKeydown = (ref, filter?: string[]) => {
+export const useFocusOnAnyKeydown = (ref: MutableRefObject<HTMLInputElement | null>, filter?: string[]): void => {
     useEffect(() => {
-        document.addEventListener("keydown", setFocus(ref, null, filter));
-        return () => {
-            document.removeEventListener("keydown", setFocus(ref, null, filter));
+        document.addEventListener("keydown", setFocus(ref, filter));
+        return (): void => {
+            document.removeEventListener("keydown", setFocus(ref, filter));
         };
-    }, [ref]);
+    }, [filter, ref]);
 };

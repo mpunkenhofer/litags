@@ -3,10 +3,10 @@ import {Options} from "../api/storageAPI";
 import * as api from "../api/storageAPI";
 import {AppThunk} from "../app/store";
 
-interface OptionsState {
-    options: Options
-    loading: boolean,
-    error: string | null
+type OptionsState = {
+    options: Options;
+    loading: boolean;
+    error: string | null;
 }
 
 const OptionsInitialState: OptionsState = {
@@ -33,41 +33,41 @@ const optionsSlice = createSlice({
     name: 'options',
     initialState: OptionsInitialState,
     reducers: {
-        optionRequest(state) {
+        optionRequest(state): void {
             state.loading = true;
             state.error = null;
         },
-        optionsSuccess(state, {payload}: PayloadAction<Options>) {
+        optionsSuccess(state, {payload}: PayloadAction<Options>): void {
             state.options = payload;
             state.loading = false;
             state.error = null;
         },
-        optionsFailure(state, {payload}: PayloadAction<string>) {
+        optionsFailure(state, {payload}: PayloadAction<string>): void {
             state.loading = false;
             state.error = payload;
         },
-        setImportUsers(state, {payload}: PayloadAction<boolean>) {
+        setImportUsers(state, {payload}: PayloadAction<boolean>): void {
             state.options.import.users = payload;
         },
-        setExportUsers(state, {payload}: PayloadAction<boolean>) {
+        setExportUsers(state, {payload}: PayloadAction<boolean>): void {
             state.options.export.users = payload;
         },
-        setImportSets(state, {payload}: PayloadAction<boolean>) {
+        setImportSets(state, {payload}: PayloadAction<boolean>): void {
             state.options.import.sets = payload;
         },
-        setExportSets(state, {payload}: PayloadAction<boolean>) {
+        setExportSets(state, {payload}: PayloadAction<boolean>): void {
             state.options.export.sets = payload;
         },
-        setImportFrequentlyUsed(state, {payload}: PayloadAction<boolean>) {
+        setImportFrequentlyUsed(state, {payload}: PayloadAction<boolean>): void {
             state.options.import.frequentlyUsedTags = payload;
         },
-        setExportFrequentlyUsed(state, {payload}: PayloadAction<boolean>) {
+        setExportFrequentlyUsed(state, {payload}: PayloadAction<boolean>): void {
             state.options.export.frequentlyUsedTags = payload;
         },
-        setImportSettings(state, {payload}: PayloadAction<boolean>) {
+        setImportSettings(state, {payload}: PayloadAction<boolean>): void {
             state.options.import.settings = payload;
         },
-        setExportSettings(state, {payload}: PayloadAction<boolean>) {
+        setExportSettings(state, {payload}: PayloadAction<boolean>): void {
             state.options.export.settings = payload;
         },
     }
@@ -87,7 +87,7 @@ export const {
     setExportSettings,
 } = optionsSlice.actions;
 
-export const getOptions = (): AppThunk => (dispatch, getState) => {
+export const getOptions = (): AppThunk => (dispatch, getState): void => {
     if (!getState().options.loading) {
         dispatch(optionRequest());
         api.getOptions()
@@ -96,7 +96,7 @@ export const getOptions = (): AppThunk => (dispatch, getState) => {
     }
 };
 
-export const postOptions = (): AppThunk => (dispatch, getState) => {
+export const postOptions = (): AppThunk => (dispatch, getState): void => {
     const options = getState().options.options;
 
     dispatch(optionRequest());

@@ -3,10 +3,10 @@ import {AppThunk} from "../app/store";
 import * as api from "../api/storageAPI";
 import {FrequentlyUsed} from "../api/storageAPI";
 
-interface FrequentlyUsedState {
-    frequentlyUsed: FrequentlyUsed
-    loading: boolean,
-    error: string | null
+type FrequentlyUsedState = {
+    frequentlyUsed: FrequentlyUsed;
+    loading: boolean;
+    error: string | null;
 }
 
 const frequentlyUsedInitialState: FrequentlyUsedState = {
@@ -19,16 +19,16 @@ const frequentlyUsedSlice = createSlice({
     name: 'frequentlyUsed',
     initialState: frequentlyUsedInitialState,
     reducers: {
-        frequentlyUsedRequest(state) {
+        frequentlyUsedRequest(state): void {
             state.loading = true;
             state.error = null;
         },
-        frequentlyUsedSuccess(state, {payload}: PayloadAction<FrequentlyUsed>) {
+        frequentlyUsedSuccess(state, {payload}: PayloadAction<FrequentlyUsed>): void {
             state.frequentlyUsed = payload;
             state.loading = false;
             state.error = null;
         },
-        frequentlyUsedError(state, {payload}: PayloadAction<string>) {
+        frequentlyUsedError(state, {payload}: PayloadAction<string>): void {
             state.loading = false;
             state.error = payload;
         }
@@ -41,7 +41,7 @@ export const {
     frequentlyUsedError,
 } = frequentlyUsedSlice.actions;
 
-export const getFrequentlyUsed = (): AppThunk => (dispatch, getState) => {
+export const getFrequentlyUsed = (): AppThunk => (dispatch, getState): void => {
     if(!getState().frequentlyUsed.loading) {
         dispatch(frequentlyUsedRequest());
         api.getFrequentlyUsed()
@@ -50,15 +50,16 @@ export const getFrequentlyUsed = (): AppThunk => (dispatch, getState) => {
     }
 };
 
-export const postFrequentlyUsed = (frequentlyUsed: FrequentlyUsed): AppThunk => dispatch => {
+export const postFrequentlyUsed = (frequentlyUsed: FrequentlyUsed): AppThunk =>
+    (dispatch): void => {
     dispatch(frequentlyUsedRequest());
     api.postFrequentlyUsed(frequentlyUsed)
         .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
         .catch(err => dispatch(frequentlyUsedError(err.toString())));
 };
 
-export const updateFrequentlyUsed = (tagId: string): AppThunk => (
-    dispatch, getState) => {
+export const updateFrequentlyUsed = (tagId: string): AppThunk =>
+    (dispatch, getState): void => {
     const freqUsed = getState().frequentlyUsed.frequentlyUsed;
     let frequentlyUsed = freqUsed ? [...freqUsed] : [];
 

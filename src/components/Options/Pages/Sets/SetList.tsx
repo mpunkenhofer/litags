@@ -4,7 +4,7 @@ import * as React from "react";
 import {NavLink} from "react-router-dom";
 
 interface SortableItemProps {
-    name: string
+    name: string;
 }
 
 const DragHandle = SortableHandle(() =>
@@ -21,7 +21,7 @@ const SortableItem = SortableElement(({name}: SortableItemProps) =>
 );
 
 interface SortableListProps {
-    names: string[]
+    names: string[];
 }
 
 const SortableList = SortableContainer(({names}: SortableListProps) => {
@@ -35,10 +35,10 @@ const SortableList = SortableContainer(({names}: SortableListProps) => {
 });
 
 interface SetListProps {
-    sets: Set[]
+    sets: Set[];
 }
 
-export const SetList = ({sets}: SetListProps) => {
+export const SetList: React.FunctionComponent<SetListProps> = ({sets}: SetListProps) => {
     return (
         <SortableList names={sets.map(set => set.name)}
                       useDragHandle={true}

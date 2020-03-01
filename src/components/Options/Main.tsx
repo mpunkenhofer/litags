@@ -4,7 +4,7 @@ import {Nav} from "./Nav/Nav";
 import {NavOutlet} from "./Nav/NavOutlet";
 import {Col, Container, Row} from "react-bootstrap";
 
-export const Main = () => (
+export const Main: React.FunctionComponent = () => (
     <HashRouter hashType={'noslash'}>
         <Container fluid={true}>
             <Row className='flex-xl-nowrap'>

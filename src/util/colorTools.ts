@@ -1,4 +1,4 @@
-const backgroundColor = () => {
+const backgroundColor = (): string => {
     const backgroundElement = document.querySelector('.round__app__table');
     if (backgroundElement) {
         const style = getComputedStyle(backgroundElement);
@@ -8,9 +8,9 @@ const backgroundColor = () => {
     return 'rgba(0,0,0,1)';
 };
 
-const shadeRGBAColor = (color, percent) => {
+const shadeRGBAColor = (color: string, percent: number): string => {
     const f = color.split(","), t = percent < 0 ? 0 : 255, p = percent < 0 ? percent * -1 : percent;
-    const R = parseInt(f[0].replace(/\D/g,'')), G = parseInt(f[1]), B = parseInt(f[2]);
+    const R = parseInt(f[0].replace(/\D/g, '')), G = parseInt(f[1]), B = parseInt(f[2]);
     const A = f.length > 3 ? parseFloat(f[3]) : 1;
 
     return "rgba(" +
@@ -20,4 +20,5 @@ const shadeRGBAColor = (color, percent) => {
         (Math.min(Math.max(A + (A * -percent), 0.0), 1.0)) + ")";
 };
 
-export const getBackgroundColor = (shadePercent=0) => (shadeRGBAColor(backgroundColor(), shadePercent));
+export const getBackgroundColor = (shadePercent= 0): string =>
+    (shadeRGBAColor(backgroundColor(), shadePercent));

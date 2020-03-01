@@ -1,1 +1,0 @@
-export const NAMESPACE_UUID = '73c39b21-bf87-4cfd-8237-c352964341a0';

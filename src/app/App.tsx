@@ -8,50 +8,58 @@ import {useDispatch} from "react-redux";
 import {getSets} from "../slices/sets";
 import {getFrequentlyUsed} from "../slices/frequentlyUsed";
 
-interface Mount {
-    username: string,
-    mount: HTMLElement,
-    keyboardShortcutsEnabled?: boolean
+type Mount = {
+    username: string | null;
+    mount: HTMLElement | null;
+    keyboardShortcutsEnabled?: boolean;
 }
+
+interface ContainerProps {
+    username: string;
+    mount: HTMLElement;
+    keyboardShortcutsEnabled?: boolean;
+}
+
+const Container: React.FunctionComponent<ContainerProps> =
+    ({username, mount, keyboardShortcutsEnabled = false}:
+         ContainerProps) => {
+        const dispatch = useDispatch();
+
+        const [listElement] = useState(document.createElement('div'));
+        const [buttonElement] = useState(document.createElement('div'));
+
+        listElement.classList.add('lt-list');
+        buttonElement.classList.add('lt-button');
+
+        useEffect(() => {
+            mount.appendChild(listElement);
+            mount.appendChild(buttonElement);
+
+            return (): void => {
+                mount.removeChild(listElement);
+                mount.removeChild(buttonElement);
+            }
+        }, [buttonElement, listElement, mount]);
+
+        useEffect(() => {
+            console.log(`%cLoading User: ${username}`, 'font-size: 1.5em; font-weight: bold; color: red');
+            dispatch(getUser(username));
+        }, [username, dispatch]);
+
+        return (
+            <>
+                {ReactDOM.createPortal(<TagList username={username}/>, listElement)}
+                {ReactDOM.createPortal(<TagChooser username={username}
+                                                   keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>, buttonElement)}
+            </>
+        );
+    };
 
 interface AppProps {
-    mounts: Mount[]
+    mounts: Mount[];
 }
 
-const Container = ({username, mount, keyboardShortcutsEnabled}: Mount) => {
-    const dispatch = useDispatch();
-
-    const [listElement] = useState(document.createElement('div'));
-    const [buttonElement] = useState(document.createElement('div'));
-
-    listElement.classList.add('lt-list');
-    buttonElement.classList.add('lt-button');
-
-    useEffect(() => {
-        mount.appendChild(listElement);
-        mount.appendChild(buttonElement);
-
-        return () => {
-            mount.removeChild(listElement);
-            mount.removeChild(buttonElement);
-        }
-    }, []);
-
-    useEffect(() => {
-        console.log(`%cLoading User: ${username}`, 'font-size: 1.5em; font-weight: bold; color: red');
-        dispatch(getUser(username));
-    }, [username, dispatch]);
-
-    return (
-        <>
-            {ReactDOM.createPortal(<TagList username={username}/>, listElement)}
-            {ReactDOM.createPortal(<TagChooser username={username}
-                                               keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>, buttonElement)}
-        </>
-    );
-};
-
-export const App = ({mounts}: AppProps) => {
+export const App: React.FunctionComponent<AppProps> = ({mounts}: AppProps) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -62,7 +70,8 @@ export const App = ({mounts}: AppProps) => {
 
     return (
         <>
-            {mounts.map(data => (<Container key={data.username} username={data.username} mount={data.mount}/>))}
+            {mounts.map(data => ((data && data.username && data.mount) &&
+                <Container key={data.username} username={data.username} mount={data.mount}/>))}
         </>
     );
 };

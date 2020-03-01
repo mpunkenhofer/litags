@@ -4,21 +4,22 @@ import {getBackgroundColor} from "../../util/colorTools";
 import {Set, Tag} from "../../api/storageAPI";
 
 interface TagChooserGroupInterface {
-    set: Set,
-    onTagClicked: (tag: Tag) => () => void,
+    set: Set;
+    onTagClicked: (tag: Tag) => () => void;
     icon?: React.ReactNode;
 }
 
-const TagChooserGroup = ({set, onTagClicked, icon}: TagChooserGroupInterface) => (
+const TagChooserGroup: React.FunctionComponent<TagChooserGroupInterface> =
+    ({set, onTagClicked, icon}: TagChooserGroupInterface) => (
     <section className='lt-tcg'>
         <header style={{
             backgroundColor: getBackgroundColor(-.3),
             borderColor: getBackgroundColor(.15)
         }}
                 className={'lt-tcg-header'}>
-            {((set && set.icon_url) || icon) &&
+            {((set && set.iconUrl) || icon) &&
             <div className={'lt-tcg-header-icon'}>
-                {((set && set.icon_url) && !icon) && <img src={set.icon_url} alt={'Set Icon'}/>}
+                {((set && set.iconUrl) && !icon) && <img src={set.iconUrl} alt={'Set Icon'}/>}
                 {icon && icon}
             </div>
             }

@@ -2,7 +2,7 @@ import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {i18n} from "../../../constants/i18n";
 
-export const Home = () => {
+export const Home: React.FunctionComponent = () => {
     useSetDocumentTitle(i18n.home, 'Litags');
 
     return (

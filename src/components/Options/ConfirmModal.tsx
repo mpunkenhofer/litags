@@ -3,17 +3,17 @@ import {i18n} from "../../constants/i18n";
 import * as React from "react";
 
 interface ConfirmModalProps {
-    show: boolean,
-    onCancel: () => void,
-    onConfirm: () => void,
-    variant: 'warning' | 'danger'
-    title?: string,
-    body?: string,
-    confirm?: string,
-    cancel?: string
+    show: boolean;
+    onCancel: () => void;
+    onConfirm: () => void;
+    variant: 'warning' | 'danger';
+    title?: string;
+    body?: string;
+    confirm?: string;
+    cancel?: string;
 }
 
-export const ConfirmModal = ({
+export const ConfirmModal: React.FunctionComponent<ConfirmModalProps> = ({
                                  variant = 'danger',
                                  show,
                                  onCancel,

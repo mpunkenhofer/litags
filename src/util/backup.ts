@@ -10,46 +10,44 @@ import {
     postOptions, postSets, postFrequentlyUsed, postUsers
 } from "../api/storageAPI";
 import isEmpty from 'lodash/isempty';
-
-const pkg = require('../../package.json');
+import pkg from '../../package.json';
 
 interface Backup {
-    app: string
-    version: string,
-    url: string,
-    date: number,
-    settings?: Options,
-    users?: User[],
-    sets?: Set[],
-    frequentlyUsed?: FrequentlyUsed
+    app: string;
+    version: string;
+    url: string;
+    date: number;
+    settings?: Options;
+    users?: User[];
+    sets?: Set[];
+    frequentlyUsed?: FrequentlyUsed;
 }
 
-export async function importBackup(options: Options, data: string) {
+export const importBackup = async (options: Options, data: string): Promise<void> => {
     const backup: Backup = JSON.parse(data);
 
     // console.log('IMPORT BACKUP');
     // console.log(backup);
     // console.log(options);
 
-    if(options.import.settings && !isEmpty(backup.settings)) {
+    if (options.import.settings && !isEmpty(backup.settings) && backup.settings) {
         await postOptions(backup.settings);
     }
 
-    if(options.import.sets && !isEmpty(backup.sets)) {
+    if (options.import.sets && !isEmpty(backup.sets) && backup.sets) {
         await postSets(backup.sets);
     }
 
-    if(options.import.frequentlyUsedTags && !isEmpty(backup.frequentlyUsed)) {
+    if (options.import.frequentlyUsedTags && !isEmpty(backup.frequentlyUsed) && backup.frequentlyUsed) {
         await postFrequentlyUsed(backup.frequentlyUsed);
     }
 
-    if(options.import.users && !isEmpty(backup.users)) {
-        console.log('hello');
+    if (options.import.users && !isEmpty(backup.users) && backup.users) {
         await postUsers(backup.users);
     }
-}
+};
 
-export async function exportBackup(options: Options): Promise<string> {
+export const exportBackup  = async (options: Options): Promise<string> => {
     const backup: Backup = {
         app: pkg.name,
         version: pkg.version,
@@ -62,4 +60,4 @@ export async function exportBackup(options: Options): Promise<string> {
     };
 
     return JSON.stringify(backup, null, 2);
-}
+};

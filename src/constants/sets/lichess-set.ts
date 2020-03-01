@@ -2,8 +2,8 @@ import {SetData} from "./index";
 
 const lichessSetData: SetData = {
     "name": "Lichess",
-    "icon_url": "https://i.imgur.com/0DxAhWt.png",
-    "font_url": '',
+    "iconUrl": "https://i.imgur.com/0DxAhWt.png",
+    "fontUrl": '',
     "tags": {
         "exit": [[], "0", ''],
         "tv": [[], "1", ''],
@@ -71,7 +71,7 @@ const lichessSetData: SetData = {
         "upload-cloud": [[], ".", ''],
         "pointer": [["ultrabullet", "variant", ''], "{", ''],
         "hookah": [["bongcloud", ''], "~", ''],
-        "berserk": [[], "\`", '']
+        "berserk": [[], "`", '']
     }
 };
 

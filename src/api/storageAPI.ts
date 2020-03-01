@@ -1,9 +1,6 @@
 import defaultSets from "../constants/sets";
 import {browser} from "webextension-polyfill-ts";
-import {NAMESPACE_UUID} from "../constants/uuid";
-
-const uuidv4 = require('uuid/v4');
-const uuidv5 = require('uuid/v5');
+import { v4, v5 } from 'uuid';
 
 const ENDPOINTS = {
     USERS: 'USERS',
@@ -12,41 +9,70 @@ const ENDPOINTS = {
     FREQUENTLY_USED: 'FREQUENTLY_USED'
 };
 
-export interface Tag {
-    id: string,
-    name: string,
-    aliases: string[],
-    uri: string,
-    color?: string
+export type Tag = {
+    id: string;
+    name: string;
+    aliases: string[];
+    uri: string;
+    color?: string;
 }
 
-export interface Set {
-    id: string,
-    name: string,
-    icon_url: string,
-    font_url: string,
-    tags: Tag[]
+export type Set = {
+    id: string;
+    name: string;
+    iconUrl: string;
+    fontUrl: string;
+    tags: Tag[];
 }
 
-export interface User {
-    name: string,
-    tags: string[]
+export type User = {
+    name: string;
+    tags: string[];
 }
 
-export interface ImportExportOptions {
-    users: boolean,
-    sets: boolean,
-    frequentlyUsedTags: boolean,
-    settings: boolean
+export type ImportExportOptions = {
+    users: boolean;
+    sets: boolean;
+    frequentlyUsedTags: boolean;
+    settings: boolean;
 }
 
-export interface Options {
-    enabled: true
-    import: ImportExportOptions,
-    export: ImportExportOptions,
+export type Options = {
+    enabled: true;
+    import: ImportExportOptions;
+    export: ImportExportOptions;
 }
 
 export type FrequentlyUsed = [string, number][];
+
+const createTag = (id: string, name: string, aliases: string[], uri: string, color?: string): Tag => {
+    return (color !== undefined) ? {id, name, aliases, uri, color} : {id, name, aliases, uri};
+};
+
+const getDefaultSets = (): Set[] => {
+    const sets = [];
+
+    for (const set of defaultSets) {
+        //TODO: create predictable ids for tags to support import of tag ids from backup files
+        const tags = Object.entries(set.tags).map(([name, [aliases, uri, color]]) =>
+            createTag(v4()/*v5(`${set.name}${name}${uri}`, v5.DNS)*/, name, aliases, uri, color));
+
+        sets.push({...set, id: v4(), tags});
+    }
+
+    return sets;
+};
+
+const getDefaultOptions = (): Options => {
+    const importExportDefaults: ImportExportOptions = {
+        users: true,
+        sets: true,
+        frequentlyUsedTags: true,
+        settings: true
+    };
+
+    return {enabled: true, export: importExportDefaults, import: importExportDefaults};
+};
 
 export const getSets = async (): Promise<Set[]> => {
     const sets = (await browser.storage.local.get(ENDPOINTS.SETS))[ENDPOINTS.SETS];
@@ -60,7 +86,7 @@ export const getSets = async (): Promise<Set[]> => {
     }
 };
 
-export const postSets = async (sets: Set[]): Promise<Set[]> => {
+export const postSets = async (sets: Set[] | null): Promise<Set[]> => {
     if (!sets)
         return Promise.reject('postSets: Invalid argument!');
     else {
@@ -70,26 +96,26 @@ export const postSets = async (sets: Set[]): Promise<Set[]> => {
     }
 };
 
-export const getUser = async (username: string): Promise<User> => {
+export const getUser = async (username: string | null): Promise<User> => {
     if (!username)
         return Promise.reject('getUser: Invalid argument!');
 
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
 
-    if (users && users.hasOwnProperty(username)) {
+    if (users && Object.prototype.hasOwnProperty.call(users, username)) {
         return users[username] as User;
     } else {
         return Promise.reject(`User: ${username} not found.`);
     }
 };
 
-export const deleteUser = async (username: string): Promise<User> => {
+export const deleteUser = async (username: string | null): Promise<User> => {
     if (!username)
         return Promise.reject('deleteUser: Invalid argument!');
 
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
 
-    if (users && users.hasOwnProperty(username)) {
+    if (users && Object.prototype.hasOwnProperty.call(users, username)) {
         const {[username]: user, ...updatedUsers} = users;
         await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
         return user as User;
@@ -102,20 +128,20 @@ export const getUsers = async (): Promise<User[]> => {
     const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
 
     if (users) {
-        const users_array: User[] = [];
+        const usersArray: User[] = [];
 
         for (const user in users) {
-            if (users.hasOwnProperty(user))
-                users_array.push(users[user]);
+            if (Object.prototype.hasOwnProperty.call(users, user))
+                usersArray.push(users[user]);
         }
 
-        return users_array;
+        return usersArray;
     } else {
         return [];
     }
 };
 
-export const postUsers = async (users: User[]): Promise<User[]> => {
+export const postUsers = async (users: User[] | null): Promise<User[]> => {
     if (!users)
         return Promise.reject('postUsers: Invalid argument!');
     else {
@@ -131,7 +157,7 @@ export const postUsers = async (users: User[]): Promise<User[]> => {
     }
 };
 
-export const postUser = async (user: User): Promise<User> => {
+export const postUser = async (user: User | null): Promise<User> => {
     if (!user)
         return Promise.reject('postUser: Invalid argument!');
 
@@ -153,7 +179,7 @@ export const getOptions = async (): Promise<Options> => {
     }
 };
 
-export const postOptions = async (options: Options): Promise<Options> => {
+export const postOptions = async (options: Options | null): Promise<Options> => {
     if (!options)
         return Promise.reject('postOptions: Invalid argument!');
 
@@ -173,7 +199,7 @@ export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
     }
 };
 
-export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
+export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed | null): Promise<FrequentlyUsed> => {
     if (!frequentlyUsedIDs)
         return Promise.reject('postFrequentlyUsed: Invalid argument!');
 
@@ -181,35 +207,7 @@ export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Pro
     return frequentlyUsedIDs;
 };
 
-const createTag = (id: string, name: string, aliases: string[], uri: string, color?): Tag => {
-    return (color !== undefined) ? {id, name, aliases, uri, color} : {id, name, aliases, uri};
-};
-
-const getDefaultSets = (): Set[] => {
-    const sets = [];
-
-    for (const set of defaultSets) {
-        const tags = Object.entries(set.tags).map(([name, [aliases, uri, color]]) =>
-            createTag(uuidv5(`${set.name}${name}${uri}`, NAMESPACE_UUID), name, aliases, uri, color));
-
-        sets.push({...set, id: uuidv4(), tags});
-    }
-
-    return sets;
-};
-
-const getDefaultOptions = (): Options => {
-    const importExportDefaults: ImportExportOptions = {
-        users: true,
-        sets: true,
-        frequentlyUsedTags: true,
-        settings: true
-    };
-
-    return {enabled: true, export: importExportDefaults, import: importExportDefaults};
-};
-
-export const enableStorageApiLogger = () => {
+export const enableStorageApiLogger = (): void => {
     browser.storage.onChanged.addListener((changes, area) => {
         console.group('%cStorage area ' + `%c${area} ` + '%cchanged.',
             'font-size: 1.3em; font-weight: bold; color: gray', 'font-size: 1.3em; font-weight: bold; color: red',
