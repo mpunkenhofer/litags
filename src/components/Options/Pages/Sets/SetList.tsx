@@ -9,7 +9,7 @@ interface SortableItemProps {
 
 const DragHandle = SortableHandle(() =>
     <img src={'/assets/grip-lines-solid.svg'} alt={'Drag Handle Icon'}
-         className='lt-options-drag-handle d-none d-lg-block mr-1 mr-md-2'/>);
+         className='lt-options-drag-handle d-none d-xl-block mr-1 mr-md-2'/>);
 
 const SortableItem = SortableElement(({name}: SortableItemProps) =>
     <li className='nav-item'>
@@ -26,7 +26,7 @@ interface SortableListProps {
 
 const SortableList = SortableContainer(({names}: SortableListProps) => {
     return (
-        <ul className='nav flex-row flex-lg-column nav-pills py-2'>
+        <ul className='nav flex-row flex-xl-column nav-pills py-2'>
             {names.map((name, index) => (
                 <SortableItem key={`item-${name}`} index={index} name={name}/>
             ))}

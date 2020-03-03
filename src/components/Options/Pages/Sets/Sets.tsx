@@ -8,7 +8,7 @@ import {RootState} from "../../../../app/rootReducer";
 import {Container, Col, Row, Spinner} from "react-bootstrap";
 import {SetList} from "./SetList";
 import {HashRouter, Redirect, Route, Switch} from "react-router-dom";
-import {SetDisplay} from "./SetDisplay";
+import {SetView} from "./SetView";
 
 export const Sets: React.FunctionComponent = () => {
     const dispatch = useDispatch();
@@ -29,18 +29,18 @@ export const Sets: React.FunctionComponent = () => {
     } else if (sets) {
         return (
             <>
-                <Container className=''>
+                <Container className='' fluid={true}>
                     <HashRouter hashType={'noslash'} basename={'sets'}>
-                        <Row className='flex-lg-nowrap'>
-                            <Col md={3} xl={2} className=''>
+                        <Row className='flex-column flex-lg-row'>
+                            <Col md='auto' xl={2} className=''>
                                 <SetList sets={sets}/>
                             </Col>
-                            <Col md={9} xl={10}>
+                            <Col md='auto' xl={8}>
                                 <Switch>
                                     {
                                         sets.map(set => (
                                             <Route key={set.id} path={`/${set.name}`}>
-                                                <SetDisplay set={set}/>
+                                                <SetView set={set}/>
                                             </Route>
                                         ))
                                     }

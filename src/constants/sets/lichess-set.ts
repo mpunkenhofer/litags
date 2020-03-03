@@ -64,11 +64,11 @@ const lichessSetData: SetData = {
         "flame": [["blitz", ''], ")", ''],
         "book": [["repo", ''], "]", ''],
         "link": [["chain", ''], "\"", ''],
-        "die-six": [["die", "dice", "960", "chess960", "variant", ''], "\"", ''],
+        "die-six": [["die", "dice", "960", "chess960", "variant", ''], "'", ''],
         "nuclear": [[], ",", ''],
         "arrow-streamline-target": [[], "-", ''],
         "buffer": [["threecheck", "variant", ''], ".", ''],
-        "upload-cloud": [[], ".", ''],
+        "upload-cloud": [[], "/", ''],
         "pointer": [["ultrabullet", "variant", ''], "{", ''],
         "hookah": [["bongcloud", ''], "~", ''],
         "berserk": [[], "`", '']

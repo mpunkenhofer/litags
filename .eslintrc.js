@@ -15,7 +15,7 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking' // slow but recommended
+        //'plugin:@typescript-eslint/recommended-requiring-type-checking' // slow but recommended
     ],
     "rules": {
         "react-hooks/rules-of-hooks": "error",

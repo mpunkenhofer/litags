@@ -48,6 +48,9 @@
   "set": {
     "message": "Set"
   },
+  "setName": {
+    "message": "Set Name"
+  },
   "home": {
     "message": "Home"
   },
@@ -78,6 +81,12 @@
   "URL": {
     "message": "URL"
   },
+  "symbol": {
+    "message": "Symbol"
+  },
+  "tagName": {
+    "message": "Tag Name"
+  },
   "lastSeen": {
     "message": "Last seen"
   },
@@ -96,11 +105,20 @@
   "tagSets": {
     "message": "Tag Sets"
   },
+  "color": {
+    "message": "Color"
+  },
   "usersFound": {
     "message": "Users found"
   },
   "tagsFound": {
     "message": "Tags found"
+  },
+  "imageURL": {
+    "message": "Image URL"
+  },
+  "setIconURL": {
+    "message": "Set Icon URL"
   },
   "chooseFile": {
     "message": "Choose File"

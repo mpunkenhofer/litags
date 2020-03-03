@@ -35,4 +35,11 @@ export const i18n = {
     importJsonFileError: f('importJsonFileError'),
     importSuccess: f('importSuccess'),
     importConfirm: f('importConfirm'),
+    imageURL: f('imageURL'),
+    symbol: f('symbol'),
+    tagName: f('tagName'),
+    aliases: f('aliases'),
+    color: f('color'),
+    setName: f('setName'),
+    setIconURL: f('setIconURL')
 };
