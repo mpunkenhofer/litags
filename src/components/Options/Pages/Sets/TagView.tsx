@@ -5,13 +5,41 @@ import {Container, Col, Row} from "react-bootstrap";
 import {ColorPicker} from "../../ColorPicker";
 import {Badge} from "../../Badge";
 import {i18n} from "../../../../constants/i18n";
+import {useDispatch, useSelector} from "react-redux";
+import {updateTagColor, updateTagName, updateTagURI} from "../../../../slices/sets";
+import {ChangeEvent} from "react";
+import {RootState} from "../../../../app/rootReducer";
+import {throttle} from 'lodash';
+
+let count = 0;
 
 interface TagViewProps {
     tag: TagType;
 }
 
 export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewProps) => {
+    const dispatch = useDispatch();
+    const sTag = useSelector((state: RootState) => state.sets.tagsById[tag.id]);
+
     const fontTag = tag.color != undefined;
+
+    const onChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
+        if(event && event.target && event.target.value !== undefined) {
+            dispatch(updateTagName(tag.id, event.target.value));
+        }
+    };
+
+    const onChangeURI = (event: ChangeEvent<HTMLInputElement>): void => {
+        if(event && event.target && event.target.value !== undefined) {
+            dispatch(updateTagURI(tag.id, event.target.value));
+        }
+    };
+
+    const onChangeColor = (color: string): void => {
+        if(color) {
+            dispatch(updateTagColor(tag.id, color));
+        }
+    };
 
     return (
         <Container fluid={true}>
@@ -40,16 +68,17 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
             </Row>
             <Row className='align-items-center'>
                 <Col xs={1}>
-                    <Tag tag={tag}/>
+                    <Tag tag={sTag}/>
                 </Col>
                 <Col>
-                    <input type='text' className='form-control' value={tag.name} placeholder={i18n.tagName}/>
+                    <input type='text' className='form-control' value={sTag.name} placeholder={i18n.tagName}
+                           onChange={onChangeName}/>
                 </Col>
                 {
-                    (tag.aliases && tag.aliases.length > 0) &&
+                    (sTag.aliases && sTag.aliases.length > 0) &&
                     <Col>
                         {
-                            tag.aliases.map((alias, index) => (
+                            sTag.aliases.map((alias, index) => (
                                 <Badge key={`alias-${index}-${tag.id}]`} text={alias}
                                        onRemoveButtonClicked={(): void => console.log('remove clicked')}/>
                             ))
@@ -57,13 +86,13 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
                     </Col>
                 }
                 <Col>
-                    <input type='text' className='form-control' value={tag.uri}
-                           placeholder={fontTag ? i18n.symbol : i18n.imageURL}/>
+                    <input type='text' className='form-control' value={sTag.uri}
+                           placeholder={fontTag ? i18n.symbol : i18n.imageURL} onChange={onChangeURI}/>
                 </Col>
                 {
-                    (tag.color != undefined) &&
+                    (sTag.color != undefined) &&
                     <Col xs={1} className='align-middle'>
-                        <ColorPicker color={tag.color}/>
+                        <ColorPicker color={sTag.color ? sTag.color : '#000000'} onChangeComplete={onChangeColor}/>
                     </Col>
                 }
             </Row>

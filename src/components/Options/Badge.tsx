@@ -19,7 +19,7 @@ export const Badge: React.FunctionComponent<BadgeProps> = ({text, onRemoveButton
             {
                 hovering &&
                 <button type="button" className="close position-relative"
-                        style={{top: '-10px', right: '5px', borderRadius: '50%', color: 'red'}}
+                        style={{top: '-10px', right: '8px', borderRadius: '50%', color: 'red'}}
                         onClick={onRemoveButtonClicked}>
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -39,7 +39,7 @@ export const Sets: React.FunctionComponent = () => {
                                 <Switch>
                                     {
                                         sets.map(set => (
-                                            <Route key={set.id} path={`/${set.name}`}>
+                                            <Route key={set.id} path={`/${set.id}`}>
                                                 <SetView set={set}/>
                                             </Route>
                                         ))
@@ -47,7 +47,7 @@ export const Sets: React.FunctionComponent = () => {
                                     {
                                         (sets.length > 0) &&
                                         <Route path="/">
-                                            <Redirect to={`/${sets[0].name}`}/>
+                                            <Redirect to={`/${sets[0].id}`}/>
                                         </Route>
                                     }
                                 </Switch>
