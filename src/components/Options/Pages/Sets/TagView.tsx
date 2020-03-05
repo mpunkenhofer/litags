@@ -6,12 +6,9 @@ import {ColorPicker} from "../../ColorPicker";
 import {Badge} from "../../Badge";
 import {i18n} from "../../../../constants/i18n";
 import {useDispatch, useSelector} from "react-redux";
-import {updateTagColor, updateTagName, updateTagURI} from "../../../../slices/sets";
-import {ChangeEvent} from "react";
+import {removeAlias, updateTagColor, updateTagName, updateTagURI} from "../../../../slices/sets";
+import {ChangeEvent, useCallback} from "react";
 import {RootState} from "../../../../app/rootReducer";
-import {throttle} from 'lodash';
-
-let count = 0;
 
 interface TagViewProps {
     tag: TagType;
@@ -19,27 +16,32 @@ interface TagViewProps {
 
 export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewProps) => {
     const dispatch = useDispatch();
+
     const sTag = useSelector((state: RootState) => state.sets.tagsById[tag.id]);
 
     const fontTag = tag.color != undefined;
 
     const onChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
-        if(event && event.target && event.target.value !== undefined) {
+        if (event && event.target && event.target.value !== undefined) {
             dispatch(updateTagName(tag.id, event.target.value));
         }
     };
 
     const onChangeURI = (event: ChangeEvent<HTMLInputElement>): void => {
-        if(event && event.target && event.target.value !== undefined) {
+        if (event && event.target && event.target.value !== undefined) {
             dispatch(updateTagURI(tag.id, event.target.value));
         }
     };
 
-    const onChangeColor = (color: string): void => {
-        if(color) {
+    const onChangeColor = useCallback((color: string): void => {
+        if (color) {
             dispatch(updateTagColor(tag.id, color));
         }
-    };
+    }, [dispatch, tag]);
+
+    const onRemoveAliasButtonClicked = useCallback((alias: string) => (): void => {
+        dispatch(removeAlias(tag.id, alias))
+    }, [dispatch, tag]);
 
     return (
         <Container fluid={true}>
@@ -80,7 +82,7 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
                         {
                             sTag.aliases.map((alias, index) => (
                                 <Badge key={`alias-${index}-${tag.id}]`} text={alias}
-                                       onRemoveButtonClicked={(): void => console.log('remove clicked')}/>
+                                       onRemoveButtonClicked={onRemoveAliasButtonClicked(alias)}/>
                             ))
                         }
                     </Col>

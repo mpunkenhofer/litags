@@ -29,7 +29,6 @@ export const i18n = {
     searchUsersPlaceHolder: f('searchUsersPlaceholder'),
     searchTagsPlaceHolder: f('searchTagsPlaceholder'),
     deleteUserConfirm: f('deleteUserConfirm'),
-    deleteTagConfirm: f('deleteTagConfirm'),
     exportNoneSelectedError: f('exportNoneSelectedError'),
     importNoneSelectedError: f('importNoneSelectedError'),
     importJsonFileError: f('importJsonFileError'),
@@ -41,5 +40,14 @@ export const i18n = {
     aliases: f('aliases'),
     color: f('color'),
     setName: f('setName'),
-    setIconURL: f('setIconURL')
+    setIconURL: f('setIconURL'),
+    addTag: f('addTag'),
+    addSet: f('addSet'),
+    newSet: f('newSet'),
+    newTag: f('newTag'),
+    noIcon: f('noIcon'),
+    deleteSet: f('deleteSet'),
+    deleteSetConfirm: f('deleteSetConfirm'),
+    deleteSelectedTag: f('deleteSelectedTag'),
+    deleteTagConfirm: f('deleteTagConfirm'),
 };

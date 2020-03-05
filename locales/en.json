@@ -36,6 +36,12 @@
   "deleteUser": {
     "message": "Delete User"
   },
+  "deleteSet": {
+    "message": "Delete Set"
+  },
+  "deleteSelectedTag": {
+    "message": "Delete selected Tag"
+  },
   "tags": {
     "message": "Tags"
   },
@@ -50,6 +56,15 @@
   },
   "setName": {
     "message": "Set Name"
+  },
+  "newSet": {
+    "message": "New Set"
+  },
+  "newTag": {
+    "message": "New Tag"
+  },
+  "noIcon": {
+    "message": "No Icon"
   },
   "home": {
     "message": "Home"
@@ -86,6 +101,12 @@
   },
   "tagName": {
     "message": "Tag Name"
+  },
+  "addTag": {
+    "message": "Add Tag"
+  },
+  "addSet": {
+    "message": "Add Set"
   },
   "lastSeen": {
     "message": "Last seen"
@@ -151,6 +172,10 @@
   "deleteTagConfirm": {
     "message": "Are you sure you want to delete tag %s?",
     "description": "%s is a placeholder for the tag name of the to be deleted tag."
+  },
+  "deleteSetConfirm": {
+    "message": "Are you sure you want to delete set %s?",
+    "description": "%s is a placeholder for the set name of the to be deleted set."
   },
   "importConfirm": {
     "message": "Are you sure you want to import this file? Importing will overwrite all existing data of the entries you have selected."

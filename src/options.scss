@@ -52,6 +52,13 @@
   height: 1.5rem;
 }
 
+.lt-addSet-icon {
+  background: none;
+  &:hover {
+    color: black !important;
+  }
+}
+
 .lt-brand-icon {
   width: 2rem;
   height: 2rem;

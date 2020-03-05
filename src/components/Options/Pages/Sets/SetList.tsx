@@ -3,7 +3,10 @@ import {Set} from "../../../../api/storageAPI"
 import * as React from "react";
 import {NavLink} from "react-router-dom";
 import arrayMove from "array-move";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
+import {i18n} from "../../../../constants/i18n";
+import {useDispatch} from "react-redux";
+import {addSet} from "../../../../slices/sets";
 
 interface SortableItemProps {
     id: string;
@@ -24,7 +27,7 @@ const SortableItem = SortableElement(({id, name}: SortableItemProps) =>
 );
 
 interface SortableListProps {
-    pairs: {id: string; name: string}[];
+    pairs: { id: string; name: string }[];
 }
 
 const SortableList = SortableContainer(({pairs}: SortableListProps) => {
@@ -42,20 +45,33 @@ interface SetListProps {
 }
 
 export const SetList: React.FunctionComponent<SetListProps> = ({sets}: SetListProps) => {
-    const [pairs, setPairs] = useState<{id: string; name: string}[]>(sets.map(set => ({id: set.id, name: set.name})));
+    const dispatch = useDispatch();
+
+    const [pairs, setPairs] = useState<{ id: string; name: string }[]>(sets.map(set => ({id: set.id, name: set.name})));
 
     useEffect(() => {
         setPairs(sets.map(set => ({id: set.id, name: set.name})));
     }, [sets]);
 
-    const onSortEnd = ({oldIndex, newIndex}: {oldIndex: number; newIndex: number}): void => {
+    const onSortEnd = ({oldIndex, newIndex}: { oldIndex: number; newIndex: number }): void => {
         setPairs(arrayMove(pairs, oldIndex, newIndex));
     };
 
+    const onAddSetClicked = useCallback((): void => {
+        dispatch(addSet(i18n.newSet));
+    }, [dispatch]);
+
     return (
-        <SortableList pairs={pairs}
-                      useDragHandle={true}
-                      onSortEnd={onSortEnd}
-                      helperClass={'lt-options-drag-helper'}/>
+        <>
+            <div className='d-none d-xl-flex mb-2'>
+                <strong className='text-muted'>{i18n.sets}</strong>
+                <button title={i18n.addSet} className='ml-auto lt-plus-icon text-muted lt-addSet-icon'
+                        onClick={onAddSetClicked}/>
+            </div>
+            <SortableList pairs={pairs}
+                          useDragHandle={true}
+                          onSortEnd={onSortEnd}
+                          helperClass={'lt-options-drag-helper'}/>
+        </>
     );
 };

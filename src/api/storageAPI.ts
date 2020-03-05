@@ -45,7 +45,7 @@ export type Options = {
 
 export type FrequentlyUsed = [string, number][];
 
-const createTag = (id: string, name: string, aliases: string[], uri: string, color?: string): Tag => {
+export const createTag = (id: string, name: string, aliases: string[], uri: string, color?: string): Tag => {
     return (color !== undefined) ? {id, name, aliases, uri, color} : {id, name, aliases, uri};
 };
 

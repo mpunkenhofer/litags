@@ -83,9 +83,9 @@ const UserList: React.FunctionComponent<UserListProps> = ({users}: UserListProps
     const onInput = (e: FormEvent<HTMLInputElement>): void =>
         setSearchResults(searchUser((e.target as HTMLInputElement).value));
 
-    const onDeleteButtonClicked = (name: string) => (): void => {
+    const onDeleteButtonClicked = useCallback((name: string) => (): void => {
         dispatch(deleteUser(name));
-    };
+    }, [dispatch]);
 
     const displayUsers = (searchResults && searchResults.length > 0) ? searchResults : users;
 
