@@ -6,7 +6,7 @@ import {ColorPicker} from "../../ColorPicker";
 import {Badge} from "../../Badge";
 import {i18n} from "../../../../constants/i18n";
 import {useDispatch, useSelector} from "react-redux";
-import {removeAlias, updateTagColor, updateTagName, updateTagURI} from "../../../../slices/sets";
+import {postSets, removeAlias, updateTagColor, updateTagName, updateTagURI} from "../../../../slices/sets";
 import {ChangeEvent, useCallback} from "react";
 import {RootState} from "../../../../app/rootReducer";
 
@@ -15,32 +15,39 @@ interface TagViewProps {
 }
 
 export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewProps) => {
+    /*TODO:
+        - Aliases: Support adding aliases (action already exists: addAlias)
+     */
     const dispatch = useDispatch();
 
     const sTag = useSelector((state: RootState) => state.sets.tagsById[tag.id]);
 
     const fontTag = tag.color != undefined;
 
-    const onChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
+    const onChangeName = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
             dispatch(updateTagName(tag.id, event.target.value));
+            dispatch(postSets());
         }
-    };
+    }, [dispatch, tag]);
 
-    const onChangeURI = (event: ChangeEvent<HTMLInputElement>): void => {
+    const onChangeURI = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
             dispatch(updateTagURI(tag.id, event.target.value));
+            dispatch(postSets());
         }
-    };
+    }, [dispatch, tag]);
 
     const onChangeColor = useCallback((color: string): void => {
         if (color) {
             dispatch(updateTagColor(tag.id, color));
+            dispatch(postSets());
         }
     }, [dispatch, tag]);
 
     const onRemoveAliasButtonClicked = useCallback((alias: string) => (): void => {
-        dispatch(removeAlias(tag.id, alias))
+        dispatch(removeAlias(tag.id, alias));
+        dispatch(postSets());
     }, [dispatch, tag]);
 
     return (

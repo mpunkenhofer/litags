@@ -20,6 +20,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
     ({onClickOutside, onTagClicked}: TagChooserPopupInterface) => {
         const {sets, tagsById, loading, error} = useSelector((state: RootState) => state.sets);
         const {frequentlyUsed} = useSelector((state: RootState) => state.frequentlyUsed);
+        const {options} = useSelector((state: RootState) => state.options);
 
         const [searchResults, setSearchResults] = useState<Tag[]>([]);
 
@@ -68,7 +69,9 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                 <TagChooserGroup key={'litags.frequentlyUsed'}
                                                  set={{
                                                      id: '1', name: i18n.frequentlyUsed,
-                                                     tags: frequentlyUsed.map(pair => tagsById[pair[0]]),
+                                                     tags: frequentlyUsed
+                                                         .slice(0, options.frequentlyUsedLimit)
+                                                         .map(pair => tagsById[pair[0]]),
                                                      iconUrl: '', fontUrl: ''
                                                  }}
                                                  icon={<span className={'lt-star-icon'}/>}

@@ -4,7 +4,11 @@
     "description": "[Don't Translate] The title of the browser action button"
   },
   "appDescription": {
-    "message": "A browser extension that enables you to assign tags to players on lichess.org."
+    "message": "LiTags enables you to assign tags to players on lichess.org."
+  },
+  "appDescriptionWithoutLink": {
+    "message": "LiTags enables you to assign tags to players on",
+    "description": "This text is followed by a link to lichess.org"
   },
   "shortcutToggleDescription": {
     "message": "Show/Hide Tag Chooser"
@@ -24,6 +28,10 @@
   "no": {
     "message": "No"
   },
+  "goTo": {
+    "message": "Go to",
+    "description": "Used in contexts like: 'go to' settings"
+  },
   "delete": {
     "message": "Delete"
   },
@@ -38,6 +46,9 @@
   },
   "deleteSet": {
     "message": "Delete Set"
+  },
+  "about": {
+    "message": "About"
   },
   "deleteSelectedTag": {
     "message": "Delete selected Tag"
@@ -102,11 +113,20 @@
   "tagName": {
     "message": "Tag Name"
   },
+  "defaultTag": {
+    "message": "Default Tag"
+  },
   "addTag": {
     "message": "Add Tag"
   },
   "addSet": {
     "message": "Add Set"
+  },
+  "addAlias": {
+    "message": "Add Alias"
+  },
+  "removeAlias": {
+    "message": "Remove Alias"
   },
   "lastSeen": {
     "message": "Last seen"
@@ -128,6 +148,18 @@
   },
   "color": {
     "message": "Color"
+  },
+  "hotkeys": {
+    "message": "Hotkeys"
+  },
+  "contributing": {
+    "message": "Contributing"
+  },
+  "donate": {
+    "message": "Donate"
+  },
+  "discordServer": {
+    "message": "Discord Server"
   },
   "usersFound": {
     "message": "Users found"
@@ -158,6 +190,9 @@
   },
   "showTags": {
     "message": "Show Tags"
+  },
+  "community": {
+    "message": "Community"
   },
   "searchTagsPlaceholder": {
     "message": "Search for a Tag..."
@@ -191,5 +226,41 @@
   },
   "importSuccess": {
     "message": "Successfully imported a backup file!"
+  },
+  "aboutSettingsDescription": {
+    "message": "General LiTags settings."
+  },
+  "aboutTagSetsDescription": {
+    "message": "Add, Edit, Delete sets and their respective tags."
+  },
+  "aboutUsersDescription": {
+    "message": "A searchable list of all users you have tagged."
+  },
+  "aboutBackupDescription": {
+    "message": "Backup or Import your LiTags data. You can choose which type of data to export or import."
+  },
+  "aboutContributionDescription": {
+    "message": "You want to contribute to LiTags? Awesome! Check out the project on GitHub and consider joining the Discord server."
+  },
+  "aboutCommunityDescription": {
+    "message": "Want to chat? Consider joining the Discord Server! Suggest features, report bugs, ask question or just hang out."
+  },
+  "aboutDonateDescription": {
+    "message": "Donations are not required but very appreciated. Currently I only setup PayPal for donations, if you would like to donate via any other means, contact me on Discord or via Github."
+  },
+  "settingsTagListLimitTitle": {
+    "message": "Tag List: Tag Limit:"
+  },
+  "settingsTagListLimitDescription": {
+    "message": "Change the maximum number of tags to be displayed in the user tag lists on Lichess."
+  },
+  "settingsFrequentlyUsedLimitTitle": {
+    "message": "Frequently Used: Tag Limit:"
+  },
+  "settingsFrequentlyUsedLimitDescription": {
+    "message": "Change the maximum number of tags to be displayed in the frequently used section of the Tag Chooser."
+  },
+  "settingsHotkeysDescription": {
+    "message": "You can set available Hotkeys in the your browsers settings: extension shortcuts."
   }
 }

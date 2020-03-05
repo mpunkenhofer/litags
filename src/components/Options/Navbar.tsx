@@ -7,7 +7,7 @@ export const Navbar: React.FunctionComponent = () => (
         <a className={'navbar-brand'} href={'/options.html'}>
             <img src={'/assets/litags.svg'}
                  className={'d-inline-block align-top mr-2 mr-md-4 lt-brand-icon'} alt={'Litags Icon'}/>
-            Litags
+            LiTags
         </a>
         <ul className={'navbar-nav ml-md-auto mr-md-3'}>
             <li className={'nav-item mr-md-2'}>

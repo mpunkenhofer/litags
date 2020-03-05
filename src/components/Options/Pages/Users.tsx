@@ -105,7 +105,7 @@ export const Users: React.FunctionComponent = () => {
     const {userRecord, loading, error} = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
-        console.log(`%cLoading All Users`, 'font-size: 1.5em; font-weight: bold; color: red');
+        //console.log(`%cLoading All Users`, 'font-size: 1.5em; font-weight: bold; color: red');
         dispatch(getAllUsers());
         dispatch(getSets());
     }, [dispatch]);
@@ -127,7 +127,7 @@ export const Users: React.FunctionComponent = () => {
     } else if (userRecord) {
         return (
             <>
-                <h1 className={'h2'}>{i18n.users}</h1>
+                <h1 className={'display-4'}>{i18n.users}</h1>
                 <UserList users={Object.values(userRecord).map(record => record.user)}/>
             </>
         );

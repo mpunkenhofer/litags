@@ -6,10 +6,10 @@ export const Nav: React.FunctionComponent = () => (
     <nav>
         <ul className={'nav flex-row flex-md-column justify-content-center'}>
             <li className={'nav-item'}>
-                <NavLink exact className={'nav-link d-flex'} to='/home'>
+                <NavLink exact className={'nav-link d-flex'} to='/about'>
                     <img src={'/assets/home-solid.svg'} className={'mr-1 mr-md-3 lt-sidebar-icon'}
                          alt={'Home Icon'}/>
-                    <span className={'d-none d-sm-flex'}>{i18n.home}</span>
+                    <span className={'d-none d-sm-flex'}>{i18n.about}</span>
                 </NavLink>
             </li>
             <li className={'nav-item'}>

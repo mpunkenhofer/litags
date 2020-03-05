@@ -2,7 +2,7 @@ import {SetData} from "./index";
 
 const frankerfacezSetData: SetData = {
     "name": "FrakerFaceZ",
-    "iconUrl": "https://frankerfacez.com/static/images/favicon-32.png",
+    "iconUrl": "https://frankerfacez.com/static/images/favicon-192.png",
     "fontUrl": '',
     "tags": {
         "AYAYA": [[], "https://cdn.frankerfacez.com/emoticon/162146/1"],

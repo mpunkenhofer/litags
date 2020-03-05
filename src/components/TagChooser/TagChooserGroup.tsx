@@ -9,6 +9,7 @@ interface TagChooserGroupInterface {
     icon?: React.ReactNode;
 }
 
+//TODO: handle icon sizes better
 const TagChooserGroup: React.FunctionComponent<TagChooserGroupInterface> =
     ({set, onTagClicked, icon}: TagChooserGroupInterface) => (
     <section className='lt-tcg'>
@@ -19,7 +20,8 @@ const TagChooserGroup: React.FunctionComponent<TagChooserGroupInterface> =
                 className={'lt-tcg-header'}>
             {((set && set.iconUrl) || icon) &&
             <div className={'lt-tcg-header-icon'}>
-                {((set && set.iconUrl) && !icon) && <img src={set.iconUrl} alt={'Set Icon'}/>}
+                {((set && set.iconUrl) && !icon) && <img src={set.iconUrl} alt={'Set Icon'}
+                                                         style={{width: '2rem', height: '2rem'}}/>}
                 {icon && icon}
             </div>
             }

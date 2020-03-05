@@ -3,12 +3,24 @@ const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
+const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
+const baseManifest = require('./public/manifest/base');
+const pkg = require('./package.json');
 
 module.exports = {
 	mode: 'production',
+
 	entry: {
-		content: './app/scripts/content.ts',
-		background: './app/scripts/background.ts'
+		content: [
+			'./src/content.tsx',
+			'./src/content.scss',
+		],
+		background: './src/background.ts',
+		options: [
+			'./src/options.tsx',
+			'./src/options.scss',
+		],
 	},
 
 	output: {
@@ -19,15 +31,26 @@ module.exports = {
 	plugins: [
 		new webpack.ProgressPlugin(),
 		new CopyPlugin([
-			{ from: 'app/images', to: 'assets' },
-			{ from: 'app/manifest.json', to: 'manifest.json' },
-			{ from: 'app/_locales', to: '_locales'},
-			{ from: 'app/pages', to: ''}
+			{from: 'public/images/litags_icon*', to: 'assets/[name].[ext]'},
+			{from: 'public/images/*.svg', to: 'assets/[name].[ext]'},
+			{from: 'locales', to: '_locales/[name]/messages.json'},
+			{from: 'public/*.html', to: '[name].[ext]'},
+			{from: 'public/fonts/*.woff', to: 'public/fonts/[name].[ext]'},
+			{from: 'public/fonts/*.woff2', to: 'public/fonts/[name].[ext]'},
 		]),
-		new MiniCssExtractPlugin({
-			filename: 'styles.css',
-			chunkFilename: '[id].css',
+		new WebpackExtensionManifestPlugin({
+			config: {
+				base: baseManifest,
+				extend: {
+					version: pkg.version,
+					homepage_url: pkg.homepage
+				}
+			}
 		}),
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+		}),
+		new IgnoreEmitPlugin([/\/style.js$/, /\/*.LICENSE$/]),
 		new webpack.optimize.AggressiveMergingPlugin(),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 	],
@@ -46,32 +69,20 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /.(ts|tsx)?$/,
+				test: /\.ts(x?)$/,
 				loader: 'ts-loader',
-				include: [path.resolve(__dirname, 'app')],
+				include: [path.resolve(__dirname, 'src')],
 				exclude: [/node_modules/]
 			},
 			{
 				test: /\.scss$/,
-				include: [path.resolve(__dirname, 'app')],
+				include: [path.resolve(__dirname)],
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-			},
-			{
-				test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: '[name].[ext]',
-							outputPath: 'assets/'
-						}
-					}
-				]
 			},
 		]
 	},
 
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.scss'],
+		extensions: ['.ts', '.tsx', '.js', '.scss'],
 	},
 };

@@ -116,7 +116,7 @@ export const Backup: React.FunctionComponent = () => {
                     {alertMessage}
                 </Alert>
             }
-            <h1 className={'h2'}>{i18n.backup}</h1>
+            <h1 className={'display-4'}>{i18n.backup}</h1>
             <Container fluid={true}>
                 <Row className='py-2 py-md-4'>
                     <Col className='bg-light border py-2 py-md-3 px-2 px-md-3 mr-0 mr-md-2 mr-lg-4'>

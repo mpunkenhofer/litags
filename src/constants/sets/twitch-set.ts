@@ -2,7 +2,7 @@ import {SetData} from "./index";
 
 const twitchSetData: SetData = {
     "name": "Twitch",
-    "iconUrl": "https://static.twitchcdn.net/assets/favicon-32-d6025c14e900565d6177.png",
+    "iconUrl": "https://brand.twitch.tv/assets/logos/svg/glitch/purple.svg",
     "fontUrl": '',
     "tags": {
         "4Head": [[], "https://static-cdn.jtvnw.net/emoticons/v1/354/1.0"],

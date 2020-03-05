@@ -11,7 +11,6 @@ type OptionsState = {
 
 const OptionsInitialState: OptionsState = {
     options: {
-        enabled: true,
         import: {
             users: true,
             sets: true,
@@ -23,7 +22,9 @@ const OptionsInitialState: OptionsState = {
             sets: true,
             frequentlyUsedTags: true,
             settings: true
-        }
+        },
+        tagListLimit: 10,
+        frequentlyUsedLimit: 20,
     },
     loading: false,
     error: null
@@ -70,6 +71,12 @@ const optionsSlice = createSlice({
         setExportSettings(state, {payload}: PayloadAction<boolean>): void {
             state.options.export.settings = payload;
         },
+        setTagListLimit(state, {payload}: PayloadAction<number>): void {
+            state.options.tagListLimit = (payload < 0) ? 0 : ((payload > 10) ? 10 : payload);
+        },
+        setFrequentlyUsedLimit(state, {payload}: PayloadAction<number>): void {
+            state.options.frequentlyUsedLimit = (payload < 0) ? 0 : ((payload > 20) ? 20 : payload);
+        }
     }
 });
 
@@ -85,6 +92,8 @@ export const {
     setExportSets,
     setExportFrequentlyUsed,
     setExportSettings,
+    setTagListLimit,
+    setFrequentlyUsedLimit,
 } = optionsSlice.actions;
 
 export const getOptions = (): AppThunk => (dispatch, getState): void => {

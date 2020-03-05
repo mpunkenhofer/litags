@@ -3,11 +3,14 @@ import {Settings} from "../Pages/Settings";
 import {Sets} from "../Pages/Sets/Sets";
 import {Users} from "../Pages/Users";
 import {Backup} from "../Pages/Backup";
-import {Home} from "../Pages/Home";
+import {About} from "../Pages/About";
 import * as React from "react";
 
 export const NavOutlet: React.FunctionComponent = () => (
     <Switch>
+        <Route path='/about'>
+            <About/>
+        </Route>
         <Route path='/settings'>
             <Settings/>
         </Route>
@@ -20,11 +23,8 @@ export const NavOutlet: React.FunctionComponent = () => (
         <Route path='/backup'>
             <Backup/>
         </Route>
-        <Route path="/options.html">
-            <Redirect to='/home'/>
-        </Route>
-        <Route path='/home'>
-            <Home/>
+        <Route path="/">
+            <Redirect to='/about'/>
         </Route>
     </Switch>
 );

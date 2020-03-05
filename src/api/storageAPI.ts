@@ -1,6 +1,6 @@
 import defaultSets from "../constants/sets";
 import {browser} from "webextension-polyfill-ts";
-import { v4, v5 } from 'uuid';
+import { v4 } from 'uuid';
 
 const ENDPOINTS = {
     USERS: 'USERS',
@@ -38,9 +38,10 @@ export type ImportExportOptions = {
 }
 
 export type Options = {
-    enabled: true;
     import: ImportExportOptions;
     export: ImportExportOptions;
+    tagListLimit: number;
+    frequentlyUsedLimit: number;
 }
 
 export type FrequentlyUsed = [string, number][];
@@ -71,7 +72,7 @@ const getDefaultOptions = (): Options => {
         settings: true
     };
 
-    return {enabled: true, export: importExportDefaults, import: importExportDefaults};
+    return {tagListLimit: 10, frequentlyUsedLimit: 20, export: importExportDefaults, import: importExportDefaults};
 };
 
 export const getSets = async (): Promise<Set[]> => {

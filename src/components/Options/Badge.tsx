@@ -1,5 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
+import {i18n} from "../../constants/i18n";
 
 interface BadgeProps {
     text: string;
@@ -20,6 +21,7 @@ export const Badge: React.FunctionComponent<BadgeProps> = ({text, onRemoveButton
                 hovering &&
                 <button type="button" className="close position-relative"
                         style={{top: '-10px', right: '8px', borderRadius: '50%', color: 'red'}}
+                        title={i18n.removeAlias}
                         onClick={onRemoveButtonClicked}>
                     <span aria-hidden="true">&times;</span>
                 </button>

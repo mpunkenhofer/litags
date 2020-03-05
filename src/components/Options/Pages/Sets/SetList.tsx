@@ -6,7 +6,9 @@ import arrayMove from "array-move";
 import {useCallback, useEffect, useState} from "react";
 import {i18n} from "../../../../constants/i18n";
 import {useDispatch} from "react-redux";
-import {addSet} from "../../../../slices/sets";
+import {addSet, updateSets} from "../../../../slices/sets";
+import {throttle} from "lodash";
+import {postSets} from "../../../../slices/sets";
 
 interface SortableItemProps {
     id: string;
@@ -53,12 +55,15 @@ export const SetList: React.FunctionComponent<SetListProps> = ({sets}: SetListPr
         setPairs(sets.map(set => ({id: set.id, name: set.name})));
     }, [sets]);
 
-    const onSortEnd = ({oldIndex, newIndex}: { oldIndex: number; newIndex: number }): void => {
+    const onSortEnd = useCallback(({oldIndex, newIndex}: { oldIndex: number; newIndex: number }): void => {
         setPairs(arrayMove(pairs, oldIndex, newIndex));
-    };
+        dispatch(updateSets(arrayMove(sets, oldIndex, newIndex)));
+        dispatch(postSets());
+    }, [dispatch, sets, pairs]);
 
     const onAddSetClicked = useCallback((): void => {
         dispatch(addSet(i18n.newSet));
+        dispatch(postSets());
     }, [dispatch]);
 
     return (

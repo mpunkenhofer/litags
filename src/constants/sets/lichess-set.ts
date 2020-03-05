@@ -2,7 +2,7 @@ import {SetData} from "./index";
 
 const lichessSetData: SetData = {
     "name": "Lichess",
-    "iconUrl": "https://i.imgur.com/0DxAhWt.png",
+    "iconUrl": "https://lichess1.org/assets/logo/lichess.svg",
     "fontUrl": '',
     "tags": {
         "exit": [[], "0", ''],

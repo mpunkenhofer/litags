@@ -35,12 +35,15 @@ module.exports = {
             {from: 'public/images/litags_icon*', to: 'assets/[name].[ext]'},
             {from: 'public/images/*.svg', to: 'assets/[name].[ext]'},
             {from: 'locales', to: '_locales/[name]/messages.json'},
+            {from: 'public/fonts/*.woff', to: 'public/fonts/[name].[ext]'},
+            {from: 'public/fonts/*.woff2', to: 'public/fonts/[name].[ext]'},
             {from: 'public/*.html', to: '[name].[ext]'},
         ]),
         new WebpackExtensionManifestPlugin({
             config: {
                 base: baseManifest,
                 extend: {
+                    name: 'Litags - Dev Build',
                     version: pkg.version,
                     homepage_url: pkg.homepage
                 }
@@ -49,7 +52,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css',
         }),
-        new IgnoreEmitPlugin('styles.js'),
+        new IgnoreEmitPlugin([/\/style.js$/, /\/*.LICENSE$/]),
         new ExtensionReloader({
             reloadPage: false, // Force the reload of the page also
             entries: { // The entries used for the content/background scripts
@@ -70,21 +73,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 include: [path.resolve(__dirname, 'src')],
-                //exclude: [/node_modules/],
                 use: [MiniCssExtractPlugin.loader, 'fast-css-loader', 'fast-sass-loader'],
-            },
-            {
-                test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-                include: [path.resolve(__dirname, 'public/fonts')],
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'assets/'
-                        }
-                    }
-                ]
             },
         ]
     },

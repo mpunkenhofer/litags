@@ -16,15 +16,16 @@ const SortableItem = SortableElement(({tag}: SortableItemProps) => <li><Tag tag=
 
 interface SortableListProps {
     tags: TagType[];
+    limit: number;
     removeZoneVisible: boolean;
     setHoveringRemoveZone: (arg: boolean) => void;
 }
 
-const SortableList = SortableContainer(({tags,
+const SortableList = SortableContainer(({tags, limit,
                                             removeZoneVisible, setHoveringRemoveZone}: SortableListProps) =>
     <>
         <ul>
-            {tags.map((tag, index) => (<SortableItem key={`item-${tag.id}`} index={index} tag={tag}/>))}
+            {tags.slice(0, limit).map((tag, index) => (<SortableItem key={`item-${tag.id}`} index={index} tag={tag}/>))}
         </ul>
         {
             removeZoneVisible && <div className={'lt-list-remove-zone'}
@@ -49,7 +50,7 @@ const TagList: React.FunctionComponent<TagListProps> = ({username}: TagListProps
         state.user.userRecord[username] || {user: null, loading: false, error: null});
 
     const {tagsById} = useSelector((state: RootState) => state.sets);
-
+    const {options} = useSelector((state: RootState) => state.options);
 
     useEffect(() => {
         if (user && user.tags && tagsById) {
@@ -87,6 +88,7 @@ const TagList: React.FunctionComponent<TagListProps> = ({username}: TagListProps
 
     return (
         <SortableList tags={tags}
+                      limit={options.tagListLimit}
                       helperClass={'lt-list-helper'}
                       removeZoneVisible={removeZoneVisible}
                       setHoveringRemoveZone={setHoveringRemoveZone}

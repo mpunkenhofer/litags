@@ -3,7 +3,6 @@ import {Set, Tag} from "../api/storageAPI"
 import * as api from "../api/storageAPI"
 import {AppThunk} from "../app/store";
 import {v4} from 'uuid';
-import {filter} from 'lodash';
 
 export type SetsState = {
     sets: Set[];
@@ -114,6 +113,9 @@ const setsSlice = createSlice({
                     return;
                 }
             }
+        },
+        updateSets(state, {payload}: PayloadAction<Set[]>): void {
+            state.sets = payload;
         }
     }
 });
@@ -124,6 +126,7 @@ export const {
     setsFailure,
     updateTag,
     updateSet,
+    updateSets,
     updateAliases,
     createAndAddSet,
     createAndAddTag,
@@ -141,11 +144,13 @@ export const getSets = (): AppThunk => (dispatch, getState): void => {
     }
 };
 
-export const postSets = (sets: Set[]): AppThunk => (dispatch): void => {
-    dispatch(setsRequest());
-    api.postSets(sets)
-        .then(sets => dispatch(setsSuccess(sets)))
-        .catch(err => dispatch(setsFailure(err.toString())))
+export const postSets = (): AppThunk => (dispatch, getState): void => {
+    const sets = getState().sets.sets;
+    //dispatch(setsRequest());
+    // api.postSets(sets)
+    //     .then(sets => dispatch(setsSuccess(sets)))
+    //     .catch(err => dispatch(setsFailure(err.toString())))
+    api.postSets(sets).catch(err => console.error(err));
 };
 
 export const updateTagName = (id: string, name: string): AppThunk =>
@@ -217,7 +222,8 @@ export const addTag = (setId: string, name: string, aliases?: string[], uri?: st
 
 export const addAlias = (tagId: string, alias: string): AppThunk =>
     (dispatch, getState): void => {
-        dispatch(updateAliases({id: tagId, newAliases: [alias, ...getState().sets.tagsById[tagId].aliases]}));
+        if (alias && alias.length > 0)
+            dispatch(updateAliases({id: tagId, newAliases: [alias, ...getState().sets.tagsById[tagId].aliases]}));
     };
 
 export const removeAlias = (tagId: string, alias: string): AppThunk =>
