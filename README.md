@@ -5,6 +5,7 @@ to players on [lichess.org](https://www.lichess.org). The idea was being able to
 type of player you face (playing for time, defensive, aggresive, 
 gives no rematches, ...).
 
+
 ## Installation
 1. `git clone` this repository
 2. Run `npm install`
@@ -27,10 +28,7 @@ Run `npm run dist` to create a zipped, production-ready extension.
 Files | Author(s) | Licence
 ---|---|---
 public/font/lichess.woff2 | [ornicar/lila](https://github.com/ornicar/lila/blob/master/public/font/lichess.woff2) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
-public/images/{cogs-solid, home-solid, tags-solid, users-solid, discord, github, paypal}.svg | [fontawesome](https://fontawesome.com/) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
+public/images/*.svg | [fontawesome](https://fontawesome.com/) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
 
-## Project Status
-
-**In Development**
 
   

@@ -7,7 +7,6 @@ import {useCallback, useEffect, useState} from "react";
 import {i18n} from "../../../../constants/i18n";
 import {useDispatch} from "react-redux";
 import {addSet, updateSets} from "../../../../slices/sets";
-import {throttle} from "lodash";
 import {postSets} from "../../../../slices/sets";
 
 interface SortableItemProps {
