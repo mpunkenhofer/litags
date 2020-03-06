@@ -97,7 +97,7 @@ A collection of useful links regarding this project.
 
 Here are a few items which I consider important/missing and are still left to do listed roughly by priority. 
 
-####Tests
+#### Tests
 
 I tested this extension on the go and as I mentioned above that this was my first extension/typescript/react-redux 
 project, I didn't have the know-how nor the time research and setup proper testing in this context. The more people 
@@ -107,7 +107,7 @@ existing code, hence I listed this as a the top priority.
 One example of an browser extension with tests: 
 [Reddit Enchancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite)
 
-####Synchronization
+#### Synchronization
 
 Sets, tags, options and users should really be accessible from any device that runs this extension. Currently this data 
 is stored/created only local to the machine the extension was installed on using 
@@ -123,14 +123,14 @@ used tags/users in the browsers storage.sync area or possibly allowing users ena
 One example of an extension that uses the gDrive API is 
 [Reddit Enchancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite).
 
-####Importing Tag sets
+#### Importing Tag sets
 
 Sets can already be imported using the backup utilities on the options page, however importing set data overwrites all
 existing sets data, hence if someone wants to import a set to add to the existing sets, he/she would have to first 
 generate a current backup file and manually add the set in this file and import it afterwards. Really there should be
 a button to import a set to add on the tag sets options page. 
 
-####Font Sets
+#### Font Sets
 
 Support for what I call _font sets_. Currently on the options page you can really only add new _image sets_ 
 (set: a collection of tags which are essentially pairs of names and links to images). _Font sets_ are sets were a user
@@ -139,7 +139,7 @@ provides a link to a font file e.g.
 the relevant characters with their corresponding names to make up tags. Tags from _font sets_ scale nicely and can be 
 colored arbitrarily. One example of a font set is the default _Lichess Tag Set_ included/hardcoded in the extension.
 
-####Adding tag aliases in options
+#### Adding tag aliases in options
 
 A Tag is made of an id, name, link/character and color depending if the set is a font or image set. Additionally tags
 also include an array of strings for aliases. Those aliases are used when using the tag search function of the tag 
@@ -149,7 +149,9 @@ in the tag sets options (see image below) and can be removed, however adding tag
 not possible and it is even debatable if this is a feature this extension needs, or if it should remain a power user 
 feature gated behind needing to import a custom set def file. 
 
-####Predictable Tag Ids
+<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/public/images/litags_example_options_tag-view.png" alt="litags_example_options_tag-view"/>
+
+#### Predictable Tag Ids
 
 Tags assigned to users are stored in a list by their IDs. Those IDs are random v4 uuids which are generated once on
 the first time the tag sets are requested. This becomes an issue if you want to import a backup file e.g. only import a 
