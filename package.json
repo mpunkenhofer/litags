@@ -9,8 +9,8 @@
     "clean": "rimraf dist",
     "prebuild": "rimraf dist",
     "build": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --mode=production --display-error-details",
-    "predebug": "rimraf dist",
-    "debug": "cross-env NODE_ENV=development webpack --config webpack.dev.config.js --mode=development --watch --display-error-details",
+    "predev": "rimraf dist",
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.config.js --mode=development --watch --display-error-details",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "devDependencies": {

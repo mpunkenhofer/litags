@@ -1,28 +1,24 @@
 # LiTags
 
-LiTags is a browser extension which enables you to assign certain tags
+LiTags (li[chess] tags) is a browser extension which enables you to assign tags
 to players on [lichess.org](https://www.lichess.org). The idea was being able to quickly determine the 
 type of player you face (playing for time, defensive, aggresive, 
 gives no rematches, ...).
 
+LiTags is written in [Typescript](https://www.typescriptlang.org/), uses [Webpack](https://webpack.js.org/) for module 
+bundling, relies on [React](https://reactjs.org/) for its user interfaces in combination with 
+[Redux](https://redux.js.org/) for state management including the additional [React-Redux](https://react-redux.js.org/) 
+bindings. CSS is generated with [Sass](https://sass-lang.com/) making use of [Bootstrap](https://getbootstrap.com/) in 
+combination with [React Bootstrap](https://react-bootstrap.github.io/). Sorting tags in a list was implemented with 
+[React Sortable HOC](https://github.com/clauderic/react-sortable-hoc).
 
-## Installation
-1. `git clone` this repository
-2. Run `npm install`
-3. Run `npm run build`
+## Building and contributing
 
-##### Load the extension in Chrome
-1. Open Chrome browser and navigate to chrome://extensions
-2. Select "Developer Mode" and then click "Load unpacked extension..."
-3. From the file browser, choose `litags/dist/`
+See [CONTRIBUTING.md](/CONTRIBUTING.md).
 
-## Developing
-If you want to start developing the extension and want to enable live reload use 
- 
- `npm run debug`
+## License
 
-## Packaging
-Run `npm run dist` to create a zipped, production-ready extension.
+See [LICENSE](/LICENSE).
 
 ## Attributions
 Files | Author(s) | Licence
