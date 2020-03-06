@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import TagChooserPopup from "./TagChooserPopup";
 import {useDispatch} from 'react-redux'
 import {Tag} from "../../api/storageAPI";
 import {addTag} from "../../slices/user";
-import {useBrowserKeyboardShortcuts} from "../../hooks/browserKeybordShortcuts";
 import {i18n} from "../../constants/i18n";
+import {useEffect} from "react";
+import {browser} from "webextension-polyfill-ts";
 
 interface TagChooserButtonProps {
     onClick: () => void;
@@ -25,12 +26,18 @@ const TagChooser: React.FunctionComponent<TagChooserProps> =
         const dispatch = useDispatch();
         const [visible, setVisible] = useState(false);
 
-        useBrowserKeyboardShortcuts({
-            shortcut: 'toggle-tag-chooser-popup', handler: () => {
-                if (keyboardShortcutsEnabled === true)
-                    setVisible(!visible)
+        const shortcutHandler = useCallback((message: {command: string}) => {
+            if (keyboardShortcutsEnabled == true && message.command == 'toggle-tag-chooser-popup') {
+                setVisible(!visible)
             }
-        });
+        }, [visible, setVisible, keyboardShortcutsEnabled]);
+
+        useEffect(() => {
+                browser.runtime.onMessage.addListener(shortcutHandler);
+                return (): void => {
+                    browser.runtime.onMessage.removeListener(shortcutHandler)
+                }
+        }, [shortcutHandler]);
 
 
         const onTagClicked = (tag: Tag) => (): void => {

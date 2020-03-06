@@ -22,7 +22,7 @@ interface ContainerProps {
 }
 
 const Container: React.FunctionComponent<ContainerProps> =
-    ({username, mount, keyboardShortcutsEnabled = false}:
+    ({username, mount, keyboardShortcutsEnabled}:
          ContainerProps) => {
         const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ const Container: React.FunctionComponent<ContainerProps> =
         }, [buttonElement, listElement, mount]);
 
         useEffect(() => {
-           // console.log(`%cLoading User: ${username}`, 'font-size: 1.5em; font-weight: bold; color: red');
+            // console.log(`%cLoading User: ${username}`, 'font-size: 1.5em; font-weight: bold; color: red');
             dispatch(getUser(username));
         }, [username, dispatch]);
 
@@ -51,7 +51,8 @@ const Container: React.FunctionComponent<ContainerProps> =
             <>
                 {ReactDOM.createPortal(<TagList username={username}/>, listElement)}
                 {ReactDOM.createPortal(<TagChooser username={username}
-                                                   keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>, buttonElement)}
+                                                   keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>,
+                    buttonElement)}
             </>
         );
     };
@@ -73,7 +74,8 @@ export const App: React.FunctionComponent<AppProps> = ({mounts}: AppProps) => {
     return (
         <>
             {mounts.map(data => ((data && data.username && data.mount) &&
-                <Container key={data.username} username={data.username} mount={data.mount}/>))}
+                <Container key={data.username} username={data.username} mount={data.mount}
+                           keyboardShortcutsEnabled={data.keyboardShortcutsEnabled}/>))}
         </>
     );
 };

@@ -131,9 +131,9 @@ export const addTag = (username: string, tag: Tag): AppThunk =>
         const userRecord = getState().user.userRecord;
         const user: User | null = userRecord[username] ? userRecord[username].user : null;
 
-        console.group(`%cAdd Tag! ${username}`, 'font-size: 1.2em; font-weight: bold; color: orange');
-        console.log(user, tag);
-        console.groupEnd();
+        // console.group(`%cAdd Tag! ${username}`, 'font-size: 1.2em; font-weight: bold; color: orange');
+        // console.log(user, tag);
+        // console.groupEnd();
 
         if (user && !user.tags.includes(tag.id)) {
             dispatch(updateFrequentlyUsed(tag.id));
