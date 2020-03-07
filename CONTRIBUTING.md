@@ -10,14 +10,14 @@ Join the [Litags Discord](https://discord.gg/4d7QWUK) to get in touch.
 ## I want to report a bug or a problem about LiTags
 
 [__Make an issue__](https://github.com/mpunkenhofer/litags/issues/new). Make sure you list the steps to reproduce the 
-problem and it is not a trivial problem or demands unrealistic dev time to dix. Issues reports of very minimal effort 
+problem and it is not a trivial problem or demands unrealistic dev time to fix. Issues reports of very minimal effort 
 may be closed. 
 
 ## I want to suggest a feature for LiTags
 
 Issue tickets on features that lack potential or effectiveness are not useful and may be closed. Before creating a 
-ticket please try to first discuss it on the [Litags Discord](https://discord.gg/4d7QWUK) in appropriate channels to
-gauge feedback. When ready, [make an issue ticket](https://github.com/mpunkenhofer/litags/issues/new).
+ticket, please first try to discuss it on the [Litags Discord](https://discord.gg/4d7QWUK) in appropriate channels to
+gauge feedback. When ready: [make an issue ticket](https://github.com/mpunkenhofer/litags/issues/new).
 
 ## Building development versions of the extension
 
@@ -139,6 +139,15 @@ provides a link to a font file e.g.
 the relevant characters with their corresponding names to make up tags. Tags from _font sets_ scale nicely and can be 
 colored arbitrarily. One example of a font set is the default _Lichess Tag Set_ included/hardcoded in the extension.
 
+#### Documentation (of features) 
+
+Currently there is only a bare minimum of documentation. Having something a long the lines of Tooltips, Faq more 
+descriptions would be beneficial. While I tried to design everything to be as intuitive as possible, some features like
+sorting tags in a list, sorting sets in the tag set options for display order in the tag chooser may not be apparent. 
+
+The same goes for the code itself, though I believe most of it doesn't really need any additional comments, somethings
+may not be obvious at first.
+
 #### Adding tag aliases in options
 
 A Tag is made of an id, name, link/character and color depending if the set is a font or image set. Additionally tags
@@ -159,3 +168,19 @@ list of users with their tags - those ids won't match with any of the ids stored
 
 Possible solutions include generating ids using the tag names, aliases, set name as seed (v5 uuids) - potential 
 collision risk or storing tags not by id but rather store all relevant tag data: name, image / font urls.  
+
+#### Tag Hotkeys
+
+Support hotkeys that assign tags to your opponent. There exists already hotkey support (using the 
+[browser command api](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/commands/Command)) 
+which brings up the tag chooser for your opponent and implementing more hotkeys along those lines should be trivial,
+however it appears we are limited to a max of 4 hotkeys per extension. That would mean there are only 3 more left
+for tags and I imagine having more than 3 tags on hotkeys would be nice to have e.g. imagine having tags on 
+modifier + 1 - 9. Using the command api also decouples hotkeys somewhat from all the other options since those are found
+in a different place specific to the browser.  
+
+#### Tag Chooser Look
+
+I would like to use [React-Bootstrap](https://react-bootstrap.github.io/) for its layout and other things, in order 
+to be consistent with the rest of LiTags and also because I like how it makes the layout of your UI apparent in the code
+rather then in a separate css file. Also look & feel needs some touch ups especially in other lichess themes like light.
