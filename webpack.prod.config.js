@@ -55,10 +55,10 @@ module.exports = env => {
 			new IgnoreEmitPlugin([/\/style.js$/, /\/*.LICENSE$/]),
 			new webpack.optimize.AggressiveMergingPlugin(),
 			new webpack.optimize.OccurrenceOrderPlugin(),
-			env.zip && new ZipPlugin({
+			...(env && env.zip && new ZipPlugin({
 				path: 'zip',
 				filename: `${pkg.name}-v${pkg.version}`,
-			}),
+			}) || []),
 		],
 		optimization: {
 			minimizer: [
