@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
 const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
-const baseManifest = require('./public/manifest/base');
+const manifest = require('./src/manifest');
 const pkg = require('./package.json');
 
 module.exports = env => {
@@ -15,34 +15,34 @@ module.exports = env => {
 
 		entry: {
 			content: [
-				'./src/content.tsx',
-				'./src/content.scss',
+				'./src/content/content.tsx',
+				'./src/content/content.scss',
 			],
-			background: './src/background.ts',
 			options: [
-				'./src/options.tsx',
-				'./src/options.scss',
+				'./src/options/options.tsx',
+				'./src/options/options.scss',
 			],
+			background: './src/background/background.ts',
 		},
-
+	
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].js',
 		},
-
+	
 		plugins: [
 			new webpack.ProgressPlugin(),
 			new CopyPlugin([
-				{from: 'public/images/litags_icon*', to: 'assets/[name].[ext]'},
-				{from: 'public/images/*.svg', to: 'assets/[name].[ext]'},
+				{from: 'assets/images/litags_icon*', to: 'assets/images/[name].[ext]'},
+				{from: 'assets/images/*.svg', to: 'assets/images/[name].[ext]'},
 				{from: 'locales', to: '_locales/[name]/messages.json'},
-				{from: 'public/*.html', to: '[name].[ext]'},
-				{from: 'public/fonts/*.woff', to: 'public/fonts/[name].[ext]'},
-				{from: 'public/fonts/*.woff2', to: 'public/fonts/[name].[ext]'},
+				{from: 'assets/fonts/*.woff', to: 'assets/fonts/[name].[ext]'},
+				{from: 'assets/fonts/*.woff2', to: 'assets/fonts/[name].[ext]'},
+				{from: 'src/options/options.html', to: '[name].[ext]'},
 			]),
 			new WebpackExtensionManifestPlugin({
 				config: {
-					base: baseManifest,
+					base: manifest,
 					extend: {
 						version: pkg.version,
 						homepage_url: pkg.homepage

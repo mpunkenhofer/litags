@@ -4,8 +4,8 @@ LiTags (li[chess] tags) is a browser extension which enables you to assign tags
 to players on [lichess.org](https://www.lichess.org). The idea was being able to quickly determine the 
 type of player you face (playing for time, defensive, aggressive, gives no rematches, ...).
 
-<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/public/images/litags.gif" alt="litags-gif"/>
-<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/public/images/litags_example_options_set-view.png" alt="litags-example-options-set-view"/>
+<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/assets/images/litags.gif" alt="litags-gif"/>
+<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/assets/images/litags_example_options_set-view.png" alt="litags-example-options-set-view"/>
 
 
 LiTags is written in [Typescript](https://www.typescriptlang.org/), uses [Webpack](https://webpack.js.org/) for module 
@@ -26,8 +26,8 @@ See [LICENSE](/LICENSE).
 ## Attributions
 Files | Author(s) | Licence
 ---|---|---
-public/font/lichess.woff2 | [ornicar/lila](https://github.com/ornicar/lila/blob/master/public/font/lichess.woff2) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
-public/images/*.svg | [fontawesome](https://fontawesome.com/) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
+assets/fonts/lichess.woff2 | [ornicar/lila](https://github.com/ornicar/lila/blob/master/public/font/lichess.woff2) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
+assets/images/*.svg | [fontawesome](https://fontawesome.com/) | [OFL](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), [MIT](https://github.com/primer/octicons/blob/master/LICENSE), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), AGPLv3+
 
 
   

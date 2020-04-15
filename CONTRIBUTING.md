@@ -58,32 +58,6 @@ using  [ESLint](http://eslint.org/) with typescript support by
 2. Click `Load Temporary Add-on` and select `/dist/manifest.json`.
 3. On  the `about:debugging` page use `Reload` if you need to.
 
-## Project structure
-
-  - `dist/`: build output
-  - `locales`: i18n translations
-  - `public/`: misc files
-  - `public/fonts/`: font files (.woff2, .woff)
-  - `public/fonts/files/`: font dev files
-  - `public/images/`: images (logos, icons, sample images)
-  - `public/manifest/base.json`: base browser extension manifest file
-  - `src/`: all LiTags code
-  - `src/content.tsx`: **content entry** file
-  - `src/background.ts`: **background entry** file
-  - `src/options.tsx`: **options entry** file
-  - `src/api/`: storage api 
-  - `src/app/`: top level react component, redux store config, root reducer
-  - `src/components/`: react components
-  - `src/components/Options/`: react components relating to extension options page
-  - `src/constants/`: i18n constants, other constants defined in files used across the project
-  - `src/hooks/`: react reusable hooks
-  - `src/slices/`: redux [slice](https://redux-toolkit.js.org/api/createslice/) defs 
-  - `src/util/`: utility functions
-  - `tsconfig.json`: compiler options
-  - `package.json`: package info, dependencies
-  - `webpack.dev.config.js`: dev build script
-  - `webpack.prod.config.js`: prod build script
-
 ### Resources
 
 A collection of useful links regarding this project.
@@ -105,7 +79,7 @@ contribute to this project though, the more important becomes testing - making s
 existing code, hence I listed this as a the top priority.  
 
 One example of an browser extension with tests: 
-[Reddit Enchancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite)
+[Reddit Enhancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite)
 
 #### Synchronization
 
@@ -117,11 +91,11 @@ this is very limited. [Chrome](https://developer.chrome.com/apps/storage#propert
 value store - stores up to 512 items with max. 8,192 Bytes each and a total limit of 102,400 Bytes - clearly not enough 
 if we are to store hundreds of tags and a growing number of tagged users. 
 
-Potential solutions include running a own server were this data is stored (not feasible imo), storing only the most 
-used tags/users in the browsers storage.sync area or possibly allowing users enable sync by using the 
+Potential solutions include running a server were this data is stored (not feasible imo), storing only the most 
+used tags/users in the browsers storage.sync area or possibly allowing users to enable sync by using the 
 [Google Drive API](https://developers.google.com/drive/api/v3/reference). 
 One example of an extension that uses the gDrive API is 
-[Reddit Enchancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite).
+[Reddit Enhancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite).
 
 #### Importing Tag sets
 
@@ -135,7 +109,7 @@ a button to import a set to add on the tag sets options page.
 Support for what I call _font sets_. Currently on the options page you can really only add new _image sets_ 
 (set: a collection of tags which are essentially pairs of names and links to images). _Font sets_ are sets were a user
 provides a link to a font file e.g. 
-[lichess icon font .woff2](https://github.com/ornicar/lila/blob/master/public/font/lichess.chess.woff2) and then defines
+[lichess icon font .woff2](https://github.com/ornicar/lila/blob/master/assets/fonts/lichess.chess.woff2) and then defines
 the relevant characters with their corresponding names to make up tags. Tags from _font sets_ scale nicely and can be 
 colored arbitrarily. One example of a font set is the default _Lichess Tag Set_ included/hardcoded in the extension.
 
@@ -158,7 +132,7 @@ in the tag sets options (see image below) and can be removed, however adding tag
 not possible and it is even debatable if this is a feature this extension needs, or if it should remain a power user 
 feature gated behind needing to import a custom set def file. 
 
-<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/public/images/litags_example_options_tag-view.png" alt="litags_example_options_tag-view"/>
+<img src="https://raw.githubusercontent.com/mpunkenhofer/litags/master/assets/images/litags_example_options_tag-view.png" alt="litags_example_options_tag-view"/>
 
 #### Predictable Tag Ids
 

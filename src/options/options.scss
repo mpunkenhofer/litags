@@ -1,0 +1,98 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../common/tagList";
+@import "../common/common";
+
+.lt-options-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: 4rem;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+}
+
+@include media-breakpoint-up(md) {
+  .lt-options-sidebar {
+    position: sticky;
+    top: 4rem;
+    z-index: 1000;
+    height: calc(100vh - 4rem);
+  }
+}
+
+.lt-navbar-icon {
+  opacity: .5;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.lt-options-sidebar .nav-link, .lt-sidebar-icon {
+  font-weight: 500;
+  color: black;
+  opacity: 0.65;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.lt-options-sidebar .nav-link.active {
+  color: #007bff;
+  .lt-sidebar-icon {
+    filter: invert(41%) sepia(48%) saturate(7200%) hue-rotate(199deg) brightness(101%) contrast(105%);
+  }
+}
+
+.lt-navbar-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.lt-sidebar-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.lt-addSet-icon {
+  background: none;
+  &:hover {
+    color: black !important;
+  }
+}
+
+.lt-about-header-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: .6;
+  filter: brightness(0) saturate(100%);
+}
+
+.lt-brand-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.lt-delete-btn {
+  display: none;
+}
+
+.lt-user-row {
+  &:hover {
+    background-color: $light;
+    .lt-delete-btn {
+      display: inline-block;
+    }
+  }
+}
+
+.lt-options-drag-handle {
+  width: 1rem;
+  height: 1rem;
+  opacity: .4;
+  &:hover {
+    opacity: .9;
+  }
+}
+
+.lt-options-drag-helper {
+  list-style: none;
+}

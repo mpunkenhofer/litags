@@ -1,0 +1,45 @@
+@import "tagChooser";
+@import "../common/common";
+@import "../common/tagList";
+@import "../common/fonts";
+
+.lt-list {
+  grid-area: lilist;
+}
+
+.lt-button {
+  grid-area: libutton;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5em;
+
+  button {
+    border: 0;
+    outline: none;
+  }
+}
+
+.ruser {
+  display: grid !important;
+  grid-template-rows: min-content;
+  grid-template-columns: auto auto auto 1fr min-content;
+  grid-template-areas: 'lio liuser libutton . lirating lichange' '. lilist lilist lilist lilist lilist';
+
+  a {
+    grid-area: liuser;
+  }
+
+  i {
+    grid-area: lio;
+  }
+
+  rating {
+    grid-area: lirating;
+  }
+
+  good, bad {
+    grid-area: lichange;
+  }
+}

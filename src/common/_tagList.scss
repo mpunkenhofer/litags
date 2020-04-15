@@ -1,0 +1,50 @@
+@import "common";
+@import "fonts";
+
+.lt-list {
+  margin-top: 0.25em;
+  list-style: none;
+  user-select: none;
+  z-index: $zIndex;
+
+  ul {
+    display: inline-block;
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+    list-style: none;
+    margin-right: .4em;
+    cursor: pointer;
+  }
+
+  .lt-list-remove-zone {
+    z-index: $zIndex + 2;
+    display: inline-block;
+    margin-left: 1em;
+    justify-content: center;
+    align-content: center;
+    font-family: lichess, serif;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: red;
+  }
+}
+
+.lt-tag {
+  span {
+    font-family: lichess, serif;
+    font-size: 1.6em;
+  }
+
+  img {
+    vertical-align: baseline;
+  }
+}
+
+.lt-list-helper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
