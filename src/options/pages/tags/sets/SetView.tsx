@@ -1,14 +1,14 @@
 import * as React from "react";
-import {Set, Tag} from "../../../common/types";
-import TagButton from "../../../common/TagButton";
+import {Set, Tag} from "../../../../common/types";
+import TagButton from "../../../../common/TagButton";
 import {useCallback, useState} from "react";
 import {TagView} from "./TagView";
 import {Container, Col, Row, Button} from "react-bootstrap";
-import {i18n} from "../../../constants/i18n";
+import {i18n} from "../../../../constants/i18n";
 import {ChangeEvent} from "react";
 import {useDispatch} from "react-redux";
-import {addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, postSets} from "../../../common/slices/sets";
-import {ConfirmModal} from "../../ConfirmModal";
+import {addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets} from "../../../../common/slices/sets";
+import {ConfirmModal} from "../../../ConfirmModal";
 import {useHistory} from "react-router-dom";
 
 
@@ -22,8 +22,7 @@ const TagContainer: React.FunctionComponent<TagContainerProps> = ({tags, onTagCl
         return (
             <div className='p-2 d-flex flex-wrap border rounded-lg justify-content-around bg-light'>
                 {
-                    tags.map(tag => (tag && tag.id) &&
-                        <TagButton key={tag.id} tag={tag} onClick={onTagClicked(tag)}/>)
+                    tags.map(tag => <TagButton key={tag.id} tag={tag} onClick={onTagClicked(tag)}/>)
                 }
             </div>
         );
@@ -40,6 +39,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
         - Font Sets (link to font files (support for font files must also be implemented in Tag.tsx to correctly
         display them)
         - Enable/Disable Sets
+        - Select Initial Tag
      */
     const dispatch = useDispatch();
     const [showDeleteTagModal, setShowDeleteTagModal] = useState(false);
@@ -56,34 +56,34 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
     const onChangeSetName = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
             dispatch(updateSetName(set.id, event.target.value));
-            dispatch(postSets());
+            dispatch(setSets());
         }
     }, [dispatch, set]);
 
     const onChangeIconUrl = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
             dispatch(updateIconUrl(set.id, event.target.value));
-            dispatch(postSets());
+            dispatch(setSets());
         }
     }, [dispatch, set]);
 
     const onDeleteSelectedTagClicked = useCallback((): void => {
         if (selectedTag) {
             dispatch(deleteTag({setId: set.id, tagId: selectedTag.id}));
-            dispatch(postSets());
+            dispatch(setSets());
         }
         setSelectedTag(null);
     }, [dispatch, set, selectedTag]);
 
     const onDeleteSetClicked = useCallback((): void => {
         dispatch(deleteSet(set.id));
-        dispatch(postSets());
+        dispatch(setSets());
         history.push('/');
     }, [dispatch, set, history]);
 
     const onAddTagClicked = useCallback((): void => {
         dispatch(addTag(set.id, i18n.newTag));
-        dispatch(postSets());
+        dispatch(setSets());
     }, [dispatch, set]);
 
     return (

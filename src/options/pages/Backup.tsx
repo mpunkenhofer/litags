@@ -15,7 +15,7 @@ import {
     setImportUsers,
     setImportSets,
     setImportFrequentlyUsed,
-    setImportSettings, postOptions
+    setImportSettings, setOptions
 } from "../../common/slices/options";
 import {RootState} from "../../common/rootReducer";
 import {throttle, delay} from 'lodash';
@@ -101,7 +101,7 @@ export const Backup: React.FunctionComponent = () => {
             });
     }, [options]);
 
-    const persistOptions = throttle(() => dispatch(postOptions()), 1000, {trailing: true});
+    const persistOptions = throttle(() => dispatch(setOptions()), 1000, {trailing: true});
 
     const onCheckChange = useCallback((action) => (ev: FormEvent<HTMLInputElement>): void => {
         dispatch(action((ev.target as HTMLInputElement).checked));

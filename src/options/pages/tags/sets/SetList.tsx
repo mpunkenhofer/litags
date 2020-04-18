@@ -1,13 +1,13 @@
 import {SortableContainer, SortableElement, SortableHandle} from "react-sortable-hoc";
-import {Set} from "../../../common/types"
+import {Set} from "../../../../common/types"
 import * as React from "react";
 import {NavLink} from "react-router-dom";
 import arrayMove from "array-move";
 import {useCallback, useEffect, useState} from "react";
-import {i18n} from "../../../constants/i18n";
+import {i18n} from "../../../../constants/i18n";
 import {useDispatch} from "react-redux";
-import {addSet, updateSets} from "../../../common/slices/sets";
-import {postSets} from "../../../common/slices/sets";
+import {addSet, updateSets} from "../../../../common/slices/sets";
+import {setSets} from "../../../../common/slices/sets";
 
 interface SortableItemProps {
     id: string;
@@ -57,12 +57,12 @@ export const SetList: React.FunctionComponent<SetListProps> = ({sets}: SetListPr
     const onSortEnd = useCallback(({oldIndex, newIndex}: { oldIndex: number; newIndex: number }): void => {
         setPairs(arrayMove(pairs, oldIndex, newIndex));
         dispatch(updateSets(arrayMove(sets, oldIndex, newIndex)));
-        dispatch(postSets());
+        dispatch(setSets());
     }, [dispatch, sets, pairs]);
 
     const onAddSetClicked = useCallback((): void => {
         dispatch(addSet(i18n.newSet));
-        dispatch(postSets());
+        dispatch(setSets());
     }, [dispatch]);
 
     return (

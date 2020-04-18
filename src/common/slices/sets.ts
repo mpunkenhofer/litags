@@ -1,8 +1,9 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Set, Tag} from "../types"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Set, Tag, Font } from "../types"
 import * as storage from "../storage"
-import {AppThunk} from "../store";
-import {v4} from 'uuid';
+import { AppThunk } from "../store";
+import { v4 } from 'uuid';
+import has from "lodash/has";
 
 export type SetsState = {
     sets: Set[];
@@ -28,7 +29,7 @@ const setsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        setsSuccess(state, {payload}: PayloadAction<Set[]>): void {
+        setsSuccess(state, { payload }: PayloadAction<Set[]>): void {
             state.sets = payload;
             state.loading = false;
             state.error = null;
@@ -39,11 +40,11 @@ const setsSlice = createSlice({
                 }
             }
         },
-        setsFailure(state, {payload}: PayloadAction<string>): void {
+        setsFailure(state, { payload }: PayloadAction<string>): void {
             state.loading = false;
             state.error = payload;
         },
-        updateTag(state, {payload}: PayloadAction<{ id: string; tag: Tag }>): void {
+        updateTag(state, { payload }: PayloadAction<{ id: string; tag: Tag }>): void {
             for (const set of state.sets) {
                 const idx = set.tags.findIndex((tag) => tag.id === payload.id);
                 if (idx > -1) {
@@ -53,23 +54,23 @@ const setsSlice = createSlice({
                 }
             }
         },
-        updateSet(state, {payload}: PayloadAction<{ id: string; set: Set }>): void {
+        updateSet(state, { payload }: PayloadAction<{ id: string; set: Set }>): void {
             const idx = state.sets.findIndex((set) => set.id === payload.id);
             if (idx > -1) {
                 state.sets[idx] = payload.set;
             }
         },
-        createAndAddSet(state, {payload}:
-            PayloadAction<{ name: string; iconUrl: string; fontUrl: string; tags: Tag[] }>): void {
+        createAndAddSet(state, { payload }:
+            PayloadAction<{ name: string; iconUrl: string; tags: Tag[]; font?: Font }>): void {
             const id = v4();
-            const set: Set = {id, ...payload};
+            const set: Set = { id, ...payload };
 
             state.sets.push(set);
         },
-        createAndAddTag(state, {payload}:
-            PayloadAction<{ id: string; tag: { name: string; aliases: string[]; uri: string; color?: string } }>): void {
+        createAndAddTag(state, { payload }:
+            PayloadAction<{ id: string; tag: { name: string; aliases: string[]; uri: string; color?: string; font?: Font } }>): void {
             const tagId = v4();
-            const tag: Tag = {id: tagId, ...payload.tag};
+            const tag: Tag = { id: tagId, ...payload.tag };
 
             const idx = state.sets.findIndex((set) => set.id === payload.id);
 
@@ -82,7 +83,7 @@ const setsSlice = createSlice({
                 state.tagsById[tagId] = tag;
             }
         },
-        deleteTag(state, {payload}: PayloadAction<{ setId: string; tagId: string }>): void {
+        deleteTag(state, { payload }: PayloadAction<{ setId: string; tagId: string }>): void {
             const idx = state.sets.findIndex((set) => set.id === payload.setId);
 
             if (idx > -1) {
@@ -96,11 +97,11 @@ const setsSlice = createSlice({
                 state.tagsById = updatedTagsById;
             }
         },
-        deleteSet(state, {payload}: PayloadAction<string>): void {
+        deleteSet(state, { payload }: PayloadAction<string>): void {
             // TODO: remove tags from the set we remove from state.tagsById
             state.sets = state.sets.filter((set: Set) => set.id !== payload);
         },
-        updateAliases(state, {payload}:
+        updateAliases(state, { payload }:
             PayloadAction<{ id: string; newAliases: string[] }>): void {
             const updatedTag = state.tagsById[payload.id];
             updatedTag.aliases = payload.newAliases;
@@ -114,7 +115,7 @@ const setsSlice = createSlice({
                 }
             }
         },
-        updateSets(state, {payload}: PayloadAction<Set[]>): void {
+        updateSets(state, { payload }: PayloadAction<Set[]>): void {
             state.sets = payload;
         }
     }
@@ -144,13 +145,13 @@ export const getSets = (): AppThunk => (dispatch, getState): void => {
     }
 };
 
-export const postSets = (): AppThunk => (dispatch, getState): void => {
+export const setSets = (): AppThunk => (dispatch, getState): void => {
     const sets = getState().sets.sets;
     //dispatch(setsRequest());
     // api.postSets(sets)
     //     .then(sets => dispatch(setsSuccess(sets)))
     //     .catch(err => dispatch(setsFailure(err.toString())))
-    storage.postSets(sets).catch(err => console.error(err));
+    storage.setSets(sets).catch(err => console.error(err));
 };
 
 export const updateTagName = (id: string, name: string): AppThunk =>
@@ -158,8 +159,8 @@ export const updateTagName = (id: string, name: string): AppThunk =>
         const tag = getState().sets.tagsById[id];
 
         if (tag) {
-            const updatedTag = {...tag, name};
-            dispatch(updateTag({id, tag: updatedTag}));
+            const updatedTag = { ...tag, name };
+            dispatch(updateTag({ id, tag: updatedTag }));
         }
     };
 
@@ -168,8 +169,8 @@ export const updateTagURI = (id: string, uri: string): AppThunk =>
         const tag = getState().sets.tagsById[id];
 
         if (tag) {
-            const updatedTag = {...tag, uri};
-            dispatch(updateTag({id, tag: updatedTag}));
+            const updatedTag = { ...tag, uri };
+            dispatch(updateTag({ id, tag: updatedTag }));
         }
     };
 
@@ -178,8 +179,8 @@ export const updateTagColor = (id: string, color: string): AppThunk =>
         const tag = getState().sets.tagsById[id];
 
         if (tag) {
-            const updatedTag = {...tag, color};
-            dispatch(updateTag({id, tag: updatedTag}));
+            const updatedTag = { ...tag, color };
+            dispatch(updateTag({ id, tag: updatedTag }));
         }
     };
 
@@ -187,9 +188,9 @@ export const updateSetProperty = (id: string, property: string, value: string): 
     (dispatch, getState): void => {
         const sets = getState().sets.sets;
         const idx = sets.findIndex((set: Set) => set.id === id);
-        if (idx > -1) {
-            const updatedSet = {...sets[idx], [property]: value};
-            dispatch(updateSet({id, set: updatedSet}));
+        if (idx > -1 && has(sets[idx], property)) {
+            const updatedSet = { ...sets[idx], [property]: value };
+            dispatch(updateSet({ id, set: updatedSet }));
         }
     };
 
@@ -203,35 +204,43 @@ export const updateIconUrl = (id: string, iconUrl: string): AppThunk =>
         dispatch(updateSetProperty(id, 'iconUrl', iconUrl));
     };
 
-export const updateFontUrl = (id: string, fontUrl: string): AppThunk =>
+export const addSet = (name: string, iconUrl?: string, font?: Font, tags?: Tag[]): AppThunk =>
     (dispatch): void => {
-        dispatch(updateSetProperty(id, 'fontUrl', fontUrl));
-    };
-
-export const addSet = (name: string, iconUrl?: string, fontUrl?: string, tags?: Tag[]): AppThunk =>
-    (dispatch): void => {
-        const set = {name, iconUrl: iconUrl || '', fontUrl: fontUrl || '', tags: tags || []};
+        const set = { name, iconUrl: iconUrl || '', font, tags: tags || [] };
         dispatch(createAndAddSet(set));
     };
 
 export const addTag = (setId: string, name: string, aliases?: string[], uri?: string, color?: string): AppThunk =>
     (dispatch): void => {
-        const tag = {name, aliases: aliases || [], uri: uri || '', color};
-        dispatch(createAndAddTag({id: setId, tag}));
+        const tag = { name, aliases: aliases || [], uri: uri || '', color };
+        dispatch(createAndAddTag({ id: setId, tag }));
     };
 
 export const addAlias = (tagId: string, alias: string): AppThunk =>
     (dispatch, getState): void => {
-        if (alias && alias.length > 0)
-            dispatch(updateAliases({id: tagId, newAliases: [alias, ...getState().sets.tagsById[tagId].aliases]}));
+        if (alias && alias.length > 0) {
+            const tag = getState().sets.tagsById[tagId];
+
+            if (tag) {
+                const oldAliases: string[] = (tag && tag.aliases != undefined) ? tag.aliases : []
+
+                dispatch(updateAliases({ id: tagId, newAliases: [alias, ...oldAliases]}));
+            }
+        }
     };
 
 export const removeAlias = (tagId: string, alias: string): AppThunk =>
     (dispatch, getState): void => {
-        dispatch(updateAliases({
-            id: tagId,
-            newAliases: getState().sets.tagsById[tagId].aliases.filter(a => a !== alias)
-        }));
+        const tag = getState().sets.tagsById[tagId];
+
+        if (tag) {
+            const newAliases: string[] = (tag.aliases != undefined) ? tag.aliases.filter(a => a !== alias) : []
+
+            dispatch(updateAliases({
+                id: tagId,
+                newAliases
+            }));
+        }
     };
 
 export default setsSlice.reducer;

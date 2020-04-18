@@ -1,14 +1,14 @@
 import * as React from "react";
-import Tag from "../../../common/Tag";
-import {Tag as TagType} from "../../../common/types";
+import Tag from "../../../../common/Tag";
+import {Tag as TagType} from "../../../../common/types";
 import {Container, Col, Row} from "react-bootstrap";
-import {ColorPicker} from "../../ColorPicker";
-import {Badge} from "../../Badge";
-import {i18n} from "../../../constants/i18n";
+import {ColorPicker} from "../../../ColorPicker";
+import {Badge} from "../../../Badge";
+import {i18n} from "../../../../constants/i18n";
 import {useDispatch, useSelector} from "react-redux";
-import {postSets, removeAlias, updateTagColor, updateTagName, updateTagURI} from "../../../common/slices/sets";
+import {setSets, removeAlias, updateTagColor, updateTagName, updateTagURI} from "../../../../common/slices/sets";
 import {ChangeEvent, useCallback} from "react";
-import {RootState} from "../../../common/rootReducer";
+import {RootState} from "../../../../common/rootReducer";
 
 interface TagViewProps {
     tag: TagType;
@@ -27,27 +27,27 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
     const onChangeName = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
             dispatch(updateTagName(tag.id, event.target.value));
-            dispatch(postSets());
+            dispatch(setSets());
         }
     }, [dispatch, tag]);
 
     const onChangeURI = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
             dispatch(updateTagURI(tag.id, event.target.value));
-            dispatch(postSets());
+            dispatch(setSets());
         }
     }, [dispatch, tag]);
 
     const onChangeColor = useCallback((color: string): void => {
         if (color) {
             dispatch(updateTagColor(tag.id, color));
-            dispatch(postSets());
+            dispatch(setSets());
         }
     }, [dispatch, tag]);
 
     const onRemoveAliasButtonClicked = useCallback((alias: string) => (): void => {
         dispatch(removeAlias(tag.id, alias));
-        dispatch(postSets());
+        dispatch(setSets());
     }, [dispatch, tag]);
 
     return (
@@ -69,7 +69,7 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
                     <strong className='text-muted'>{fontTag ? i18n.symbol : i18n.imageURL}</strong>
                 </Col>
                 {
-                    (tag.color != undefined) &&
+                    (tag.font != undefined) &&
                     <Col xs={1} className='align-middle'>
                         <strong className='text-muted'>{i18n.color}</strong>
                     </Col>
@@ -99,7 +99,7 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
                            placeholder={fontTag ? i18n.symbol : i18n.imageURL} onChange={onChangeURI}/>
                 </Col>
                 {
-                    (sTag.color != undefined) &&
+                    (sTag.font !== undefined) &&
                     <Col xs={1} className='align-middle'>
                         <ColorPicker color={sTag.color ? sTag.color : '#000000'} onChangeComplete={onChangeColor}/>
                     </Col>

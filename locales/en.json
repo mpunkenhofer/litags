@@ -177,7 +177,7 @@
     "message": "Choose File"
   },
   "frequentlyUsedTags": {
-    "message": "Frequently used Tags"
+    "message": "Frequently Used Tags"
   },
   "tagSetEnabledDescription": {
     "message": "Enable / disable this set. Once disabled the tags associated with this set will no longer be displayed."
@@ -249,13 +249,13 @@
     "message": "Donations are not required but very appreciated. Currently I only setup PayPal for donations, if you would like to donate via any other means, contact me on Discord or via Github."
   },
   "settingsTagListLimitTitle": {
-    "message": "Tag List: Tag Limit:"
+    "message": "Tag List Limit:"
   },
   "settingsTagListLimitDescription": {
     "message": "Change the maximum number of tags to be displayed in the user tag lists on Lichess."
   },
   "settingsFrequentlyUsedLimitTitle": {
-    "message": "Frequently Used: Tag Limit:"
+    "message": "Frequently Used Limit:"
   },
   "settingsFrequentlyUsedLimitDescription": {
     "message": "Change the maximum number of tags to be displayed in the frequently used section of the Tag Chooser."

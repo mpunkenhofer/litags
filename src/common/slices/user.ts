@@ -27,41 +27,41 @@ const userSlice = createSlice({
     name: 'user',
     initialState: usersInitialState,
     reducers: {
-        userRequest(state, {payload}: PayloadAction<{ username: string }>): void {
-            if (state.userRecord[payload.username]) {
-                state.userRecord[payload.username].loading = true;
-                state.userRecord[payload.username].error = null;
+        userRequest(state, {payload}: PayloadAction<{ id: string }>): void {
+            if (state.userRecord[payload.id]) {
+                state.userRecord[payload.id].loading = true;
+                state.userRecord[payload.id].error = null;
             } else {
-                state.userRecord[payload.username] =
-                    {user: {name: payload.username, tags: []}, loading: true, error: null};
+                state.userRecord[payload.id] =
+                    {user: {id: payload.id, tags: []}, loading: true, error: null};
             }
         },
-        userSuccess(state, {payload}: PayloadAction<{ username: string; user: User }>): void {
-            state.userRecord[payload.username] = {user: payload.user, loading: false, error: null};
+        userSuccess(state, {payload}: PayloadAction<{ id: string; user: User }>): void {
+            state.userRecord[payload.id] = {user: payload.user, loading: false, error: null};
         },
         userFailure(state, {payload}:
-            PayloadAction<{ username: string; error: string }>): void {
-            state.userRecord[payload.username] =
-                {user: {name: payload.username, tags: []}, loading: false, error: null};
+            PayloadAction<{ id: string; error: string }>): void {
+            state.userRecord[payload.id] =
+                {user: {id: payload.id, tags: []}, loading: false, error: null};
         },
-        deleteRequest(state, {payload}: PayloadAction<{username: string}>): void {
-            if (state.userRecord[payload.username]) {
-                state.userRecord[payload.username].loading = true;
-                state.userRecord[payload.username].error = null;
+        deleteRequest(state, {payload}: PayloadAction<{id: string}>): void {
+            if (state.userRecord[payload.id]) {
+                state.userRecord[payload.id].loading = true;
+                state.userRecord[payload.id].error = null;
             }
         },
-        deleteSuccess(state, {payload}: PayloadAction<{ username: string }>): void {
-            if(state.userRecord[payload.username]) {
+        deleteSuccess(state, {payload}: PayloadAction<{ id: string }>): void {
+            if(state.userRecord[payload.id]) {
                 const updatedUserRecord = state.userRecord;
-                delete updatedUserRecord[payload.username];
+                delete updatedUserRecord[payload.id];
                 state.userRecord = updatedUserRecord;
             }
         },
         deleteFailure(state, {payload}:
-            PayloadAction<{ username: string; error: string }>): void {
-            if (state.userRecord[payload.username]) {
-                state.userRecord[payload.username].loading = true;
-                state.userRecord[payload.username].error = payload.error;
+            PayloadAction<{ id: string; error: string }>): void {
+            if (state.userRecord[payload.id]) {
+                state.userRecord[payload.id].loading = true;
+                state.userRecord[payload.id].error = payload.error;
             }
         },
         allUsersRequest(state): void {
@@ -70,7 +70,7 @@ const userSlice = createSlice({
         },
         allUsersSuccess(state, {payload}: PayloadAction<User[]>): void {
             for (const user of payload) {
-                state.userRecord[user.name] = {user: user, loading: false, error: null};
+                state.userRecord[user.id] = {user: user, loading: false, error: null};
             }
 
             state.loading = false;
@@ -95,18 +95,18 @@ export const {
     allUsersFailure,
 } = userSlice.actions;
 
-export const getUser = (username: string): AppThunk => (dispatch): void => {
-    dispatch(userRequest({username}));
-    storage.getUser(username)
-        .then(user => dispatch(userSuccess({username, user})))
-        .catch(err => dispatch(userFailure({username, error: err.toString()})));
+export const getUser = (id: string): AppThunk => (dispatch): void => {
+    dispatch(userRequest({id}));
+    storage.getUser(id)
+        .then(user => dispatch(userSuccess({id, user})))
+        .catch(err => dispatch(userFailure({id, error: err.toString()})));
 };
 
-export const deleteUser = (username: string): AppThunk => (dispatch): void => {
-    dispatch(deleteRequest({username}));
-    storage.deleteUser(username)
-        .then(() => dispatch(deleteSuccess({username})))
-        .catch(err => dispatch(deleteFailure({username, error: err.toString()})));
+export const deleteUser = (id: string): AppThunk => (dispatch): void => {
+    dispatch(deleteRequest({id}));
+    storage.deleteUser(id)
+        .then(() => dispatch(deleteSuccess({id})))
+        .catch(err => dispatch(deleteFailure({id, error: err.toString()})));
 };
 
 export const getAllUsers = (): AppThunk =>
@@ -119,17 +119,17 @@ export const getAllUsers = (): AppThunk =>
         }
     };
 
-export const postUser = (user: User): AppThunk => (dispatch): void => {
-    dispatch(userRequest({username: user.name}));
-    storage.postUser(user)
-        .then(user => dispatch(userSuccess({username: user.name, user})))
-        .catch(err => dispatch(userFailure({username: user.name, error: err.toString()})));
+export const setUser = (user: User): AppThunk => (dispatch): void => {
+    dispatch(userRequest({id: user.id}));
+    storage.setUser(user)
+        .then(user => dispatch(userSuccess({id: user.id, user})))
+        .catch(err => dispatch(userFailure({id: user.id, error: err.toString()})));
 };
 
-export const addTag = (username: string, tag: Tag): AppThunk =>
+export const addTag = (id: string, tag: Tag): AppThunk =>
     (dispatch, getState): void => {
         const userRecord = getState().user.userRecord;
-        const user: User | null = userRecord[username] ? userRecord[username].user : null;
+        const user: User | null = userRecord[id] ? userRecord[id].user : null;
 
         // console.group(`%cAdd Tag! ${username}`, 'font-size: 1.2em; font-weight: bold; color: orange');
         // console.log(user, tag);
@@ -138,29 +138,29 @@ export const addTag = (username: string, tag: Tag): AppThunk =>
         if (user && !user.tags.includes(tag.id)) {
             dispatch(updateFrequentlyUsed(tag.id));
             const updatedUser = {...user, tags: [...user.tags, tag.id]};
-            dispatch(postUser(updatedUser));
+            dispatch(setUser(updatedUser));
         }
     };
 
-export const updateTags = (username: string, tagIds: string[]): AppThunk =>
+export const updateTags = (id: string, tagIds: string[]): AppThunk =>
     (dispatch, getState): void=> {
         const userRecord = getState().user.userRecord;
-        const user: User | null = userRecord[username] ? userRecord[username].user : null;
+        const user: User | null = userRecord[id] ? userRecord[id].user : null;
 
         if (user && tagIds && !isEqual(user.tags, tagIds)) {
             const updatedUser = {...user, tags: tagIds};
-            dispatch(postUser(updatedUser));
+            dispatch(setUser(updatedUser));
         }
     };
 
-export const removeTag = (username: string, tagId: string): AppThunk =>
+export const removeTag = (id: string, tagId: string): AppThunk =>
     (dispatch, getState): void => {
         const userRecord = getState().user.userRecord;
-        const user: User | null = userRecord[username] ? userRecord[username].user : null;
+        const user: User | null = userRecord[id] ? userRecord[id].user : null;
 
         if (user && tagId) {
             const updatedUser = {...user, tags: user.tags.filter(id => id !== tagId)};
-            dispatch(postUser(updatedUser));
+            dispatch(setUser(updatedUser));
         }
     };
 

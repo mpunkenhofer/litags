@@ -36,10 +36,10 @@ const SortableList = SortableContainer(({tags, limit,
 );
 
 interface TagListProps {
-    username: string;
+    id: string;
 }
 
-const TagList: React.FunctionComponent<TagListProps> = ({username}: TagListProps) => {
+const TagList: React.FunctionComponent<TagListProps> = ({id: username}: TagListProps) => {
     const dispatch = useDispatch();
 
     const [tags, setTags] = useState<TagType[]>([]);

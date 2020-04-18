@@ -105,11 +105,11 @@ export const getOptions = (): AppThunk => (dispatch, getState): void => {
     }
 };
 
-export const postOptions = (): AppThunk => (dispatch, getState): void => {
+export const setOptions = (): AppThunk => (dispatch, getState): void => {
     const options = getState().options.options;
 
     dispatch(optionRequest());
-    storage.postOptions(options)
+    storage.setOptions(options)
         .then(options => dispatch(optionsSuccess(options)))
         .catch(err => dispatch(optionsFailure(err.toString())));
 };

@@ -1,181 +1,124 @@
 import defaultSets from "../constants/sets";
-import {browser} from "webextension-polyfill-ts";
+import { browser } from "webextension-polyfill-ts";
 import { v4 } from 'uuid';
 import {
     Set,
     Tag,
     Options,
-    ImportExportOptions,
     User,
-    FrequentlyUsed
+    FrequentlyUsed,
+    Font
 } from './types';
+import { defaultOptions } from "../constants";
+import has from "lodash/has";
 
-const ENDPOINTS = {
-    USERS: 'USERS',
-    SETS: 'SETS',
-    OPTIONS: 'OPTIONS',
-    FREQUENTLY_USED: 'FREQUENTLY_USED'
-};
-
-export const createTag = (id: string, name: string, aliases: string[], uri: string, color?: string): Tag => {
-    return (color !== undefined) ? {id, name, aliases, uri, color} : {id, name, aliases, uri};
+const createTag = (name: string, uri: string, aliases?: string[], color?: string, font?: Font): Tag => {
+    return { id: v4(), name, aliases, uri, color, font };
 };
 
 const getDefaultSets = (): Set[] => {
     const sets = [];
 
     for (const set of defaultSets) {
-        //TODO: create predictable ids for tags to support import of tag ids from backup files
-        const tags = Object.entries(set.tags).map(([name, [aliases, uri, color]]) =>
-            createTag(v4()/*v5(`${set.name}${name}${uri}`, v5.DNS)*/, name, aliases, uri, color));
+        const tags =
+            Object.entries(set.tags).map(([name, [uri, aliases, color]]) =>
+                createTag(name, uri, aliases, color, set.font));
 
-        sets.push({...set, id: v4(), tags});
+        sets.push({ ...set, id: v4(), tags });
     }
 
     return sets;
 };
 
-const getDefaultOptions = (): Options => {
-    const importExportDefaults: ImportExportOptions = {
-        users: true,
-        sets: true,
-        frequentlyUsedTags: true,
-        settings: true
-    };
-
-    return {tagListLimit: 10, frequentlyUsedLimit: 20, export: importExportDefaults, import: importExportDefaults};
+export const setSets = async (sets: Set[]): Promise<Set[]> => {
+    await browser.storage.local.set({ ['sets']: sets });
+    return sets;
 };
 
 export const getSets = async (): Promise<Set[]> => {
-    const sets = (await browser.storage.local.get(ENDPOINTS.SETS))[ENDPOINTS.SETS];
+    const sets = (await browser.storage.local.get('sets'))['sets'];
 
     if (!sets) {
-        const defaultSets = getDefaultSets();
-        await browser.storage.local.set({[ENDPOINTS.SETS]: defaultSets});
-        return defaultSets;
+        return setSets(getDefaultSets());
     } else {
         return sets as Set[];
     }
 };
 
-export const postSets = async (sets: Set[] | null): Promise<Set[]> => {
-    if (!sets)
-        return Promise.reject('postSets: Invalid argument!');
-    else {
-        await browser.storage.local.set({[ENDPOINTS.SETS]: sets});
-
-        return sets;
-    }
-};
-
-export const getUser = async (username: string | null): Promise<User> => {
-    if (!username)
-        return Promise.reject('getUser: Invalid argument!');
-
-    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
-
-    if (users && Object.prototype.hasOwnProperty.call(users, username)) {
-        return users[username] as User;
-    } else {
-        return Promise.reject(`User: ${username} not found.`);
-    }
-};
-
-export const deleteUser = async (username: string | null): Promise<User> => {
-    if (!username)
-        return Promise.reject('deleteUser: Invalid argument!');
-
-    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
-
-    if (users && Object.prototype.hasOwnProperty.call(users, username)) {
-        const {[username]: user, ...updatedUsers} = users;
-        await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
-        return user as User;
-    } else {
-        return Promise.reject(`User: ${username} not found.`);
-    }
-};
-
 export const getUsers = async (): Promise<User[]> => {
-    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
+    const users = (await browser.storage.local.get('users'))['users'];
 
     if (users) {
-        const usersArray: User[] = [];
-
-        for (const user in users) {
-            if (Object.prototype.hasOwnProperty.call(users, user))
-                usersArray.push(users[user]);
-        }
-
-        return usersArray;
+        return Object.values(users);
     } else {
         return [];
     }
 };
 
-export const postUsers = async (users: User[] | null): Promise<User[]> => {
-    if (!users)
-        return Promise.reject('postUsers: Invalid argument!');
-    else {
-        let userObj = {};
+export const getUser = async (id: string): Promise<User> => {
+    const users = (await browser.storage.local.get('users'))['users'];
 
-        for (const user of users) {
-            userObj = {[user.name]: user, ...userObj}
-        }
-
-        await browser.storage.local.set({[ENDPOINTS.USERS]: userObj});
-
-        return users;
+    if (has(users, id)) {
+        return users[id];
+    } else {
+        return Promise.reject(`User: ${id} not found.`);
     }
 };
 
-export const postUser = async (user: User | null): Promise<User> => {
-    if (!user)
-        return Promise.reject('postUser: Invalid argument!');
+export const setUsers = async (users: User[]): Promise<User[]> => {
+    let userObj = {};
 
-    const users = (await browser.storage.local.get(ENDPOINTS.USERS))[ENDPOINTS.USERS];
-    const updatedUsers = Object.assign({}, users, {[user.name]: user});
-    await browser.storage.local.set({[ENDPOINTS.USERS]: updatedUsers});
-    return updatedUsers[user.name];
+    for (const user of users) {
+        userObj = { [user.id]: user, ...userObj }
+    }
+
+    await browser.storage.local.set({ ['users']: userObj });
+
+    return users;
+};
+
+export const setUser = async (user: User): Promise<User> => {
+    const users = (await browser.storage.local.get('users'))['users'];
+    const updatedUsers = Object.assign({}, users, { [user.id]: user });
+    await browser.storage.local.set({ ['users']: updatedUsers });
+    return updatedUsers[user.id];
+};
+
+export const deleteUser = async (id: string): Promise<void> => {
+    const users = await getUsers();
+    await setUsers(users.filter(user => user.id !== id));
 };
 
 export const getOptions = async (): Promise<Options> => {
-    const options = (await browser.storage.local.get(ENDPOINTS.OPTIONS))[ENDPOINTS.OPTIONS];
+    const options = (await browser.storage.local.get('options'))['options'];
 
     if (!options) {
-        const defaultOptions = getDefaultOptions();
-        await browser.storage.local.set({[ENDPOINTS.OPTIONS]: defaultOptions});
+        await browser.storage.local.set({ ['options']: defaultOptions });
         return defaultOptions;
     } else {
         return options as Options;
     }
 };
 
-export const postOptions = async (options: Options | null): Promise<Options> => {
-    if (!options)
-        return Promise.reject('postOptions: Invalid argument!');
-
-    await browser.storage.local.set({[ENDPOINTS.OPTIONS]: options});
+export const setOptions = async (options: Options): Promise<Options> => {
+    await browser.storage.local.set({ ['options']: options });
     return options;
 };
 
 
 export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
-    const frequentlyUsed = (await browser.storage.local.get(ENDPOINTS.FREQUENTLY_USED))[ENDPOINTS.FREQUENTLY_USED];
+    const frequentlyUsed = (await browser.storage.local.get('frequently_used'))['frequently_used'];
 
     if (!frequentlyUsed) {
-        await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: []});
+        await browser.storage.local.set({ ['frequently_used']: [] });
         return [];
     } else {
         return frequentlyUsed as FrequentlyUsed;
     }
 };
 
-export const postFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed | null): Promise<FrequentlyUsed> => {
-    if (!frequentlyUsedIDs)
-        return Promise.reject('postFrequentlyUsed: Invalid argument!');
-
-    await browser.storage.local.set({[ENDPOINTS.FREQUENTLY_USED]: frequentlyUsedIDs});
+export const setFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
+    await browser.storage.local.set({ ['frequently_used']: frequentlyUsedIDs });
     return frequentlyUsedIDs;
 };
 

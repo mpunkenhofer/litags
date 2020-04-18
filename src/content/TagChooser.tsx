@@ -17,12 +17,12 @@ const TagChooserButton: React.FunctionComponent<TagChooserButtonProps> = ({onCli
 );
 
 interface TagChooserProps {
-    username: string;
+    id: string;
     keyboardShortcutsEnabled?: boolean;
 }
 
 const TagChooser: React.FunctionComponent<TagChooserProps> =
-    ({username, keyboardShortcutsEnabled}: TagChooserProps) => {
+    ({id: username, keyboardShortcutsEnabled}: TagChooserProps) => {
         const dispatch = useDispatch();
         const [visible, setVisible] = useState(false);
 

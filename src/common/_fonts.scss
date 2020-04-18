@@ -24,23 +24,9 @@
   }
 }
 
-.lt-star-icon {
-  @extend %lichess-icon;
-  &:after {
-    content: 's';
-  }
-}
-
 .lt-star-full-icon {
   @extend %lichess-icon;
   &:after {
     content: 't';
-  }
-}
-
-.lt-search-icon {
-  @extend %lichess-icon;
-  &:after {
-    content: 'y';
   }
 }

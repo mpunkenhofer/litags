@@ -46,7 +46,7 @@ const UserListElement: React.FunctionComponent<UserListElementProps> =
                         </a>
                     </Col>
                     <Col xs={7} className='lt-list align-items-baseline'>
-                        <TagList username={name}/>
+                        <TagList id={name}/>
                     </Col>
                     <Col>
                         <Button variant='outline-danger' className='lt-delete-btn'
@@ -77,7 +77,7 @@ const UserList: React.FunctionComponent<UserListProps> = ({users}: UserListProps
 
     const searchUser = useCallback(term => {
         term = term.toLowerCase();
-        return users.filter(user => user.name.toLowerCase().includes(term));
+        return users.filter(user => user.id.toLowerCase().includes(term));
     }, [users]);
 
     const onInput = (e: FormEvent<HTMLInputElement>): void =>
@@ -93,7 +93,7 @@ const UserList: React.FunctionComponent<UserListProps> = ({users}: UserListProps
         <>
             <UserListHeader count={displayUsers.length} onInput={onInput}/>
             {
-                displayUsers.map(user => <UserListElement key={`ul-${user.name}`} name={user.name}
+                displayUsers.map(user => <UserListElement key={`ul-${user.id}`} name={user.id}
                                                           onDeleteButtonClicked={onDeleteButtonClicked}/>)
             }
         </>

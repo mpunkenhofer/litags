@@ -96,3 +96,11 @@
 .lt-options-drag-helper {
   list-style: none;
 }
+
+#tag-nav + ul {
+  font-size: 95%;
+}
+
+#tag-nav.active + ul {
+    display: flex !important;
+}

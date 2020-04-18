@@ -5,7 +5,7 @@ import {Container, Row, Col} from "react-bootstrap";
 import {useCallback} from "react";
 import {ChangeEvent} from "react";
 import {useEffect} from "react";
-import {getOptions, setTagListLimit, setFrequentlyUsedLimit, postOptions} from "../../common/slices/options";
+import {getOptions, setTagListLimit, setFrequentlyUsedLimit, setOptions} from "../../common/slices/options";
 import {useDispatch, useSelector} from "react-redux";
 import {throttle} from "lodash";
 import {RootState} from "../../common/rootReducer";
@@ -14,7 +14,7 @@ export const Settings: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const {options} = useSelector((state: RootState) => state.options);
 
-    const persistOptions = throttle(() => dispatch(postOptions()), 2000, {trailing: true});
+    const persistOptions = throttle(() => dispatch(setOptions()), 2000, {trailing: true});
 
     useEffect(() => {
         dispatch(getOptions());

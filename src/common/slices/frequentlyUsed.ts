@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppThunk} from "../store";
-import * as api from "../storage";
+import * as storage from "../storage";
 import {FrequentlyUsed} from "../types";
 
 type FrequentlyUsedState = {
@@ -44,16 +44,16 @@ export const {
 export const getFrequentlyUsed = (): AppThunk => (dispatch, getState): void => {
     if(!getState().frequentlyUsed.loading) {
         dispatch(frequentlyUsedRequest());
-        api.getFrequentlyUsed()
+        storage.getFrequentlyUsed()
             .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
             .catch(err => dispatch(frequentlyUsedError(err.toString())));
     }
 };
 
-export const postFrequentlyUsed = (frequentlyUsed: FrequentlyUsed): AppThunk =>
+export const setFrequentlyUsed = (frequentlyUsed: FrequentlyUsed): AppThunk =>
     (dispatch): void => {
     dispatch(frequentlyUsedRequest());
-    api.postFrequentlyUsed(frequentlyUsed)
+    storage.setFrequentlyUsed(frequentlyUsed)
         .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
         .catch(err => dispatch(frequentlyUsedError(err.toString())));
 };
@@ -74,7 +74,7 @@ export const updateFrequentlyUsed = (tagId: string): AppThunk =>
 
     frequentlyUsed.sort((a, b): number => (b[1] - a[1]));
 
-    dispatch(postFrequentlyUsed(frequentlyUsed));
+    dispatch(setFrequentlyUsed(frequentlyUsed));
 };
 
 export default frequentlyUsedSlice.reducer;

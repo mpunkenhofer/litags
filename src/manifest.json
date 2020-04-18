@@ -36,5 +36,10 @@
       "js": ["content.js"],
       "css": [ "content.css" ]
     }
+  ],
+  "web_accessible_resources": [
+    "assets/images/lichess.svg",
+    "assets/images/star-solid.svg",
+    "assets/images/search-solid.svg"
   ]
 }

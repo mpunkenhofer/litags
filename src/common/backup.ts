@@ -6,7 +6,7 @@ import {
 } from "./types";
 import isEmpty from 'lodash/isempty';
 import pkg from '../../package.json';
-import { postOptions, postSets, postFrequentlyUsed, postUsers, getOptions, getUsers, getSets, getFrequentlyUsed } from "./storage";
+import { setOptions, setSets, setFrequentlyUsed, setUsers, getOptions, getUsers, getSets, getFrequentlyUsed } from "./storage";
 
 interface Backup {
     app: string;
@@ -27,19 +27,19 @@ export const importBackup = async (options: Options, data: string): Promise<void
     // console.log(options);
 
     if (options.import.settings && !isEmpty(backup.settings) && backup.settings) {
-        await postOptions(backup.settings);
+        await setOptions(backup.settings);
     }
 
     if (options.import.sets && !isEmpty(backup.sets) && backup.sets) {
-        await postSets(backup.sets);
+        await setSets(backup.sets);
     }
 
     if (options.import.frequentlyUsedTags && !isEmpty(backup.frequentlyUsed) && backup.frequentlyUsed) {
-        await postFrequentlyUsed(backup.frequentlyUsed);
+        await setFrequentlyUsed(backup.frequentlyUsed);
     }
 
     if (options.import.users && !isEmpty(backup.users) && backup.users) {
-        await postUsers(backup.users);
+        await setUsers(backup.users);
     }
 };
 

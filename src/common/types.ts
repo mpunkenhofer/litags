@@ -1,21 +1,27 @@
+export type Font = {
+    fontFamily: string;
+    src: string;
+}
+
 export type Tag = {
     id: string;
     name: string;
-    aliases: string[];
     uri: string;
+    aliases?: string[];
     color?: string;
+    font?: Font;
 }
 
 export type Set = {
     id: string;
     name: string;
     iconUrl: string;
-    fontUrl: string;
+    font?: Font;
     tags: Tag[];
 }
 
 export type User = {
-    name: string;
+    id: string;
     tags: string[];
 }
 

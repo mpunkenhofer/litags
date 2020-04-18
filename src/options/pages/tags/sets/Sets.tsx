@@ -1,10 +1,10 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../../common/hooks/setDocumentTitle";
-import {i18n} from "../../../constants/i18n";
+import {useSetDocumentTitle} from "../../../../common/hooks/setDocumentTitle";
+import {i18n} from "../../../../constants/i18n";
 import {useEffect} from "react";
-import {getSets} from "../../../common/slices/sets";
+import {getSets} from "../../../../common/slices/sets";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../common/rootReducer";
+import {RootState} from "../../../../common/rootReducer";
 import {Container, Col, Row, Spinner} from "react-bootstrap";
 import {SetList} from "./SetList";
 import {SetView} from "./SetView";
@@ -30,7 +30,7 @@ export const Sets: React.FunctionComponent = () => {
         return (
             <>
                 <Container className='' fluid={true}>
-                    <HashRouter hashType={'noslash'} basename={'sets'}>
+                    <HashRouter hashType={'noslash'} basename={'tags/sets'}>
                         <Row className='flex-column flex-lg-row'>
                             <Col md='auto' xl={2} className=''>
                                 <SetList sets={sets}/>

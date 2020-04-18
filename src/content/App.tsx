@@ -49,8 +49,8 @@ const Container: React.FunctionComponent<ContainerProps> =
 
         return (
             <>
-                {ReactDOM.createPortal(<TagList username={username}/>, listElement)}
-                {ReactDOM.createPortal(<TagChooser username={username}
+                {ReactDOM.createPortal(<TagList id={username}/>, listElement)}
+                {ReactDOM.createPortal(<TagChooser id={username}
                                                    keyboardShortcutsEnabled={keyboardShortcutsEnabled}/>,
                     buttonElement)}
             </>

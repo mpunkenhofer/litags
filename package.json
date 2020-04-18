@@ -1,6 +1,6 @@
 {
   "name": "litags",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A browser extension that enables you to assign tags to players on lichess.org.",
   "homepage": "https://github.com/mpunkenhofer/litags",
   "license": "MIT",
