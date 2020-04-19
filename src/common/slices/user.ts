@@ -135,31 +135,33 @@ export const addTag = (id: string, tag: Tag): AppThunk =>
         // console.log(user, tag);
         // console.groupEnd();
 
-        if (user && !user.tags.includes(tag.id)) {
-            dispatch(updateFrequentlyUsed(tag.id));
-            const updatedUser = {...user, tags: [...user.tags, tag.id]};
+        // tag comparison
+        if (user && !(user.tags.findIndex(t => t.id === tag.id) > -1)) {
+            dispatch(updateFrequentlyUsed(tag));
+            const updatedUser = {...user, tags: [...user.tags, tag]};
             dispatch(setUser(updatedUser));
         }
     };
 
-export const updateTags = (id: string, tagIds: string[]): AppThunk =>
+export const updateTags = (id: string, tags: Tag[]): AppThunk =>
     (dispatch, getState): void=> {
         const userRecord = getState().user.userRecord;
         const user: User | null = userRecord[id] ? userRecord[id].user : null;
 
-        if (user && tagIds && !isEqual(user.tags, tagIds)) {
-            const updatedUser = {...user, tags: tagIds};
+        if (user && !isEqual(user.tags, tags)) {
+            const updatedUser = {...user, tags: tags};
             dispatch(setUser(updatedUser));
         }
     };
 
-export const removeTag = (id: string, tagId: string): AppThunk =>
+export const removeTag = (id: string, tag: Tag): AppThunk =>
     (dispatch, getState): void => {
         const userRecord = getState().user.userRecord;
         const user: User | null = userRecord[id] ? userRecord[id].user : null;
 
-        if (user && tagId) {
-            const updatedUser = {...user, tags: user.tags.filter(id => id !== tagId)};
+        if (user) {
+            // tag comparison
+            const updatedUser = {...user, tags: user.tags.filter(t => t.id !== tag.id)};
             dispatch(setUser(updatedUser));
         }
     };

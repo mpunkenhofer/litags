@@ -1,28 +1,28 @@
 import * as React from "react";
 import Tag from "../../../../common/Tag";
-import {Tag as TagType} from "../../../../common/types";
-import {Container, Col, Row} from "react-bootstrap";
-import {ColorPicker} from "../../../ColorPicker";
-import {Badge} from "../../../Badge";
-import {i18n} from "../../../../constants/i18n";
-import {useDispatch, useSelector} from "react-redux";
-import {setSets, removeAlias, updateTagColor, updateTagName, updateTagURI} from "../../../../common/slices/sets";
-import {ChangeEvent, useCallback} from "react";
-import {RootState} from "../../../../common/rootReducer";
+import { Tag as TagType } from "../../../../common/types";
+import { Container, Col, Row } from "react-bootstrap";
+import { ColorPicker } from "../../../ColorPicker";
+import { Badge } from "../../../Badge";
+import { i18n } from "../../../../constants/i18n";
+import { useDispatch, useSelector } from "react-redux";
+import { setSets, removeAlias, updateTagColor, updateTagName, updateTagURI, tagSelector } from "../../../../common/slices/sets";
+import { ChangeEvent, useCallback, useMemo } from "react";
+import { RootState } from "../../../../common/rootReducer";
 
 interface TagViewProps {
     tag: TagType;
 }
 
-export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewProps) => {
-    /*TODO:
-        - Aliases: Support adding aliases (action already exists: addAlias)
-     */
+export const TagView: React.FunctionComponent<TagViewProps> = ({ tag }: TagViewProps) => {
     const dispatch = useDispatch();
 
-    const sTag = useSelector((state: RootState) => state.sets.tagsById[tag.id]);
+    const {sets} = useSelector((state: RootState) => state.sets);
 
-    const fontTag = tag.color != undefined;
+    const liveTag = useMemo(() => {
+        const t = tagSelector(sets, tag.id);
+        return (t !== null) ? t : tag;
+    }, [tag, sets]);
 
     const onChangeName = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
@@ -60,13 +60,13 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
                     <strong className='text-muted'>{i18n.tagName}</strong>
                 </Col>
                 {
-                    (tag.aliases && tag.aliases.length > 0) &&
+                    (liveTag.aliases && liveTag.aliases.length > 0) &&
                     <Col>
                         <strong className='text-muted'>{i18n.aliases}</strong>
                     </Col>
                 }
                 <Col>
-                    <strong className='text-muted'>{fontTag ? i18n.symbol : i18n.imageURL}</strong>
+                    <strong className='text-muted'>{(tag.font !== undefined) ? i18n.symbol : i18n.imageURL}</strong>
                 </Col>
                 {
                     (tag.font != undefined) &&
@@ -77,31 +77,31 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({tag}: TagViewPro
             </Row>
             <Row className='align-items-center'>
                 <Col xs={1}>
-                    <Tag tag={sTag}/>
+                    <Tag tag={liveTag} />
                 </Col>
                 <Col>
-                    <input type='text' className='form-control' value={sTag.name} placeholder={i18n.tagName}
-                           onChange={onChangeName}/>
+                    <input type='text' className='form-control' value={liveTag.name} placeholder={i18n.tagName}
+                        onChange={onChangeName} />
                 </Col>
                 {
-                    (sTag.aliases && sTag.aliases.length > 0) &&
+                    ((liveTag.aliases !== undefined) && liveTag.aliases.length > 0) &&
                     <Col>
                         {
-                            sTag.aliases.map((alias, index) => (
+                            liveTag.aliases.map((alias, index) => (
                                 <Badge key={`alias-${index}-${tag.id}]`} text={alias}
-                                       onRemoveButtonClicked={onRemoveAliasButtonClicked(alias)}/>
+                                    onRemoveButtonClicked={onRemoveAliasButtonClicked(alias)} />
                             ))
                         }
                     </Col>
                 }
                 <Col>
-                    <input type='text' className='form-control' value={sTag.uri}
-                           placeholder={fontTag ? i18n.symbol : i18n.imageURL} onChange={onChangeURI}/>
+                    <input type='text' className='form-control' value={liveTag.uri}
+                        placeholder={(tag.font !== undefined) ? i18n.symbol : i18n.imageURL} onChange={onChangeURI} />
                 </Col>
                 {
-                    (sTag.font !== undefined) &&
+                    (tag.font !== undefined) &&
                     <Col xs={1} className='align-middle'>
-                        <ColorPicker color={sTag.color ? sTag.color : '#000000'} onChangeComplete={onChangeColor}/>
+                        <ColorPicker color={liveTag.color ? liveTag.color : '#000000'} onChangeComplete={onChangeColor} />
                     </Col>
                 }
             </Row>

@@ -3,11 +3,10 @@ import { FormEvent, useRef, useState } from "react";
 import TagChooserGroup from "./TagChooserGroup";
 import { useFocusOnAnyKeydown } from "../common/hooks/focusOnKeydown";
 import { getBackgroundColor } from "../common/colorTools";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useSelector } from 'react-redux'
 import { RootState } from "../common/rootReducer";
 import { Tag } from "../common/types";
-import isEmpty from 'lodash/isempty';
 import FocusTrap from "focus-trap-react";
 import { i18n } from "../constants/i18n";
 import { browser } from "webextension-polyfill-ts";
@@ -19,7 +18,7 @@ interface TagChooserPopupInterface {
 
 const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
     ({ onClickOutside, onTagClicked }: TagChooserPopupInterface) => {
-        const { sets, tagsById, loading, error } = useSelector((state: RootState) => state.sets);
+        const { sets, loading, error } = useSelector((state: RootState) => state.sets);
         const { frequentlyUsed } = useSelector((state: RootState) => state.frequentlyUsed);
         const { options } = useSelector((state: RootState) => state.options);
 
@@ -29,16 +28,24 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
 
         useFocusOnAnyKeydown(inputRef, ['Tab', 'Enter']);
 
+        const tags = useMemo(() => {
+            let allTags: Tag[] = [];
+
+            for (const set of sets)
+                allTags = [...allTags, ...set.tags]
+
+            return allTags;
+        }, [sets]);
+
         const searchTags = useCallback(term => {
             if (!term || term.length < 1)
                 return [];
 
             term = term.toLowerCase();
 
-            return Object.values(tagsById).filter(tag => (tag && tag.name && tag.aliases) &&
-                (tag.name.toLowerCase().includes(term)
-                    || tag.aliases.find(alias => alias.toLowerCase().includes(term))));
-        }, [tagsById]);
+            return tags.filter(tag => tag.name.includes(term) ||
+                (tag.aliases && tag.aliases.find(alias => alias.toLowerCase().includes(term))));
+        }, [tags]);
 
         const onInput = (e: FormEvent<HTMLInputElement>): void =>
             setSearchResults(searchTags((e.target as HTMLInputElement).value));
@@ -56,7 +63,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                     <div className='lt-tc' style={{ backgroundColor: getBackgroundColor(-.15) }}>
                         <div className='lt-tcgs'>
                             {
-                                (searchResults && searchResults.length != 0) &&
+                                (searchResults.length > 0) &&
                                 <TagChooserGroup key={'litags.searchResults'}
                                     set={{
                                         id: '0',
@@ -67,14 +74,14 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     onTagClicked={onTagClicked} />
                             }
                             {
-                                (!isEmpty(tagsById) && frequentlyUsed && frequentlyUsed.length > 0) &&
+                                (frequentlyUsed.length > 0) &&
                                 <TagChooserGroup key={'litags.frequentlyUsed'}
                                     set={{
                                         id: '1',
                                         name: i18n.frequentlyUsed,
                                         tags: frequentlyUsed
                                             .slice(0, options.frequentlyUsedLimit)
-                                            .map(pair => tagsById[pair[0]]),
+                                            .map(freqUsed => freqUsed.tag),
                                         iconUrl: browser.runtime.getURL('assets/images/star-solid.svg')
                                     }}
                                     onTagClicked={onTagClicked} />

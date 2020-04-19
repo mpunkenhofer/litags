@@ -38,15 +38,15 @@ export const Settings: React.FunctionComponent = () => {
 
     return (
         <>
-            <h1 className={'display-4 pb-3 pb-mb-4'}>{i18n.settings}</h1>
+            <h1 className={'h2 pb-2 pb-mb-4'}>{i18n.settings}</h1>
 
-            <section className='py-2 py-md-3'>
-                <h3 className='text-muted'>{i18n.settingsTagListLimitTitle} {options.tagListLimit}</h3>
+            <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
+                <h2 className='h4'>{i18n.settingsTagListLimitTitle} {options.tagListLimit}</h2>
                 <p>{i18n.settingsTagListLimitDescription}</p>
                 <Container fluid={true}>
                     <Row className='text-center'>
                         <Col xs={2}>
-                            <strong className='text-muted'>1</strong>
+                            <strong className=''>1</strong>
                         </Col>
                         <Col>
                             {
@@ -54,17 +54,17 @@ export const Settings: React.FunctionComponent = () => {
                                        value={options.tagListLimit} onChange={onChangeTagListLimit}/>
                             }
                         </Col>
-                        <Col xs={2}><strong className='text-muted'>10</strong></Col>
+                        <Col xs={2}><strong className=''>10</strong></Col>
                     </Row>
                 </Container>
             </section>
-            <section className='py-2 py-md-3'>
-                <h3 className='text-muted'>{i18n.settingsFrequentlyUsedLimitTitle} {options.frequentlyUsedLimit}</h3>
+            <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
+                <h2 className='h4'>{i18n.settingsFrequentlyUsedLimitTitle} {options.frequentlyUsedLimit}</h2>
                 <p>{i18n.settingsFrequentlyUsedLimitDescription}</p>
                 <Container fluid={true}>
                     <Row className='text-center'>
                         <Col xs={2}>
-                            <strong className='text-muted'>1</strong>
+                            <strong className=''>1</strong>
                         </Col>
                         <Col>
                             {
@@ -72,12 +72,12 @@ export const Settings: React.FunctionComponent = () => {
                                        value={options.frequentlyUsedLimit} onChange={onChangeFrequentlyUsedLimit}/>
                             }
                         </Col>
-                        <Col xs={2}><strong className='text-muted'>20</strong></Col>
+                        <Col xs={2}><strong className=''>20</strong></Col>
                     </Row>
                 </Container>
             </section>
-            <section className='py-2 py-md-3'>
-                <h3 className='text-muted'>{i18n.hotkeys}</h3>
+            <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
+                <h2 className='h4'>{i18n.hotkeys}</h2>
                 <p>{i18n.settingsHotkeysDescription}</p>
             </section>
         </>

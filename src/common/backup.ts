@@ -16,7 +16,7 @@ interface Backup {
     settings?: Options;
     users?: User[];
     sets?: Set[];
-    frequentlyUsed?: FrequentlyUsed;
+    frequentlyUsed?: FrequentlyUsed[];
 }
 
 export const importBackup = async (options: Options, data: string): Promise<void> => {

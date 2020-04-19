@@ -12,7 +12,7 @@ export const About: React.FunctionComponent = () => {
 
     return (
         <>
-            <h1 className={'display-4 pb-2'}>{i18n.about}</h1>
+            <h1 className={'h2 pb-2 pb-md-4'}>{i18n.about}</h1>
             <p className='py-2'>{i18n.appDescriptionWithoutLink} <a href={'https://lichess.org/'}>lichess.org</a>.</p>
 
             <Container className='py-2' fluid={true}>
@@ -44,15 +44,15 @@ export const About: React.FunctionComponent = () => {
                                      alt={'Tag Sets Icon'}/>
                             </Card.Header>
                             <Card.Body>
-                                <Card.Title>{i18n.tagSets}</Card.Title>
+                                <Card.Title>{i18n.tags}</Card.Title>
                                 <Card.Text>
                                     {i18n.aboutTagSetsDescription}
                                 </Card.Text>
                                 <Button variant="outline-primary"
                                         onClick={(): void => {
-                                            history.push('/sets')
+                                            history.push('/tags/sets')
                                         }}>
-                                    {`${i18n.goTo} ${i18n.tagSets}`}
+                                    {`${i18n.goTo} ${i18n.tags}`}
                                 </Button>
                             </Card.Body>
                         </Card>

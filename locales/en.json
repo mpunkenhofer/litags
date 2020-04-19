@@ -176,6 +176,12 @@
   "chooseFile": {
     "message": "Choose File"
   },
+  "selectedTag": {
+    "message": "Selected Tag"
+  },
+  "removeSelectedTag": {
+    "message": "Remove Selected Tag"
+  },
   "frequentlyUsedTags": {
     "message": "Frequently Used Tags"
   },
@@ -231,7 +237,7 @@
     "message": "General LiTags settings."
   },
   "aboutTagSetsDescription": {
-    "message": "Add, Edit, Delete sets and their respective tags."
+    "message": "Add, edit, delete sets and their respective tags."
   },
   "aboutUsersDescription": {
     "message": "A searchable list of all users you have tagged."
@@ -246,7 +252,7 @@
     "message": "Want to chat? Consider joining the Discord Server! Suggest features, report bugs, ask question or just hang out."
   },
   "aboutDonateDescription": {
-    "message": "Donations are not required but very appreciated. Currently I only setup PayPal for donations, if you would like to donate via any other means, contact me on Discord or via Github."
+    "message": "Donations are not required but very appreciated. Currently I only setup PayPal for donations, if you would like to donate via any other means, contact me on Discord or Github."
   },
   "settingsTagListLimitTitle": {
     "message": "Tag List Limit:"

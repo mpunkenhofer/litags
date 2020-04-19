@@ -1,10 +1,10 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AppThunk} from "../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk } from "../store";
 import * as storage from "../storage";
-import {FrequentlyUsed} from "../types";
+import { FrequentlyUsed, Tag } from "../types";
 
 type FrequentlyUsedState = {
-    frequentlyUsed: FrequentlyUsed;
+    frequentlyUsed: FrequentlyUsed[];
     loading: boolean;
     error: string | null;
 }
@@ -23,12 +23,12 @@ const frequentlyUsedSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        frequentlyUsedSuccess(state, {payload}: PayloadAction<FrequentlyUsed>): void {
+        frequentlyUsedSuccess(state, { payload }: PayloadAction<FrequentlyUsed[]>): void {
             state.frequentlyUsed = payload;
             state.loading = false;
             state.error = null;
         },
-        frequentlyUsedError(state, {payload}: PayloadAction<string>): void {
+        frequentlyUsedError(state, { payload }: PayloadAction<string>): void {
             state.loading = false;
             state.error = payload;
         }
@@ -42,7 +42,7 @@ export const {
 } = frequentlyUsedSlice.actions;
 
 export const getFrequentlyUsed = (): AppThunk => (dispatch, getState): void => {
-    if(!getState().frequentlyUsed.loading) {
+    if (!getState().frequentlyUsed.loading) {
         dispatch(frequentlyUsedRequest());
         storage.getFrequentlyUsed()
             .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
@@ -50,31 +50,35 @@ export const getFrequentlyUsed = (): AppThunk => (dispatch, getState): void => {
     }
 };
 
-export const setFrequentlyUsed = (frequentlyUsed: FrequentlyUsed): AppThunk =>
+export const setFrequentlyUsed = (frequentlyUsed: FrequentlyUsed[]): AppThunk =>
     (dispatch): void => {
-    dispatch(frequentlyUsedRequest());
-    storage.setFrequentlyUsed(frequentlyUsed)
-        .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
-        .catch(err => dispatch(frequentlyUsedError(err.toString())));
-};
+        dispatch(frequentlyUsedRequest());
+        storage.setFrequentlyUsed(frequentlyUsed)
+            .then(freqUsed => dispatch(frequentlyUsedSuccess(freqUsed)))
+            .catch(err => dispatch(frequentlyUsedError(err.toString())));
+    };
 
-export const updateFrequentlyUsed = (tagId: string): AppThunk =>
+export const removeFrequentlyUsed = (tag: Tag): AppThunk =>
     (dispatch, getState): void => {
-    const freqUsed = getState().frequentlyUsed.frequentlyUsed;
-    let frequentlyUsed = freqUsed ? [...freqUsed] : [];
+        const updatedFreqUsed = getState().frequentlyUsed.frequentlyUsed.filter(ft => ft.tag.id !== tag.id);
+        dispatch(setFrequentlyUsed(updatedFreqUsed));
+    };
 
-    const index = frequentlyUsed.findIndex(freqUsedPair => freqUsedPair[0] === tagId);
+export const updateFrequentlyUsed = (tag: Tag): AppThunk =>
+    (dispatch, getState): void => {
+        let frequentlyUsed = [...getState().frequentlyUsed.frequentlyUsed];
 
-    if(index >= 0) {
-        const [id, frequency] = frequentlyUsed[index];
-        frequentlyUsed[index] = [id, frequency + 1];
-    } else {
-        frequentlyUsed = [...frequentlyUsed, [tagId, 1]];
-    }
+        const index = frequentlyUsed.findIndex(freqUsedPair => freqUsedPair.tag.id === tag.id);
 
-    frequentlyUsed.sort((a, b): number => (b[1] - a[1]));
+        if (index >= 0) {
+            frequentlyUsed[index] = { tag: frequentlyUsed[index].tag, count: frequentlyUsed[index].count + 1 };
+        } else {
+            frequentlyUsed = [...frequentlyUsed, { tag, count: 1 }];
+        }
 
-    dispatch(setFrequentlyUsed(frequentlyUsed));
-};
+        frequentlyUsed.sort((a, b): number => (b.count - a.count));
+
+        dispatch(setFrequentlyUsed(frequentlyUsed));
+    };
 
 export default frequentlyUsedSlice.reducer;

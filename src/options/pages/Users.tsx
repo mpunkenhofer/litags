@@ -117,7 +117,7 @@ export const Users: React.FunctionComponent = () => {
     } else if (loading) {
         return (
             <>
-                <h1 className={'h2'}>
+                <h1 className={'h2 pb-2 pb-md-4'}>
                     {i18n.users}
                 </h1>
                 <div className='d-flex justify-content-center py-2 py-md-4'>
@@ -127,7 +127,7 @@ export const Users: React.FunctionComponent = () => {
     } else if (userRecord) {
         return (
             <>
-                <h1 className={'display-4'}>{i18n.users}</h1>
+                <h1 className={'h2 pb-2 pb-md-4'}>{i18n.users}</h1>
                 <UserList users={Object.values(userRecord).map(record => record.user)}/>
             </>
         );

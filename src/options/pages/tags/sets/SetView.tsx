@@ -1,15 +1,15 @@
 import * as React from "react";
-import {Set, Tag} from "../../../../common/types";
+import { Set, Tag } from "../../../../common/types";
 import TagButton from "../../../../common/TagButton";
-import {useCallback, useState} from "react";
-import {TagView} from "./TagView";
-import {Container, Col, Row, Button} from "react-bootstrap";
-import {i18n} from "../../../../constants/i18n";
-import {ChangeEvent} from "react";
-import {useDispatch} from "react-redux";
-import {addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets} from "../../../../common/slices/sets";
-import {ConfirmModal} from "../../../ConfirmModal";
-import {useHistory} from "react-router-dom";
+import { useCallback, useState } from "react";
+import { TagView } from "./TagView";
+import { Container, Col, Row, Button } from "react-bootstrap";
+import { i18n } from "../../../../constants/i18n";
+import { ChangeEvent } from "react";
+import { useDispatch } from "react-redux";
+import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } from "../../../../common/slices/sets";
+import { ConfirmModal } from "../../../ConfirmModal";
+import { useHistory } from "react-router-dom";
 
 
 interface TagContainerProps {
@@ -17,12 +17,12 @@ interface TagContainerProps {
     onTagClicked: (tag: Tag) => () => void;
 }
 
-const TagContainer: React.FunctionComponent<TagContainerProps> = ({tags, onTagClicked}: TagContainerProps) => {
+const TagContainer: React.FunctionComponent<TagContainerProps> = ({ tags, onTagClicked }: TagContainerProps) => {
     if (tags && tags.length > 0) {
         return (
             <div className='p-2 d-flex flex-wrap border rounded-lg justify-content-around bg-light'>
                 {
-                    tags.map(tag => <TagButton key={tag.id} tag={tag} onClick={onTagClicked(tag)}/>)
+                    tags.map(tag => <TagButton key={tag.id} tag={tag} onClick={onTagClicked(tag)} />)
                 }
             </div>
         );
@@ -34,12 +34,10 @@ interface SetDisplayProps {
 }
 
 
-export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisplayProps) => {
+export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDisplayProps) => {
     /*TODO:
-        - Font Sets (link to font files (support for font files must also be implemented in Tag.tsx to correctly
-        display them)
-        - Enable/Disable Sets
         - Select Initial Tag
+        - Select New Tag when added.
      */
     const dispatch = useDispatch();
     const [showDeleteTagModal, setShowDeleteTagModal] = useState(false);
@@ -69,7 +67,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
 
     const onDeleteSelectedTagClicked = useCallback((): void => {
         if (selectedTag) {
-            dispatch(deleteTag({setId: set.id, tagId: selectedTag.id}));
+            dispatch(deleteTag({ setId: set.id, tagId: selectedTag.id }));
             dispatch(setSets());
         }
         setSelectedTag(null);
@@ -84,6 +82,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
     const onAddTagClicked = useCallback((): void => {
         dispatch(addTag(set.id, i18n.newTag));
         dispatch(setSets());
+        //setSelectedTag()
     }, [dispatch, set]);
 
     return (
@@ -92,13 +91,13 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
                 <Row className='pb-2 pb-md-4'>
                     <Col xs={6} className='d-flex justify-content-center align-items-center'>
                         <div className='bg-primary text-center'
-                             style={{width: '8rem', height: '8rem', borderRadius: '50%'}}>
+                            style={{ width: '8rem', height: '8rem', borderRadius: '50%' }}>
                             {
                                 set.iconUrl && set.iconUrl.length > 0 ?
                                     <img src={set.iconUrl} alt={'Set Icon'}
-                                         style={{width: '4rem', height: '4rem', marginTop: '2rem'}}/> :
+                                        style={{ width: '4rem', height: '4rem', marginTop: '2rem' }} /> :
                                     (
-                                        <div style={{marginTop: '3rem'}}>
+                                        <div style={{ marginTop: '3rem' }}>
                                             <strong className='text-white'>{i18n.noIcon}</strong>
                                         </div>
                                     )
@@ -109,24 +108,24 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
                         <Row className='pb-2'>
                             <strong className='text-muted pb-2'>{i18n.setName}</strong>
                             <input type='text' className='form-control' value={set.name} placeholder={i18n.setName}
-                                   onChange={onChangeSetName}/>
+                                onChange={onChangeSetName} />
                         </Row>
                         <Row>
                             <strong className='text-muted pb-2'>{i18n.setIconURL}</strong>
                             <input type='text' className='form-control' value={set.iconUrl}
-                                   placeholder={i18n.setIconURL}
-                                   onChange={onChangeIconUrl}/>
+                                placeholder={i18n.setIconURL}
+                                onChange={onChangeIconUrl} />
                         </Row>
                     </Col>
                 </Row>
                 {
                     selectedTag &&
                     <Row className='py-3 my-2'>
-                        <TagView tag={selectedTag}/>
+                        <TagView tag={selectedTag} />
                     </Row>
                 }
                 <Row>
-                    <TagContainer tags={set.tags} onTagClicked={onTagButtonClick}/>
+                    <TagContainer tags={set.tags} onTagClicked={onTagButtonClick} />
                 </Row>
                 <Row className='py-3'>
                     <div className='d-flex ml-auto'>
@@ -136,7 +135,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
                         {
                             (selectedTag != null) &&
                             <Button variant='outline-danger' className='mr-2 mr-md-3'
-                                    onClick={(): void => setShowDeleteTagModal(true)}>
+                                onClick={(): void => setShowDeleteTagModal(true)}>
                                 {i18n.deleteSelectedTag}
                             </Button>
                         }
@@ -147,22 +146,22 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({set}: SetDisp
                 </Row>
             </Container>
             <ConfirmModal show={showDeleteSetModal} onCancel={(): void => setShowDeleteSetModal(false)}
-                          onConfirm={(): void => {
-                              setShowDeleteSetModal(false);
-                              onDeleteSetClicked();
-                          }}
-                          variant='danger' title={i18n.deleteSet}
-                          body={i18n.deleteSetConfirm.replace('%s', set.name)}
-                          confirm={i18n.delete}/>
+                onConfirm={(): void => {
+                    setShowDeleteSetModal(false);
+                    onDeleteSetClicked();
+                }}
+                variant='danger' title={i18n.deleteSet}
+                body={i18n.deleteSetConfirm.replace('%s', set.name)}
+                confirm={i18n.delete} />
             <ConfirmModal show={showDeleteTagModal} onCancel={(): void => setShowDeleteTagModal(false)}
-                          onConfirm={(): void => {
-                              setShowDeleteTagModal(false);
-                              onDeleteSelectedTagClicked();
-                          }}
-                          variant='danger' title={i18n.deleteSelectedTag}
-                          body={i18n.deleteTagConfirm.replace('%s',
-                              selectedTag ? selectedTag.name : 'null')}
-                          confirm={i18n.delete}/>
+                onConfirm={(): void => {
+                    setShowDeleteTagModal(false);
+                    onDeleteSelectedTagClicked();
+                }}
+                variant='danger' title={i18n.deleteSelectedTag}
+                body={i18n.deleteTagConfirm.replace('%s',
+                    selectedTag ? selectedTag.name : 'null')}
+                confirm={i18n.delete} />
         </>
     );
 };

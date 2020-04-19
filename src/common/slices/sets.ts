@@ -8,7 +8,6 @@ import has from "lodash/has";
 export type SetsState = {
     sets: Set[];
     order: string[];
-    tagsById: Record<string, Tag>;
     loading: boolean;
     error: string | null;
 }
@@ -16,10 +15,20 @@ export type SetsState = {
 const setsInitialState: SetsState = {
     sets: [],
     order: [],
-    tagsById: {},
     loading: false,
     error: null
 };
+
+export const tagSelector = (sets: Set[], id: string): Tag | null => {
+    for (const set of sets) {
+        for (const tag of set.tags) {
+            if (tag.id === id)
+                return tag;
+        }
+    }
+
+    return null;
+}
 
 const setsSlice = createSlice({
     name: 'sets',
@@ -33,12 +42,6 @@ const setsSlice = createSlice({
             state.sets = payload;
             state.loading = false;
             state.error = null;
-
-            for (const set of state.sets) {
-                for (const tag of set.tags) {
-                    state.tagsById[tag.id] = tag;
-                }
-            }
         },
         setsFailure(state, { payload }: PayloadAction<string>): void {
             state.loading = false;
@@ -49,7 +52,6 @@ const setsSlice = createSlice({
                 const idx = set.tags.findIndex((tag) => tag.id === payload.id);
                 if (idx > -1) {
                     set.tags[idx] = payload.tag;
-                    state.tagsById[payload.id] = payload.tag;
                     return;
                 }
             }
@@ -76,11 +78,8 @@ const setsSlice = createSlice({
 
             if (idx > -1) {
                 const updatedSet = state.sets[idx];
-
                 updatedSet.tags.push(tag);
-
                 state.sets[idx] = updatedSet;
-                state.tagsById[tagId] = tag;
             }
         },
         deleteTag(state, { payload }: PayloadAction<{ setId: string; tagId: string }>): void {
@@ -91,27 +90,24 @@ const setsSlice = createSlice({
                     ...state.sets[idx],
                     tags: state.sets[idx].tags.filter(tag => tag.id !== payload.tagId)
                 };
-
-                const updatedTagsById = state.tagsById;
-                delete updatedTagsById[payload.tagId];
-                state.tagsById = updatedTagsById;
             }
         },
         deleteSet(state, { payload }: PayloadAction<string>): void {
-            // TODO: remove tags from the set we remove from state.tagsById
             state.sets = state.sets.filter((set: Set) => set.id !== payload);
         },
         updateAliases(state, { payload }:
             PayloadAction<{ id: string; newAliases: string[] }>): void {
-            const updatedTag = state.tagsById[payload.id];
-            updatedTag.aliases = payload.newAliases;
-            state.tagsById[payload.id] = updatedTag;
+            const tag = tagSelector(state.sets, payload.id);
 
-            for (let i = 0; i < state.sets.length; i++) {
-                const tagIdx = state.sets[i].tags.findIndex(tag => tag.id === payload.id);
-                if (tagIdx > -1) {
-                    state.sets[i].tags[tagIdx] = updatedTag;
-                    return;
+            if (tag) {
+                const updatedTag = {...tag, aliases: payload.newAliases};
+                
+                for (const set of state.sets) {
+                    const idx = set.tags.findIndex(tag => tag.id === payload.id);
+                    if (idx > -1) {
+                        set.tags[idx] = updatedTag;
+                        return;
+                    }
                 }
             }
         },
@@ -156,7 +152,7 @@ export const setSets = (): AppThunk => (dispatch, getState): void => {
 
 export const updateTagName = (id: string, name: string): AppThunk =>
     (dispatch, getState): void => {
-        const tag = getState().sets.tagsById[id];
+        const tag = tagSelector(getState().sets.sets, id);
 
         if (tag) {
             const updatedTag = { ...tag, name };
@@ -166,7 +162,7 @@ export const updateTagName = (id: string, name: string): AppThunk =>
 
 export const updateTagURI = (id: string, uri: string): AppThunk =>
     (dispatch, getState): void => {
-        const tag = getState().sets.tagsById[id];
+        const tag = tagSelector(getState().sets.sets, id);
 
         if (tag) {
             const updatedTag = { ...tag, uri };
@@ -176,7 +172,7 @@ export const updateTagURI = (id: string, uri: string): AppThunk =>
 
 export const updateTagColor = (id: string, color: string): AppThunk =>
     (dispatch, getState): void => {
-        const tag = getState().sets.tagsById[id];
+        const tag = tagSelector(getState().sets.sets, id);
 
         if (tag) {
             const updatedTag = { ...tag, color };
@@ -216,28 +212,16 @@ export const addTag = (setId: string, name: string, aliases?: string[], uri?: st
         dispatch(createAndAddTag({ id: setId, tag }));
     };
 
-export const addAlias = (tagId: string, alias: string): AppThunk =>
+
+export const removeAlias = (id: string, alias: string): AppThunk =>
     (dispatch, getState): void => {
-        if (alias && alias.length > 0) {
-            const tag = getState().sets.tagsById[tagId];
-
-            if (tag) {
-                const oldAliases: string[] = (tag && tag.aliases != undefined) ? tag.aliases : []
-
-                dispatch(updateAliases({ id: tagId, newAliases: [alias, ...oldAliases]}));
-            }
-        }
-    };
-
-export const removeAlias = (tagId: string, alias: string): AppThunk =>
-    (dispatch, getState): void => {
-        const tag = getState().sets.tagsById[tagId];
+        const tag = tagSelector(getState().sets.sets, id);
 
         if (tag) {
             const newAliases: string[] = (tag.aliases != undefined) ? tag.aliases.filter(a => a !== alias) : []
 
             dispatch(updateAliases({
-                id: tagId,
+                id: id,
                 newAliases
             }));
         }

@@ -22,7 +22,7 @@ export type Set = {
 
 export type User = {
     id: string;
-    tags: string[];
+    tags: Tag[];
 }
 
 export type ImportExportOptions = {
@@ -39,4 +39,7 @@ export type Options = {
     frequentlyUsedLimit: number;
 }
 
-export type FrequentlyUsed = [string, number][];
+export type FrequentlyUsed = {
+    tag: Tag;
+    count: number;
+}

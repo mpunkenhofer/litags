@@ -106,20 +106,20 @@ export const setOptions = async (options: Options): Promise<Options> => {
 };
 
 
-export const getFrequentlyUsed = async (): Promise<FrequentlyUsed> => {
+export const getFrequentlyUsed = async (): Promise<FrequentlyUsed[]> => {
     const frequentlyUsed = (await browser.storage.local.get('frequently_used'))['frequently_used'];
 
     if (!frequentlyUsed) {
         await browser.storage.local.set({ ['frequently_used']: [] });
         return [];
     } else {
-        return frequentlyUsed as FrequentlyUsed;
+        return frequentlyUsed as FrequentlyUsed[];
     }
 };
 
-export const setFrequentlyUsed = async (frequentlyUsedIDs: FrequentlyUsed): Promise<FrequentlyUsed> => {
-    await browser.storage.local.set({ ['frequently_used']: frequentlyUsedIDs });
-    return frequentlyUsedIDs;
+export const setFrequentlyUsed = async (frequentlyUsed: FrequentlyUsed[]): Promise<FrequentlyUsed[]> => {
+    await browser.storage.local.set({ ['frequently_used']: frequentlyUsed });
+    return frequentlyUsed;
 };
 
 export const enableStorageApiLogger = (): void => {
