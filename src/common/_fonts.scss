@@ -6,27 +6,14 @@
   font-style: normal;
 }
 
-%font-icon {
+[data-icon]::before {
   display: inline-block;
+  font-size: 1.2em;
+  vertical-align: middle;
+  font-family: "lichess";
   font-style: normal;
-  border: 0;
-}
-
-%lichess-icon {
-  @extend %font-icon;
-  font-family: lichess, serif;
-}
-
-.lt-plus-icon {
-  @extend %lichess-icon;
-  &:after {
-    content: 'O';
-  }
-}
-
-.lt-star-full-icon {
-  @extend %lichess-icon;
-  &:after {
-    content: 't';
-  }
+  font-weight: normal;
+  text-transform: none;
+  content: attr(data-icon);
+  opacity: 0.9;
 }

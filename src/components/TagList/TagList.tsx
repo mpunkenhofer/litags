@@ -3,10 +3,10 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from "react";
-import { removeTag, updateTags } from "./slices/user";
-import { RootState } from "./rootReducer";
-import Tag from "./Tag";
-import { Tag as TagType } from "./types"
+import { removeTag, updateTags } from "../../slices/user";
+import { RootState } from "../../common/rootReducer";
+import Tag from "../Tag";
+import { Tag as TagType } from "../../common/types"
 
 interface SortableItemProps {
     tag: TagType;

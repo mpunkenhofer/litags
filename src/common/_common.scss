@@ -5,30 +5,25 @@ $selected: #3692e7;
 
 // Constants
 $zIndex: 100;
+$tagSize: 2rem;
 
-
-.lt-button-effect {
-  background-color: inherit;
-  opacity: .75;
-  &:hover {
-    transform: scale(1.2);
-    opacity: 1;
-  }
+img.lt-tag {
+    min-width: $tagSize;
+    max-height: $tagSize;
+    vertical-align: baseline;
 }
 
-.lt-tag {
-  span {
-    font-family: lichess, serif;
-    font-size: 1.6em;
-  }
+span.lt-tag {
+  font-size: $tagSize;
 }
 
-.lt-t-button {
+.lt-tag-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   background: none;
+  padding: .2rem;
 
   &:focus {
     outline: 1px solid $selected;
@@ -36,8 +31,8 @@ $zIndex: 100;
   }
 
   &:hover {
+    z-index: $zIndex + 1;
     background-color: $selected;
     border-radius: 3px;
   }
 }
-

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../common/hooks/setDocumentTitle";
+import {useSetDocumentTitle} from "../../hooks/setDocumentTitle";
 import {i18n} from "../../constants/i18n";
 import {Container, Row, Col, Button, Form, Alert} from "react-bootstrap";
 import {FormEvent, useCallback, useState} from "react";
@@ -16,7 +16,7 @@ import {
     setImportSets,
     setImportFrequentlyUsed,
     setImportSettings, setOptions
-} from "../../common/slices/options";
+} from "../../slices/options";
 import {RootState} from "../../common/rootReducer";
 import {throttle, delay} from 'lodash';
 import {ConfirmModal} from "../ConfirmModal";

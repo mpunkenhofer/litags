@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useSetDocumentTitle } from "../../../../common/hooks/setDocumentTitle";
+import { useSetDocumentTitle } from "../../../../hooks/setDocumentTitle";
 import { i18n } from "../../../../constants/i18n";
 import { useEffect } from "react";
-import { getSets } from "../../../../common/slices/sets";
+import { getSets } from "../../../../slices/sets";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../common/rootReducer";
 import { Container, Col, Row, Spinner } from "react-bootstrap";

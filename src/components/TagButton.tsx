@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Tag from "./Tag";
-import {Tag as TagType} from "./types";
+import {Tag as TagType} from "../common/types";
 
 interface TagButtonProps {
     tag: TagType;
@@ -8,7 +8,7 @@ interface TagButtonProps {
 }
 
 const TagButton: React.FunctionComponent<TagButtonProps> = ({tag, onClick}: TagButtonProps) => (
-    <button title={tag.name} className='lt-t-button' onClick={onClick}>
+    <button title={tag.name} className='lt-tag-btn' onClick={onClick}>
         <Tag tag={tag}/>
     </button>
 );

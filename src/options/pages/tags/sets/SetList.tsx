@@ -6,8 +6,8 @@ import arrayMove from "array-move";
 import { useCallback, useEffect, useState } from "react";
 import { i18n } from "../../../../constants/i18n";
 import { useDispatch } from "react-redux";
-import { addSet, updateSets } from "../../../../common/slices/sets";
-import { setSets } from "../../../../common/slices/sets";
+import { addSet, updateSets } from "../../../../slices/sets";
+import { setSets } from "../../../../slices/sets";
 
 interface SortableItemProps {
     id: string;
@@ -69,7 +69,7 @@ export const SetList: React.FunctionComponent<SetListProps> = ({ sets }: SetList
         <>
             <div className='d-none d-xl-flex mb-2'>
                 <strong className='text-muted'>{i18n.sets}</strong>
-                <button title={i18n.addSet} className='ml-auto lt-plus-icon text-muted lt-addSet-icon'
+                <button title={i18n.addSet} className='ml-auto text-muted lt-addSet-icon' data-icon='O'
                     onClick={onAddSetClicked} />
             </div>
             <SortableList pairs={pairs}

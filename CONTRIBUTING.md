@@ -121,10 +121,4 @@ which brings up the tag chooser for your opponent and implementing more hotkeys 
 however it appears we are limited to a max of 4 hotkeys per extension. That would mean there are only 3 more left
 for tags and I imagine having more than 3 tags on hotkeys would be nice to have e.g. imagine having tags on
 modifier + 1 - 9. Using the command api also decouples hotkeys somewhat from all the other options since those are found
-in a different location specific to the browser.  
-
-#### Tag Chooser Look
-
-I would like to use [React-Bootstrap](https://react-bootstrap.github.io/) for its layout and other things, in order
-to be consistent with the rest of LiTags and also because I like how it makes the layout of your UI apparent in the code
-rather then in a separate css file. Also look & feel needs some touch ups especially in other lichess themes like light.
+in a different location specific to the browser.

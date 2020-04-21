@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Set, Tag } from "../../../../common/types";
-import TagButton from "../../../../common/TagButton";
+import TagButton from "../../../../components/TagButton";
 import { useCallback, useState } from "react";
 import { TagView } from "./TagView";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import { i18n } from "../../../../constants/i18n";
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } from "../../../../common/slices/sets";
+import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } from "../../../../slices/sets";
 import { ConfirmModal } from "../../../ConfirmModal";
 import { useHistory } from "react-router-dom";
 

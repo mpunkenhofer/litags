@@ -1,7 +1,6 @@
-@import "tagChooser";
 @import "../common/common";
-@import "../common/tagList";
-@import "../common/fonts";
+@import "../components/TagChooser/tagChooser";
+@import "../components/TagList/tagList";
 
 .lt-list {
   grid-area: lilist;
@@ -18,6 +17,13 @@
   button {
     border: 0;
     outline: none;
+    background-color: inherit;
+    opacity: 0.75;
+
+    &:hover {
+      transform: scale(1.2);
+      opacity: 1;
+    }
   }
 }
 
@@ -25,7 +31,7 @@
   display: grid !important;
   grid-template-rows: min-content;
   grid-template-columns: auto auto auto 1fr min-content;
-  grid-template-areas: 'lio liuser libutton . lirating lichange' '. lilist lilist lilist lilist lilist';
+  grid-template-areas: "lio liuser libutton . lirating lichange" ". lilist lilist lilist lilist lilist";
 
   a {
     grid-area: liuser;
@@ -39,7 +45,8 @@
     grid-area: lirating;
   }
 
-  good, bad {
+  good,
+  bad {
     grid-area: lichange;
   }
 }

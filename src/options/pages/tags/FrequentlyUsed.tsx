@@ -1,14 +1,14 @@
 import * as React from "react";
-import { useSetDocumentTitle } from "../../../common/hooks/setDocumentTitle";
+import { useSetDocumentTitle } from "../../../hooks/setDocumentTitle";
 import { i18n } from "../../../constants/i18n";
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/rootReducer";
-import { getFrequentlyUsed, removeFrequentlyUsed } from "../../../common/slices/frequentlyUsed";
+import { getFrequentlyUsed, removeFrequentlyUsed } from "../../../slices/frequentlyUsed";
 import { Tag as TagType, FrequentlyUsed as FrequentlyUsedType } from "../../../common/types";
-import TagButton from "../../../common/TagButton";
+import TagButton from "../../../components/TagButton";
 import { Spinner, Container, Row, Button } from "react-bootstrap";
-import Tag from "../../../common/Tag";
+import Tag from "../../../components/Tag";
 
 interface FrequentlyUsedContainerProps {
     frequentlyUsed: FrequentlyUsedType[];

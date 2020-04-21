@@ -1,5 +1,5 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
-@import "../common/tagList";
+@import "../components/TagList/tagList";
 @import "../common/common";
 
 .lt-options-navbar {
@@ -53,9 +53,16 @@
 }
 
 .lt-addSet-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
+  border: 0;
+
   &:hover {
     color: black !important;
+    transform: scale(1.2);
+    opacity: 1;
   }
 }
 

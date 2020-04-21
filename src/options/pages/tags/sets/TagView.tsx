@@ -1,12 +1,12 @@
 import * as React from "react";
-import Tag from "../../../../common/Tag";
+import Tag from "../../../../components/Tag";
 import { Tag as TagType } from "../../../../common/types";
 import { Container, Col, Row } from "react-bootstrap";
 import { ColorPicker } from "../../../ColorPicker";
 import { Badge } from "../../../Badge";
 import { i18n } from "../../../../constants/i18n";
 import { useDispatch, useSelector } from "react-redux";
-import { setSets, removeAlias, updateTagColor, updateTagName, updateTagURI, tagSelector } from "../../../../common/slices/sets";
+import { setSets, removeAlias, updateTagColor, updateTagName, updateTagURI, tagSelector } from "../../../../slices/sets";
 import { ChangeEvent, useCallback, useMemo } from "react";
 import { RootState } from "../../../../common/rootReducer";
 

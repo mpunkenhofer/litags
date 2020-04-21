@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from 'react-dom';
-import TagList from "../common/TagList";
-import TagChooser from "./TagChooser";
+import TagList from "./TagList/TagList";
+import TagChooser from "./TagChooser/TagChooser";
 import {useEffect, useState} from "react";
-import {getUser} from "../common/slices/user";
+import {getUser} from "../slices/user";
 import {useDispatch} from "react-redux";
-import {getSets} from "../common/slices/sets";
-import {getFrequentlyUsed} from "../common/slices/frequentlyUsed";
-import {getOptions} from "../common/slices/options";
+import {getSets} from "../slices/sets";
+import {getFrequentlyUsed} from "../slices/frequentlyUsed";
+import {getOptions} from "../slices/options";
 
 type Mount = {
     username: string | null;

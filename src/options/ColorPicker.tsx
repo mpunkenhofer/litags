@@ -2,7 +2,7 @@ import * as React from "react";
 import {ColorChangeHandler, SketchPicker} from "react-color";
 import {useEffect, useState} from "react";
 import {useRef} from "react";
-import {useOnClickedOutside} from "../common/hooks/onClickedOutside";
+import {useOnClickedOutside} from "../hooks/onClickedOutside";
 
 interface ColorPickerProps {
     color: string;

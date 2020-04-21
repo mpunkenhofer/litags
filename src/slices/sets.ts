@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Set, Tag, Font } from "../types"
-import * as storage from "../storage"
-import { AppThunk } from "../store";
+import { Set, Tag, Font } from "../common/types"
+import * as storage from "../common/storage"
+import { AppThunk } from "../common/store";
 import { v4 } from 'uuid';
 import has from "lodash/has";
 

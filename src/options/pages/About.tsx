@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../common/hooks/setDocumentTitle";
+import {useSetDocumentTitle} from "../../hooks/setDocumentTitle";
 import {i18n} from "../../constants/i18n";
 import {Card, Button, Container, Row, Col} from "react-bootstrap";
 import {useHistory} from "react-router-dom";

@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import setsReducer from './slices/sets'
-import userReducer from './slices/user'
-import optionsReducer from './slices/options'
-import frequentlyUsedReducer from './slices/frequentlyUsed'
+import setsReducer from '../slices/sets'
+import userReducer from '../slices/user'
+import optionsReducer from '../slices/options'
+import frequentlyUsedReducer from '../slices/frequentlyUsed'
 
 const rootReducer = combineReducers({
     sets: setsReducer,

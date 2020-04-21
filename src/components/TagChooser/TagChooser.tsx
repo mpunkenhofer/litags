@@ -2,9 +2,9 @@ import * as React from 'react';
 import {useCallback, useState} from 'react';
 import TagChooserPopup from "./TagChooserPopup";
 import {useDispatch} from 'react-redux'
-import {Tag} from "../common/types";
-import {addTag} from "../common/slices/user";
-import {i18n} from "../constants/i18n";
+import {Tag} from "../../common/types";
+import {addTag} from "../../slices/user";
+import {i18n} from "../../constants/i18n";
 import {useEffect} from "react";
 import {browser} from "webextension-polyfill-ts";
 
@@ -13,7 +13,7 @@ interface TagChooserButtonProps {
 }
 
 const TagChooserButton: React.FunctionComponent<TagChooserButtonProps> = ({onClick}: TagChooserButtonProps) => (
-    <button title={i18n.showTags} className='lt-plus-icon lt-button-effect' onClick={onClick}/>
+    <button title={i18n.showTags} className='lt-button-effect' data-icon='O' onClick={onClick} style={{fontSize: '1em'}}/>
 );
 
 interface TagChooserProps {

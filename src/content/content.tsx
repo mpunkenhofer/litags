@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux'
 import store from '../common/store'
 import {enableStorageApiLogger} from "../common/storage";
-import {App} from "./App";
+import {App} from "../components/App";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 

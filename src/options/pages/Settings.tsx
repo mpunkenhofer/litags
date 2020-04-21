@@ -1,11 +1,11 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../common/hooks/setDocumentTitle";
+import {useSetDocumentTitle} from "../../hooks/setDocumentTitle";
 import {i18n} from "../../constants/i18n";
 import {Container, Row, Col} from "react-bootstrap";
 import {useCallback} from "react";
 import {ChangeEvent} from "react";
 import {useEffect} from "react";
-import {getOptions, setTagListLimit, setFrequentlyUsedLimit, setOptions} from "../../common/slices/options";
+import {getOptions, setTagListLimit, setFrequentlyUsedLimit, setOptions} from "../../slices/options";
 import {useDispatch, useSelector} from "react-redux";
 import {throttle} from "lodash";
 import {RootState} from "../../common/rootReducer";
