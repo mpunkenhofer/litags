@@ -48,7 +48,7 @@ export const exportBackup = async (options: Options): Promise<string> => {
         app: pkg.name,
         version: pkg.version,
         url: pkg.homepage,
-        date: new Date().getTime(),
+        date: Date.now(),
         settings: options.export.settings ? await getOptions() : undefined,
         users: options.export.users ? await getUsers() : undefined,
         sets: options.export.sets ? await getSets() : undefined,
@@ -57,3 +57,39 @@ export const exportBackup = async (options: Options): Promise<string> => {
 
     return JSON.stringify(backup, null, 2);
 };
+
+interface SetBackup {
+    app: string;
+    version: string;
+    url: string;
+    date: number;
+    set: Set;
+}
+
+export const importSet = (data: string): Set | null => {
+    const setData: SetBackup = JSON.parse(data);
+
+    if (!isEmpty(setData.set) && setData.set) {
+        return setData.set;
+    }
+
+    return null;
+}
+
+export const exportSet = async (id: string): Promise<string | null> => {
+    const setToExport = (await getSets()).filter(set => set.id === id);
+
+    if(setToExport.length > 0) {
+        const exportData: SetBackup = {
+            app: pkg.name,
+            version: pkg.version,
+            url: pkg.homepage,
+            date: Date.now(),
+            set: setToExport[0]
+        }
+
+        return JSON.stringify(exportData, null, 2);
+    }
+
+    return null;
+}

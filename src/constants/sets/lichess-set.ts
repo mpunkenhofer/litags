@@ -3,7 +3,7 @@ import { browser } from "webextension-polyfill-ts";
 
 const lichessSetData: SetData = {
     "name": "Lichess",
-    "iconUrl": browser.runtime.getURL('assets/images/lichess.svg'),
+    "iconUrl": browser.runtime.getURL('assets/images/lichess_icon512.png'),
     "font": {
         fontFamily: 'lichess',
         src: `url(${browser.runtime.getURL('assets/fonts/lichess.woff2')} format("woff2")`,

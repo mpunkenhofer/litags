@@ -35,6 +35,7 @@ module.exports = {
         new webpack.ProgressPlugin(),
         new CopyPlugin([
             {from: 'assets/images/litags_icon*', to: 'assets/images/[name].[ext]'},
+            {from: 'assets/images/lichess_icon512.png', to: 'assets/images/[name].[ext]'},
             {from: 'assets/images/*.svg', to: 'assets/images/[name].[ext]'},
             {from: 'locales', to: '_locales/[name]/messages.json'},
             {from: 'assets/fonts/*.woff', to: 'assets/fonts/[name].[ext]'},

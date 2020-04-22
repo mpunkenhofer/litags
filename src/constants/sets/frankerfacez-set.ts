@@ -12,7 +12,6 @@ const frankerfacezSetData: SetData = {
         "Pepega": ["https://cdn.frankerfacez.com/emoticon/243789/1"],
         "POGGERS": ["https://cdn.frankerfacez.com/emoticon/214129/1"],
         "monkaS": ["https://cdn.frankerfacez.com/emoticon/130762/1"],
-        "TESTWIDE": ["https://cdn.frankerfacez.com/emoticon/430034/1"],
         "Pog": ["https://cdn.frankerfacez.com/emoticon/210748/1"],
         "FeelsBadMan": ["https://cdn.frankerfacez.com/emoticon/33355/1"],
         "PepeLaugh": ["https://cdn.frankerfacez.com/emoticon/64785/1"],
@@ -23,8 +22,6 @@ const frankerfacezSetData: SetData = {
         "WeirdChamp": ["https://cdn.frankerfacez.com/emoticon/262468/1"],
         "FeelsOkayMan": ["https://cdn.frankerfacez.com/emoticon/145947/1"],
         "5Head": ["https://cdn.frankerfacez.com/emoticon/239504/1"],
-        "TESTWIDE1": ["https://cdn.frankerfacez.com/emoticon/430034/1"],
-        "TESTWIDE2": ["https://cdn.frankerfacez.com/emoticon/430034/1"],
         "HYPERBRUH": ["https://cdn.frankerfacez.com/emoticon/204717/1"],
         "Kapp": ["https://cdn.frankerfacez.com/emoticon/218860/1"],
         "FeelsWeirdMan": ["https://cdn.frankerfacez.com/emoticon/131597/1"],
@@ -45,7 +42,6 @@ const frankerfacezSetData: SetData = {
         "weSmart": ["https://cdn.frankerfacez.com/emoticon/165742/1"],
         "KKonaW": ["https://cdn.frankerfacez.com/emoticon/229486/1"],
         "monkaH": ["https://cdn.frankerfacez.com/emoticon/201362/1"],
-        "TESTWIDE3": ["https://cdn.frankerfacez.com/emoticon/430034/1"],
         "OkayChamp": ["https://cdn.frankerfacez.com/emoticon/280358/1"],
         "peepoHappy": ["https://cdn.frankerfacez.com/emoticon/228449/1"],
         "4House": ["https://cdn.frankerfacez.com/emoticon/230495/1"],
@@ -191,7 +187,7 @@ const frankerfacezSetData: SetData = {
         "Kermitpls": ["https://cdn.frankerfacez.com/emoticon/33947/1"],
         "monkaSSS": ["https://cdn.frankerfacez.com/emoticon/201363/1"],
         "MeguminHappy": ["https://cdn.frankerfacez.com/emoticon/85103/1"],
-        "TESTWIDE4": ["https://cdn.frankerfacez.com/emoticon/430034/1"],
+        "TESTWIDE": ["https://cdn.frankerfacez.com/emoticon/430034/1"],
         "MeguminHappy2": ["https://cdn.frankerfacez.com/emoticon/85103/1"],
     }
 };

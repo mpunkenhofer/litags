@@ -1,16 +1,17 @@
 @import "fonts";
 
 // Colors
-$selected: #3692e7;
+$c-selected: #3692e7;
+$c-red: #c33;
 
 // Constants
 $zIndex: 100;
 $tagSize: 2rem;
 
 img.lt-tag {
-    min-width: $tagSize;
-    max-height: $tagSize;
-    vertical-align: baseline;
+  min-width: $tagSize;
+  max-height: $tagSize;
+  vertical-align: baseline;
 }
 
 span.lt-tag {
@@ -23,16 +24,16 @@ span.lt-tag {
   justify-content: center;
   border: none;
   background: none;
-  padding: .2rem;
+  padding: 0.2rem;
 
   &:focus {
-    outline: 1px solid $selected;
-    background-color: rgba($selected, 0.2);
+    outline: 1px solid $c-selected;
+    background-color: rgba($c-selected, 0.2);
   }
 
   &:hover {
     z-index: $zIndex + 1;
-    background-color: $selected;
+    background-color: $c-selected;
     border-radius: 3px;
   }
 }

@@ -43,3 +43,9 @@ export type FrequentlyUsed = {
     tag: Tag;
     count: number;
 }
+
+export type Theme = {
+    primaryBackgroundColor: string;
+    secondaryBackgroundColor: string;
+    borderColor: string;
+}

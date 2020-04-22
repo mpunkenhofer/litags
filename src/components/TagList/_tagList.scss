@@ -19,17 +19,20 @@
   }
 
   .lt-list-remove-zone {
-    z-index: $zIndex + 2;
     display: inline-block;
-    margin-left: 1rem;
+
     justify-content: center;
     align-content: center;
 
+    z-index: $zIndex + 2;
+    
+    margin-left: 1rem;
+    
     font-family: "lichess", serif;
     font-size: $tagSize;
     font-weight: bold;
     
-    color: red;
+    color: $c-red;
   }
 }
 

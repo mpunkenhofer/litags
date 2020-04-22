@@ -2,7 +2,6 @@ import * as React from "react";
 import { FormEvent, useRef, useState } from "react";
 import TagChooserGroup from "./TagChooserGroup";
 import { useFocusOnAnyKeydown } from "../../hooks/focusOnKeydown";
-import { getBackgroundColor } from "../../common/colorTools";
 import { useCallback, useMemo } from "react";
 import { useSelector } from 'react-redux'
 import { RootState } from "../../common/rootReducer";
@@ -10,6 +9,7 @@ import { Tag } from "../../common/types";
 import FocusTrap from "focus-trap-react";
 import { i18n } from "../../constants/i18n";
 import { browser } from "webextension-polyfill-ts";
+import { getTheme } from "../../common/theme";
 
 interface TagChooserPopupInterface {
     onClickOutside: () => void;
@@ -60,7 +60,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                     onDeactivate: onClickOutside,
                     initialFocus: (): HTMLElement => inputRef.current || new HTMLElement(),
                 }}>
-                    <div className='lt-tag-chooser' style={{ backgroundColor: getBackgroundColor(-.15) }}>
+                    <div className='lt-tag-chooser' style={{ backgroundColor: getTheme().primaryBackgroundColor, borderColor: getTheme().borderColor }}>
                         <div className='lt-sets'>
                             {
                                 (searchResults.length > 0) &&
@@ -72,7 +72,8 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                         iconUrl: browser.runtime.getURL('assets/images/search-solid.svg')
                                     }}
                                     onTagClicked={onTagClicked}
-                                    className={'search-results'} />
+                                    className={'search-results'}
+                                    icon={<i data-icon='y'/>} />
                             }
                             {
                                 (frequentlyUsed.length > 0) &&
@@ -86,14 +87,15 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                         iconUrl: browser.runtime.getURL('assets/images/star-solid.svg')
                                     }}
                                     onTagClicked={onTagClicked}
-                                    className={'favorites'} />
+                                    className={'favorites'}
+                                    icon={<i data-icon='s'/>} />
                             }
                             {
                                 Object.values(sets).map(set =>
                                     <TagChooserGroup key={set['id']} set={set} onTagClicked={onTagClicked} />)
                             }
                         </div>
-                        <div className={'lt-set-search'}>
+                        <div className={'lt-set-search'} style={{backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor}}>
                             <input ref={inputRef} type='search' autoCapitalize='off'
                                 autoComplete='off'
                                 spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}

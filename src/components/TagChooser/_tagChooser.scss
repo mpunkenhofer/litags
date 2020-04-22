@@ -1,20 +1,41 @@
 @import "../../common/common";
 
+// Tag Chooser defaults (emulating lichess light theme)
+// final colors are determined dynamically depending on user chosen lichess theme
+$c-bg-primary: hsl(0, 0%, 100%);
+$c-bg-secondary: hsl(37, 12%, 96.5%);
+$c-border: hsl(0, 0%, 85%);
+
+$border-width: 1px;
+$border-style: solid;
+$border: $border-width $border-style $c-border;
+
+$box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+//$text-shadow: 0 1px 0 #fff;
+
 .lt-tag-chooser {
   display: block;
   opacity: 1;
   position: absolute;
   z-index: $zIndex;
+
+  box-shadow: $box-shadow;
+
+  border: $border;
   border-radius: 3px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+
   cursor: default;
   overflow: hidden;
 
+  background-color: $c-bg-primary;
+
+  width: 20vw;
+  
   .lt-sets {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 18vh;
-    max-width: 20vw;
+
+    max-height: 22vh;
 
     .lt-set {
       .lt-set-header {
@@ -24,28 +45,37 @@
         padding-top: 0.3rem;
         padding-bottom: 0.3rem;
 
-        border-top: 1px solid;
-        border-bottom: 1px solid;
-        border-color: rgb(50, 50, 50);
+        background-color: $c-bg-secondary;
 
-        background-color: rgb(30, 30, 30);
+        border-bottom: $border;
 
         .lt-set-icon {
           display: flex;
           align-content: center;
           justify-content: center;
 
-          margin-left: 0.4rem;
+          margin-left: .6rem;
 
           img {
             width: 2rem;
             height: 2rem;
           }
+          i {
+            font-size: 1.6rem;
+          }
         }
 
         .lt-set-title {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-content: center;
+          
           margin-left: auto;
           margin-right: 1rem;
+
+          font-size: 1.1rem;
+          //text-shadow: $text-shadow;
         }
       }
 
@@ -54,17 +84,24 @@
         flex-wrap: wrap;
         justify-content: center;
         padding: 0.4rem;
+
+        border-bottom: $border;
       }
 
-      &.favorites > .lt-set-tags,
-      &.search-results > .lt-set-tags {
-        justify-content: start;
-      }
+      // &.favorites > .lt-set-tags,
+      // &.search-results > .lt-set-tags {
+      //   justify-content: start;
+      // }
     }
   }
 
   .lt-set-search {
-    padding: .6rem;
+    padding: .5rem;
+
+    background-color: $c-bg-secondary;
+
+    border-top: $border;
+
     input {
       font-size: 1rem;
       width: 100%;

@@ -164,6 +164,12 @@
   "usersFound": {
     "message": "Users found"
   },
+  "importSet": {
+    "message": "Import Set"
+  },
+  "exportSet": {
+    "message": "Export Set"
+  },
   "tagsFound": {
     "message": "Tags found"
   },
@@ -232,6 +238,12 @@
   },
   "importSuccess": {
     "message": "Successfully imported a backup file!"
+  },
+  "importSetSuccess": {
+    "message": "Successfully imported a set!"
+  },
+  "importSetFailure": {
+    "message": "Failed to imported the set!"
   },
   "aboutSettingsDescription": {
     "message": "General LiTags settings."

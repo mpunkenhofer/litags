@@ -1,4 +1,3 @@
-import defaultSets from "../constants/sets";
 import { browser } from "webextension-polyfill-ts";
 import { v4 } from 'uuid';
 import {
@@ -11,6 +10,7 @@ import {
 } from './types';
 import { defaultOptions } from "../constants";
 import has from "lodash/has";
+import { defaultSets } from "../constants/sets";
 
 const createTag = (name: string, uri: string, aliases?: string[], color?: string, font?: Font): Tag => {
     return { id: v4(), name, aliases, uri, color, font };

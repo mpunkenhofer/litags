@@ -33,7 +33,17 @@ export const Sets: React.FunctionComponent = () => {
                     <HashRouter hashType={'noslash'} basename={'tags/sets'}>
                         <Row className='flex-column flex-lg-row'>
                             <Col md='auto' xl={2} className=''>
-                                <SetList sets={sets} />
+                                <Row className='flex-column'>
+                                    <SetList sets={sets} />
+                                </Row>
+                                <Row>
+                                    <button>
+                                        {i18n.importSet}
+                                    </button>
+                                    <button>
+                                        {i18n.exportSet}
+                                    </button>
+                                </Row>
                             </Col>
                             <Col md='auto' xl={8}>
                                 <Switch>

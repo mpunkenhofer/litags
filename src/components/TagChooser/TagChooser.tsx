@@ -13,7 +13,7 @@ interface TagChooserButtonProps {
 }
 
 const TagChooserButton: React.FunctionComponent<TagChooserButtonProps> = ({onClick}: TagChooserButtonProps) => (
-    <button title={i18n.showTags} className='lt-button-effect' data-icon='O' onClick={onClick} style={{fontSize: '1em'}}/>
+    <button title={i18n.showTags} className='lt-button-effect' data-icon='O' onClick={onClick} />
 );
 
 interface TagChooserProps {
