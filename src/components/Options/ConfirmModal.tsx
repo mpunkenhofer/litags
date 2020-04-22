@@ -1,5 +1,5 @@
 import {Button, Modal} from "react-bootstrap";
-import {i18n} from "../constants/i18n";
+import {i18n} from "../../constants/i18n";
 import * as React from "react";
 
 interface ConfirmModalProps {

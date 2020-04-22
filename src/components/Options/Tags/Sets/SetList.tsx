@@ -67,7 +67,7 @@ export const SetList: React.FunctionComponent<SetListProps> = ({ sets }: SetList
 
     return (
         <>
-            <div className='d-none d-xl-flex mb-2'>
+            <div className='d-none d-xl-flex mb-1'>
                 <strong className='text-muted'>{i18n.sets}</strong>
                 <button title={i18n.addSet} className='ml-auto text-muted lt-addSet-icon' data-icon='O'
                     onClick={onAddSetClicked} />

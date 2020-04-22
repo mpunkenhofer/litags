@@ -1,15 +1,15 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../hooks/setDocumentTitle";
-import {i18n} from "../../constants/i18n";
+import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
+import {i18n} from "../../../constants/i18n";
 import {Card, Button, Container, Row, Col} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
-import {LINKS} from "../../constants/links";
+import {LINKS} from "../../../constants/links";
 
 export const About: React.FunctionComponent = () => {
     useSetDocumentTitle(i18n.about, 'Litags');
 
     const history = useHistory();
-
+    
     return (
         <>
             <h1 className={'h2 pb-2 pb-md-4'}>{i18n.about}</h1>

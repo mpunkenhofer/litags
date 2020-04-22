@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import * as React from "react";
-import { i18n } from "../constants/i18n";
+import { i18n } from "../../constants/i18n";
 
 
 export const Nav: React.FunctionComponent = () => {

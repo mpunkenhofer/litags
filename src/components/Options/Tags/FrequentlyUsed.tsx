@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/rootReducer";
 import { getFrequentlyUsed, removeFrequentlyUsed } from "../../../slices/frequentlyUsed";
 import { Tag as TagType, FrequentlyUsed as FrequentlyUsedType } from "../../../common/types";
-import TagButton from "../../../components/TagButton";
+import TagButton from "../../TagButton";
 import { Spinner, Container, Row, Button } from "react-bootstrap";
-import Tag from "../../../components/Tag";
+import Tag from "../../Tag";
 
 interface FrequentlyUsedContainerProps {
     frequentlyUsed: FrequentlyUsedType[];

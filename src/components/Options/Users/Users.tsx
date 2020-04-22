@@ -1,13 +1,13 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../hooks/setDocumentTitle";
+import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {useDispatch, useSelector} from "react-redux";
 import {FormEvent, useCallback, useEffect, useState} from "react";
-import {getAllUsers, deleteUser} from "../../slices/user";
-import {RootState} from "../../common/rootReducer";
-import TagList from "../../components/TagList/TagList";
-import {getSets} from "../../slices/sets";
-import {User} from "../../common/types";
-import {i18n} from "../../constants/i18n";
+import {getAllUsers, deleteUser} from "../../../slices/user";
+import {RootState} from "../../../common/rootReducer";
+import TagList from "../../TagList/TagList";
+import {getSets} from "../../../slices/sets";
+import {User} from "../../../common/types";
+import {i18n} from "../../../constants/i18n";
 import {Container, Row, Col, Button, Spinner} from "react-bootstrap";
 import {ConfirmModal} from "../ConfirmModal";
 

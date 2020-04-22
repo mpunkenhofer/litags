@@ -66,17 +66,18 @@ interface SetBackup {
     set: Set;
 }
 
-export const importSet = (data: string): Set | null => {
+export const importSet = (data: string): Set => {
     const setData: SetBackup = JSON.parse(data);
 
     if (!isEmpty(setData.set) && setData.set) {
         return setData.set;
     }
 
-    return null;
+    //TODO i18n
+    throw Error('import set error: empty set');
 }
 
-export const exportSet = async (id: string): Promise<string | null> => {
+export const exportSet = async (id: string): Promise<string> => {
     const setToExport = (await getSets()).filter(set => set.id === id);
 
     if(setToExport.length > 0) {
@@ -91,5 +92,6 @@ export const exportSet = async (id: string): Promise<string | null> => {
         return JSON.stringify(exportData, null, 2);
     }
 
-    return null;
+    //TODO i18n
+    throw Error(`export set error: set with id:${id} not found.`);
 }

@@ -1,6 +1,6 @@
 import * as React from "react";
-import {LINKS} from "../constants/links";
-import pkg from '../../package.json';
+import {LINKS} from "../../constants/links";
+import pkg from '../../../package.json';
 
 export const Navbar: React.FunctionComponent = () => (
     <nav className={'navbar navbar-expand navbar-dark bg-primary flex-column flex-md-row lt-options-navbar'}>

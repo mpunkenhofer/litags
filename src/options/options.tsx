@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import store from "../common/store";
-import {Navbar} from "./Navbar";
-import {Main} from "./Main";
+import {Navbar} from "../components/Options/Navbar";
+import {Main} from "../components/Options/Main";
 import {enableStorageApiLogger} from "../common/storage";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');

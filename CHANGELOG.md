@@ -5,6 +5,7 @@
 ### New Features
 
 - Added a options page for frequently used tags that allows you to remove specific ones from freq. used.
+- Added import/export for tag sets on the sets page.
 
 ### Bug Fixes
 
@@ -24,6 +25,7 @@ Addressing changes to [Contributing TODO](https://github.com/mpunkenhofer/litags
 - **Predictable Tag Ids**: Rather than storing just ids of tags when assigning tags to a user and then later try to find existing tags with the corresponding id - store all the relevant data which is required to display the tag at a later time directly. This obviously requires much more storage, but ensures we encounter no issues when importing from backup files.
 - **Tag Chooser Look**: One of the main issues was that wide images were not correctly displayed, this was resolved in this update. Using Bootstrap
 layouts for the tag chooser does necessarily add to clarity, neither would it fit with the lichess theme. Adjustments to class names, html,tags and css were made to improve clarity and look.
+- **Importing Tag sets**: Implemented.
 
 ## 0.0.0 Mar, 7, 2020
 

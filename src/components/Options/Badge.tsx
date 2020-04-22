@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {i18n} from "../constants/i18n";
+import {i18n} from "../../constants/i18n";
 
 interface BadgeProps {
     text: string;

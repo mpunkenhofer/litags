@@ -97,13 +97,6 @@ used tags/users in the browsers storage.sync area or possibly allowing users to 
 One example of an extension that uses the gDrive API is
 [Reddit Enhancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite).
 
-#### Importing Tag sets
-
-Sets can already be imported using the backup utilities on the options page, however importing set data overwrites all
-existing sets data, hence if someone wants to import a set to add to the existing sets, he/she would have to first
-generate a current backup file and manually add the set in this file and import it afterwards. Really there should be
-a button to import a set to add on the tag sets options page.
-
 #### Documentation (of features)
 
 Currently there is only a bare minimum of documentation. Having something a long the lines of Tooltips, Faq more

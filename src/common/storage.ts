@@ -1,5 +1,4 @@
 import { browser } from "webextension-polyfill-ts";
-import { v4 } from 'uuid';
 import {
     Set,
     Tag,
@@ -11,9 +10,10 @@ import {
 import { defaultOptions } from "../constants";
 import has from "lodash/has";
 import { defaultSets } from "../constants/sets";
+import { generateID } from "./id";
 
 const createTag = (name: string, uri: string, aliases?: string[], color?: string, font?: Font): Tag => {
-    return { id: v4(), name, aliases, uri, color, font };
+    return { id: generateID(), name, aliases, uri, color, font };
 };
 
 const getDefaultSets = (): Set[] => {
@@ -24,7 +24,7 @@ const getDefaultSets = (): Set[] => {
             Object.entries(set.tags).map(([name, [uri, aliases, color]]) =>
                 createTag(name, uri, aliases, color, set.font));
 
-        sets.push({ ...set, id: v4(), tags });
+        sets.push({ ...set, id: generateID(), tags });
     }
 
     return sets;

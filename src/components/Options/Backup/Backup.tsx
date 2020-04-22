@@ -1,9 +1,9 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../hooks/setDocumentTitle";
-import {i18n} from "../../constants/i18n";
+import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
+import {i18n} from "../../../constants/i18n";
 import {Container, Row, Col, Button, Form, Alert} from "react-bootstrap";
 import {FormEvent, useCallback, useState} from "react";
-import {exportBackup, importBackup} from "../../common/backup";
+import {exportBackup, importBackup} from "../../../common/backup";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {
@@ -16,8 +16,8 @@ import {
     setImportSets,
     setImportFrequentlyUsed,
     setImportSettings, setOptions
-} from "../../slices/options";
-import {RootState} from "../../common/rootReducer";
+} from "../../../slices/options";
+import {RootState} from "../../../common/rootReducer";
 import {throttle, delay} from 'lodash';
 import {ConfirmModal} from "../ConfirmModal";
 
@@ -89,7 +89,7 @@ export const Backup: React.FunctionComponent = () => {
         exportBackup(options)
             .then(backup => {
                 const a = document.createElement('a');
-                a.download = `litags-backup-${new Date().getTime()}`;
+                a.download = `litags-backup-${Date.now()}`;
                 a.href = URL.createObjectURL(new Blob([backup], {type: 'application/json'}));
                 a.onload = (): void => URL.revokeObjectURL(a.href);
                 a.click();
