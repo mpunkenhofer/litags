@@ -1,4 +1,5 @@
 const path = require( 'path');
+const webpack = require('webpack');
 
 const IgnoreEmitPlugin = require( 'ignore-emit-webpack-plugin');
 const CopyWebpackPlugin = require( 'copy-webpack-plugin');
@@ -38,6 +39,7 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new webpack.ProgressPlugin(),
 		new ForkTsCheckerWebpackPlugin(),
 		new CopyWebpackPlugin([
 			{
