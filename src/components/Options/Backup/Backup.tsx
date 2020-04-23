@@ -1,11 +1,11 @@
 import * as React from "react";
-import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
-import {i18n} from "../../../constants/i18n";
-import {Container, Row, Col, Button, Form, Alert} from "react-bootstrap";
-import {FormEvent, useCallback, useState} from "react";
-import {exportBackup, importBackup} from "../../../common/backup";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import { useSetDocumentTitle } from "../../../hooks/setDocumentTitle";
+import { i18n } from "../../../constants/i18n";
+import { Container, Row, Col, Button, Form, Alert } from "react-bootstrap";
+import { FormEvent, useCallback, useState } from "react";
+import { exportBackup, importBackup } from "../../../common/backup";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import {
     getOptions,
     setExportUsers,
@@ -17,9 +17,9 @@ import {
     setImportFrequentlyUsed,
     setImportSettings, setOptions
 } from "../../../slices/options";
-import {RootState} from "../../../common/rootReducer";
-import {throttle, delay} from 'lodash';
-import {ConfirmModal} from "../ConfirmModal";
+import { RootState } from "../../../common/rootReducer";
+import { throttle, delay } from 'lodash';
+import { ConfirmModal } from "../ConfirmModal";
 
 export const Backup: React.FunctionComponent = () => {
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export const Backup: React.FunctionComponent = () => {
     const [alertVariant, setAlertVariant] = useState<'danger' | 'success'>('danger');
     const [fileName, setFileName] = useState(i18n.chooseFile);
     const [fileBlob, setFileBlob] = useState<Blob | null>(null);
-    const {options} = useSelector((state: RootState) => state.options);
+    const { options } = useSelector((state: RootState) => state.options);
 
     useEffect(() => {
         dispatch(getOptions());
@@ -48,7 +48,7 @@ export const Backup: React.FunctionComponent = () => {
         if (fileBlob && fileName.endsWith('.json')) {
             const reader = new FileReader();
             reader.onload = (e): void => {
-                if(e && e.target) {
+                if (e && e.target) {
                     const contents = e.target.result;
                     importBackup(options, contents as string)
                         .then(() => displayAlert(i18n.importSuccess, 'success'))
@@ -79,8 +79,7 @@ export const Backup: React.FunctionComponent = () => {
         const allFalse = !options.export.settings && !options.export.users && !options.export.frequentlyUsedTags
             && !options.export.sets;
         if (allFalse) {
-            setAlertMessage(i18n.exportNoneSelectedError);
-            setShowAlert(true);
+            displayAlert(i18n.exportNoneSelectedError)
             return;
         } else {
             setShowAlert(false);
@@ -90,18 +89,17 @@ export const Backup: React.FunctionComponent = () => {
             .then(backup => {
                 const a = document.createElement('a');
                 a.download = `litags-backup-${Date.now()}`;
-                a.href = URL.createObjectURL(new Blob([backup], {type: 'application/json'}));
+                a.href = URL.createObjectURL(new Blob([backup], { type: 'application/json' }));
                 a.onload = (): void => URL.revokeObjectURL(a.href);
                 a.click();
             })
             .catch(err => {
-                setAlertMessage(err.toString());
-                setShowAlert(true);
+                displayAlert(err.toString());
                 console.error(err);
             });
-    }, [options]);
+    }, [options, displayAlert]);
 
-    const persistOptions = throttle(() => dispatch(setOptions()), 1000, {trailing: true});
+    const persistOptions = throttle(() => dispatch(setOptions()), 1000, { trailing: true });
 
     const onCheckChange = useCallback((action) => (ev: FormEvent<HTMLInputElement>): void => {
         dispatch(action((ev.target as HTMLInputElement).checked));
@@ -110,12 +108,9 @@ export const Backup: React.FunctionComponent = () => {
 
     return (
         <>
-            {
-                (showAlert && alertMessage && alertMessage.length > 0) &&
-                <Alert variant={alertVariant} dismissible onClose={(): void => setShowAlert(false)}>
-                    {alertMessage}
-                </Alert>
-            }
+            <Alert variant={alertVariant} dismissible show={showAlert && alertMessage.length > 0} onClose={(): void => setShowAlert(false)}>
+                {alertMessage}
+            </Alert>
             <h1 className={'h2 pb-2 pb-md-4'}>{i18n.backup}</h1>
             <Container fluid={true}>
                 <Row className='py-2 py-md-4'>
@@ -154,8 +149,8 @@ export const Backup: React.FunctionComponent = () => {
                             </Form>
                             <div className='d-none d-lg-block ml-auto mr-3'>
                                 <img src={'/assets/images/file-export-solid.svg'} className='d-block'
-                                     style={{opacity: '0.2', width: '6rem', height: '6rem'}}
-                                     alt={'File Export Icon'}/>
+                                    style={{ opacity: '0.2', width: '6rem', height: '6rem' }}
+                                    alt={'File Export Icon'} />
                             </div>
                         </div>
                         <Button variant='outline-primary' className='d-flex ml-auto' onClick={onExport}>
@@ -197,33 +192,33 @@ export const Backup: React.FunctionComponent = () => {
                             </Form>
                             <div className='d-none d-lg-block ml-auto mr-3'>
                                 <img src={'/assets/images/file-import-solid.svg'} className='d-block'
-                                     style={{opacity: '0.2', width: '6rem', height: '6rem'}}
-                                     alt={'File Export Icon'}/>
+                                    style={{ opacity: '0.2', width: '6rem', height: '6rem' }}
+                                    alt={'File Export Icon'} />
                             </div>
                         </div>
                         <div className='input-group'>
                             <div className="custom-file">
                                 <input type="file" className="custom-file-input" id="lt-import-input"
-                                       accept={'.json'} onChange={onImportChange}/>
+                                    accept={'.json'} onChange={onImportChange} />
                                 <label className="custom-file-label" htmlFor="lt-import-input">
                                     {fileName}
                                 </label>
                             </div>
                             <div className="input-group-append">
                                 <button className="btn btn-outline-primary" type="button" id="lt-import-button"
-                                        onClick={(): void => {
-                                            const allFalse = !options.import.settings && !options.import.users &&
-                                                !options.import.frequentlyUsedTags && !options.import.sets;
-                                            if (allFalse) {
-                                                displayAlert(i18n.importNoneSelectedError);
-                                                return;
-                                            } else if (!fileBlob || !fileName || !fileName.endsWith('.json')) {
-                                                displayAlert(i18n.importJsonFileError);
-                                            } else {
-                                                setShowAlert(false);
-                                                setShowModal(true);
-                                            }
-                                        }}>
+                                    onClick={(): void => {
+                                        const allFalse = !options.import.settings && !options.import.users &&
+                                            !options.import.frequentlyUsedTags && !options.import.sets;
+                                        if (allFalse) {
+                                            displayAlert(i18n.importNoneSelectedError);
+                                            return;
+                                        } else if (!fileBlob || !fileName || !fileName.endsWith('.json')) {
+                                            displayAlert(i18n.importJsonFileError);
+                                        } else {
+                                            setShowAlert(false);
+                                            setShowModal(true);
+                                        }
+                                    }}>
                                     {i18n.import}
                                 </button>
                             </div>
@@ -232,10 +227,11 @@ export const Backup: React.FunctionComponent = () => {
                 </Row>
             </Container>
             <ConfirmModal show={showModal} onCancel={(): void => setShowModal(false)}
-                          onConfirm={(): void => {
-                              setShowModal(false);
-                              onImport();}}
-                          variant='warning' title={i18n.import} body={i18n.importConfirm} confirm={i18n.import}/>
+                onConfirm={(): void => {
+                    setShowModal(false);
+                    onImport();
+                }}
+                variant='warning' title={i18n.import} body={i18n.importConfirm} confirm={i18n.import} />
         </>
     );
 };

@@ -4,8 +4,15 @@ LiTags (li[chess] tags) is a browser extension which enables you to assign tags
 to players on [lichess.org](https://www.lichess.org). The idea was being able to quickly determine the
 type of player you face (playing for time, defensive, aggressive, gives no rematches, ...).
 
-![LiTags Demo GIF](https://raw.githubusercontent.com/mpunkenhofer/litags/master/assets/promo/promo-github-1.gif)
-![LiTags Options Example](https://raw.githubusercontent.com/mpunkenhofer/litags/master/assets/promo/promo-github-2.png)
+![LiTags Demo GIF](assets/promo/promo-github-1.gif)
+
+## LiTags works with all Lichess Themes
+
+![LiTags Themes Example](assets/promo/promo-github-2.png)
+
+## LiTags Options
+
+![LiTags Options Example](assets/promo/promo-github-3.png)
 
 LiTags is written in [Typescript](https://www.typescriptlang.org/), uses [Webpack](https://webpack.js.org/) for module
 bundling, relies on [React](https://reactjs.org/) for its user interfaces in combination with

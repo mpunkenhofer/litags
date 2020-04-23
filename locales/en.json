@@ -240,10 +240,14 @@
     "message": "Successfully imported a backup file!"
   },
   "importSetSuccess": {
-    "message": "Successfully imported a set!"
+    "message": "Successfully imported the set: %s.",
+    "description": "%s is a placeholder for the name of the imported set."
   },
   "importSetFailure": {
-    "message": "Failed to imported the set!"
+    "message": "Failed to import the set from the file!"
+  },
+  "exportSetFailure": {
+    "message": "Failed to export the selected set!"
   },
   "aboutSettingsDescription": {
     "message": "General LiTags settings."

@@ -1,20 +1,25 @@
 import * as React from "react";
 import { useSetDocumentTitle } from "../../../../hooks/setDocumentTitle";
 import { i18n } from "../../../../constants/i18n";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { getSets, addSet, setSets } from "../../../../slices/sets";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../common/rootReducer";
-import { Container, Col, Row, Spinner } from "react-bootstrap";
+import { Container, Col, Row, Spinner, Alert } from "react-bootstrap";
 import { SetList } from "./SetList";
 import { SetView } from "./SetView";
 import { HashRouter, Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { exportSet, importSet } from "../../../../common/backup";
 import { generateID } from "../../../../common/id";
+import { delay } from "lodash";
 
 export const Sets: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const { sets, loading } = useSelector((state: RootState) => state.sets);
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertVariant, setAlertVariant] = useState<'danger' | 'success'>('danger');
 
     useEffect(() => {
         dispatch(getSets());
@@ -23,6 +28,13 @@ export const Sets: React.FunctionComponent = () => {
     useSetDocumentTitle(i18n.tagSets, 'Litags');
 
     const history = useHistory();
+
+    const displayAlert = useCallback((message: string, variant: 'danger' | 'success' = 'danger') => {
+        setAlertMessage(message);
+        setAlertVariant(variant);
+        setShowAlert(true);
+        delay(() => setShowAlert(false), 10000);
+    }, []);
 
     const onExport = useCallback(() => {
         const setId = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
@@ -35,11 +47,10 @@ export const Sets: React.FunctionComponent = () => {
                 a.click();
             })
             .catch(err => {
-                // setAlertMessage(err.toString());
-                // setShowAlert(true);
+                displayAlert(i18n.exportSetFailure);
                 console.error(err);
             });
-    }, [history]);
+    }, [history, displayAlert]);
 
     const onImport = useCallback(() => {
         const input = document.createElement('input');
@@ -47,38 +58,39 @@ export const Sets: React.FunctionComponent = () => {
         input.accept = '.json';
         input.click();
         input.onchange = (e: Event): void => {
-            try {
-                const target = e.target as HTMLInputElement;
-                if (target && target.files && target.files.length > 0) {
-                    const fileName = target.files[0].name;
-                    const fileBlob = target.files[0];
+            const target = e.target as HTMLInputElement;
+            if (target && target.files && target.files.length > 0) {
+                const fileName = target.files[0].name;
+                const fileBlob = target.files[0];
 
-                    if (fileBlob && fileName.endsWith('.json')) {
-                        const reader = new FileReader();
-                        reader.onload = (e): void => {
-                            if (e && e.target) {
-                                const contents = e.target.result;
-                                const importedSet = importSet(contents as string);
-                                
-                                // Generate new id for imported set
-                                importedSet.id = generateID();
-                                
+                if (fileBlob && fileName.endsWith('.json')) {
+                    const reader = new FileReader();
+                    reader.onload = (e): void => {
+                        if (e && e.target) {
+                            const contents = e.target.result;
+                            try {
+                                const set = importSet(contents as string);
+                                set.id = generateID(); // Generate new id for imported set
+
                                 // TODO: redirect to new set
-                                dispatch(addSet(importedSet.name, importedSet.iconUrl, importedSet.font, importedSet.tags));
+                                dispatch(addSet(set.name, set.iconUrl, set.font, set.tags));
                                 dispatch(setSets());
+
+                                displayAlert(i18n.importSetSuccess.replace('%s', set.name), 'success');
+                            } catch (err) {
+                                displayAlert(i18n.importSetFailure);
+                                console.error(err);
                             }
-                        };
-                        reader.readAsText(fileBlob);
-                    } else {
-                        //displayAlert(i18n.importJsonFileError);
-                        return;
-                    }
+                        }
+                    };
+                    reader.readAsText(fileBlob);
+                } else {
+                    displayAlert(i18n.importJsonFileError);
+                    return;
                 }
-            } catch (err) {
-                console.error(err);
             }
         }
-    }, [dispatch]);
+    }, [dispatch, displayAlert]);
 
     if (loading) {
         return (
@@ -89,6 +101,9 @@ export const Sets: React.FunctionComponent = () => {
     } else if (sets) {
         return (
             <>
+                <Alert variant={alertVariant} dismissible show={showAlert && alertMessage.length > 0} onClose={(): void => setShowAlert(false)}>
+                    {alertMessage}
+                </Alert>
                 <Container className='' fluid={true}>
                     <HashRouter hashType={'noslash'} basename={'tags/sets'}>
                         <Row className='flex-column flex-lg-row'>

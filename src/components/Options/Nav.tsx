@@ -29,7 +29,7 @@ export const Nav: React.FunctionComponent = () => {
                     </NavLink>
                     <ul className={'nav d-none flex-column ml-2 ml-md-4'}>
                         <li className={'nav-item'}>
-                            <NavLink className={'nav-link'} to='/tags/sets' onClick={(): void => console.log('hello')}>
+                            <NavLink className={'nav-link'} to='/tags/sets'>
                                 <span className={'d-none d-sm-flex'}>{i18n.sets}</span>
                             </NavLink>
                         </li>

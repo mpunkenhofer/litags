@@ -73,7 +73,6 @@ export const importSet = (data: string): Set => {
         return setData.set;
     }
 
-    //TODO i18n
     throw Error('import set error: empty set');
 }
 
@@ -92,6 +91,5 @@ export const exportSet = async (id: string): Promise<string> => {
         return JSON.stringify(exportData, null, 2);
     }
 
-    //TODO i18n
     throw Error(`export set error: set with id:${id} not found.`);
 }
