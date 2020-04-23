@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Set, Tag, Font } from "../common/types"
+import { Set, Tag, Font } from "../types"
 import * as storage from "../common/storage"
 import { AppThunk } from "../common/store";
 import { v4 } from 'uuid';
@@ -141,8 +141,9 @@ export const getSets = (): AppThunk => (dispatch, getState): void => {
     }
 };
 
-export const setSets = (): AppThunk => (dispatch, getState): void => {
+export const setSets = (): AppThunk => (_dispatch, getState): void => {
     const sets = getState().sets.sets;
+    //TODO why don't we use dispatch here?
     //dispatch(setsRequest());
     // api.postSets(sets)
     //     .then(sets => dispatch(setsSuccess(sets)))

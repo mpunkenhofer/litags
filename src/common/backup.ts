@@ -3,7 +3,7 @@ import {
     User,
     Set,
     FrequentlyUsed,
-} from "./types";
+} from "../types";
 import isEmpty from 'lodash/isempty';
 import pkg from '../../package.json';
 import { setOptions, setSets, setFrequentlyUsed, setUsers, getOptions, getUsers, getSets, getFrequentlyUsed } from "./storage";

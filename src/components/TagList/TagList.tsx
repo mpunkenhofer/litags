@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { removeTag, updateTags } from "../../slices/user";
 import { RootState } from "../../common/rootReducer";
 import Tag from "../Tag";
-import { Tag as TagType } from "../../common/types"
+import { Tag as TagType } from "../../types"
 
 interface SortableItemProps {
     tag: TagType;
@@ -28,9 +28,9 @@ const SortableList = SortableContainer(({ tags, limit,
             {tags.slice(0, limit).map((tag, index) => (<SortableItem key={`item-${tag.id}`} index={index} tag={tag} />))}
         </ul>
         {
-            removeZoneVisible && <div className={'lt-list-remove-zone'}
+            removeZoneVisible && <div className={'lt-list-remove-zone'} data-icon={'L'}
                 onMouseEnter={(): void => setHoveringRemoveZone(true)}
-                onMouseLeave={(): void => setHoveringRemoveZone(false)}>L</div>
+                onMouseLeave={(): void => setHoveringRemoveZone(false)}/>
         }
     </>
 );

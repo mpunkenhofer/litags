@@ -1,0 +1,1 @@
+declare module 'webpack-extension-manifest-plugin';

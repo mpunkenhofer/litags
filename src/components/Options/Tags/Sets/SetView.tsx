@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Set, Tag } from "../../../../common/types";
+import { Set, Tag } from "../../../../types";
 import TagButton from "../../../TagButton";
 import { useCallback, useState } from "react";
 import { TagView } from "./TagView";

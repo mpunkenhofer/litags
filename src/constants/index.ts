@@ -1,4 +1,4 @@
-import { Options, ImportExportOptions } from "../common/types";
+import { Options, ImportExportOptions } from "../types";
 
 const importExportDefaults: ImportExportOptions = {
     users: true,

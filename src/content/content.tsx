@@ -40,7 +40,7 @@ const getUserName = (elementName: string): string | null => {
 const element = document.querySelector('.round__app');
 
 if (element) {
-    new MutationObserver((mutations, observerInstance) => {
+    new MutationObserver((_mutations, observerInstance) => {
         observerInstance.disconnect();
 
         ReactDOM.render(

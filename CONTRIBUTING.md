@@ -74,9 +74,9 @@ Here are a few items which I consider important/missing and are still left to do
 #### Tests
 
 I tested this extension on the go and as I mentioned above that this was my first extension/typescript/react-redux
-project, I didn't have the know-how nor the time research and setup proper testing in this context. The more people
+project, I didn't have the know-how, nor the time research and setup proper testing in this context. The more people
 contribute to this project though, the more important becomes testing - making sure new code people add doesn't break
-existing code, hence I listed this as a the top priority.  
+existing one, hence I listed this as a top priority.  
 
 One example of an browser extension with tests:
 [Reddit Enhancement Suite](https://github.com/honestbleeps/Reddit-Enhancement-Suite)
@@ -84,10 +84,10 @@ One example of an browser extension with tests:
 #### Synchronization
 
 Sets, tags, options and users should really be accessible from any device that runs this extension. Currently this data
-is stored/created only local to the machine the extension was installed on using
-[storage.local api](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local). Browser
-provide a possibility to store data in an area which will be synced across all instances the user is logged into, but
-this is very limited. [Chrome](https://developer.chrome.com/apps/storage#property-sync) for example, lists that this key
+is stored/created only local on the machine the extension was installed on, using the
+[storage.local api](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local). Browsers
+provide a way to store data in an area which will be synced across all instances the user is logged into, however
+this is very limited. [Chrome storage api docs](https://developer.chrome.com/apps/storage#property-sync) states that this key
 value store - stores up to 512 items with max. 8,192 Bytes each and a total limit of 102,400 Bytes - clearly not enough
 if we are to store hundreds of tags and a growing number of tagged users.
 
@@ -99,12 +99,12 @@ One example of an extension that uses the gDrive API is
 
 #### Documentation (of features)
 
-Currently there is only a bare minimum of documentation. Having something a long the lines of Tooltips, Faq more
+Currently there is only a bare minimum of documentation. Having something a long the lines of tooltips, faq more
 descriptions would be beneficial. While I tried to design everything to be as intuitive as possible, some features like
 sorting tags in a list, sorting sets in the tag set options for display order in the tag chooser may not be apparent.
 
-The same goes for the code itself, though I believe most of it doesn't really need any additional comments, somethings
-may not be obvious at first.
+The same goes for the code itself, even though I believe most of it doesn't really need any additional comments, somethings
+may not be obvious at first sight.
 
 #### Tag Hotkeys
 

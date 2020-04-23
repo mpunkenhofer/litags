@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Options} from "../common/types";
+import {Options} from "../types";
 import * as storage from "../common/storage";
 import {AppThunk} from "../common/store";
 

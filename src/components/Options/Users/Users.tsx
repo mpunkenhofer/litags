@@ -6,7 +6,7 @@ import {getAllUsers, deleteUser} from "../../../slices/user";
 import {RootState} from "../../../common/rootReducer";
 import TagList from "../../TagList/TagList";
 import {getSets} from "../../../slices/sets";
-import {User} from "../../../common/types";
+import {User} from "../../../types";
 import {i18n} from "../../../constants/i18n";
 import {Container, Row, Col, Button, Spinner} from "react-bootstrap";
 import {ConfirmModal} from "../ConfirmModal";

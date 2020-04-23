@@ -1,6 +1,6 @@
 import * as React from "react";
 import Tag from "../../../Tag";
-import { Tag as TagType } from "../../../../common/types";
+import { Tag as TagType } from "../../../../types";
 import { Container, Col, Row } from "react-bootstrap";
 import { ColorPicker } from "../../ColorPicker";
 import { Badge } from "../../Badge";

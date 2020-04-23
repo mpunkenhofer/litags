@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "../common/store";
 import * as storage from "../common/storage";
-import { Tag, User } from "../common/types";
+import { Tag, User } from "../types";
 import { updateFrequentlyUsed } from "./frequentlyUsed";
 import isEqual from "lodash/isequal";
 

@@ -6,7 +6,7 @@ import {
     User,
     FrequentlyUsed,
     Font
-} from './types';
+} from '../types';
 import { defaultOptions } from "../constants";
 import has from "lodash/has";
 import { defaultSets } from "../constants/sets";

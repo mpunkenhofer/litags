@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Tag from "./Tag";
-import {Tag as TagType} from "../common/types";
+import {Tag as TagType} from "../types";
 
 interface TagButtonProps {
     tag: TagType;

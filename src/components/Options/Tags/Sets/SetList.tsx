@@ -1,5 +1,5 @@
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
-import { Set } from "../../../../common/types"
+import { Set } from "../../../../types"
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 import arrayMove from "array-move";

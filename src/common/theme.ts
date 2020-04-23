@@ -1,4 +1,4 @@
-import { Theme } from "./types";
+import { Theme } from "../types";
 
 // reference: https://github.com/ornicar/lila/tree/master/ui/common/css/theme  
 export const getTheme = (): Theme => {

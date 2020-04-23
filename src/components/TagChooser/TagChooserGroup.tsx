@@ -1,6 +1,6 @@
 import * as React from "react";
 import TagButton from "../TagButton";
-import { Set, Tag } from "../../common/types";
+import { Set, Tag } from "../../types";
 import { getTheme } from "../../common/theme";
 
 interface TagChooserGroupInterface {
@@ -10,7 +10,6 @@ interface TagChooserGroupInterface {
     icon?: React.ReactNode;
 }
 
-//TODO: handle icon sizes better
 const TagChooserGroup: React.FunctionComponent<TagChooserGroupInterface> = ({ set, onTagClicked, className, icon }: TagChooserGroupInterface) => (
     <section className={`lt-set${(className !== undefined) ? ` ${className}` : ''}`}>
         <header className={'lt-set-header'} style={{ backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor }}>

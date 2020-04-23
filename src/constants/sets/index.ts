@@ -1,7 +1,7 @@
 import lichessSetData from "./lichess-set";
 import frankerfacezSetData from "./frankerfacez-set";
 import twitchSetData from "./twitch-set";
-import { Font } from "../../common/types";
+import { Font } from "../../types";
 
 export interface SetData {
     name: string;

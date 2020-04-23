@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/rootReducer";
 import { getFrequentlyUsed, removeFrequentlyUsed } from "../../../slices/frequentlyUsed";
-import { Tag as TagType, FrequentlyUsed as FrequentlyUsedType } from "../../../common/types";
+import { Tag as TagType, FrequentlyUsed as FrequentlyUsedType } from "../../../types";
 import TagButton from "../../TagButton";
 import { Spinner, Container, Row, Button } from "react-bootstrap";
 import Tag from "../../Tag";

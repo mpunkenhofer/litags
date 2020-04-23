@@ -5,7 +5,7 @@ import { useFocusOnAnyKeydown } from "../../hooks/focusOnKeydown";
 import { useCallback, useMemo } from "react";
 import { useSelector } from 'react-redux'
 import { RootState } from "../../common/rootReducer";
-import { Tag } from "../../common/types";
+import { Tag } from "../../types";
 import FocusTrap from "focus-trap-react";
 import { i18n } from "../../constants/i18n";
 import { browser } from "webextension-polyfill-ts";
@@ -33,17 +33,17 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
 
             for (const set of sets)
                 allTags = [...allTags, ...set.tags]
-
+            
             return allTags;
         }, [sets]);
 
         const searchTags = useCallback(term => {
             if (!term || term.length < 1)
                 return [];
-
+                
             term = term.toLowerCase();
 
-            return tags.filter(tag => tag.name.includes(term) ||
+            return tags.filter(tag => tag.name.toLowerCase().includes(term) ||
                 (tag.aliases && tag.aliases.find(alias => alias.toLowerCase().includes(term))));
         }, [tags]);
 
@@ -67,7 +67,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                 <TagChooserGroup key={'litags.searchResults'}
                                     set={{
                                         id: '0',
-                                        name: i18n.searchResults,
+                                        name: `${searchResults.length} ${i18n.searchResults}`,
                                         tags: searchResults,
                                         iconUrl: browser.runtime.getURL('assets/images/search-solid.svg')
                                     }}

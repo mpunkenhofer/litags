@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "../common/store";
 import * as storage from "../common/storage";
-import { FrequentlyUsed, Tag } from "../common/types";
+import { FrequentlyUsed, Tag } from "../types";
 
 type FrequentlyUsedState = {
     frequentlyUsed: FrequentlyUsed[];

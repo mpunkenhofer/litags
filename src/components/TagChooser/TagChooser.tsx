@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useCallback, useState} from 'react';
 import TagChooserPopup from "./TagChooserPopup";
 import {useDispatch} from 'react-redux'
-import {Tag} from "../../common/types";
+import {Tag} from "../../types";
 import {addTag} from "../../slices/user";
 import {i18n} from "../../constants/i18n";
 import {useEffect} from "react";
