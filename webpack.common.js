@@ -59,7 +59,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: '[name].css',
 		}),
-		new IgnoreEmitPlugin([/\/style.js$/, /\/*.LICENSE$/]),
+		new IgnoreEmitPlugin([/\/style.js$/, /\/*.LICENSE*/]),
 	],
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.scss'],

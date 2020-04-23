@@ -11,7 +11,7 @@ const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugi
 
 module.exports = merge(commonWebpackConfiguration, {
     mode: 'development',
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     watch: true,
 
     module: {
@@ -28,10 +28,9 @@ module.exports = merge(commonWebpackConfiguration, {
             config: {
                 base: manifest,
                 extend: {
-                    name: 'Litags - Dev Build',
+                    name: 'LiTags - Dev Build',
                     version: pkg.version,
                     homepage_url: pkg.homepage,
-                    web_accessible_resources: ['content.js.map', 'background.js.map', 'options.js.map']
                 }
             }
         }),
