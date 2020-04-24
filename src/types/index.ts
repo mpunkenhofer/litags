@@ -3,6 +3,11 @@ export type Font = {
     src: string;
 }
 
+// export type Id = string;
+// export type Name = string;
+// export type Uri = string;
+
+// TODO: introduce types for properties
 export type Tag = {
     id: string;
     name: string;

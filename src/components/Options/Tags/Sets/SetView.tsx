@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Set, Tag } from "../../../../types";
 import TagButton from "../../../TagButton";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { TagView } from "./TagView";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import { i18n } from "../../../../constants/i18n";
@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } from "../../../../slices/sets";
 import { ConfirmModal } from "../../ConfirmModal";
 import { useHistory } from "react-router-dom";
+import { generateID } from "../../../../common/id";
 
 
 interface TagContainerProps {
@@ -35,15 +36,22 @@ interface SetDisplayProps {
 
 
 export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDisplayProps) => {
-    /*TODO:
-        - Select Initial Tag
-        - Select New Tag when added.
-     */
     const dispatch = useDispatch();
     const [showDeleteTagModal, setShowDeleteTagModal] = useState(false);
     const [showDeleteSetModal, setShowDeleteSetModal] = useState(false);
     const [selectedTag, setSelectedTag] = useState<Tag | null>((set && set.tags && set.tags.length > 0) ?
         set.tags[0] : null);
+    const [addedTagId, setAddedTagId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (addedTagId !== null) {
+            const addedTag = set.tags.find(tag => tag.id === addedTagId);
+            if (addedTag) {
+                setSelectedTag(addedTag);
+            }
+            setAddedTagId(null);
+        }
+    }, [set, addedTagId]);
 
     const history = useHistory();
 
@@ -80,9 +88,12 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
     }, [dispatch, set, history]);
 
     const onAddTagClicked = useCallback((): void => {
-        dispatch(addTag(set.id, i18n.newTag));
+        const tagId = generateID();
+
+        dispatch(addTag(set.id, i18n.newTag, tagId));
         dispatch(setSets());
-        //setSelectedTag()
+
+        setAddedTagId(tagId);
     }, [dispatch, set]);
 
     return (

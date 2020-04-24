@@ -4,6 +4,7 @@ import * as storage from "../common/storage"
 import { AppThunk } from "../common/store";
 import { v4 } from 'uuid';
 import has from "lodash/has";
+import { generateID } from "../common/id";
 
 export type SetsState = {
     sets: Set[];
@@ -70,9 +71,8 @@ const setsSlice = createSlice({
             state.sets.push(set);
         },
         createAndAddTag(state, { payload }:
-            PayloadAction<{ id: string; tag: { name: string; aliases: string[]; uri: string; color?: string; font?: Font } }>): void {
-            const tagId = v4();
-            const tag: Tag = { id: tagId, ...payload.tag };
+            PayloadAction<{ id: string; tag: { name: string; id: string; aliases: string[]; uri: string; color?: string; font?: Font } }>): void {
+            const tag: Tag = { ...payload.tag };
 
             const idx = state.sets.findIndex((set) => set.id === payload.id);
 
@@ -207,9 +207,10 @@ export const addSet = (name: string, iconUrl?: string, font?: Font, tags?: Tag[]
         dispatch(createAndAddSet(set));
     };
 
-export const addTag = (setId: string, name: string, aliases?: string[], uri?: string, color?: string): AppThunk =>
+export const addTag = (setId: string, name: string, id?: string, aliases?: string[], uri?: string, color?: string): AppThunk =>
     (dispatch): void => {
-        const tag = { name, aliases: aliases || [], uri: uri || '', color };
+        const tagId = (id !== undefined) ? id : generateID();
+        const tag = { name, id: tagId, aliases: aliases || [], uri: uri || '', color };
         dispatch(createAndAddTag({ id: setId, tag }));
     };
 

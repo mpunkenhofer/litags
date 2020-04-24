@@ -21,13 +21,13 @@ export const Sets: React.FunctionComponent = () => {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertVariant, setAlertVariant] = useState<'danger' | 'success'>('danger');
 
+    const history = useHistory();
+
     useEffect(() => {
         dispatch(getSets());
     }, [dispatch]);
 
     useSetDocumentTitle(i18n.tagSets, 'Litags');
-
-    const history = useHistory();
 
     const displayAlert = useCallback((message: string, variant: 'danger' | 'success' = 'danger') => {
         setAlertMessage(message);
@@ -70,7 +70,8 @@ export const Sets: React.FunctionComponent = () => {
                             const contents = e.target.result;
                             try {
                                 const set = importSet(contents as string);
-                                set.id = generateID(); // Generate new id for imported set
+                                const setId = generateID(); // Generate new id for imported set
+                                set.id = setId;
 
                                 // TODO: redirect to new set
                                 dispatch(addSet(set.name, set.iconUrl, set.font, set.tags));
@@ -98,7 +99,8 @@ export const Sets: React.FunctionComponent = () => {
                 <Spinner animation="border" variant="primary" />
             </div>
         );
-    } else if (sets) {
+    }
+    else if (sets) {
         return (
             <>
                 <Alert variant={alertVariant} dismissible show={showAlert && alertMessage.length > 0} onClose={(): void => setShowAlert(false)}>

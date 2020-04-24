@@ -35,7 +35,7 @@ const SortableList = SortableContainer(({ pairs }: SortableListProps) => {
     return (
         <ul className='nav flex-row flex-xl-column nav-pills py-2'>
             {pairs.map(({ id, name }, index) => (
-                <SortableItem key={`item-${id}`} index={index} id={id} name={name} />
+                <SortableItem key={`set-${id}`} index={index} id={id} name={name} />
             ))}
         </ul>
     );

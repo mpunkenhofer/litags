@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    // "skipLibCheck": true,
     "allowJs": false,
     "jsx": "react",
     "target": "es6",

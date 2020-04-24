@@ -1,6 +1,6 @@
 import lichessSetData from "./lichess-set";
-import frankerfacezSetData from "./frankerfacez-set";
-import twitchSetData from "./twitch-set";
+/* import frankerfacezSetData from "./frankerfacez-set";
+import twitchSetData from "./twitch-set"; */
 import { Font } from "../../types";
 
 export interface SetData {
@@ -10,6 +10,6 @@ export interface SetData {
     tags:  {[_: string]: [string, string[]?, string?]};
 }
 
-export const defaultSets: SetData[] = [lichessSetData, twitchSetData, frankerfacezSetData];
+export const defaultSets: SetData[] = [lichessSetData/* , twitchSetData, frankerfacezSetData */];
 
 

@@ -92,7 +92,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                             }
                             {
                                 Object.values(sets).map(set =>
-                                    <TagChooserGroup key={set['id']} set={set} onTagClicked={onTagClicked} />)
+                                    <TagChooserGroup key={set.id} set={set} onTagClicked={onTagClicked} />)
                             }
                         </div>
                         <div className={'lt-set-search'} style={{backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor}}>
