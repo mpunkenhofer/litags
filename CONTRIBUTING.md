@@ -30,12 +30,10 @@ gauge feedback. When ready: [make an issue ticket](https://github.com/mpunkenhof
 
 ### Build commands
 
-**`npm run dev`** will clean `dist/`, then build LiTags (dev mode), and start a watch task that will rebuild LiTags when
+**`npm run watch`** will clean `dist/`, then build LiTags (dev mode), and start a watch task that will rebuild LiTags when
 you make changes. Only changed files will be rebuilt.
 
 **`npm run build`** will clean `dist/`, then build LiTags (prod mode)
-
-**`npm run dist`** will clean `dist/`, then build LiTags (prod mode) and create a .zip file in `dist/zip/`
 
 ### Lint commands
 

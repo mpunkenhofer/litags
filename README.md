@@ -1,5 +1,8 @@
 # LiTags
 
+[link-cws]: https://chrome.google.com/webstore/detail/litags/nlboefdopbngegiihopmjfndjojcblmf "Version published on Chrome Web Store"
+[link-amo]: https://addons.mozilla.org/en-US/firefox/addon/litags/ "Version published on Mozilla Add-ons"
+
 LiTags (li[chess] tags) is a browser extension which enables you to assign tags
 to players on [lichess.org](https://www.lichess.org). The idea was being able to quickly determine the
 type of player you face (playing for time, defensive, aggressive, gives no rematches, ...).
@@ -20,6 +23,11 @@ bundling, relies on [React](https://reactjs.org/) for its user interfaces in com
 bindings. CSS is generated with [Sass](https://sass-lang.com/) making use of [Bootstrap](https://getbootstrap.com/) in
 combination with [React Bootstrap](https://react-bootstrap.github.io/). Sorting tags in a list was implemented with
 [React Sortable HOC](https://github.com/clauderic/react-sortable-hoc).
+
+## LiTags in Stores
+
+- [Chrome][link-cws] [<img valign="middle" src="https://img.shields.io/chrome-web-store/v/nlboefdopbngegiihopmjfndjojcblmf?label=%20&style=flat-square">][link-cws]
+- [Firefox][link-amo] [<img valign="middle" src="https://img.shields.io/amo/v/litags?label=%20&style=flat-square">][link-amo]
 
 ## Building and contributing
 
