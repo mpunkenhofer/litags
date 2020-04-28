@@ -1,6 +1,13 @@
 # Changelog
 
-## 1.0.0, TBD (Not released)
+## 1.0.1, Apr, 28, 2020
+
+### Bug Fixes
+
+- #2 Injected stylesheet causes layout issues on lichess.org.
+- Tag list remove icon not in line with tags.
+
+## 1.0.0, Apr, 25, 2020
 
 ### New Features
 

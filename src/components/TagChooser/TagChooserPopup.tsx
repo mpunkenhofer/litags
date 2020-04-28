@@ -73,7 +73,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'search-results'}
-                                    icon={<i data-icon='y'/>} />
+                                    icon={<i className={'lt-lichess-icon'} data-icon='y'/>} />
                             }
                             {
                                 (frequentlyUsed.length > 0) &&
@@ -88,7 +88,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'favorites'}
-                                    icon={<i data-icon='s'/>} />
+                                    icon={<i className={'lt-lichess-icon'} data-icon='s'/>} />
                             }
                             {
                                 Object.values(sets).map(set =>

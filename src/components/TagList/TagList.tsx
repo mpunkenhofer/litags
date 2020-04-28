@@ -28,7 +28,7 @@ const SortableList = SortableContainer(({ tags, limit,
             {tags.slice(0, limit).map((tag, index) => (<SortableItem key={`item-${tag.id}`} index={index} tag={tag} />))}
         </ul>
         {
-            removeZoneVisible && <div className={'lt-list-remove-zone'} data-icon={'L'}
+            removeZoneVisible && <div className={'lt-list-remove-zone lt-lichess-icon'} data-icon={'L'}
                 onMouseEnter={(): void => setHoveringRemoveZone(true)}
                 onMouseLeave={(): void => setHoveringRemoveZone(false)}/>
         }

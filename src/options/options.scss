@@ -2,6 +2,26 @@
 @import "../components/TagList/tagList";
 @import "../common/common";
 
+@font-face {
+  font-family: "lichess";
+  src: url("/assets/fonts/lichess.woff2") format("woff2");
+  font-display: block;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.lt-lichess-icon::before {
+  display: inline-block;
+  font-size: 1.2em;
+  vertical-align: middle;
+  font-family: "lichess";
+  font-style: normal;
+  font-weight: normal;
+  text-transform: none;
+  content: attr(data-icon);
+  opacity: 0.9;
+}
+
 .lt-options-navbar {
   position: sticky;
   top: 0;

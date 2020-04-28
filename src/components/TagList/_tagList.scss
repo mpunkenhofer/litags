@@ -5,7 +5,8 @@
   list-style: none;
   user-select: none;
   z-index: $zIndex;
-
+  vertical-align: middle;
+  
   ul {
     display: inline-block;
     list-style: none;
@@ -14,7 +15,7 @@
   li {
     display: inline-block;
     list-style: none;
-    margin-right: .4rem;
+    margin-right: 0.4rem;
     cursor: pointer;
   }
 
@@ -25,12 +26,16 @@
     align-content: center;
 
     z-index: $zIndex + 2;
-    
+
     margin-left: 1rem;
 
-    font-size: $tagSize;
-    opacity: 1 !important;
     color: $c-red;
+
+    &:before {
+      font-size: $tagSize !important;
+      opacity: 1 !important;
+      vertical-align: baseline !important;
+    }
   }
 }
 
