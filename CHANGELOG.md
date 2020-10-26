@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2, Oct, 26, 2020
+
+- Updated depedencies
+
 ## 1.0.1, Apr, 28, 2020
 
 ### Bug Fixes
