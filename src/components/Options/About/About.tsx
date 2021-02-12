@@ -12,7 +12,7 @@ export const About: React.FunctionComponent = () => {
     
     return (
         <>
-            <h1 className={'h2 pb-2 pb-md-4'}>{i18n.about}</h1>
+            <h1 className={'h2'}>{i18n.about}</h1>
             <p className='py-2'>{i18n.appDescriptionWithoutLink} <a href={'https://lichess.org/'}>lichess.org</a>.</p>
 
             <Container className='py-2' fluid={true}>

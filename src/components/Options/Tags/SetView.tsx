@@ -1,16 +1,16 @@
 import * as React from "react";
-import { Set, Tag } from "../../../../types";
-import TagButton from "../../../TagButton";
+import { Set, Tag } from "../../../types";
+import TagButton from "../../TagButton";
 import { useCallback, useState, useEffect } from "react";
 import { TagView } from "./TagView";
 import { Container, Col, Row, Button } from "react-bootstrap";
-import { i18n } from "../../../../constants/i18n";
+import { i18n } from "../../../constants/i18n"
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } from "../../../../slices/sets";
-import { ConfirmModal } from "../../ConfirmModal";
+import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } from "../../../slices/sets";
+import { ConfirmModal } from "../ConfirmModal";
 import { useHistory } from "react-router-dom";
-import { generateID } from "../../../../common/id";
+import { generateID } from "../../../common/id";
 
 
 interface TagContainerProps {
@@ -98,7 +98,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
 
     return (
         <>
-            <Container fluid={true}>
+            <Container className='m-2 m-md-4 mr-2 mr-md-4' fluid={true}>
                 <Row className='pb-2 pb-md-4'>
                     <Col xs={6} className='d-flex justify-content-center align-items-center'>
                         <div className='bg-primary text-center'

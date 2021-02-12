@@ -40,6 +40,9 @@
 }
 
 .lt-navbar-icon {
+  width: 1rem;
+  height: 1rem;
+
   opacity: 0.5;
   &:hover {
     opacity: 1;
@@ -61,11 +64,6 @@
   .lt-sidebar-icon {
     filter: invert(41%) sepia(48%) saturate(7200%) hue-rotate(199deg) brightness(101%) contrast(105%);
   }
-}
-
-.lt-navbar-icon {
-  width: 1rem;
-  height: 1rem;
 }
 
 .lt-sidebar-icon {
@@ -112,15 +110,6 @@
   }
 }
 
-.lt-options-drag-handle {
-  width: 1rem;
-  height: 1rem;
-  opacity: 0.4;
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
 .lt-options-drag-helper {
   list-style: none;
 }
@@ -133,20 +122,15 @@
   display: flex !important;
 }
 
-.lt-sets-import-export-btn:active,
-.lt-sets-import-export-btn:focus,
-.lt-sets-import-export-btn {
-  border: 0;
-  outline: none;
-  background-color: inherit;
-
-  img {
-    width: 1rem;
-    height: 1rem;
-  }
+.lt-btn-icon:active,
+.lt-btn-icon:focus,
+.lt-btn-icon {
+  width: 1rem;
+  height: 1rem;
 
   color: black;
   opacity: 0.65;
+
   &:hover {
     opacity: 1;
   }

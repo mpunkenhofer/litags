@@ -1,7 +1,6 @@
 import { Redirect, Route, Switch } from "react-router-dom";
-import { FrequentlyUsed } from "./Tags/FrequentlyUsed";
 import { Settings } from "./Settings/Settings";
-import { Sets } from "./Tags/Sets/Sets";
+import { Sets } from "./Tags/Sets";
 import { Users } from "./Users/Users";
 import { Backup } from "./Backup/Backup";
 import { About } from "./About/About";
@@ -15,12 +14,8 @@ export const NavOutlet: React.FunctionComponent = () => (
         <Route path='/settings'>
             <Settings />
         </Route>
-        <Redirect exact from='/tags' to='tags/sets'/>
-        <Route path='/tags/sets'>
-            <Sets/>
-        </Route>
-        <Route path='/tags/frequentlyUsed'>
-            <FrequentlyUsed/>
+        <Route path='/tags'>
+            <Sets />
         </Route>
         <Route path='/users'>
             <Users />

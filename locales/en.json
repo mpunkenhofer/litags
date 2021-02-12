@@ -83,6 +83,9 @@
   "users": {
     "message": "Users"
   },
+  "usersSettingDescription": {
+    "message": "List of Users you have tagged."
+  },
   "name": {
     "message": "Name"
   },
@@ -121,6 +124,9 @@
   },
   "addSet": {
     "message": "Add Set"
+  },
+  "addNewSet": {
+    "message": "Add new Set"
   },
   "addAlias": {
     "message": "Add Alias"

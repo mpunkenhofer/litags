@@ -2,7 +2,7 @@ import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {useDispatch, useSelector} from "react-redux";
 import {FormEvent, useCallback, useEffect, useState} from "react";
-import {getAllUsers, deleteUser} from "../../../slices/user";
+import {getAllUsers, deleteUser, userSuccess} from "../../../slices/user";
 import {RootState} from "../../../common/rootReducer";
 import TagList from "../../TagList/TagList";
 import {getSets} from "../../../slices/sets";
@@ -100,6 +100,17 @@ const UserList: React.FunctionComponent<UserListProps> = ({users}: UserListProps
     );
 };
 
+const UserSettingTitle: React.FunctionComponent = () => {
+    return (
+        <>
+            <h1 className={'h2'}>
+                {i18n.users}
+            </h1>
+            <p className={'py-2'}>{i18n.usersSettingDescription}</p>
+        </>
+    );
+}
+
 export const Users: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const {userRecord, loading, error} = useSelector((state: RootState) => state.user);
@@ -117,9 +128,7 @@ export const Users: React.FunctionComponent = () => {
     } else if (loading) {
         return (
             <>
-                <h1 className={'h2 pb-2 pb-md-4'}>
-                    {i18n.users}
-                </h1>
+                <UserSettingTitle />
                 <div className='d-flex justify-content-center py-2 py-md-4'>
                     <Spinner animation="border" variant="primary"/>
                 </div>
@@ -127,7 +136,7 @@ export const Users: React.FunctionComponent = () => {
     } else if (userRecord) {
         return (
             <>
-                <h1 className={'h2 pb-2 pb-md-4'}>{i18n.users}</h1>
+                <UserSettingTitle />
                 <UserList users={Object.values(userRecord).map(record => record.user)}/>
             </>
         );

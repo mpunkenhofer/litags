@@ -81,4 +81,9 @@ export const updateFrequentlyUsed = (tag: Tag): AppThunk =>
         dispatch(setFrequentlyUsed(frequentlyUsed));
     };
 
+export const clearFrequentlyUsed = (): AppThunk => 
+    (dispatch): void => {
+        dispatch(setFrequentlyUsed([]))
+}
+
 export default frequentlyUsedSlice.reducer;

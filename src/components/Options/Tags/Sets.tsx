@@ -1,16 +1,16 @@
 import * as React from "react";
-import { useSetDocumentTitle } from "../../../../hooks/setDocumentTitle";
-import { i18n } from "../../../../constants/i18n";
+import { useSetDocumentTitle } from "../../../hooks/setDocumentTitle";
+import { i18n } from "../../../constants/i18n";
 import { useEffect, useCallback, useState } from "react";
-import { getSets, addSet, setSets } from "../../../../slices/sets";
+import { getSets, addSet, setSets } from "../../../slices/sets";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../common/rootReducer";
-import { Container, Col, Row, Spinner, Alert } from "react-bootstrap";
+import { RootState } from "../../../common/rootReducer";
+import { Container, Col, Row, Spinner, Alert, Button } from "react-bootstrap";
 import { SetList } from "./SetList";
 import { SetView } from "./SetView";
 import { HashRouter, Redirect, Route, Switch, useHistory } from "react-router-dom";
-import { exportSet, importSet } from "../../../../common/backup";
-import { generateID } from "../../../../common/id";
+import { exportSet, importSet } from "../../../common/backup";
+import { generateID } from "../../../common/id";
 import { delay } from "lodash";
 
 export const Sets: React.FunctionComponent = () => {
@@ -93,6 +93,11 @@ export const Sets: React.FunctionComponent = () => {
         }
     }, [dispatch, displayAlert]);
 
+    const onAddSetClicked = useCallback((): void => {
+        dispatch(addSet(i18n.newSet));
+        dispatch(setSets());
+    }, [dispatch]);
+
     if (loading) {
         return (
             <div className='d-flex justify-content-center py-2 py-md-4'>
@@ -107,46 +112,44 @@ export const Sets: React.FunctionComponent = () => {
                     {alertMessage}
                 </Alert>
                 <Container className='' fluid={true}>
-                    <HashRouter hashType={'noslash'} basename={'tags/sets'}>
-                        <Row className='flex-column flex-lg-row'>
-                            <Col md='auto' xl={2} className=''>
-                                <Row className='flex-column'>
-                                    <SetList sets={sets} />
-                                </Row>
-                                <Row className='flex-row flex-nowrap border-top p-1 mt-2 mt-md-3 pt-md-2'>
-                                    <button className={'lt-sets-import-export-btn'} onClick={onImport}>
-                                        <img src={'/assets/images/file-import-solid.svg'} className='mr-2'
-                                            alt={'Import Set Icon'} />
-                                        <small>{i18n.importSet}</small>
-                                    </button>
-                                    {
-                                        (sets && sets.length > 0) &&
-                                        <button className={'lt-sets-import-export-btn'} onClick={onExport}>
-                                            <img src={'/assets/images/file-export-solid.svg'} className='mr-2'
-                                                alt={'Export Set Icon'} />
-                                            <small>{i18n.exportSet}</small>
-                                        </button>
-                                    }
-                                </Row>
+                    <HashRouter hashType={'noslash'} basename={'tags'}>
+                        <Row className='d-flex flex-row border-bottom pb-2 pb-md-3 m-3 m-md-3 my-1'>
+                            <Col className={'align-middle'}>
+                                <SetList sets={sets} />
                             </Col>
-                            <Col md='auto' xl={8}>
-                                <Switch>
-                                    {
-                                        sets.map(set => (
-                                            <Route key={set.id} path={`/${set.id}`}>
-                                                <SetView set={set} />
-                                            </Route>
-                                        ))
-                                    }
-                                    {
-                                        (sets.length > 0) &&
-                                        <Route path="/">
-                                            <Redirect to={`/${sets[0].id}`} />
-                                        </Route>
-                                    }
-                                </Switch>
+                            <Col className='col-auto'>
+                                <Button className={'mr-2 mr-md-4'} variant={'outline-primary'} onClick={onAddSetClicked}>
+                                    <img className={'lt-btn-icon mr-2'} src={'/assets/images/plus-square-solid.svg'} alt={'Add new Set Icon'} />
+                                    {i18n.addNewSet}
+                                </Button>
+                                <Button className={'mr-1 mr-md-2'} variant={'outline-secondary'} onClick={onImport}>
+                                    <img className={'lt-btn-icon mr-2'} src={'/assets/images/file-import-solid.svg'} alt={'Import Set Icon'} />
+                                    {i18n.importSet}
+                                </Button>
+                                {
+                                    (sets && sets.length > 0) &&
+                                    <Button variant={'outline-secondary'} onClick={onExport}>
+                                        <img className={'lt-btn-icon mr-2'} src={'/assets/images/file-export-solid.svg'} alt={'Export Set Icon'} />
+                                        {i18n.exportSet}
+                                    </Button>
+                                }
                             </Col>
                         </Row>
+                        <Switch>
+                            {
+                                sets.map(set => (
+                                    <Route key={set.id} path={`/${set.id}`}>
+                                        <SetView set={set} />
+                                    </Route>
+                                ))
+                            }
+                            {
+                                (sets.length > 0) &&
+                                <Route path="/">
+                                    <Redirect to={`/${sets[0].id}`} />
+                                </Route>
+                            }
+                        </Switch>
                     </HashRouter>
                 </Container>
             </>

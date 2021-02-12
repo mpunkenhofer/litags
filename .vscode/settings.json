@@ -8,5 +8,6 @@
         "ruser",
         "subnav",
         "tcgs"
-    ]
+    ],
+    "svg.preview.background": "black"
 }

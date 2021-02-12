@@ -1,13 +1,12 @@
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
-import { Set } from "../../../../types"
+import { Set } from "../../../types"
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 import arrayMove from "array-move";
 import { useCallback, useEffect, useState } from "react";
-import { i18n } from "../../../../constants/i18n";
 import { useDispatch } from "react-redux";
-import { addSet, updateSets } from "../../../../slices/sets";
-import { setSets } from "../../../../slices/sets";
+import { updateSets } from "../../../slices/sets";
+import { setSets } from "../../../slices/sets";
 
 interface SortableItemProps {
     id: string;
@@ -15,11 +14,11 @@ interface SortableItemProps {
 }
 
 const DragHandle = SortableHandle(() =>
-    <img src={'/assets/images/grip-lines-solid.svg'} alt={'Drag Handle Icon'}
-        className='lt-options-drag-handle d-none d-xl-block mr-1 mr-md-2' />);
+    <img src={'/assets/images/bars-solid.svg'} alt={'Drag Handle Icon'}
+        className='lt-btn-icon mr-1 mr-md-2' />);
 
 const SortableItem = SortableElement(({ id, name }: SortableItemProps) =>
-    <li className='nav-item'>
+    <li className='d-block nav-item text-nowrap'>
         <NavLink className='nav-link d-flex align-items-center' to={`/${id}`}>
             <DragHandle />
             <span>{name}</span>
@@ -33,7 +32,7 @@ interface SortableListProps {
 
 const SortableList = SortableContainer(({ pairs }: SortableListProps) => {
     return (
-        <ul className='nav flex-row flex-xl-column nav-pills py-2'>
+        <ul className='nav flex-row nav-pills px-2'>
             {pairs.map(({ id, name }, index) => (
                 <SortableItem key={`set-${id}`} index={index} id={id} name={name} />
             ))}
@@ -60,22 +59,13 @@ export const SetList: React.FunctionComponent<SetListProps> = ({ sets }: SetList
         dispatch(setSets());
     }, [dispatch, sets, pairs]);
 
-    const onAddSetClicked = useCallback((): void => {
-        dispatch(addSet(i18n.newSet));
-        dispatch(setSets());
-    }, [dispatch]);
-
     return (
         <>
-            <div className='d-none d-xl-flex mb-1'>
-                <strong className='text-muted'>{i18n.sets}</strong>
-                <button title={i18n.addSet} className='ml-auto text-muted lt-addSet-icon lt-lichess-icon' data-icon='O'
-                    onClick={onAddSetClicked} />
-            </div>
             <SortableList pairs={pairs}
-                useDragHandle={true}
                 onSortEnd={onSortEnd}
-                helperClass={'lt-options-drag-helper'} />
+                useDragHandle={true}
+                helperClass={'lt-options-drag-helper'}
+                axis="x" lockAxis="x" />
         </>
     );
 };

@@ -38,7 +38,7 @@ export const Settings: React.FunctionComponent = () => {
 
     return (
         <>
-            <h1 className={'h2 pb-2 pb-mb-4'}>{i18n.settings}</h1>
+            <h1 className={'h2 py-2'}>{i18n.settings}</h1>
 
             <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
                 <h2 className='h4'>{i18n.settingsTagListLimitTitle} {options.tagListLimit}</h2>
