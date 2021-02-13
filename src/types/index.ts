@@ -42,6 +42,8 @@ export type Options = {
     export: ImportExportOptions;
     tagListLimit: number;
     frequentlyUsedLimit: number;
+    showFrequentlyUsed: boolean;
+    showSearchField: boolean;
 }
 
 export type FrequentlyUsed = {

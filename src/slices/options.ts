@@ -25,6 +25,8 @@ const OptionsInitialState: OptionsState = {
         },
         tagListLimit: 10,
         frequentlyUsedLimit: 20,
+        showFrequentlyUsed: true,
+        showSearchField: true
     },
     loading: false,
     error: null
@@ -76,6 +78,12 @@ const optionsSlice = createSlice({
         },
         setFrequentlyUsedLimit(state, {payload}: PayloadAction<number>): void {
             state.options.frequentlyUsedLimit = (payload < 0) ? 0 : ((payload > 20) ? 20 : payload);
+        },
+        setShowFrequentlyUsed(state, {payload}: PayloadAction<boolean>): void {
+            state.options.showFrequentlyUsed = payload;
+        },
+        setShowSearchField(state, {payload}: PayloadAction<boolean>): void {
+            state.options.showSearchField = payload;
         }
     }
 });
@@ -94,6 +102,8 @@ export const {
     setExportSettings,
     setTagListLimit,
     setFrequentlyUsedLimit,
+    setShowFrequentlyUsed,
+    setShowSearchField
 } = optionsSlice.actions;
 
 export const getOptions = (): AppThunk => (dispatch, getState): void => {

@@ -2,7 +2,7 @@ import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {useDispatch, useSelector} from "react-redux";
 import {FormEvent, useCallback, useEffect, useState} from "react";
-import {getAllUsers, deleteUser, userSuccess} from "../../../slices/user";
+import {getAllUsers, deleteUser} from "../../../slices/user";
 import {RootState} from "../../../common/rootReducer";
 import TagList from "../../TagList/TagList";
 import {getSets} from "../../../slices/sets";
@@ -17,15 +17,30 @@ interface UserListHeaderProps {
 }
 
 const UserListHeader: React.FunctionComponent<UserListHeaderProps> =
-    ({count, onInput}: UserListHeaderProps) => (
-    <div className='border-bottom pb-1 pb-md-3'>
-        <span className='text-muted'>
-            {`${i18n.usersFound}: ${count}`}
-        </span>
-        <input type='search' className='form-control mt-2' autoCapitalize='off' autoComplete='off'
-               spellCheck='false' placeholder={i18n.searchUsersPlaceHolder} onInput={onInput}/>
-    </div>
-);
+    ({count, onInput}: UserListHeaderProps) => {
+    return (
+        <>
+            <Row className='pb-2 pb-md-4'>
+                <span className='text-muted'>
+                    {`${i18n.usersFound}: ${count}`}
+                </span>
+                <input type='search' className='form-control mt-2' autoCapitalize='off' autoComplete='off'
+                    spellCheck='false' placeholder={i18n.searchUsersPlaceHolder} onInput={onInput}/>
+            </Row>
+            {
+                (count > 0) &&
+                <Row className='p-2 align-items-center border-top border-bottom'>
+                    <Col xs={3}>
+                        <strong>{i18n.name}</strong>
+                    </Col>
+                    <Col xs={7} className='lt-list align-items-baseline'>
+                        <strong>{i18n.tags}</strong>
+                    </Col>
+                </Row>
+            }
+        </>
+    );
+}
 
 interface UserListElementProps {
     name: string;
@@ -38,24 +53,22 @@ const UserListElement: React.FunctionComponent<UserListElementProps> =
 
     return (
         <>
-            <Container fluid={true}>
-                <Row className='lt-user-row align-items-center border-bottom'>
-                    <Col xs={3}>
-                        <a href={`https://lichess.org/@/${name}`} target={'_blank'} rel={'noopener noreferrer'}>
-                            {name}
-                        </a>
-                    </Col>
-                    <Col xs={7} className='lt-list align-items-baseline'>
-                        <TagList id={name}/>
-                    </Col>
-                    <Col>
-                        <Button variant='outline-danger' className='lt-delete-btn'
-                                onClick={(): void => setShowModal(true)}>
-                            {i18n.delete}
-                        </Button>
-                    </Col>
-                </Row>
-            </Container>
+            <Row className='lt-user-row align-items-center border-top'>
+                <Col xs={3}>
+                    <a href={`https://lichess.org/@/${name}`} target={'_blank'} rel={'noopener noreferrer'}>
+                        {name}
+                    </a>
+                </Col>
+                <Col xs={7} className='lt-list align-items-baseline'>
+                    <TagList id={name}/>
+                </Col>
+                <Col>
+                    <Button variant='outline-danger' className='lt-delete-btn'
+                            onClick={(): void => setShowModal(true)}>
+                        {i18n.delete}
+                    </Button>
+                </Col>
+            </Row>
             <ConfirmModal show={showModal} onCancel={(): void => setShowModal(false)}
                           onConfirm={(): void => {
                               setShowModal(false);
@@ -85,27 +98,26 @@ const UserList: React.FunctionComponent<UserListProps> = ({users}: UserListProps
 
     const onDeleteButtonClicked = useCallback((name: string) => (): void => {
         dispatch(deleteUser(name));
+        dispatch(getAllUsers()); // get refreshed user list after delete to trigger redraw
     }, [dispatch]);
 
     const displayUsers = (searchResults && searchResults.length > 0) ? searchResults : users;
 
     return (
-        <>
+        <div className='m-2 m-md-4'>
             <UserListHeader count={displayUsers.length} onInput={onInput}/>
             {
                 displayUsers.map(user => <UserListElement key={`ul-${user.id}`} name={user.id}
                                                           onDeleteButtonClicked={onDeleteButtonClicked}/>)
             }
-        </>
+        </div>
     );
 };
 
 const UserSettingTitle: React.FunctionComponent = () => {
     return (
         <>
-            <h1 className={'h2'}>
-                {i18n.users}
-            </h1>
+            <h1 className={'h2'}>{i18n.users}</h1>
             <p className={'py-2'}>{i18n.usersSettingDescription}</p>
         </>
     );
@@ -116,7 +128,6 @@ export const Users: React.FunctionComponent = () => {
     const {userRecord, loading, error} = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
-        //console.log(`%cLoading All Users`, 'font-size: 1.5em; font-weight: bold; color: red');
         dispatch(getAllUsers());
         dispatch(getSets());
     }, [dispatch]);
@@ -127,20 +138,22 @@ export const Users: React.FunctionComponent = () => {
         console.error(error);
     } else if (loading) {
         return (
-            <>
+            <Container fluid={true}>
                 <UserSettingTitle />
                 <div className='d-flex justify-content-center py-2 py-md-4'>
                     <Spinner animation="border" variant="primary"/>
                 </div>
-            </>);
+            </Container>);
     } else if (userRecord) {
         return (
             <>
                 <UserSettingTitle />
-                <UserList users={Object.values(userRecord).map(record => record.user)}/>
+                <Container fluid={true} className={'bg-light border'}>
+                    <UserList users={Object.values(userRecord).map(record => record.user)}/>
+                </Container>
             </>
         );
     }
 
-    return (<><h1 className={'h2'}>{i18n.users}</h1></>);
+    return (<UserSettingTitle />);
 };

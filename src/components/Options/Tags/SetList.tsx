@@ -8,19 +8,23 @@ import { useDispatch } from "react-redux";
 import { updateSets } from "../../../slices/sets";
 import { setSets } from "../../../slices/sets";
 
+
+interface DragHandleProps {
+    pos: number;
+}
+
+const DragHandle = SortableHandle(({pos: position}: DragHandleProps) => <span className='mr-1 mr-md-2'>{position}</span>);
+
 interface SortableItemProps {
     id: string;
     name: string;
+    pos: number;
 }
 
-const DragHandle = SortableHandle(() =>
-    <img src={'/assets/images/bars-solid.svg'} alt={'Drag Handle Icon'}
-        className='lt-btn-icon mr-1 mr-md-2' />);
-
-const SortableItem = SortableElement(({ id, name }: SortableItemProps) =>
+const SortableItem = SortableElement(({ id, name, pos: position }: SortableItemProps) =>
     <li className='d-block nav-item text-nowrap'>
         <NavLink className='nav-link d-flex align-items-center' to={`/${id}`}>
-            <DragHandle />
+            <DragHandle pos={position}/>
             <span>{name}</span>
         </NavLink>
     </li>
@@ -34,7 +38,7 @@ const SortableList = SortableContainer(({ pairs }: SortableListProps) => {
     return (
         <ul className='nav flex-row nav-pills px-2'>
             {pairs.map(({ id, name }, index) => (
-                <SortableItem key={`set-${id}`} index={index} id={id} name={name} />
+                <SortableItem key={`set-${id}`} index={index} id={id} name={name} pos={index + 1}/>
             ))}
         </ul>
     );

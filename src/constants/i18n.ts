@@ -36,6 +36,7 @@ export const i18n = {
     importConfirm: i('importConfirm'),
     imageURL: i('imageURL'),
     symbol: i('symbol'),
+    name: i('name'),
     tagName: i('tagName'),
     aliases: i('aliases'),
     color: i('color'),

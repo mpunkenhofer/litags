@@ -40,46 +40,48 @@ export const Settings: React.FunctionComponent = () => {
         <>
             <h1 className={'h2 py-2'}>{i18n.settings}</h1>
 
-            <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
-                <h2 className='h4'>{i18n.settingsTagListLimitTitle} {options.tagListLimit}</h2>
-                <p>{i18n.settingsTagListLimitDescription}</p>
-                <Container fluid={true}>
-                    <Row className='text-center'>
-                        <Col xs={2}>
-                            <strong className=''>1</strong>
-                        </Col>
-                        <Col>
-                            {
-                                <input type="range" className="custom-range" min="1" max="10"
-                                       value={options.tagListLimit} onChange={onChangeTagListLimit}/>
-                            }
-                        </Col>
-                        <Col xs={2}><strong className=''>10</strong></Col>
-                    </Row>
-                </Container>
-            </section>
-            <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
-                <h2 className='h4'>{i18n.settingsFrequentlyUsedLimitTitle} {options.frequentlyUsedLimit}</h2>
-                <p>{i18n.settingsFrequentlyUsedLimitDescription}</p>
-                <Container fluid={true}>
-                    <Row className='text-center'>
-                        <Col xs={2}>
-                            <strong className=''>1</strong>
-                        </Col>
-                        <Col>
-                            {
-                                <input type="range" className="custom-range" min="1" max="20"
-                                       value={options.frequentlyUsedLimit} onChange={onChangeFrequentlyUsedLimit}/>
-                            }
-                        </Col>
-                        <Col xs={2}><strong className=''>20</strong></Col>
-                    </Row>
-                </Container>
-            </section>
-            <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
-                <h2 className='h4'>{i18n.hotkeys}</h2>
-                <p>{i18n.settingsHotkeysDescription}</p>
-            </section>
+            <Container fluid={true}>
+                <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
+                    <h2 className='h4'>{i18n.settingsTagListLimitTitle} {options.tagListLimit}</h2>
+                    <p>{i18n.settingsTagListLimitDescription}</p>
+                    <Container fluid={true}>
+                        <Row className='text-center'>
+                            <Col xs={2}>
+                                <strong className=''>1</strong>
+                            </Col>
+                            <Col>
+                                {
+                                    <input type="range" className="custom-range" min="1" max="10"
+                                        value={options.tagListLimit} onChange={onChangeTagListLimit}/>
+                                }
+                            </Col>
+                            <Col xs={2}><strong className=''>10</strong></Col>
+                        </Row>
+                    </Container>
+                </section>
+                <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
+                    <h2 className='h4'>{i18n.settingsFrequentlyUsedLimitTitle} {options.frequentlyUsedLimit}</h2>
+                    <p>{i18n.settingsFrequentlyUsedLimitDescription}</p>
+                    <Container fluid={true}>
+                        <Row className='text-center'>
+                            <Col xs={2}>
+                                <strong className=''>1</strong>
+                            </Col>
+                            <Col>
+                                {
+                                    <input type="range" className="custom-range" min="1" max="20"
+                                        value={options.frequentlyUsedLimit} onChange={onChangeFrequentlyUsedLimit}/>
+                                }
+                            </Col>
+                            <Col xs={2}><strong className=''>20</strong></Col>
+                        </Row>
+                    </Container>
+                </section>
+                <section className='bg-light border my-2 my-md-3 px-2 px-md-3 pt-2 pt-md-3 pb-2 pb-md-4'>
+                    <h2 className='h4'>{i18n.hotkeys}</h2>
+                    <p>{i18n.settingsHotkeysDescription}</p>
+                </section>
+            </Container>
         </>
     );
 };

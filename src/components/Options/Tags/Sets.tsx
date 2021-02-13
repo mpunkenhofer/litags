@@ -5,7 +5,7 @@ import { useEffect, useCallback, useState } from "react";
 import { getSets, addSet, setSets } from "../../../slices/sets";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/rootReducer";
-import { Container, Col, Row, Spinner, Alert, Button } from "react-bootstrap";
+import { Container, Row, Spinner, Alert, Button } from "react-bootstrap";
 import { SetList } from "./SetList";
 import { SetView } from "./SetView";
 import { HashRouter, Redirect, Route, Switch, useHistory } from "react-router-dom";
@@ -111,29 +111,29 @@ export const Sets: React.FunctionComponent = () => {
                 <Alert variant={alertVariant} dismissible show={showAlert && alertMessage.length > 0} onClose={(): void => setShowAlert(false)}>
                     {alertMessage}
                 </Alert>
-                <Container className='' fluid={true}>
+                <Container fluid={true}>
                     <HashRouter hashType={'noslash'} basename={'tags'}>
-                        <Row className='d-flex flex-row border-bottom pb-2 pb-md-3 m-3 m-md-3 my-1'>
-                            <Col className={'align-middle'}>
+                        <Row className='d-flex flex-row border-bottom pb-2'>
+                            <div className={'flex-row flex-md-column m-1'}>
                                 <SetList sets={sets} />
-                            </Col>
-                            <Col className='col-auto'>
+                            </div>
+                            <div className='flex-row ml-lg-auto m-1 pl-2'>
                                 <Button className={'mr-2 mr-md-4'} variant={'outline-primary'} onClick={onAddSetClicked}>
                                     <img className={'lt-btn-icon mr-2'} src={'/assets/images/plus-square-solid.svg'} alt={'Add new Set Icon'} />
-                                    {i18n.addNewSet}
+                                    <span className={'d-none d-sm-inline'}>{i18n.addNewSet}</span>
                                 </Button>
                                 <Button className={'mr-1 mr-md-2'} variant={'outline-secondary'} onClick={onImport}>
                                     <img className={'lt-btn-icon mr-2'} src={'/assets/images/file-import-solid.svg'} alt={'Import Set Icon'} />
-                                    {i18n.importSet}
+                                    <span className={'d-none d-sm-inline'}>{i18n.importSet}</span>
                                 </Button>
                                 {
                                     (sets && sets.length > 0) &&
                                     <Button variant={'outline-secondary'} onClick={onExport}>
                                         <img className={'lt-btn-icon mr-2'} src={'/assets/images/file-export-solid.svg'} alt={'Export Set Icon'} />
-                                        {i18n.exportSet}
+                                        <span className={'d-none d-sm-inline'}>{i18n.exportSet}</span>
                                     </Button>
                                 }
-                            </Col>
+                            </div>
                         </Row>
                         <Switch>
                             {

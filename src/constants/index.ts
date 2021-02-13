@@ -11,5 +11,7 @@ export const defaultOptions: Options = {
     tagListLimit: 10, 
     frequentlyUsedLimit: 20, 
     export: importExportDefaults, 
-    import: importExportDefaults
+    import: importExportDefaults,
+    showFrequentlyUsed: true,
+    showSearchField: true
 };

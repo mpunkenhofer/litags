@@ -3,7 +3,7 @@ import { Set, Tag } from "../../../types";
 import TagButton from "../../TagButton";
 import { useCallback, useState, useEffect } from "react";
 import { TagView } from "./TagView";
-import { Container, Col, Row, Button } from "react-bootstrap";
+import { Col, Row, Button } from "react-bootstrap";
 import { i18n } from "../../../constants/i18n"
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
@@ -98,64 +98,62 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
 
     return (
         <>
-            <Container className='m-2 m-md-4 mr-2 mr-md-4' fluid={true}>
-                <Row className='pb-2 pb-md-4'>
-                    <Col xs={6} className='d-flex justify-content-center align-items-center'>
-                        <div className='bg-primary text-center'
-                            style={{ width: '8rem', height: '8rem', borderRadius: '50%' }}>
-                            {
-                                set.iconUrl && set.iconUrl.length > 0 ?
-                                    <img src={set.iconUrl} alt={'Set Icon'}
-                                        style={{ width: '4rem', height: '4rem', marginTop: '2rem' }} /> :
-                                    (
-                                        <div style={{ marginTop: '3rem' }}>
-                                            <strong className='text-white'>{i18n.noIcon}</strong>
-                                        </div>
-                                    )
-                            }
-                        </div>
-                    </Col>
-                    <Col xs={6}>
-                        <Row className='pb-2'>
-                            <strong className='text-muted pb-2'>{i18n.setName}</strong>
-                            <input type='text' className='form-control' value={set.name} placeholder={i18n.setName}
-                                onChange={onChangeSetName} />
-                        </Row>
-                        <Row>
-                            <strong className='text-muted pb-2'>{i18n.setIconURL}</strong>
-                            <input type='text' className='form-control' value={set.iconUrl}
-                                placeholder={i18n.setIconURL}
-                                onChange={onChangeIconUrl} />
-                        </Row>
-                    </Col>
-                </Row>
-                {
-                    selectedTag &&
-                    <Row className='py-3 my-2'>
-                        <TagView tag={selectedTag} />
-                    </Row>
-                }
-                <Row>
-                    <TagContainer tags={set.tags} onTagClicked={onTagButtonClick} />
-                </Row>
-                <Row className='py-3'>
-                    <div className='d-flex ml-auto'>
-                        <Button variant='outline-primary' className='mr-2 mr-md-3' onClick={onAddTagClicked}>
-                            {i18n.addTag}
-                        </Button>
+            <Row className='py-2 py-md-4 py-lg-5'>
+                <Col xs={6} className='d-flex justify-content-center align-items-center'>
+                    <div className='bg-primary text-center'
+                        style={{ width: '8rem', height: '8rem', borderRadius: '50%' }}>
                         {
-                            (selectedTag != null) &&
-                            <Button variant='outline-danger' className='mr-2 mr-md-3'
-                                onClick={(): void => setShowDeleteTagModal(true)}>
-                                {i18n.deleteSelectedTag}
-                            </Button>
+                            set.iconUrl && set.iconUrl.length > 0 ?
+                                <img src={set.iconUrl} alt={'Set Icon'}
+                                    style={{ width: '4rem', height: '4rem', marginTop: '2rem' }} /> :
+                                (
+                                    <div style={{ marginTop: '3rem' }}>
+                                        <strong className='text-white'>{i18n.noIcon}</strong>
+                                    </div>
+                                )
                         }
-                        <Button variant='outline-danger' className='' onClick={(): void => setShowDeleteSetModal(true)}>
-                            {i18n.deleteSet}
-                        </Button>
                     </div>
+                </Col>
+                <Col xs={6}>
+                    <Row className='pb-2'>
+                        <strong className='text-muted pb-2'>{i18n.setName}</strong>
+                        <input type='text' className='form-control' value={set.name} placeholder={i18n.setName}
+                            onChange={onChangeSetName} />
+                    </Row>
+                    <Row>
+                        <strong className='text-muted pb-2'>{i18n.setIconURL}</strong>
+                        <input type='text' className='form-control' value={set.iconUrl}
+                            placeholder={i18n.setIconURL}
+                            onChange={onChangeIconUrl} />
+                    </Row>
+                </Col>
+            </Row>
+            {
+                selectedTag &&
+                <Row className='py-3 my-2'>
+                    <TagView tag={selectedTag} />
                 </Row>
-            </Container>
+            }
+            <Row>
+                <TagContainer tags={set.tags} onTagClicked={onTagButtonClick} />
+            </Row>
+            <Row className='py-3'>
+                <div className='d-flex ml-auto'>
+                    <Button variant='outline-primary' className='mr-2 mr-md-3' onClick={onAddTagClicked}>
+                        {i18n.addTag}
+                    </Button>
+                    {
+                        (selectedTag != null) &&
+                        <Button variant='outline-danger' className='mr-2 mr-md-3'
+                            onClick={(): void => setShowDeleteTagModal(true)}>
+                            {i18n.deleteSelectedTag}
+                        </Button>
+                    }
+                    <Button variant='outline-danger' className='' onClick={(): void => setShowDeleteSetModal(true)}>
+                        {i18n.deleteSet}
+                    </Button>
+                </div>
+            </Row>
             <ConfirmModal show={showDeleteSetModal} onCancel={(): void => setShowDeleteSetModal(false)}
                 onConfirm={(): void => {
                     setShowDeleteSetModal(false);

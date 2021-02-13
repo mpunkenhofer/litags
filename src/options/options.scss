@@ -103,8 +103,9 @@
 
 .lt-user-row {
   &:hover {
-    background-color: $light;
+    background-color: darken($color: $light, $amount: 10);
     .lt-delete-btn {
+      opacity: 1 !important;
       display: inline-block;
     }
   }

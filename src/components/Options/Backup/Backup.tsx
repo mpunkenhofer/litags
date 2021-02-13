@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useSetDocumentTitle } from "../../../hooks/setDocumentTitle";
 import { i18n } from "../../../constants/i18n";
-import { Container, Row, Col, Button, Form, Alert } from "react-bootstrap";
+import { Container, Button, Form, Alert } from "react-bootstrap";
 import { FormEvent, useCallback, useState } from "react";
 import { exportBackup, importBackup } from "../../../common/backup";
 import { useDispatch, useSelector } from "react-redux";
@@ -111,10 +111,12 @@ export const Backup: React.FunctionComponent = () => {
             <Alert variant={alertVariant} dismissible show={showAlert && alertMessage.length > 0} onClose={(): void => setShowAlert(false)}>
                 {alertMessage}
             </Alert>
-            <h1 className={'h2 pb-2 pb-md-4'}>{i18n.backup}</h1>
+            <h1 className={'h2'}>{i18n.backup}</h1>
+            <p className={'py-2'}>{i18n.aboutBackupDescription}</p>
+
             <Container fluid={true}>
-                <Row className='py-2 py-md-4'>
-                    <Col className='bg-light border py-2 py-md-3 px-2 px-md-3 mr-0 mr-md-2 mr-lg-4'>
+                <div className='d-flex flex-column flex-xl-row py-2 py-md-4'>
+                    <div className='flex-fill bg-light border py-2 py-md-3 px-2 px-md-3'>
                         <h2 className={'h4'}>{i18n.export}</h2>
                         <div className={'d-flex'}>
                             <Form className='py-3'>
@@ -147,7 +149,7 @@ export const Backup: React.FunctionComponent = () => {
                                     onChange={onCheckChange(setExportSettings)}
                                 />
                             </Form>
-                            <div className='d-none d-lg-block ml-auto mr-3'>
+                            <div className='d-none d-sm-block ml-auto mr-3'>
                                 <img src={'/assets/images/file-export-solid.svg'} className='d-block'
                                     style={{ opacity: '0.2', width: '6rem', height: '6rem' }}
                                     alt={'File Export Icon'} />
@@ -156,8 +158,8 @@ export const Backup: React.FunctionComponent = () => {
                         <Button variant='outline-primary' className='d-flex ml-auto' onClick={onExport}>
                             {i18n.export}
                         </Button>
-                    </Col>
-                    <Col className='bg-light border py-2 py-md-3 px-2 px-md-3'>
+                    </div>
+                    <div className='flex-fill bg-light border py-2 py-md-3 px-2 px-md-3 my-2 my-md-4 my-xl-0 ml-xl-4'>
                         <h2 className={'h4'}>{i18n.import}</h2>
                         <div className={'d-flex'}>
                             <Form className='py-3'>
@@ -190,7 +192,7 @@ export const Backup: React.FunctionComponent = () => {
                                     onChange={onCheckChange(setImportSettings)}
                                 />
                             </Form>
-                            <div className='d-none d-lg-block ml-auto mr-3'>
+                            <div className='d-none d-sm-block ml-auto mr-3'>
                                 <img src={'/assets/images/file-import-solid.svg'} className='d-block'
                                     style={{ opacity: '0.2', width: '6rem', height: '6rem' }}
                                     alt={'File Export Icon'} />
@@ -223,8 +225,8 @@ export const Backup: React.FunctionComponent = () => {
                                 </button>
                             </div>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </Container>
             <ConfirmModal show={showModal} onCancel={(): void => setShowModal(false)}
                 onConfirm={(): void => {

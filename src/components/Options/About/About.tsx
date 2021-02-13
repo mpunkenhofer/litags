@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useSetDocumentTitle} from "../../../hooks/setDocumentTitle";
 import {i18n} from "../../../constants/i18n";
-import {Card, Button, Container, Row, Col} from "react-bootstrap";
+import {Card, Button, Container, Row} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 import {LINKS} from "../../../constants/links";
 
@@ -17,7 +17,7 @@ export const About: React.FunctionComponent = () => {
 
             <Container className='py-2' fluid={true}>
                 <Row className='pb-2 pb-md-4'>
-                    <Col>
+                    <div className='col-lg-6 pb-2 pb-md-4 pb-lg-0'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/cogs-solid.svg'} className={'lt-about-header-icon'}
@@ -36,8 +36,8 @@ export const About: React.FunctionComponent = () => {
                                 </Button>
                             </Card.Body>
                         </Card>
-                    </Col>
-                    <Col>
+                    </div>
+                    <div className='col-lg-6'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/tags-solid.svg'} className={'lt-about-header-icon'}
@@ -56,10 +56,10 @@ export const About: React.FunctionComponent = () => {
                                 </Button>
                             </Card.Body>
                         </Card>
-                    </Col>
+                    </div>
                 </Row>
                 <Row className='pb-2 pb-md-4'>
-                    <Col>
+                    <div className='col-lg-6 pb-2 pb-md-4 pb-lg-0'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/users-solid.svg'} className={'lt-about-header-icon'}
@@ -78,8 +78,8 @@ export const About: React.FunctionComponent = () => {
                                 </Button>
                             </Card.Body>
                         </Card>
-                    </Col>
-                    <Col>
+                    </div>
+                    <div className='col-lg-6'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/download-solid.svg'} className={'lt-about-header-icon'}
@@ -98,10 +98,10 @@ export const About: React.FunctionComponent = () => {
                                 </Button>
                             </Card.Body>
                         </Card>
-                    </Col>
+                    </div>
                 </Row>
                 <Row className='pb-2 pb-md-4'>
-                    <Col>
+                    <div className='col-lg-6 pb-2 pb-md-4 pb-lg-0'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/github.svg'} className={'lt-about-header-icon'}
@@ -118,8 +118,8 @@ export const About: React.FunctionComponent = () => {
                                 </a>
                             </Card.Body>
                         </Card>
-                    </Col>
-                    <Col>
+                    </div>
+                    <div className='col-lg-6'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/discord.svg'} className={'lt-about-header-icon'}
@@ -136,10 +136,10 @@ export const About: React.FunctionComponent = () => {
                                 </a>
                             </Card.Body>
                         </Card>
-                    </Col>
+                    </div>
                 </Row>
                 <Row className='pb-2 pb-md-4'>
-                    <Col>
+                    <div className='col-lg-6 pb-2 pb-md-4 pb-lg-0'>
                         <Card border="primary">
                             <Card.Header>
                                 <img src={'/assets/images/paypal.svg'} className={'lt-about-header-icon'}
@@ -156,8 +156,8 @@ export const About: React.FunctionComponent = () => {
                                 </a>
                             </Card.Body>
                         </Card>
-                    </Col>
-                    <Col/>
+                    </div>
+                    <div className='col-lg-6' />
                 </Row>
             </Container>
         </>
