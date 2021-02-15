@@ -76,7 +76,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     icon={<i className={'lt-lichess-icon'} data-icon='y'/>} />
                             }
                             {
-                                (frequentlyUsed.length > 0) &&
+                                ((frequentlyUsed.length > 0) && (options.showFrequentlyUsed !== false)) &&
                                 <TagChooserGroup key={'litags.frequentlyUsed'}
                                     set={{
                                         id: '1',
@@ -95,12 +95,15 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     <TagChooserGroup key={set.id} set={set} onTagClicked={onTagClicked} />)
                             }
                         </div>
-                        <div className={'lt-set-search'} style={{backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor}}>
-                            <input ref={inputRef} type='search' autoCapitalize='off'
-                                autoComplete='off'
-                                spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}
-                                onInput={onInput} />
-                        </div>
+                        {
+                            (options.showSearchField !== false) &&
+                            <div className={'lt-set-search'} style={{backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor}}>
+                                <input ref={inputRef} type='search' autoCapitalize='off'
+                                    autoComplete='off'
+                                    spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}
+                                    onInput={onInput} />
+                            </div>
+                        }
                     </div>
                 </FocusTrap>
             );

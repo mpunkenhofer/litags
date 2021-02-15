@@ -2,6 +2,8 @@ import { browser } from "webextension-polyfill-ts";
 
 const i = (key: string): string => browser.i18n.getMessage(key);
 
+// Ideally this file can just be automatically created from en.json
+
 export const i18n = {
     no: i('no'),
     yes: i('yes'),
@@ -40,6 +42,7 @@ export const i18n = {
     tagName: i('tagName'),
     aliases: i('aliases'),
     color: i('color'),
+    uploadImage: i('uploadImage'),
     setName: i('setName'),
     setIconURL: i('setIconURL'),
     addTag: i('addTag'),

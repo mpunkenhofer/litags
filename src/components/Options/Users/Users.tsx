@@ -53,7 +53,7 @@ const UserListElement: React.FunctionComponent<UserListElementProps> =
 
     return (
         <>
-            <Row className='lt-user-row align-items-center border-top'>
+            <Row className='lt-user-row align-items-center border-top p-1'>
                 <Col xs={3}>
                     <a href={`https://lichess.org/@/${name}`} target={'_blank'} rel={'noopener noreferrer'}>
                         {name}

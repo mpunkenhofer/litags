@@ -73,7 +73,7 @@ Here are a few items which I consider important/missing and are still left to do
 
 I tested this extension on the go and as I mentioned above that this was my first extension/typescript/react-redux
 project, I didn't have the know-how, nor the time research and setup proper testing in this context. The more people
-contribute to this project though, the more important becomes testing - making sure new code people add doesn't break
+contribute to this project though, the more important becomes testing - making sure new code doesn't break
 existing one, hence I listed this as a top priority.  
 
 One example of an browser extension with tests:

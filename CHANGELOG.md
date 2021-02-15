@@ -1,12 +1,19 @@
 # Changelog
 
-## 1.1.0, Feb, 12, 2021
+## 1.1.0, Feb, 14, 2021
+
 ### New Features
 
 - You can now directly upload images representing tags in options (uploaded to imgur.com).
 - Toggle to show/hide frequently used tags in the tag chooser.
 - Toggle to show/hide search field in the tag chooser.
 - Removed frequently used tag setting and instead provided a way to clear frequently used tag list for simplicity.
+
+### Other
+
+- Improved litags options.
+- Migrated to [manifest v3](https://developer.chrome.com/docs/extensions/mv3) - future proofing the extension.
+- Updated dependencies
 
 ## 1.0.2, Oct, 26, 2020
 
@@ -20,6 +27,7 @@
 - Tag list remove icon not in line with tags.
 
 ## 1.0.0, Apr, 25, 2020
+
 ### New Features
 
 - Added a options page for frequently used tags that allows you to remove specific ones from freq. used.

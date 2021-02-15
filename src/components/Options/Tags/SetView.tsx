@@ -11,7 +11,7 @@ import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } f
 import { ConfirmModal } from "../ConfirmModal";
 import { useHistory } from "react-router-dom";
 import { generateID } from "../../../common/id";
-
+import { onImageUploadClicked } from "../../../common/upload";
 
 interface TagContainerProps {
     tags: Tag[];
@@ -115,17 +115,27 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
                     </div>
                 </Col>
                 <Col xs={6}>
-                    <Row className='pb-2'>
-                        <strong className='text-muted pb-2'>{i18n.setName}</strong>
-                        <input type='text' className='form-control' value={set.name} placeholder={i18n.setName}
-                            onChange={onChangeSetName} />
-                    </Row>
-                    <Row>
-                        <strong className='text-muted pb-2'>{i18n.setIconURL}</strong>
-                        <input type='text' className='form-control' value={set.iconUrl}
-                            placeholder={i18n.setIconURL}
-                            onChange={onChangeIconUrl} />
-                    </Row>
+                    <div className='d-flex pb-2'>
+                        <div>
+                            <strong className='text-muted pb-2'>{i18n.setName}</strong>
+                            <input type='text' className='form-control' value={set.name} placeholder={i18n.setName}
+                                onChange={onChangeSetName} />
+                        </div>
+                    </div>
+                    <div className={'d-flex flex-column flex-xl-row'}>
+                        <div className={'flex-grow-1 mr-xl-4'}>
+                            <strong className='text-muted pb-2'>{i18n.setIconURL}</strong>
+                            <input type='text' className='form-control' value={set.iconUrl} placeholder={i18n.setIconURL}
+                                onChange={onChangeIconUrl} />
+                        </div>
+                        <div className={'mt-2 mt-xl-auto ml-0 ml-xl-auto text-nowrap'}>
+                            <input type="file" accept="image/*" id="lt-img-upload" className={'d-none'} />
+                            <Button variant='outline-secondary' className='mr-2 mr-md-3' onClick={onImageUploadClicked}>
+                                <img className={'lt-btn-icon mr-2'} src={'/assets/images/file-upload-solid.svg'} alt={'Upload Image Icon'} />
+                                <span className={'d-none d-sm-inline'}>{i18n.uploadImage}</span>
+                            </Button>
+                        </div>
+                    </div>
                 </Col>
             </Row>
             {
@@ -138,6 +148,9 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
                 <TagContainer tags={set.tags} onTagClicked={onTagButtonClick} />
             </Row>
             <Row className='py-3'>
+                <Button variant='danger' className='' onClick={(): void => setShowDeleteSetModal(true)}>
+                    {i18n.deleteSet}
+                </Button>
                 <div className='d-flex ml-auto'>
                     <Button variant='outline-primary' className='mr-2 mr-md-3' onClick={onAddTagClicked}>
                         {i18n.addTag}
@@ -149,9 +162,6 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
                             {i18n.deleteSelectedTag}
                         </Button>
                     }
-                    <Button variant='outline-danger' className='' onClick={(): void => setShowDeleteSetModal(true)}>
-                        {i18n.deleteSet}
-                    </Button>
                 </div>
             </Row>
             <ConfirmModal show={showDeleteSetModal} onCancel={(): void => setShowDeleteSetModal(false)}

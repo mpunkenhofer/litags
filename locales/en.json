@@ -176,6 +176,9 @@
   "exportSet": {
     "message": "Export Set"
   },
+  "uploadImage": {
+    "message": "Upload Image"
+  },
   "tagsFound": {
     "message": "Tags found"
   },
