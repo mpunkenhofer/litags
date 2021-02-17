@@ -15,3 +15,5 @@ export const defaultOptions: Options = {
     showFrequentlyUsed: true,
     showSearchField: true
 };
+
+export const imgurUploadTimeout = 30000; // in ms

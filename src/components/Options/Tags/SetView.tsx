@@ -11,7 +11,7 @@ import { addTag, updateIconUrl, updateSetName, deleteTag, deleteSet, setSets } f
 import { ConfirmModal } from "../ConfirmModal";
 import { useHistory } from "react-router-dom";
 import { generateID } from "../../../common/id";
-import { onImageUploadClicked } from "../../../common/upload";
+import { ImageUpload } from "./ImageUpload";
 
 interface TagContainerProps {
     tags: Tag[];
@@ -32,10 +32,11 @@ const TagContainer: React.FunctionComponent<TagContainerProps> = ({ tags, onTagC
 
 interface SetDisplayProps {
     set: Set;
+    onError: (msg: string) => void;
 }
 
 
-export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDisplayProps) => {
+export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set, onError }: SetDisplayProps) => {
     const dispatch = useDispatch();
     const [showDeleteTagModal, setShowDeleteTagModal] = useState(false);
     const [showDeleteSetModal, setShowDeleteSetModal] = useState(false);
@@ -59,16 +60,20 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
         setSelectedTag(tag);
     };
 
-    const onChangeSetName = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
-        if (event && event.target && event.target.value !== undefined) {
-            dispatch(updateSetName(set.id, event.target.value));
-            dispatch(setSets());
-        }
+    const setIconUrl = useCallback((url: string): void => {
+        dispatch(updateIconUrl(set.id, url));
+        dispatch(setSets());
     }, [dispatch, set]);
 
     const onChangeIconUrl = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         if (event && event.target && event.target.value !== undefined) {
-            dispatch(updateIconUrl(set.id, event.target.value));
+            setIconUrl(event.target.value);
+        }
+    }, [setIconUrl]);
+
+    const onChangeSetName = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
+        if (event && event.target && event.target.value !== undefined) {
+            dispatch(updateSetName(set.id, event.target.value));
             dispatch(setSets());
         }
     }, [dispatch, set]);
@@ -129,11 +134,14 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
                                 onChange={onChangeIconUrl} />
                         </div>
                         <div className={'mt-2 mt-xl-auto ml-0 ml-xl-auto text-nowrap'}>
-                            <input type="file" accept="image/*" id="lt-img-upload" className={'d-none'} />
-                            <Button variant='outline-secondary' className='mr-2 mr-md-3' onClick={onImageUploadClicked}>
-                                <img className={'lt-btn-icon mr-2'} src={'/assets/images/file-upload-solid.svg'} alt={'Upload Image Icon'} />
-                                <span className={'d-none d-sm-inline'}>{i18n.uploadImage}</span>
-                            </Button>
+                            <ImageUpload
+                                onUploadSuccess={(url: string): void => {
+                                    setIconUrl(url);
+                                }}
+                                onUploadError={(msg: string): void => {
+                                    onError(msg);
+                                }}
+                            />
                         </div>
                     </div>
                 </Col>
@@ -184,3 +192,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set }: SetDi
         </>
     );
 };
+
+SetView.defaultProps = {
+    onError: (msg: string): void => console.error(msg),
+}

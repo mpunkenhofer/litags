@@ -139,7 +139,9 @@ export const Sets: React.FunctionComponent = () => {
                             {
                                 sets.map(set => (
                                     <Route key={set.id} path={`/${set.id}`}>
-                                        <SetView set={set} />
+                                        <SetView set={set} onError={(msg: string): void => {
+                                            displayAlert(msg);
+                                        }}/>
                                     </Route>
                                 ))
                             }

@@ -56,6 +56,8 @@ export const i18n = {
     importSetSuccess: i('importSetSuccess'),
     importSetFailure: i('importSetFailure'),
     exportSetFailure: i('exportSetFailure'),
+    uploadImageFailure: i('uploadImageFailure'),
+    uploadImageTimeout: i('uploadImageTimeout'),
     removeSelectedTag: i('removeSelectedTag'),
     selectedTag: i('selectedTag'),
     deleteSet: i('deleteSet'),

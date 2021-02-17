@@ -3,7 +3,10 @@
   "description": "__MSG_appDescription__",
   "manifest_version": 2,
   "default_locale": "en",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage",
+    "https://api.imgur.com/3/upload"
+  ],
   "icons": {
     "48": "assets/images/litags_icon48.png",
     "96": "assets/images/litags_icon96.png",

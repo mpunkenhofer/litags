@@ -258,6 +258,13 @@
   "exportSetFailure": {
     "message": "Failed to export the selected set!"
   },
+  "uploadImageFailure": {
+    "message": "Failed to upload image."
+  },
+  "uploadImageTimeout": {
+    "message": "Image upload timeout of %d exceeded.",
+    "description": "%d is a placeholder for the timeout duration."
+  },
   "aboutSettingsDescription": {
     "message": "General LiTags settings."
   },

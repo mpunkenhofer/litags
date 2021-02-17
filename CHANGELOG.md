@@ -12,7 +12,6 @@
 ### Other
 
 - Improved litags options.
-- Migrated to [manifest v3](https://developer.chrome.com/docs/extensions/mv3) - future proofing the extension.
 - Updated dependencies
 
 ## 1.0.2, Oct, 26, 2020
