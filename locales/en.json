@@ -35,8 +35,14 @@
   "delete": {
     "message": "Delete"
   },
+  "clear": {
+    "message": "Clear"
+  },
   "confirm": {
     "message": "Confirm"
+  },
+  "display": {
+    "message": "Display"
   },
   "cancel": {
     "message": "Cancel"
@@ -104,6 +110,14 @@
   "import": {
     "message": "Import"
   },
+  "show": {
+    "message": "Show",
+    "description": "e.g.: show UI element."
+  },
+  "hide": {
+    "message": "Hide",
+    "description": "e.g.: hide UI element."
+  },
   "aliases": {
     "message": "Aliases"
   },
@@ -134,6 +148,9 @@
   "removeAlias": {
     "message": "Remove Alias"
   },
+  "userTagList": {
+    "message": "User Tag List"
+  },
   "lastSeen": {
     "message": "Last seen"
   },
@@ -142,6 +159,9 @@
   },
   "searchResults": {
     "message": "Search Results"
+  },
+  "seachBar": {
+    "message": "Search Bar"
   },
   "frequentlyUsed": {
     "message": "Frequently used"
@@ -196,6 +216,12 @@
   },
   "removeSelectedTag": {
     "message": "Remove Selected Tag"
+  },
+  "clearFrequentlyUsedTags": {
+    "message": "Clear Frequently Used Tags"
+  },
+  "clearFrequentlyUsedTagsConfirm": {
+    "message": "Are you sure you want to clear you frequently used tags?"
   },
   "frequentlyUsedTags": {
     "message": "Frequently Used Tags"
@@ -287,18 +313,27 @@
     "message": "Donations are not required but very appreciated. Currently I only setup PayPal for donations, if you would like to donate via any other means, contact me on Discord or Github."
   },
   "settingsTagListLimitTitle": {
-    "message": "Tag List Limit:"
+    "message": "Tag List Limit"
   },
   "settingsTagListLimitDescription": {
     "message": "Change the maximum number of tags to be displayed in the user tag lists on Lichess."
   },
   "settingsFrequentlyUsedLimitTitle": {
-    "message": "Frequently Used Limit:"
+    "message": "Frequently Used Limit"
   },
   "settingsFrequentlyUsedLimitDescription": {
-    "message": "Change the maximum number of tags to be displayed in the frequently used section of the Tag Chooser."
+    "message": "Change the maximum number of tags to be displayed in the frequently used section of the tag chooser."
   },
   "settingsHotkeysDescription": {
     "message": "You can set available Hotkeys in the your browsers settings: extension shortcuts."
+  },
+  "settingsShowSearchBarDescription": {
+    "message": "Show / hide the search bar in the tag chooser."
+  },
+  "settingsShowFrequentlyUsedDescription": {
+    "message": "Show / hide the frequently used section in the tag chooser."
+  },
+  "settingsClearFrequentlyUsedTagsDescription": {
+    "message": "Clear your frequently used tags which appear at the top in the tag chooser."
   }
 }
