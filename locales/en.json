@@ -291,6 +291,10 @@
     "message": "Image upload timeout of %d exceeded.",
     "description": "%d is a placeholder for the timeout duration."
   },
+  "uploadImageMissingPermisson": {
+    "message": "Missing permission to upload image to %s.",
+    "description": "%s is a placeholder for the chosen image hoster e.g. imgur.com."
+  },
   "aboutSettingsDescription": {
     "message": "General LiTags settings."
   },

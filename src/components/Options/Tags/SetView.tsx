@@ -152,13 +152,13 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set, onError
                 <Button variant='danger' className='' onClick={(): void => setShowDeleteSetModal(true)}>
                     {i18n.deleteSet}
                 </Button>
-                <div className='d-flex ml-auto'>
-                    <Button variant='outline-primary' className='mr-2 mr-md-3' onClick={onAddTagClicked}>
+                <div className='d-flex ml-auto mr-2'>
+                    <Button variant='outline-primary' onClick={onAddTagClicked}>
                         {i18n.addTag}
                     </Button>
                     {
                         (selectedTag != null) &&
-                        <Button variant='outline-danger' className='mr-2 mr-md-3'
+                        <Button variant='outline-danger' className='ml-2 ml-md-4'
                             onClick={(): void => setShowDeleteTagModal(true)}>
                             {i18n.deleteSelectedTag}
                         </Button>

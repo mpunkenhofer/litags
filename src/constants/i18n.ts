@@ -64,6 +64,7 @@ export const i18n = {
     exportSetFailure: i('exportSetFailure'),
     uploadImageFailure: i('uploadImageFailure'),
     uploadImageTimeout: i('uploadImageTimeout'),
+    uploadImageMissingPermisson: i('uploadImageMissingPermisson'),
     removeSelectedTag: i('removeSelectedTag'),
     selectedTag: i('selectedTag'),
     deleteSet: i('deleteSet'),
