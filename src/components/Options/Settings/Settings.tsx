@@ -141,7 +141,7 @@ export const Settings: React.FunctionComponent = () => {
                             <p>{i18n.settingsClearFrequentlyUsedTagsDescription}</p>
                         </div>
                         <div className={'ml-auto my-auto'}>
-                            <Button variant='outline-danger' className='mr-2 mr-md-3'
+                            <Button variant='outline-danger' className='text-nowrap mr-2 mr-md-3'
                                 onClick={(): void => setShowClearTagModal(true)}>
                                 {i18n.clearFrequentlyUsedTags}
                             </Button>

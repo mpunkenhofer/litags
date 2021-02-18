@@ -5,7 +5,7 @@ import { useEffect, useCallback, useState } from "react";
 import { getSets, addSet, setSets } from "../../../slices/sets";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/rootReducer";
-import { Container, Row, Spinner, Alert, Button } from "react-bootstrap";
+import { Container, Spinner, Alert, Button } from "react-bootstrap";
 import { SetList } from "./SetList";
 import { SetView } from "./SetView";
 import { HashRouter, Redirect, Route, Switch, useHistory } from "react-router-dom";
@@ -113,7 +113,7 @@ export const Sets: React.FunctionComponent = () => {
                 </Alert>
                 <Container fluid={true}>
                     <HashRouter hashType={'noslash'} basename={'tags'}>
-                        <Row className='d-flex flex-row border-bottom pb-2'>
+                        <div className='d-flex flex-row border-bottom pb-2'>
                             <div className={'flex-row flex-md-column m-1'}>
                                 <SetList sets={sets} />
                             </div>
@@ -134,7 +134,7 @@ export const Sets: React.FunctionComponent = () => {
                                     </Button>
                                 }
                             </div>
-                        </Row>
+                        </div>
                         <Switch>
                             {
                                 sets.map(set => (

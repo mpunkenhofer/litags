@@ -119,7 +119,7 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set, onError
                         }
                     </div>
                 </Col>
-                <Col xs={6}>
+                <Col className={'pr-2'} xs={6}>
                     <div className='d-flex pb-2'>
                         <div>
                             <strong className='text-muted pb-2'>{i18n.setName}</strong>
@@ -134,15 +134,15 @@ export const SetView: React.FunctionComponent<SetDisplayProps> = ({ set, onError
                                 onChange={onChangeIconUrl} />
                         </div>
                         <div className={'mt-2 mt-xl-auto ml-0 ml-xl-auto text-nowrap'}>
-                            <ImageUpload onUploadSuccess={setIconUrl} onUploadError={onError}/>
+                            <ImageUpload onUploadSuccess={setIconUrl} onUploadError={onError} />
                         </div>
                     </div>
                 </Col>
             </Row>
             {
                 selectedTag &&
-                <Row className='py-3 my-2'>
-                    <TagView tag={selectedTag} onError={onError}/>
+                <Row className='px-2 my-2 pt-2 pt-md-4'>
+                    <TagView tag={selectedTag} onError={onError} />
                 </Row>
             }
             <Row>

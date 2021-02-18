@@ -44,7 +44,7 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({ tag, onError }:
         }
     }, [dispatch, tag]);
 
-   
+
 
     const onChangeColor = useCallback((color: string): void => {
         if (color) {
@@ -59,49 +59,55 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({ tag, onError }:
     }, [dispatch, tag]);
 
     return (
-        <div className={'d-flex flex-row pb-2'}>
-            <div>
-                <strong className='text-muted'>{i18n.tag}</strong>
+        <div className={'d-flex flex-grow-1 justify-content-between'}>
+            <div className={'d-flex flex-column mr-2 mr-md-4'}>
+                <strong className='text-muted mb-1 mb-md-2'>{i18n.tag}</strong>
+                <div className={'m-auto'}>
                 <Tag tag={liveTag} />
+                </div>
             </div>
-            <div>
-                <strong className='text-muted'>{i18n.tagName}</strong>
+            <div className={'d-flex flex-fill flex-column mr-2 mr-md-4'}>
+                <strong className='text-muted mb-1 mb-md-2'>{i18n.tagName}</strong>
                 <input type='text' className='form-control' value={liveTag.name} placeholder={i18n.tagName} onChange={onChangeName} />
             </div>
 
             {
                 (liveTag.aliases && liveTag.aliases.length > 0) &&
-                <div>
-                    <strong className='text-muted'>{i18n.aliases}</strong>
-                    {
-                        liveTag.aliases.map((alias, index) => (
-                            <Badge key={`alias-${index}-${tag.id}]`} text={alias}
-                                onRemoveButtonClicked={onRemoveAliasButtonClicked(alias)} />
-                        ))
-                    }
+                <div className={'d-flex flex-column mr-2 mr-md-4'}>
+                    <strong className='text-muted mb-1 mb-md-2'>{i18n.aliases}</strong>
+                    <div>
+                        {
+                            liveTag.aliases.map((alias, index) => (
+                                <Badge key={`alias-${index}-${tag.id}]`} text={alias}
+                                    onRemoveButtonClicked={onRemoveAliasButtonClicked(alias)} />
+                            ))
+                        }
+                    </div>
                 </div>
             }
             {
                 (tag.font != undefined) ?
-                <>
-                    <div>
-                        <strong className='text-muted'>{i18n.symbol}</strong>
-                        <input type='text' className='form-control' value={liveTag.uri} placeholder={i18n.symbol} onChange={onChangeURI} />
+                    <div className={'d-flex flex-fill flex-row'}>
+                        <div className={'d-flex flex-grow-1 flex-column mr-2 mr-md-4'}>
+                            <strong className='text-muted mb-1 mb-md-2'>{i18n.symbol}</strong>
+                            <input type='text' className='form-control' value={liveTag.uri} placeholder={i18n.symbol} onChange={onChangeURI} />
+                        </div>
+                        <div className={'d-flex flex-column mr-2 mr-md-4'}>
+                            <strong className='text-muted mb-1 mb-md-2'>{i18n.color}</strong>
+                            <div className={'m-auto'}>
+                                <ColorPicker color={liveTag.color ? liveTag.color : '#000000'} onChangeComplete={onChangeColor} />
+                            </div>
+                        </div>
+                    </div> :
+                    <div className={'d-flex flex-fill flex-row'}>
+                        <div className={'d-flex flex-grow-1 flex-column mr-2 mr-md-4'}>
+                            <strong className='text-muted mb-1 mb-md-2'>{i18n.imageURL}</strong>
+                            <input type='text' className='form-control' value={liveTag.uri} placeholder={i18n.imageURL} onChange={onChangeURI} />
+                        </div>
+                        <div className={'mt-auto'}>
+                            <ImageUpload onUploadError={onError} onUploadSuccess={setTagURI} />
+                        </div>
                     </div>
-                    <div>
-                        <strong className='text-muted'>{i18n.color}</strong>
-                        <ColorPicker color={liveTag.color ? liveTag.color : '#000000'} onChangeComplete={onChangeColor} />
-                    </div>
-                </> :
-                <>
-                    <div>
-                        <strong className='text-muted'>{i18n.imageURL}</strong>
-                        <input type='text' className='form-control' value={liveTag.uri} placeholder={i18n.imageURL} onChange={onChangeURI} />
-                    </div>
-                    <div>
-                        <ImageUpload onUploadError={onError} onUploadSuccess={setTagURI}/>
-                    </div>
-                </>
             }
         </div>
     );

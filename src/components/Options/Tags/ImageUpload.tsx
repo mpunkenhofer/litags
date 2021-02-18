@@ -68,7 +68,7 @@ export const ImageUpload: React.FunctionComponent<ImageUploadProps> = ({ onUploa
     }, [setShowUploadSpinner, onUploadError, onUploadSuccess]);
 
     return (
-        <Button variant='outline-secondary' className='mr-2 mr-md-3' onClick={onUploadClicked}>
+        <Button variant='outline-secondary' onClick={onUploadClicked}>
             {
                 showUploadSpinner ?
                     <Spinner className={'lt-btn-icon mr-2'} animation="border" role="status" /> :
