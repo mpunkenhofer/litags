@@ -11,7 +11,7 @@ const lichessSetData: SetData = {
     "tags": {
         "exit": ["0"],
         "tv": ["1"],
-        "hand-top": ["2"],
+        // "hand-top": ["2"], // unused after an update
         "wifi": ["3"],
         "delicious": ["4"],
         "shield": ["5"],
@@ -23,7 +23,7 @@ const lichessSetData: SetData = {
         "white-flag": ["b"],
         "dialog-bubble": ["c"],
         "dialog-bubbles": ["d"],
-        "letter": ["e", ["atomic", "variant"]],
+        "letter": ["e"],
         "crowd": ["f"],
         "goblet": ["g", ["variant"]],
         "thumb-up": ["h"],
@@ -75,7 +75,13 @@ const lichessSetData: SetData = {
         "upload-cloud": ["/"],
         "pointer": ["{", ["ultrabullet", "variant"]],
         "hookah": ["~", ["bongcloud"]],
-        "berserk": ["`"]
+        "berserk": ["`"],
+        "graph": ["^"],
+        "graduate-cap": [":"],
+        "plane": [";"],
+        "zoom-in": ["<"],
+        "atomic": [">", ["variant"]],
+        "screen": ["="]
     }
 };
 

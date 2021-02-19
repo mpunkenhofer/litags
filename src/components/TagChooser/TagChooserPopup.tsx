@@ -67,9 +67,9 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                 <TagChooserGroup key={'litags.searchResults'}
                                     set={{
                                         id: '0',
-                                        name: `${searchResults.length} ${i18n.searchResults}`,
+                                        name: `(${searchResults.length}) ${i18n.searchResults}`,
                                         tags: searchResults,
-                                        iconUrl: browser.runtime.getURL('assets/images/search-solid.svg')
+                                        iconUrl: ''
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'search-results'}
@@ -94,10 +94,16 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                 Object.values(sets).map(set =>
                                     <TagChooserGroup key={set.id} set={set} onTagClicked={onTagClicked} />)
                             }
+                            {/* <a href={browser.runtime.getURL('options.html')} target={'_blank'} rel={'noopener noreferrer'}>LiTags Options</a> */}
                         </div>
                         {
                             (options.showSearchField !== false) &&
                             <div className={'lt-set-search'} style={{backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor}}>
+                                <i className={'lt-lichess-icon'} data-icon='y' onClick={(): void => {
+                                    if(inputRef && inputRef.current) {
+                                        inputRef.current.focus();
+                                    }
+                                }}/>
                                 <input ref={inputRef} type='search' autoCapitalize='off'
                                     autoComplete='off'
                                     spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}

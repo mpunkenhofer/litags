@@ -40,7 +40,7 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     .lt-set {
       .lt-set-header {
         display: flex;
-        align-content: center;
+        align-items: center;
 
         padding-top: 0.3rem;
         padding-bottom: 0.3rem;
@@ -50,32 +50,22 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
         border-bottom: $border;
 
         .lt-set-icon {
-          display: flex;
-          align-content: center;
-          justify-content: center;
-
-          margin-left: .6rem;
+          margin-left: 1em;
 
           img {
-            width: 2rem;
-            height: 2rem;
+            width: 2em;
+            height: 2em;
           }
           i {
-            font-size: 1.6rem;
+            font-size: 1.6em;
           }
         }
 
         .lt-set-title {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-content: center;
-          
           margin-left: auto;
           margin-right: 1rem;
 
-          font-size: 1.1rem;
-          //text-shadow: $text-shadow;
+          //text-transform: uppercase;   
         }
       }
 
@@ -96,16 +86,33 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
 
   .lt-set-search {
-    padding: .5rem;
+    display: flex;
+    flex-direction: row;
+    padding: .4rem;
+    font-size: inherit;
 
-    background-color: $c-bg-secondary;
-
+    //background-color: $c-bg-secondary;
     border-top: $border;
 
     input {
-      font-size: 1rem;
-      width: 100%;
-      padding: 0.4rem 0.4rem;
+      flex-grow: 1;
+      border: 0;
+      padding: 0;
+      outline: none;
+      margin-left: 1em;
+      margin-right: .5em;
+      background-color: inherit;
+      padding: .2em;
+
+      &:focus {
+        border-bottom: $border;
+      }
+    }
+
+    i {
+      width: 1.2em;
+      height: 1.2em;
+      margin-left: .3em;
     }
   }
 }

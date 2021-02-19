@@ -20,7 +20,7 @@ const TagChooserGroup: React.FunctionComponent<TagChooserGroupInterface> = ({ se
                     }
                 </div>
             }
-            <span className={'lt-set-title'}>{set.name}</span>
+            <strong className={'lt-set-title'}>{set.name}</strong>
         </header>
         <div className='lt-set-tags' style={{ borderColor: getTheme().borderColor }}>
             {

@@ -292,7 +292,7 @@
     "description": "%d is a placeholder for the timeout duration."
   },
   "uploadImageMissingPermisson": {
-    "message": "Missing permission to upload image to %s.",
+    "message": "Missing permission to upload images to %s.",
     "description": "%s is a placeholder for the chosen image hoster e.g. imgur.com."
   },
   "aboutSettingsDescription": {

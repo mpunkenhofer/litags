@@ -68,6 +68,7 @@ export const ImageUpload: React.FunctionComponent<ImageUploadProps> = ({ onUploa
                         }
                     } else {
                         onUploadError(i18n.uploadImageFailure);
+                        browser.permissions.remove({ origins: ["https://api.imgur.com/3/upload"] });
                     }
                 } else {
                     onUploadError(i18n.uploadImageMissingPermisson.replace('%s', 'imgur.com'));
