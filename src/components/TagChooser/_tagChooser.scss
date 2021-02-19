@@ -95,7 +95,6 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     border-top: $border;
 
     input {
-      flex-grow: 1;
       border: 0;
       padding: 0;
       outline: none;
@@ -103,9 +102,23 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
       margin-right: .5em;
       background-color: inherit;
       padding: .2em;
+      flex-grow: 1;
 
       &:focus {
         border-bottom: $border;
+      }
+    }
+
+    .lt-options-link {
+      margin: auto .5em auto auto;
+      align-self: end;
+
+      i {
+        margin-right: .5em;
+      }
+
+      &:hover {
+        color: $c-selected
       }
     }
 

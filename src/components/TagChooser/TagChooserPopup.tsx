@@ -33,14 +33,14 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
 
             for (const set of sets)
                 allTags = [...allTags, ...set.tags]
-            
+
             return allTags;
         }, [sets]);
 
         const searchTags = useCallback(term => {
             if (!term || term.length < 1)
                 return [];
-                
+
             term = term.toLowerCase();
 
             return tags.filter(tag => tag.name.toLowerCase().includes(term) ||
@@ -73,7 +73,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'search-results'}
-                                    icon={<i className={'lt-lichess-icon'} data-icon='y'/>} />
+                                    icon={<i className={'lt-lichess-icon'} data-icon='y' />} />
                             }
                             {
                                 ((frequentlyUsed.length > 0) && (options.showFrequentlyUsed !== false)) &&
@@ -88,26 +88,30 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'favorites'}
-                                    icon={<i className={'lt-lichess-icon'} data-icon='s'/>} />
+                                    icon={<i className={'lt-lichess-icon'} data-icon='s' />} />
                             }
                             {
                                 Object.values(sets).map(set =>
                                     <TagChooserGroup key={set.id} set={set} onTagClicked={onTagClicked} />)
                             }
-                            {/* <a href={browser.runtime.getURL('options.html')} target={'_blank'} rel={'noopener noreferrer'}>LiTags Options</a> */}
+
                         </div>
                         {
                             (options.showSearchField !== false) &&
-                            <div className={'lt-set-search'} style={{backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor}}>
+                            <div className={'lt-set-search'} style={{ backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor }}>
                                 <i className={'lt-lichess-icon'} data-icon='y' onClick={(): void => {
-                                    if(inputRef && inputRef.current) {
+                                    if (inputRef && inputRef.current) {
                                         inputRef.current.focus();
                                     }
-                                }}/>
+                                }} />
                                 <input ref={inputRef} type='search' autoCapitalize='off'
                                     autoComplete='off'
                                     spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}
                                     onInput={onInput} />
+                                <a className={'lt-options-link'} href={browser.runtime.getURL('options.html')} target={'_blank'} rel={'noopener noreferrer'}>
+                                    <i className={'lt-lichess-icon'} data-icon='%' />
+                                    {i18n.options}
+                                </a>
                             </div>
                         }
                     </div>

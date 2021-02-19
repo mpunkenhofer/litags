@@ -13,7 +13,7 @@ interface DragHandleProps {
     pos: number;
 }
 
-const DragHandle = SortableHandle(({pos: position}: DragHandleProps) => <span className='mr-1 mr-md-2'>{position}</span>);
+const DragHandle = SortableHandle(({pos: position}: DragHandleProps) => <span className='pl-1 pr-2'>{position}</span>);
 
 interface SortableItemProps {
     id: string;

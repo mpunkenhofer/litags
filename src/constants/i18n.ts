@@ -16,6 +16,7 @@ export const i18n = {
     set: i('set'),
     confirm: i('confirm'),
     settings: i('settings'),
+    options: i('options'),
     home: i('home'),
     tags: i('tags'),
     tag: i('tag'),

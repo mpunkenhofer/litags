@@ -83,6 +83,9 @@
   "noIcon": {
     "message": "No Icon"
   },
+  "options": {
+    "message": "Options"
+  },
   "home": {
     "message": "Home"
   },
