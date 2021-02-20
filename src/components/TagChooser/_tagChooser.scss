@@ -88,6 +88,7 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   .lt-set-search {
     display: flex;
     flex-direction: row;
+    //flex-wrap: wrap;
     padding: .4rem;
     font-size: inherit;
 
@@ -95,14 +96,15 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     border-top: $border;
 
     input {
+      flex: 1 1 auto;
+      min-width: 0;
       border: 0;
       padding: 0;
       outline: none;
       margin-left: 1em;
       margin-right: .5em;
       background-color: inherit;
-      padding: .2em;
-      flex-grow: 1;
+      padding: .2em;   
 
       &:focus {
         border-bottom: $border;
@@ -110,7 +112,9 @@ $box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     }
 
     .lt-options-link {
+      flex: 0 0 auto;
       margin: auto .5em auto auto;
+      
       align-self: end;
 
       i {
