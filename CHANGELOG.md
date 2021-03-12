@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1, Mar, 12, 2021
+
+- Options: moved the color picker for font tags.
+- Updated dependencies
+
 ## 1.1.0, Feb, 20, 2021
 
 ### New Features

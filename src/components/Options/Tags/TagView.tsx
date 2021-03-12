@@ -65,6 +65,15 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({ tag, onError }:
                 <Tag tag={liveTag} />
                 </div>
             </div>
+            {
+                (tag.font != undefined) &&
+                <div className={'d-flex flex-column mr-2 mr-md-4'}>
+                    <strong className='text-muted mb-1 mb-md-2'>{i18n.color}</strong>
+                    <div className={'m-auto'}>
+                        <ColorPicker color={liveTag.color ? liveTag.color : '#000000'} onChangeComplete={onChangeColor} />
+                    </div>
+            </div>
+            }
             <div className={'d-flex flex-fill flex-column mr-2 mr-md-4'}>
                 <strong className='text-muted mb-1 mb-md-2'>{i18n.tagName}</strong>
                 <input type='text' className='form-control' value={liveTag.name} placeholder={i18n.tagName} onChange={onChangeName} />
@@ -87,15 +96,9 @@ export const TagView: React.FunctionComponent<TagViewProps> = ({ tag, onError }:
             {
                 (tag.font != undefined) ?
                     <div className={'d-flex flex-fill flex-row'}>
-                        <div className={'d-flex flex-grow-1 flex-column mr-2 mr-md-4'}>
+                        <div className={'d-flex flex-grow-1 flex-column'}>
                             <strong className='text-muted mb-1 mb-md-2'>{i18n.symbol}</strong>
                             <input type='text' className='form-control' value={liveTag.uri} placeholder={i18n.symbol} onChange={onChangeURI} />
-                        </div>
-                        <div className={'d-flex flex-column mr-2 mr-md-4'}>
-                            <strong className='text-muted mb-1 mb-md-2'>{i18n.color}</strong>
-                            <div className={'m-auto'}>
-                                <ColorPicker color={liveTag.color ? liveTag.color : '#000000'} onChangeComplete={onChangeColor} />
-                            </div>
                         </div>
                     </div> :
                     <div className={'d-flex flex-fill flex-row'}>
