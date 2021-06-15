@@ -39,6 +39,7 @@
     }
   ],
   "web_accessible_resources": [
+    "assets/fonts/lichess-tags.woff2",
     "assets/images/lichess_icon512.png",
     "assets/images/tag-solid.svg",
     "options.html"

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3, Jun, 15, 2021
+
+- No longer dependend on lichess font file.
+
 ## 1.1.2, Jun, 15, 2021
 
 - Fix: Lichess font icons broken after lichess update.

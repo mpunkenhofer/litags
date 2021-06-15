@@ -4,11 +4,24 @@ import {Provider} from 'react-redux'
 import store from '../common/store'
 import {enableStorageApiLogger} from "../common/storage";
 import {App} from "../components/App";
+import { browser } from "webextension-polyfill-ts";
 
 console.log('LiTags is open source! https://github.com/mpunkenhofer/litags');
 
 if (process.env.NODE_ENV === "development") {
     enableStorageApiLogger();
+}
+
+const createFontStyleNode = (): void => {
+    const node = document.createElement('style');
+    node.textContent = `@font-face { 
+        font-family: lichess-tags; 
+        src: url('${browser.extension.getURL("assets/fonts/lichess-tags.woff2")}');
+        font-display: block;
+        font-weight: normal;
+        font-style: normal;
+    }`;
+    document.head.appendChild(node);
 }
 
 const getLiTagsRoot = (): HTMLElement => {
@@ -40,6 +53,8 @@ const getUserName = (elementName: string): string | null => {
 const element = document.querySelector('.round__app');
 
 if (element) {
+    createFontStyleNode();
+    
     new MutationObserver((_mutations, observerInstance) => {
         observerInstance.disconnect();
 
