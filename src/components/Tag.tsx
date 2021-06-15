@@ -8,11 +8,6 @@ interface TagProps {
 }
 
 const Tag: React.FunctionComponent<TagProps> = ({ tag }: TagProps) => {
-  // Fix for incorrect font family residing in user storages of prev. versions
-  if (tag.font?.fontFamily === "lichess") {
-    tag.font.fontFamily = "lichess-tags";
-  }
-
   return !tag.uri ? (
     <img
       className={"lt-tag"}
@@ -23,15 +18,28 @@ const Tag: React.FunctionComponent<TagProps> = ({ tag }: TagProps) => {
     tag.color && tag.color.length > 0 ? (
       <span
         className={"lt-tag"}
+        // Fix for incorrect font family residing in user storages of prev. versions
         style={{
-          fontFamily: tag.font.fontFamily,
+          fontFamily:
+            tag.font.fontFamily == "lichess"
+              ? "lichess-tags"
+              : tag.font.fontFamily,
           color: tag.color,
         }}
       >
         {tag.uri}
       </span>
     ) : (
-      <span className={"lt-tag"} style={{ fontFamily: tag.font.fontFamily }}>
+      <span
+        className={"lt-tag"}
+        // Fix for incorrect font family residing in user storages of prev. versions
+        style={{
+          fontFamily:
+            tag.font.fontFamily == "lichess"
+              ? "lichess-tags"
+              : tag.font.fontFamily,
+        }}
+      >
         {tag.uri}
       </span>
     )

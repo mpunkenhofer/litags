@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4, Jun, 15, 2021
+
+- Fix: Cannot assign to read only property error.
+
 ## 1.1.3, Jun, 15, 2021
 
 - No longer dependend on lichess font file.
