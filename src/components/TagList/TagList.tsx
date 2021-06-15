@@ -7,6 +7,7 @@ import { removeTag, updateTags } from "../../slices/user";
 import { RootState } from "../../common/rootReducer";
 import Tag from "../Tag";
 import { Tag as TagType } from "../../types"
+import { ICONS } from '../../constants';
 
 interface SortableItemProps {
     tag: TagType;
@@ -28,7 +29,7 @@ const SortableList = SortableContainer(({ tags, limit,
             {tags.slice(0, limit).map((tag, index) => (<SortableItem key={`item-${tag.id}`} index={index} tag={tag} />))}
         </ul>
         {
-            removeZoneVisible && <div className={'lt-list-remove-zone lt-lichess-icon'} data-icon={'L'}
+            removeZoneVisible && <div className={'lt-list-remove-zone lt-lichess-icon'} data-icon={ICONS.remove}
                 onMouseEnter={(): void => setHoveringRemoveZone(true)}
                 onMouseLeave={(): void => setHoveringRemoveZone(false)}/>
         }

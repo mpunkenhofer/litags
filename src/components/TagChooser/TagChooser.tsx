@@ -7,13 +7,14 @@ import {addTag} from "../../slices/user";
 import {i18n} from "../../constants/i18n";
 import {useEffect} from "react";
 import {browser} from "webextension-polyfill-ts";
+import { ICONS } from '../../constants';
 
 interface TagChooserButtonProps {
     onClick: () => void;
 }
 
 const TagChooserButton: React.FunctionComponent<TagChooserButtonProps> = ({onClick}: TagChooserButtonProps) => (
-    <button title={i18n.showTags} className='lt-button-effect lt-lichess-icon' data-icon='O' onClick={onClick} />
+    <button title={i18n.showTags} className='lt-button-effect lt-lichess-icon' data-icon={ICONS.addTag} onClick={onClick} />
 );
 
 interface TagChooserProps {

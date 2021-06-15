@@ -10,6 +10,7 @@ import FocusTrap from "focus-trap-react";
 import { i18n } from "../../constants/i18n";
 import { browser } from "webextension-polyfill-ts";
 import { getTheme } from "../../common/theme";
+import { ICONS } from "../../constants";
 
 interface TagChooserPopupInterface {
     onClickOutside: () => void;
@@ -73,7 +74,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'search-results'}
-                                    icon={<i className={'lt-lichess-icon'} data-icon='y' />} />
+                                    icon={<i className={'lt-lichess-icon'} data-icon={ICONS.search} />} />
                             }
                             {
                                 ((frequentlyUsed.length > 0) && (options.showFrequentlyUsed !== false)) &&
@@ -88,7 +89,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     }}
                                     onTagClicked={onTagClicked}
                                     className={'favorites'}
-                                    icon={<i className={'lt-lichess-icon'} data-icon='s' />} />
+                                    icon={<i className={'lt-lichess-icon'} data-icon={ICONS.fav} />} />
                             }
                             {
                                 Object.values(sets).map(set =>
@@ -99,7 +100,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                         {
                             (options.showSearchField !== false) &&
                             <div className={'lt-set-search'} style={{ backgroundColor: getTheme().secondaryBackgroundColor, borderColor: getTheme().borderColor }}>
-                                <i className={'lt-lichess-icon'} data-icon='y' onClick={(): void => {
+                                <i className={'lt-lichess-icon'} data-icon={ICONS.search} onClick={(): void => {
                                     if (inputRef && inputRef.current) {
                                         inputRef.current.focus();
                                     }
@@ -109,7 +110,7 @@ const TagChooserPopup: React.FunctionComponent<TagChooserPopupInterface> =
                                     spellCheck='false' placeholder={i18n.searchTagsPlaceHolder}
                                     onInput={onInput} />
                                 <a className={'lt-options-link'} href={browser.runtime.getURL('options.html')} target={'_blank'} rel={'noopener noreferrer'}>
-                                    <i className={'lt-lichess-icon'} data-icon='%' />
+                                    <i className={'lt-lichess-icon'} data-icon={ICONS.options} />
                                     {i18n.options}
                                 </a>
                             </div>
