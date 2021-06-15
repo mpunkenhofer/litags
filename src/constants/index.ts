@@ -16,4 +16,12 @@ export const defaultOptions: Options = {
     showSearchField: true
 };
 
+export const ICONS = {
+    addTag: ["\ue042"],
+    fav: ["\ue00D"],
+    search: ["\ue06c"],
+    options: ["\ue061"],
+    remove: ["\ue03f"]
+};
+
 export const imageUploadTimeout = 30000; // in ms

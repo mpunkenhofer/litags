@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2, Jun, 15, 2021
+
+- Fix: Lichess font icons broken after lichess update.
+- Updated dependencies
+
 ## 1.1.1, Mar, 12, 2021
 
 - Options: moved the color picker for font tags.
